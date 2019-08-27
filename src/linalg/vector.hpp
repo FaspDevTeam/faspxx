@@ -1,6 +1,6 @@
 
-#ifndef FASP_VECTOR
-#define FASP_VECTOR
+#ifndef FASPXX_VECTOR_HPP
+#define FASPXX_VECTOR_HPP
 
 namespace fasp
 {
@@ -14,6 +14,7 @@ protected:
 public:
     Vector() { allocsize = size = 0; data = nullptr;} ///nullptr比0,NULL要好
     explicit Vector(int s);
+    ~Vector();
 
 public:
     Vector &operator += (double c);
