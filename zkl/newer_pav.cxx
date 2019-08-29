@@ -8,9 +8,11 @@
 #include<sys/time.h>
 #include<cstring>
 
-const int M16=16000000;
-const int M32=32000000;
-const int M64=64000000;
+#define PRINT 0
+const int M16=16;
+const int M32=32;
+const int M64=64;
+const int count=100;
 
 double get_wall_time(){  
     struct timeval time ;  
@@ -20,12 +22,33 @@ double get_wall_time(){
     return (double)time.tv_sec+(double)time.tv_usec*0.000001;  
 }
 
+#if PRINT
+void printarray(double arr[],int N){
+    int j;
+    for(j=0;j<N;j++){
+        std::cout<<arr[j]<<std::endl;
+    }
+}
+void printpointer(double *p,int N){
+    int j;
+    for(j=0;j<N;j++){
+        std::cout<<p[j]<<std::endl;
+    }
+}
+void printvector(std::vector<double> vec,int N){
+    int j;
+    for(j=0;j<N;j++){
+        std::cout<<vec[j]<<std::endl;
+    }
+}
+#endif
+
 int main()
 {
     double start1,end1,start2,end2,start3,end3;
     double sum;
     double add;
-    int j;
+    int j,k;
 
     srand((unsigned)time(NULL));
     double test16_1[M16],test16_2[M16];
@@ -44,6 +67,20 @@ int main()
         test64_1[j]=rand()/(double)RAND_MAX;
         test64_2[j]=rand()/(double)RAND_MAX;
     }
+#if PRINT
+    std::cout<<"test16_1"<<std::endl;
+    printarray(test16_1,M16);
+    std::cout<<"test16_2"<<std::endl;
+    printarray(test16_2,M16);
+    std::cout<<"test32_1"<<std::endl;
+    printarray(test32_1,M32);
+    std::cout<<"test32_2"<<std::endl;
+    printarray(test32_2,M32);
+    std::cout<<"test64_1"<<std::endl;
+    printarray(test64_1,M64);
+    std::cout<<"test64_2"<<std::endl;
+    printarray(test64_2,M64);
+#endif
 
     /*------------------------------------------------------------*/
     std::cout<<"memory allocation time : "<<std::endl;
@@ -149,22 +186,68 @@ int main()
     std::cout<<"M64 array : "<<end1-start1<<std::endl;
     std::cout<<"M64 pointer : "<<end2-start2<<std::endl;
     std::cout<<"M64 vector : "<<end3-start3<<std::endl;
+
+#if PRINT
+    std::cout<<"M16 array16_1"<<std::endl;
+    printarray(array16_1,M16);
+    std::cout<<"M16 array16_2"<<std::endl;
+    printarray(array16_2,M16);
+    std::cout<<"M16 p16_1"<<std::endl;
+    printpointer(p16_1,M16);
+    std::cout<<"M16 p16_2"<<std::endl;
+    printpointer(p16_2,M16);
+    std::cout<<"M16 vec16_1"<<std::endl;
+    printvector(vec16_1,M16);
+    std::cout<<"M16 vec16_2"<<std::endl;
+    printvector(vec16_2,M16);
+    std::cout<<"M32 array32_1"<<std::endl;
+    printarray(array32_1,M32);
+    std::cout<<"M32 array32_2"<<std::endl;
+    printarray(array32_2,M32);
+    std::cout<<"M32 p32_1"<<std::endl;
+    printpointer(p32_1,M32);
+    std::cout<<"M32 p32_2"<<std::endl;
+    printpointer(p32_2,M32);
+    std::cout<<"M32 vec32_1"<<std::endl;
+    printvector(vec32_1,M32);
+    std::cout<<"M32 vec32_2"<<std::endl;
+    printvector(vec32_2,M32);
+    std::cout<<"M64 array64_1"<<std::endl;
+    printarray(array64_1,M64);
+    std::cout<<"M64 array64_2"<<std::endl;
+    printarray(array64_2,M64);
+    std::cout<<"M64 p64_1"<<std::endl;
+    printpointer(p64_1,M64);
+    std::cout<<"M64 p64_2"<<std::endl;
+    printpointer(p64_2,M64);
+    std::cout<<"M64 vec64_1"<<std::endl;
+    printvector(vec64_1,M64);
+    std::cout<<"M64 vec64_2"<<std::endl;
+    printvector(vec64_2,M64);
+#endif
+
     /*------------------------------------------------------------*/ 
     std::cout<<"add time : "<<std::endl;
 
     start1=get_wall_time();
-    for(j=0;j<M16;j++){
-        add=array16_1[j]+array16_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M16;j++){
+            add=array16_1[j]+array16_2[j];
+        }
     }
     end1=get_wall_time();
     start2=get_wall_time();
-    for(j=0;j<M16;j++){
-        add=p16_1[j]+p16_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M16;j++){
+            add=p16_1[j]+p16_2[j];
+        }
     }
     end2=get_wall_time();
     start3=get_wall_time();
-    for(j=0;j<M16;j++){
-        add=vec16_1[j]+vec16_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M16;j++){
+            add=vec16_1[j]+vec16_2[j];
+        }
     }
     end3=get_wall_time();
 
@@ -173,18 +256,24 @@ int main()
     std::cout<<"M16 vector : "<<end3-start3<<std::endl;
 
     start1=get_wall_time();
-    for(j=0;j<M32;j++){
-        add=array32_1[j]+array32_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M32;j++){
+            add=array32_1[j]+array32_2[j];
+        }
     }
     end1=get_wall_time();
     start2=get_wall_time();
-    for(j=0;j<M32;j++){
-        add=p32_1[j]+p32_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M32;j++){
+            add=p32_1[j]+p32_2[j];
+        }
     }
     end2=get_wall_time();
     start3=get_wall_time();
-    for(j=0;j<M32;j++){
-        add=vec32_1[j]+vec32_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M32;j++){
+            add=vec32_1[j]+vec32_2[j];
+        }
     }
     end3=get_wall_time();
 
@@ -193,18 +282,24 @@ int main()
     std::cout<<"M32 vector : "<<end3-start3<<std::endl;
 
     start1=get_wall_time();
-    for(j=0;j<M64;j++){
-        add=array64_1[j]+array64_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M64;j++){
+            add=array64_1[j]+array64_2[j];
+        }
     }
     end1=get_wall_time();
     start2=get_wall_time();
-    for(j=0;j<M64;j++){
-        add=p64_1[j]+p64_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M64;j++){
+            add=p64_1[j]+p64_2[j];
+        }
     }
     end2=get_wall_time();
     start3=get_wall_time();
-    for(j=0;j<M64;j++){
-        add=vec64_1[j]+vec64_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M64;j++){
+            add=vec64_1[j]+vec64_2[j];
+        }
     }
     end3=get_wall_time();
 
@@ -215,20 +310,26 @@ int main()
     std::cout<<"dot time : "<<std::endl;
 
     start1=get_wall_time();
-    for(j=0;j<M16;j++){
-        sum+=array16_1[j]*array16_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M16;j++){
+            sum+=array16_1[j]*array16_2[j];
+        }
     }
     end1=get_wall_time();
     sum=0.0;
     start2=get_wall_time();
-    for(j=0;j<M16;j++){
-        sum+=p16_1[j]*p16_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M16;j++){
+            sum+=p16_1[j]*p16_2[j];
+        }
     }
     end2=get_wall_time();
     sum=0.0;
     start3=get_wall_time();
-    for(j=0;j<M16;j++){
-        sum+=vec16_1[j]*vec16_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M16;j++){
+            sum+=vec16_1[j]*vec16_2[j];
+        }
     }
     end3=get_wall_time();
     sum=0.0;
@@ -238,20 +339,26 @@ int main()
     std::cout<<"M16 vector : "<<end3-start3<<std::endl;
 
     start1=get_wall_time();
-    for(j=0;j<M32;j++){
-        sum+=array32_1[j]*array32_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M32;j++){
+            sum+=array32_1[j]*array32_2[j];
+        }
     }
     end1=get_wall_time();
     sum=0.0;
     start2=get_wall_time();
-    for(j=0;j<M32;j++){
-        sum+=p32_1[j]*p32_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M32;j++){
+            sum+=p32_1[j]*p32_2[j];
+        }
     }
     end2=get_wall_time();
     sum=0.0;
     start3=get_wall_time();
-    for(j=0;j<M32;j++){
-        sum+=vec32_1[j]*vec32_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M32;j++){
+            sum+=vec32_1[j]*vec32_2[j];
+        }
     }
     end3=get_wall_time();
     sum=0.0;
@@ -261,20 +368,26 @@ int main()
     std::cout<<"M32 vector : "<<end3-start3<<std::endl;
 
     start1=get_wall_time();
-    for(j=0;j<M64;j++){
-        sum+=array64_1[j]*array64_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M64;j++){
+            sum+=array64_1[j]*array64_2[j];
+        }
     }
     end1=get_wall_time();
     sum=0.0;
     start2=get_wall_time();
-    for(j=0;j<M64;j++){
-        sum+=p64_1[j]*p64_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M64;j++){
+            sum+=p64_1[j]*p64_2[j];
+        }
     }
     end2=get_wall_time();
     sum=0.0;
     start3=get_wall_time();
-    for(j=0;j<M64;j++){
-        sum+=vec64_1[j]*vec64_2[j];
+    for(k=0;k<count;k++){
+        for(j=0;j<M64;j++){
+            sum+=vec64_1[j]*vec64_2[j];
+        }
     }
     end3=get_wall_time();
     sum=0.0;
