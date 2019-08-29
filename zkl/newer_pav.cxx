@@ -162,12 +162,9 @@ int main()
         add=p16_1[j]+p16_2[j];
     }
     end2=get_wall_time();
-    std::vector<double>::iterator iter16_1,iter16_2;
-    iter16_2=vec16_2.begin();
     start3=get_wall_time();
-    for(iter16_1=vec16_1.begin();iter16_1!=vec16_1.end();iter16_1++){
-        add=*iter16_1+*iter16_2;
-        iter16_2++;
+    for(j=0;j<M16;j++){
+        add=vec16_1[j]+vec16_2[j];
     }
     end3=get_wall_time();
 
@@ -185,12 +182,9 @@ int main()
         add=p32_1[j]+p32_2[j];
     }
     end2=get_wall_time();
-    std::vector<double>::iterator iter32_1,iter32_2;
-    iter32_2=vec32_2.begin();
     start3=get_wall_time();
-    for(iter32_1=vec32_1.begin();iter32_1!=vec32_1.end();iter32_1++){
-        add=*iter32_1+*iter32_2;
-        iter32_2++;
+    for(j=0;j<M32;j++){
+        add=vec32_1[j]+vec32_2[j];
     }
     end3=get_wall_time();
 
@@ -208,12 +202,9 @@ int main()
         add=p64_1[j]+p64_2[j];
     }
     end2=get_wall_time();
-    std::vector<double>::iterator iter64_1,iter64_2;
-    iter64_2=vec64_2.begin();
     start3=get_wall_time();
-    for(iter64_1=vec64_1.begin();iter64_1!=vec64_1.end();iter64_1++){
-        add=*iter64_1+*iter64_2;
-        iter64_2++;
+    for(j=0;j<M64;j++){
+        add=vec64_1[j]+vec64_2[j];
     }
     end3=get_wall_time();
 
@@ -235,11 +226,9 @@ int main()
     }
     end2=get_wall_time();
     sum=0.0;
-    iter16_2=vec16_2.begin();
     start3=get_wall_time();
-    for(iter16_1=vec16_1.begin();iter16_1!=vec16_1.end();iter16_1++){
-        sum+=(*iter16_1)*(*iter16_2);
-        iter16_2++;
+    for(j=0;j<M16;j++){
+        sum+=vec16_1[j]*vec16_2[j];
     }
     end3=get_wall_time();
     sum=0.0;
@@ -260,11 +249,9 @@ int main()
     }
     end2=get_wall_time();
     sum=0.0;
-    iter32_2=vec32_2.begin();
     start3=get_wall_time();
-    for(iter32_1=vec32_1.begin();iter32_1!=vec32_1.end();iter32_1++){
-        sum+=(*iter32_1)*(*iter32_2);
-        iter32_2++;
+    for(j=0;j<M32;j++){
+        sum+=vec32_1[j]*vec32_2[j];
     }
     end3=get_wall_time();
     sum=0.0;
@@ -285,11 +272,9 @@ int main()
     }
     end2=get_wall_time();
     sum=0.0;
-    iter64_2=vec64_2.begin();
     start3=get_wall_time();
-    for(iter64_1=vec64_1.begin();iter64_1!=vec64_1.end();iter64_1++){
-        sum+=(*iter64_1)*(*iter64_2);
-        iter64_2++;
+    for(j=0;j<M64;j++){
+        sum+=vec64_1[j]*vec64_2[j];
     }
     end3=get_wall_time();
     sum=0.0;
