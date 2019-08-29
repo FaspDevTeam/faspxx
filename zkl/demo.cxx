@@ -1,22 +1,21 @@
-#include<iostream>
-#include<cstdlib>
-#include<time.h>
+/**
+ * <vector> functions test
+ */
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
 
 int main()
 {
-    int j;
-    srand((unsigned)time(NULL));
-    double *p;
-    p=new double(10);
-
-    for(j=0;j<10;j++){
-        p[j]=rand()/(double)RAND_MAX;
+    std::vector<double> v;
+    v.reserve(2);
+    v[0]=1.2;
+    v[1]=2.3;
+    for(int j=0;j<2;j++){
+        cout<<v[j]<<endl;
     }
 
-    for(j=0;j<10;j++){
-        std::cout<<p[j]<<std::endl;
-    }
-
-    delete[] p;
     return 0;
 }
