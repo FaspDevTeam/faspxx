@@ -44,6 +44,9 @@ public:
     //! get this->vec[position]
     FaspErrorType get(INT position, DBL *value);
 
+    //! array = this->vec
+    FaspErrorType getarr(INT *length, DBL **array);
+
     //! get the length of this->vec
     FaspErrorType len(INT *len);
 

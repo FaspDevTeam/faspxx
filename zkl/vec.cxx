@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <ctime>
+#include <iostream>
 
 //! developers' options
 //! attention : the only one can is 1 among ASSIGN_BY_INDEX, ASSIGN_BY_PUSHBACK, ASSIGN_BY_ITERATOR
@@ -85,6 +86,22 @@ VEC::VEC(const DBL *pointer, const INT element_size) {
 //! get this->vec[position]
 FaspErrorType VEC::get(INT position, DBL *value) {
     *value = vec.at(position);
+    return 0;
+}
+
+//! array = this->vec
+FaspErrorType VEC::getarr(INT *length, DBL **array) {
+    int len = vec.size();
+    if (len == 0)
+        return 1; //! errortype 1 marks the empty VEC
+
+    *length = vec.size();
+    *array = nullptr;
+    *array = new double[len];
+
+    for (int j = 0; j < len; j++)
+        (*array)[j] = vec[j];
+
     return 0;
 }
 
