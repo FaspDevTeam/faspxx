@@ -30,7 +30,7 @@ VEC::VEC(INT length, DBL value) {
 }
 
 //! assign vector to class object
-VEC::VEC(std::vector<DBL> vector_object) {
+VEC::VEC(std::vector <DBL> vector_object) {
     vec.operator=(vector_object);
 }
 
@@ -329,6 +329,14 @@ FaspErrorType VEC::PointWiseDivided(VEC vec) {
     for (int j = 0; j < len; j++)
         this->vec[j] = vec.vec[j] / this->vec[j];
 
+    return 0;
+}
+
+//! this->vec = array
+FaspErrorType VEC::AssignByArray(INT len, DBL *array) const {
+    if (array == nullptr || len == 0)
+        return 4; //! errortype 4 marks assignment object is null or its length is wrong
+    vec.assign(array, array + len);
     return 0;
 }
 

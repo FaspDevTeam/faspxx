@@ -15,24 +15,24 @@
  *
  *  This class defines the basic vec data structure and some basic operations.
  */
-class VEC{
+class VEC {
 private:
 
     // attention : vec is a column vector by default
-    std::vector<DBL> vec;
+    std::vector <DBL> vec;
 public:
 
     //! initial constructed function
-    VEC(){}
+    VEC() {}
 
     //! set the length of vec and set the same value on class object
     VEC(INT length, DBL value);
 
     //! assign vector to class object
-    VEC(const std::vector<DBL> vector_object);
+    VEC(const std::vector <DBL> vector_object);
 
     //! assign VEC object to class object
-    VEC(const VEC& vec);
+    VEC(const VEC &vec);
 
     //! random constructed function, and random DBL values ranged from begin_value to
     //! end_value, and the number of random values is N
@@ -96,9 +96,12 @@ public:
     //! this->vec[j] = vec[j] / this->vec[j]
     FaspErrorType PointWiseDivided(VEC vec);
 
+    //! this->vec = array
+    FaspErrorType AssignByArray(INT len, DBL *array) const;
+
     //! overload equals operator
-    VEC& operator=(const VEC& vec);
+    VEC &operator=(const VEC &vec);
 
     //! destructor function
-    ~VEC(){}
+    ~VEC() {}
 };
