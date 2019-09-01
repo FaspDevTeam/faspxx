@@ -46,13 +46,13 @@ public:
     VEC(const DBL *pointer, const INT element_size);
 
     //! get this->vec[position]
-    FaspErrorType Get(INT position, DBL &value);
+    FaspErrorType Get(INT position, DBL &value) const;
 
     //! array = this->vec
-    FaspErrorType GetArray(INT &length, DBL **array);
+    FaspErrorType GetArray(INT &length, DBL **array) const;
 
     //! get the length of this->vec
-    FaspErrorType Len(INT &len);
+    FaspErrorType Len(INT &len) const;
 
     //! this->vec[j] = a * this->vec[j]
     FaspErrorType Scale(DBL a);
@@ -61,10 +61,10 @@ public:
     FaspErrorType Copy(VEC &vec);
 
     //! max(this->vec[j])
-    FaspErrorType Max(DBL &max);
+    FaspErrorType Max(DBL &max) const;
 
     //! min(this->vec[j])
-    FaspErrorType Min(DBL &min);
+    FaspErrorType Min(DBL &min) const;
 
     //! this->vec[j] = s + this->vec[j]
     FaspErrorType Shift(DBL s);
@@ -76,16 +76,16 @@ public:
     FaspErrorType Reciprocal();
 
     //! Norm2(this->vec)
-    FaspErrorType Norm2(DBL &norm2);
+    FaspErrorType Norm2(DBL &norm2) const;
 
     //! NormInifinity(this->vec)
-    FaspErrorType NormInf(DBL &normInf);
+    FaspErrorType NormInf(DBL &normInf) const;
 
     //! this->vec = a * vec + b * this->vec
     FaspErrorType Add(VEC vec, DBL a, DBL b);
 
     //! dot = this->vec dot vec
-    FaspErrorType Dot(VEC vec, DBL &dot);
+    FaspErrorType Dot(VEC vec, DBL &dot) const;
 
     //! this->vec[j] = this->vec[j] * vec[j]
     FaspErrorType PointWiseMult(VEC vec);

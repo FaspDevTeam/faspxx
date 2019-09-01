@@ -83,13 +83,13 @@ VEC::VEC(const DBL *pointer, const INT element_size) {
 }
 
 //! get this->vec[position]
-FaspErrorType VEC::Get(INT position, DBL &value) {
+FaspErrorType VEC::Get(INT position, DBL &value) const {
     value = vec.at(position);
     return 0;
 }
 
 //! array = this->vec
-FaspErrorType VEC::GetArray(INT &length, DBL **array) {
+FaspErrorType VEC::GetArray(INT &length, DBL **array) const {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC
@@ -105,7 +105,7 @@ FaspErrorType VEC::GetArray(INT &length, DBL **array) {
 }
 
 //! get the length of this->vec
-FaspErrorType VEC::Len(INT &len) {
+FaspErrorType VEC::Len(INT &len) const {
     len = vec.size();
     return 0;
 }
@@ -129,7 +129,7 @@ FaspErrorType VEC::Copy(VEC &vec) {
 }
 
 //! max(this->vec[j])
-FaspErrorType VEC::Max(DBL &max) {
+FaspErrorType VEC::Max(DBL &max) const {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC
@@ -149,7 +149,7 @@ FaspErrorType VEC::Max(DBL &max) {
 }
 
 //! min(this->vec[j])
-FaspErrorType VEC::Min(DBL &min) {
+FaspErrorType VEC::Min(DBL &min) const {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC object
@@ -210,7 +210,7 @@ FaspErrorType VEC::Reciprocal() {
 }
 
 //! Norm2(this->vec)
-FaspErrorType VEC::Norm2(DBL &norm2) {
+FaspErrorType VEC::Norm2(DBL &norm2) const {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC
@@ -225,7 +225,7 @@ FaspErrorType VEC::Norm2(DBL &norm2) {
 }
 
 //! NormInifinity(this->vec)
-FaspErrorType VEC::NormInf(DBL &normInf) {
+FaspErrorType VEC::NormInf(DBL &normInf) const {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC
@@ -260,7 +260,7 @@ FaspErrorType VEC::Add(VEC vec, DBL a, DBL b) {
 }
 
 //! dot = this->vec dot vec1
-FaspErrorType VEC::Dot(VEC vec, DBL &dot) {
+FaspErrorType VEC::Dot(VEC vec, DBL &dot) const {
     int len = this->vec.size();
     int len1 = vec.vec.size();
     if (len != len1)
