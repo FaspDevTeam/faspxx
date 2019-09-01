@@ -10,8 +10,12 @@
 #include "errortype.hxx"
 
 /*----------------------------------------------------------------------------*/
-
-class VEC:public std::vector<DBL>{
+/*! \class VEC
+ *  \brief basic vec class
+ *
+ *  This class defines the basic vec data structure and some basic operations.
+ */
+class VEC{
 private:
 
     // attention : vec is a column vector by default
@@ -25,10 +29,10 @@ public:
     VEC(INT length, DBL value);
 
     //! assign vector to class object
-    VEC(const std::vector<DBL> vec1);
+    VEC(const std::vector<DBL> vector_object);
 
     //! assign VEC object to class object
-    VEC(const VEC& vec1);
+    VEC(const VEC& vec);
 
     //! random constructed function, and random DBL values ranged from begin_value to
     //! end_value, and the number of random values is N
@@ -42,58 +46,58 @@ public:
     VEC(const DBL *pointer, const INT element_size);
 
     //! get this->vec[position]
-    FaspErrorType get(INT position, DBL *value);
+    FaspErrorType Get(INT position, DBL &value);
 
     //! array = this->vec
-    FaspErrorType getarr(INT *length, DBL **array);
+    FaspErrorType GetArray(INT &length, DBL **array);
 
     //! get the length of this->vec
-    FaspErrorType len(INT *len);
+    FaspErrorType Len(INT &len);
 
     //! this->vec[j] = a * this->vec[j]
-    FaspErrorType scale(DBL a);
+    FaspErrorType Scale(DBL a);
 
-    //! vec1 = this->vec
-    FaspErrorType copy(VEC *vec1);
+    //! vec = this->vec
+    FaspErrorType Copy(VEC &vec);
 
     //! max(this->vec[j])
-    FaspErrorType max(DBL *max);
+    FaspErrorType Max(DBL &max);
 
     //! min(this->vec[j])
-    FaspErrorType min(DBL *min);
+    FaspErrorType Min(DBL &min);
 
     //! this->vec[j] = s + this->vec[j]
-    FaspErrorType shift(DBL s);
+    FaspErrorType Shift(DBL s);
 
     //! abs(this->vec[j])
-    FaspErrorType abs();
+    FaspErrorType Abs();
 
     //! this->vec[j] = 1 / this->vec[j]
-    FaspErrorType reciprocal();
+    FaspErrorType Reciprocal();
 
     //! Norm2(this->vec)
-    FaspErrorType norm2(DBL *norm2);
+    FaspErrorType Norm2(DBL &norm2);
 
     //! NormInifinity(this->vec)
-    FaspErrorType normInf(DBL *normInf);
+    FaspErrorType NormInf(DBL &normInf);
 
-    //! this->vec = a * vec1 + b * this->vec
-    FaspErrorType add(VEC vec1, DBL a, DBL b);
+    //! this->vec = a * vec + b * this->vec
+    FaspErrorType Add(VEC vec, DBL a, DBL b);
 
-    //! dot = this->vec dot vec1
-    FaspErrorType dot(VEC vec1, DBL *dot);
+    //! dot = this->vec dot vec
+    FaspErrorType Dot(VEC vec, DBL &dot);
 
-    //! this->vec[j] = this->vec[j] * vec1[j]
-    FaspErrorType pointwisemult(VEC vec1);
+    //! this->vec[j] = this->vec[j] * vec[j]
+    FaspErrorType PointWiseMult(VEC vec);
 
-    //! this->vec[j] = this->vec[j] / vec1[j]
-    FaspErrorType pointwisedivide(VEC vec1);
+    //! this->vec[j] = this->vec[j] / vec[j]
+    FaspErrorType PointWiseDivide(VEC vec);
 
-    //! this->vec[j] = vec1[j] / this->vec[j]
-    FaspErrorType pointwisedivided(VEC vec1);
+    //! this->vec[j] = vec[j] / this->vec[j]
+    FaspErrorType PointWiseDivided(VEC vec);
 
     //! overload equals operator
-    VEC& operator=(const VEC& vec1);
+    VEC& operator=(const VEC& vec);
 
     //! destructor function
     ~VEC(){}

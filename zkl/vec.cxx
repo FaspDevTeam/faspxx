@@ -9,7 +9,6 @@
 #include <cstdlib>
 #include <cmath>
 #include <ctime>
-#include <iostream>
 
 //! developers' options
 //! attention : the only one can is 1 among ASSIGN_BY_INDEX, ASSIGN_BY_PUSHBACK, ASSIGN_BY_ITERATOR
@@ -30,14 +29,14 @@ VEC::VEC(INT length, DBL value) {
     vec.assign(length, value);
 }
 
-//! assign vector1 to class object
-VEC::VEC(std::vector<DBL> vector1) {
-    vec.operator=(vector1);
+//! assign vector to class object
+VEC::VEC(std::vector<DBL> vector_object) {
+    vec.operator=(vector_object);
 }
 
 //! assign VEC object to class object
-VEC::VEC(const VEC &vec1) {
-    vec.operator=((vec1.vec));
+VEC::VEC(const VEC &vec) {
+    this->vec.operator=((vec.vec));
 }
 
 //! random constructed function, and random DBL values ranged from begin_value to
@@ -84,18 +83,18 @@ VEC::VEC(const DBL *pointer, const INT element_size) {
 }
 
 //! get this->vec[position]
-FaspErrorType VEC::get(INT position, DBL *value) {
-    *value = vec.at(position);
+FaspErrorType VEC::Get(INT position, DBL &value) {
+    value = vec.at(position);
     return 0;
 }
 
 //! array = this->vec
-FaspErrorType VEC::getarr(INT *length, DBL **array) {
+FaspErrorType VEC::GetArray(INT &length, DBL **array) {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC
 
-    *length = vec.size();
+    length = vec.size();
     *array = nullptr;
     *array = new double[len];
 
@@ -106,13 +105,13 @@ FaspErrorType VEC::getarr(INT *length, DBL **array) {
 }
 
 //! get the length of this->vec
-FaspErrorType VEC::len(INT *len) {
-    *len = vec.size();
+FaspErrorType VEC::Len(INT &len) {
+    len = vec.size();
     return 0;
 }
 
 //! this->vec[j] = a * this->vec[j]
-FaspErrorType VEC::scale(DBL a) {
+FaspErrorType VEC::Scale(DBL a) {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC
@@ -123,54 +122,54 @@ FaspErrorType VEC::scale(DBL a) {
     return 0;
 }
 
-//! vec1 = this->vec
-FaspErrorType VEC::copy(VEC *vec1) {
-    (*vec1).vec.operator=(vec);
+//! vec = this->vec
+FaspErrorType VEC::Copy(VEC &vec) {
+    vec.vec.operator=(this->vec);
     return 0;
 }
 
 //! max(this->vec[j])
-FaspErrorType VEC::max(DBL *max) {
+FaspErrorType VEC::Max(DBL &max) {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC
 
     if (len == 1) {
-        *max = vec[0];
+        max = vec[0];
         return 0;
     }
 
-    *max = vec[0];
+    max = vec[0];
     for (int j = 1; j < len; j++) {
-        if (*max < vec[j])
-            *max = vec[j];
+        if (max < vec[j])
+            max = vec[j];
     }
 
     return 0;
 }
 
 //! min(this->vec[j])
-FaspErrorType VEC::min(DBL *min) {
+FaspErrorType VEC::Min(DBL &min) {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC object
 
     if (len == 1) {
-        *min = vec[0];
+        min = vec[0];
         return 0;
     }
 
-    *min = vec[0];
+    min = vec[0];
     for (int j = 1; j < len; j++) {
-        if (*min > vec[j])
-            *min = vec[j];
+        if (min > vec[j])
+            min = vec[j];
     }
 
     return 0;
 }
 
 //! this->vec[j] = s + this->vec[j]
-FaspErrorType VEC::shift(DBL s) {
+FaspErrorType VEC::Shift(DBL s) {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC object
@@ -182,7 +181,7 @@ FaspErrorType VEC::shift(DBL s) {
 }
 
 //! abs(this->vec[j])
-FaspErrorType VEC::abs() {
+FaspErrorType VEC::Abs() {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC object
@@ -194,7 +193,7 @@ FaspErrorType VEC::abs() {
 }
 
 //! this->vec[j] = 1 / this->vec[j]
-FaspErrorType VEC::reciprocal() {
+FaspErrorType VEC::Reciprocal() {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC object
@@ -211,43 +210,43 @@ FaspErrorType VEC::reciprocal() {
 }
 
 //! Norm2(this->vec)
-FaspErrorType VEC::norm2(DBL *norm2) {
+FaspErrorType VEC::Norm2(DBL &norm2) {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC
 
-    *norm2 = 0.0;
+    norm2 = 0.0;
     for (int j = 0; j < len; j++)
-        *norm2 += vec[j] * vec[j];
+        norm2 += vec[j] * vec[j];
 
-    *norm2 = sqrt(*norm2);
+    norm2 = sqrt(norm2);
 
     return 0;
 }
 
 //! NormInifinity(this->vec)
-FaspErrorType VEC::normInf(DBL *normInf) {
+FaspErrorType VEC::NormInf(DBL &normInf) {
     int len = vec.size();
     if (len == 0)
         return 1; //! errortype 1 marks the empty VEC
 
-    *normInf = 0.0;
+    normInf = 0.0;
     if (len == 1)
-        *normInf = fabs(vec[0]);
+        normInf = fabs(vec[0]);
     else {
         for (int j = 1; j < len; j++) {
-            if (*normInf < fabs(vec[j]))
-                *normInf = fabs(vec[j]);
+            if (normInf < fabs(vec[j]))
+                normInf = fabs(vec[j]);
         }
     }
 
     return 0;
 }
 
-//! this->vec = a * this->vec + b * vec1
-FaspErrorType VEC::add(VEC vec1, DBL a, DBL b) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
+//! this->vec = a * this->vec + b * vec
+FaspErrorType VEC::Add(VEC vec, DBL a, DBL b) {
+    int len = this->vec.size();
+    int len1 = vec.vec.size();
     if (len != len1)
         return 3; //! 3 marks the mismatch of vectors' lengths
 
@@ -255,32 +254,32 @@ FaspErrorType VEC::add(VEC vec1, DBL a, DBL b) {
         return 1; //! 1 marks the empty VEC
 
     for (int j = 0; j < len; j++)
-        vec[j] = a * vec[j] + b * vec1.vec[j];
+        this->vec[j] = a * this->vec[j] + b * vec.vec[j];
 
     return 0;
 }
 
 //! dot = this->vec dot vec1
-FaspErrorType VEC::dot(VEC vec1, DBL *dot) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
+FaspErrorType VEC::Dot(VEC vec, DBL &dot) {
+    int len = this->vec.size();
+    int len1 = vec.vec.size();
     if (len != len1)
         return 3; //! 3 marks the mismatch of vectors' lengths
 
     if (len == 0)
         return 1; //! 1 marks the empty VEC
 
-    *dot = 0.0;
+    dot = 0.0;
     for (int j = 0; j < len; j++)
-        *dot += vec[j] * vec1.vec[j];
+        dot += this->vec[j] * vec.vec[j];
 
     return 0;
 }
 
-//! this->vec[j] = this->vec[j] * vec1[j]
-FaspErrorType VEC::pointwisemult(VEC vec1) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
+//! this->vec[j] = this->vec[j] * vec[j]
+FaspErrorType VEC::PointWiseMult(VEC vec) {
+    int len = this->vec.size();
+    int len1 = vec.vec.size();
     if (len != len1)
         return 3; //! 3 marks the mismatch of vectors' lengths
 
@@ -288,15 +287,15 @@ FaspErrorType VEC::pointwisemult(VEC vec1) {
         return 1; //! 1 marks the empty VEC
 
     for (int j = 0; j < len; j++)
-        vec[j] *= vec1.vec[j];
+        this->vec[j] *= vec.vec[j];
 
     return 0;
 }
 
-//! this->vec[j] = this->vec[j] / vec1[j]
-FaspErrorType VEC::pointwisedivide(VEC vec1) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
+//! this->vec[j] = this->vec[j] / vec[j]
+FaspErrorType VEC::PointWiseDivide(VEC vec) {
+    int len = this->vec.size();
+    int len1 = vec.vec.size();
     if (len != len1)
         return 3; //! 3 marks the mismatch of vectors' lengths
 
@@ -304,19 +303,19 @@ FaspErrorType VEC::pointwisedivide(VEC vec1) {
         return 1; //! 1 marks the empty VEC
 
     for (int j = 0; j < len; j++)
-        if (fabs(vec1.vec[j]) <= 1e-43)
+        if (fabs(vec.vec[j]) <= 1e-43)
             return 2; //! 2 marks the dividing zero error
 
     for (int j = 0; j < len; j++)
-        vec[j] /= vec1.vec[j];
+        this->vec[j] /= vec.vec[j];
 
     return 0;
 }
 
-//! this->vec[j] = vec1[j] / this->vec[j]
-FaspErrorType VEC::pointwisedivided(VEC vec1) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
+//! this->vec[j] = vec[j] / this->vec[j]
+FaspErrorType VEC::PointWiseDivided(VEC vec) {
+    int len = this->vec.size();
+    int len1 = vec.vec.size();
     if (len != len1)
         return 3; //! 3 marks the mismatch of vectors' lengths
 
@@ -324,17 +323,17 @@ FaspErrorType VEC::pointwisedivided(VEC vec1) {
         return 1; //! 1 marks the empty VEC
 
     for (int j = 0; j < len; j++)
-        if (fabs(vec[j]) <= 1e-43)
+        if (fabs(this->vec[j]) <= 1e-43)
             return 2; //! 2 marks the dividing zero error
 
     for (int j = 0; j < len; j++)
-        vec[j] = vec1.vec[j] / vec[j];
+        this->vec[j] = vec.vec[j] / this->vec[j];
 
     return 0;
 }
 
 //! overload equals operator
-//! this->vec = vec1
-VEC &VEC::operator=(const VEC &vector1) {
-    vec.operator=(vector1.vec);
+//! this->vec = vec
+VEC &VEC::operator=(const VEC &vec) {
+    this->vec.operator=(vec.vec);
 }
