@@ -1,107 +1,141 @@
-/**
- * VEC header file
+/*! \file vec.hxx
+ *  \brief Header file for the FASP++ Vector class
  *
- * “//” marks comments left to developers.
- * "//!" marks comments left to the users.
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
+
+#ifndef __VEC_HEADER__      /*-- allow multiple inclusions --*/
+#define __VEC_HEADER__      /**< indicate vec.hxx has been included before */
 
 #include <vector>
 #include <cmath>
 #include "errortype.hxx"
 
-/*----------------------------------------------------------------------------*/
 /*! \class VEC
  *  \brief basic vec class
+ *  \author Kailei Zhang
+ *  \date 09/01/2019
  *
- *  This class defines the basic vec data structure and some basic operations.
+ *  This class defines the basic VEC data structure and operations
  */
 class VEC {
+
 private:
+    //! vec is a column vector of DBL type logically
+    std::vector<DBL> vec;
 
-    // attention : vec is a column vector by default
-    std::vector <DBL> vec;
+    //! size of vec
+    INT size;
+
 public:
-
-    //! initial constructed function
+    //! default constructed function
     VEC() {}
 
-    //! set the length of vec and set the same value on class object
-    VEC(INT length, DBL value);
+    //! set the size of vec and set the same value on class object
+    VEC(const INT size, const DBL value);
 
     //! assign vector to class object
-    VEC(const std::vector <DBL> vector_object);
+    VEC(const std::vector<DBL> vector_obj);
 
     //! assign VEC object to class object
-    VEC(const VEC &vec);
+    VEC(const VEC &vec_obj);
 
-    //! random constructed function, and random DBL values ranged from begin_value to
-    //! end_value, and the number of random values is N
-    VEC(DBL begin_value, DBL end_value, INT N);
+    //! random construction function, N DBL values from begin_value to end_value
+    VEC(const DBL begin_value, const DBL end_value, const INT N);
 
-    //! random constructed function, and random INT values ranged from begin_value to
-    //! end_value, and the number of random values is N
-    VEC(INT begin_value, INT end_value, INT N);
+    //! random construction function, N INT values from begin_value to end_value
+    VEC(const INT begin_value, const INT end_value, const INT N);
 
     //! assign pointer to class object
-    VEC(const DBL *pointer, const INT element_size);
+    VEC(const DBL *pointer, const INT size);
 
-    //! get this->vec[position]
-    FaspErrorType Get(INT position, DBL &value) const;
+    //! destructor function
+    ~VEC() {}
 
-    //! array = this->vec
-    FaspErrorType GetArray(INT &length, DBL **array) const;
+    //! overload equals operator
+    VEC &operator = (const VEC &vec_obj);
 
-    //! get the length of this->vec
-    FaspErrorType Len(INT &len) const;
+    //! overload [] operator
+    DBL &operator [] (const INT position);
 
-    //! this->vec[j] = a * this->vec[j]
-    FaspErrorType Scale(DBL a);
+    //! overload += operator
+    VEC &operator += (const VEC &vec_obj);
 
-    //! vec = this->vec
-    FaspErrorType Copy(VEC &vec);
+    //! overload -= operator
+    VEC &operator -= (const VEC &vec_obj);
 
-    //! max(this->vec[j])
+    //! set the size of vec and set the same value on class object
+    FaspErrorType SetSame(const INT size, const DBL value);
+
+    //! assign vector to class object
+    FaspErrorType SetVec(const std::vector<DBL> vector_obj);
+
+    //! random construction function, N DBL values from begin_value to end_value
+    FaspErrorType RandomDBL(const DBL begin_value, const DBL end_value, const INT N);
+
+    //! random construction function, N INT values from begin_value to end_value
+    FaspErrorType RandomINT(const INT begin_value, const INT end_value, const INT N);
+
+    //! this->vec = array
+    FaspErrorType AssignByArray(const INT size, const DBL *array);
+
+    //! get the value of this->vec[position]
+    FaspErrorType Get(const INT position, DBL &value) const;
+
+    //! get array = this->vec of size = min(size, this->size)
+    FaspErrorType GetArray(const INT &size, DBL **array) const;
+
+    //! get the size of this->vec
+    FaspErrorType GetSize(INT &size) const;
+
+    //! scale this->vec[j] = a * this->vec[j] by a scalar
+    FaspErrorType Scale(const DBL a);
+
+    //! copy vec_obj = this->vec
+    FaspErrorType Copy(VEC &vec_obj) const;
+
+    //! find max(this->vec[j])
     FaspErrorType Max(DBL &max) const;
 
-    //! min(this->vec[j])
+    //! find min(this->vec[j])
     FaspErrorType Min(DBL &min) const;
 
-    //! this->vec[j] = s + this->vec[j]
+    //! shift this->vec[j] += s by a scalar
     FaspErrorType Shift(DBL s);
 
-    //! abs(this->vec[j])
+    //! compute abs(this->vec[j])
     FaspErrorType Abs();
 
     //! this->vec[j] = 1 / this->vec[j]
     FaspErrorType Reciprocal();
 
-    //! Norm2(this->vec)
+    //! find l2-norm of this->vec
     FaspErrorType Norm2(DBL &norm2) const;
 
-    //! NormInifinity(this->vec)
+    //! find infinity norm of this->vec
     FaspErrorType NormInf(DBL &normInf) const;
 
     //! this->vec = a * vec + b * this->vec
-    FaspErrorType Add(VEC vec, DBL a, DBL b);
+    FaspErrorType Add(const VEC vec_obj, const DBL a, const DBL b);
 
-    //! dot = this->vec dot vec
-    FaspErrorType Dot(VEC vec, DBL &dot) const;
+    //! this->vec = a * vec1_obj + b * vec2_obj
+    FaspErrorType Add2(const DBL a, const VEC vec1_obj, const DBL b, const VEC vec2_obj);
 
-    //! this->vec[j] = this->vec[j] * vec[j]
-    FaspErrorType PointWiseMult(VEC vec);
+    //! dot product of this->vec and vec_obj
+    FaspErrorType Dot(const VEC vec_obj, DBL &dot) const;
 
-    //! this->vec[j] = this->vec[j] / vec[j]
-    FaspErrorType PointWiseDivide(VEC vec);
+    //! scale this->vec[j] *= vec_obj[j] by a vector
+    FaspErrorType PointWiseMult(const VEC vec_obj);
 
-    //! this->vec[j] = vec[j] / this->vec[j]
-    FaspErrorType PointWiseDivided(VEC vec);
-
-    //! this->vec = array
-    FaspErrorType AssignByArray(INT len, DBL *array) const;
-
-    //! overload equals operator
-    VEC &operator=(const VEC &vec);
-
-    //! destructor function
-    ~VEC() {}
+    //! this->vec[j] = this->vec[j] / vec_obj[j]
+    FaspErrorType PointWiseDivide(const VEC vec_obj);
 };
+
+#endif /* end if for __VEC_HEADER__ */
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/
