@@ -3,256 +3,1222 @@
  */
 
 #include "mat.hxx"
-#include <cassert>
 #include "fasp++.hxx"
 
 /*----------------------------------------------------------------------------*/
 
 //! assign row, column, nnz, values, rowshift, colindex, diag to this->mat
-MAT::MAT(INT row, INT col, INT nnz, std::vector <DBL> values,
-         std::vector <INT> rowshift, std::vector <INT> colindex,
-         std::vector <INT> diag) {
-    /*
-     * some simple examinations about parameters
-     * to judge whether they are CSRx' parameters
-     */
-    /*----------------  begin  ----------------*/
-    //! basic examinations
-    assert(row == rowshift.size() - 1);
-    assert(row >= 1 || col >= 1);
-    assert(((row > col) ? col : row) == diag.size());
-    assert(nnz == colindex.size());
-    assert(nnz == values.size());
-    /*-----------------  end  -----------------*/
-
-    this->row = row;
-    this->column = col;
-    this->nnz = nnz;
-    (this->values).operator=(values);
-    (this->rowshift).operator=(rowshift);
-    (this->colindex).operator=(colindex);
-    (this->diag).operator=(diag);
-
+MAT::MAT(INT row, INT column, INT nnz, std::vector<DBL>  values,
+        std::vector<INT> rowshift, std::vector<INT> colindex,
+        std::vector<INT> diag){
+    this->row=row;
+    this->column=column;
+    this->nnz=nnz;
+    this->values.operator=(values);
+    this->rowshift.operator=(rowshift);
+    this->colindex.operator=(colindex);
+    this->diag.operator=(diag);
 }
 
-//! assign row, column, nnz, values, rowshift, colindex to *this, and this
-//! constructed function adapts to CSR format and CSRx format, and the most
-//! important point is that it exams data format completely
+//! assign row, column, nnz, values, rowshift, colindex to *this
 MAT::MAT(INT row, INT column, INT nnz, std::vector<DBL> values,
         std::vector<INT> rowshift, std::vector<INT> colindex){
-    /*
-     * some simple examinations about parameters
-     * to judge whether they are CSRx' parameters
-     */
-    /*----------------  begin  ----------------*/
-    //! basic examinations
-    assert(row == rowshift.size() - 1);
-    assert(row >= 1 || column >= 1);
-    assert(((row > column) ? column : row) == diag.size());
-    assert(nnz == colindex.size());
-    assert(nnz == values.size());
-
-    //! simple examinations
-    //! check rowshift
-    for(INT j=1;j<row+1;j++)
-        assert(rowshift[j-1]<rowshift[j]);
-
-    assert(rowshift[0]>=1 || rowshift[row]<=(this->row)*(this->column)+1 );
-    //! check colindex
-    INT max_tmp,min_tmp;
-    max_tmp=colindex[0];
-    min_tmp=colindex[0];
-    for(int j=1;j<nnz;j++){
-        if(max_tmp<colindex[j])
-            max_tmp=colindex[j];
-        if(min_tmp>colindex[j])
-            min_tmp=colindex[j];
-    }
-    assert(min_tmp>=1 && max_tmp<=column);
-    for(int j=0;j<nnz-2;j++)
-        assert(colindex[j]<=colindex[j+1] || colindex[j+1]<=colindex[j+2]);
-
-    /*-----------------  end  -----------------*/
-    INT CSR=0, CSRx=0;
-    //! judge the data format
-
-    //! basic judgement
+    this->row=row;
+    this->column=column;
+    this->nnz=nnz;
+    this->values.operator=(values);
+    this->rowshift.operator=(rowshift);
+    this->colindex.operator=(colindex);
+    //! compute this->diag
+    INT count=0;
+    INT begin,end;
     for(INT j=0;j<row;j++){
-        if(rowshift[j]==rowshift[j+1]){
-            CSR=1;
-            break;
-        }
-    }
-    INT begin,end,count=0;
-    if(CSR!=1){
-        for(INT j=0;j<row;j++){
-            begin=rowshift[j];
-            end=rowshift[j+1];
-            for(INT k=begin;k<end;k++){
-                if(colindex[k-1]==(j+1)){
-                    count++;
-                    break;
-                }
-            }
-        }
-    }
-
-    INT len=row>column?column:row;
-    if(count!=len)
-        CSR=1;
-    if(CSR!=1)
-        CSRx=1;
-
-    if(CSR){
-        this->row=row;
-        this->column=column;
-        //! change CSR format's nnz to CSRx format's
-        this->nnz=nnz+len-count;
-        //! change CSR format's rowshift, colindex, values to CSRx format's
-        //! and generate this->diag
-        (this->rowshift).operator=(rowshift);
-        (this->colindex).operator=(colindex);
-        (this->values).operator=(values);
-        this->colindex.reserve(this->nnz);
-        this->values.reserve(this->nnz);
-        this->diag.reserve(len);
-        std::vector<INT>::iterator iter_rowshift, iter_colindex;
-        std::vector<DBL>::iterator iter_values;
-        iter_rowshift=(this->rowshift).begin();
-        iter_colindex=(this->colindex).begin();
-        iter_values=(this->values).begin();
-        this->rowshift[row]=nnz+1;
-
-        for(int j=0;j<row;j++){
-            begin=this->rowshift[j];
-            end=this->rowshift[j+1];
-            if(begin==end){
-                this->rowshift[j]=this->rowshift[j]+1;
-                this->colindex.insert(iter_colindex+this->rowshift[j],1,j+1);
-                this->values.insert(iter_values+this->rowshift[j],1,0.0);
-            }
-            if(this->colindex[begin-1]>(j+1)){
-                this->rowshift[j]=j+1;
-                (this->colindex).insert(iter_colindex+begin-1,1,j+1);
-                (this->values).insert(iter_values+begin-1,1,0.0);
-            }
-
-            for(int k=begin+1;k<end;k++){
-                if(this->colindex[k-1]==(j+1)){
-                    break;
-                }
-
-
-            }
-
-        }
-
-    }
-
-    if(CSRx){
-        this->row=row;
-        this->column=column;
-        this->nnz=nnz;
-        (this->values).operator=(values);
-        (this->rowshift).operator=(rowshift);
-        (this->colindex).operator=(colindex);
-
-        //! compute this->diag
-        diag.reserve(len);
-        count=0;
-        for(INT j=0;j<row;j++){
-            begin=rowshift[j];
-            end=rowshift[j+1];
-            for(INT k=begin;k<end;k++){
-                if(colindex[k-1]==j+1){
-                    diag[count]=k-1;
-                    count++;
-                }
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        for(INT k=begin;k<end;k++){
+            if(colindex[k]==j){
+                diag[count]=k;
+                count++;
             }
         }
     }
 }
-#if 0
+
 //! assign col, nnz, values, rowshift, colindex, diag to this->mat
-MAT::MAT(INT col, INT nnz, std::vector <DBL> values, std::vector <INT> rowshift,
-         std::vector <INT> colindex, std::vector <INT> diag) {
-    /*
-     * some basic examinations about parameters
-     * to judge whether they are CSRx' parameters
-     */
-    row = rowshift.size() - 1;
-    /*----------------  begin  ----------------*/
-    assert(row != rowshift.size() - 1);
-    assert(row < 1 || col < 1);
-    assert(((row > col) ? col : row) != diag.size());
-    assert(nnz != colindex.size());
-    assert(nnz != values.size());
-    /*-----------------  end  -----------------*/
-    this->column = col;
-    this->nnz = nnz;
-    (this->rowshift).operator=(rowshift);
-    (this->colindex).operator=(colindex);
-    (this->diag).operator=(diag);
+MAT::MAT(INT column, INT nnz, std::vector<DBL> values, std::vector<INT> rowshift,
+        std::vector<INT> colindex, std::vector<INT> diag){
+    this->row=rowshift.size()-1;
+    this->column=column;
+    this->nnz=nnz;
+    this->values.operator=(values);
+    this->rowshift.operator=(rowshift);
+    this->colindex.operator=(colindex);
+    this->diag.operator=(diag);
+
 }
 
 //! assign col, nnz, values, rowshift, colindex to this->mat
-MAT::MAT(INT col, INT nnz, std::vector<DBL> values, std::vector<INT> rowshift,
+MAT::MAT(INT column, INT nnz, std::vector<DBL> values, std::vector<INT> rowshift,
         std::vector<INT> colindex){
-    /*
- * some basic examinations about parameters
- * to judge whether they are CSRx' parameters
- */
-    row = rowshift.size() - 1;
-    /*----------------  begin  ----------------*/
-    assert(row != rowshift.size() - 1);
-    assert(row < 1 || col < 1);
-    assert(nnz != colindex.size());
-    assert(nnz != values.size());
-    /*-----------------  end  -----------------*/
-    column=col;
+    this->row=rowshift.size();
+    this->column=column;
     this->nnz=nnz;
-    (this->values).operator=(values);
-    (this->rowshift).operator=(rowshift);
-    (this->colindex).operator=(colindex);
+    this->values.operator=(values);
+    this->rowshift.operator=(rowshift);
+    this->colindex.operator=(colindex);
+
+    //! compute this->diag
+    INT count=0;
+    INT begin,end;
+    for(INT j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        for(INT k=begin;k<end;k++){
+            if(colindex[k]==j){
+                diag[count]=k;
+                count++;
+            }
+        }
+    }
 }
 
 //! assign diagonal matrix to this->mat
-MAT::MAT(VEC vec) {
-    DBL *array;
-    vec.GetArray(row, &array);
-    column = row;
-    nnz = row;
-    values.assign(array, array + row);
-    rowshift.assign(iota_iterator(1), iota_iterator(row + 1));
-    colindex.assign((iota_iterator(1), iota_iterator(row)));
-    diag.assign(iota_iterator(1), iota_iterator(row));
-}
-
-//! overload equals operator
-MAT MAT::&operator=(const MAT& mat){
-    row=mat.row;
-    column=mat.column;
-    nnz=mat.nnz;
-    values.operator=(mat.values);
-    rowshift.operator=(mat.rowshift);
-    colindex.operator=(mat.colindex);
-    diag.operator=(mat.diag);
+MAT::MAT(VEC vec_obj){
+    INT size=vec_obj.GetSize();
+    if(size==0){
+        column=0;
+        row=0;
+        nnz=0;
+        this->values.reserve(0);
+        this->colindex.reserve(0);
+        this->rowshift.reserve(0);
+        this->diag.reserve(0);
+    }else{
+        DBL *array;
+        vec_obj.GetArray(row, &array);
+        column = row;
+        nnz = row;
+        values.assign(array, array + row);
+        rowshift.assign(iota_iterator(1), iota_iterator(row + 1));
+        colindex.assign(iota_iterator(1), iota_iterator(row));
+        diag.assign(iota_iterator(1), iota_iterator(row));
+    }
 }
 
 //! assign MAT object to this->mat
-MAT::MAT(const MAT &mat) {
-    this->operator=(mat);
+MAT::MAT(const MAT& mat){
+    this->row=mat.row;
+    this->column=mat.column;
+    this->nnz=mat.nnz;
+    this->values.operator=(mat.values);
+    this->rowshift.operator=(mat.rowshift);
+    this->colindex.operator=(mat.colindex);
+    this->diag.operator=(mat.diag);
+}
+
+//! overload equals operator
+MAT& MAT::operator=(const MAT& mat){
+    this->row=mat.row;
+    this->column=mat.column;
+    this->nnz=mat.nnz;
+    this->values.operator=(mat.values);
+    this->rowshift.operator=(mat.rowshift);
+    this->colindex.operator=(mat.colindex);
+    this->diag.operator=(mat.diag);
+}
+
+FaspErrorType MAT::CheckCSRx(INT row, INT column, INT nnz, std::vector<DBL> values,
+                        std::vector<INT> rowshift, std::vector<INT> colindex,
+                        std::vector<INT> diag){
+    /*
+     * some simple examinations about parameters
+     * to judge whether they are CSRx' parameters
+     */
+    /*----------------  begin  ----------------*/
+    //! basic examinations
+    if(row!=rowshift.size()-1)
+        return 10; //! errortype 10 marks the mismatch of row and (the dimension of rowshift minus 1)
+
+    if(row<=0 || column <=0)
+        return 11; //! errortype 11 marks the row or column index error
+
+    if(((row>column)?column:row)==diag.size())
+        return 12; //! errortype 12 marks the mismatch of min(row,column) and diagonal elements' number
+
+    if(nnz!=colindex.size())
+        return 13; //! errortype 13 marks the mismatch of nnz and column indices' size
+
+    if(nnz!=values.size())
+        return 14; //! errortype 14 marks the mismatch of nnz and values' size
+
+     if(nnz!=rowshift[rowshift.size()-1])
+         return 20; //! errortype 15 marks the mismatch of nnz and rowshift.size
+
+    //! simple examinations
+    for(int j=0;j<row;j++){
+        if(rowshift[j]>rowshift[j+1])
+            return 15; //! errortype 15 marks the rowshift elements' order error
+    }
+
+    if(rowshift[0]<0 || rowshift[row]>nnz)
+        return 16; //! errortype 16 marks the rowshift elements' range error
+
+    INT begin,end;
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end)
+            continue;
+
+        if(end==begin+1){
+            if(0>colindex[begin] || colindex[begin]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+        }
+
+        if(end>begin+1){
+            for(int k=begin;k<end-1;k++){
+                if(colindex[k]>colindex[k+1])
+                    return 17; //! errortype 17 marks the colindex elements' order error
+            }
+            if(0>colindex[begin])
+                return 18; //! errortype 18 marks the colindex elements' range error
+
+            if(colindex[end-1]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+        }
+    }
+
+    //! exam diag and colindex
+    INT count=0;
+    for(INT j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end)
+            return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+        for(INT k=begin;k<end;k++){
+            if(colindex[k]==j){
+                if(diag[count]!=k)
+                    return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+                else
+                    count++;
+            }
+        }
+    }
+    if(count!=diag.size())
+        return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+
+    return 0;
+}
+
+FaspErrorType MAT::CheckCSRx(INT row, INT column, INT nnz, std::vector<DBL> values,
+                        std::vector<INT> rowshift, std::vector<INT> colindex){
+
+    /*
+ * some simple examinations about parameters
+ * to judge whether they are CSRx' parameters
+ */
+    /*----------------  begin  ----------------*/
+    //! basic examinations
+    if(row!=rowshift.size()-1)
+        return 10; //! errortype 10 marks the mismatch of row and (the dimension of rowshift minus 1)
+
+    if(row<=0 || column <=0)
+        return 11; //! errortype 11 marks the row or column index error
+
+    if(nnz!=colindex.size())
+        return 13; //! errortype 13 marks the mismatch of nnz and column indices' size
+
+    if(nnz!=values.size())
+        return 14; //! errortype 14 marks the mismatch of nnz and values' size
+
+    if(nnz!=rowshift[rowshift.size()-1])
+        return 20; //! errortype 15 marks the mismatch of nnz and rowshift.size
+
+    //! simple examinations
+    for(int j=0;j<row;j++){
+        if(rowshift[j]>rowshift[j+1])
+            return 15; //! errortype 15 marks the rowshift elements' order error
+    }
+
+    if(rowshift[0]<0 || rowshift[row]>nnz)
+        return 16; //! errortype 16 marks the rowshift elements' range error
+
+    INT begin,end;
+    INT count=0;
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end){
+            return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+        }
+
+        if(end==begin+1){
+            if(0>colindex[begin] || colindex[begin]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+
+            if(colindex[begin]!=j){
+                return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+            }else{
+                count++;
+            }
+        }
+
+        if(end>begin+1){
+            for(int k=begin;k<end-1;k++){
+                if(colindex[k]>colindex[k+1])
+                    return 17; //! errortype 17 marks the colindex elements' order error
+
+                if(colindex[k]==j)
+                    count++;
+            }
+            if(colindex[end-1]==j)
+                count++;
+
+            if(0>colindex[begin])
+                return 18; //! errortype 18 marks the colindex elements' range error
+
+            if(colindex[end-1]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+
+        }
+    }
+
+    if(count!=(row>column?column:row))
+        return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+
+    return 0;
+}
+
+FaspErrorType MAT::CheckCSRx(INT column,INT nnz, std::vector<DBL> values,
+                        std::vector<INT> rowshift, std::vector<INT> colindex,
+                        std::vector<INT> diag){
+    /*
+ * some simple examinations about parameters
+ * to judge whether they are CSRx' parameters
+ */
+    /*----------------  begin  ----------------*/
+    //! basic examinations
+
+    if(column <=0)
+        return 11; //! errortype 11 marks the row or column index error
+
+    if(((rowshift.size()>column)?column:rowshift.size())==diag.size())
+        return 12; //! errortype 12 marks the mismatch of min(row,column) and diagonal elements' number
+
+    if(nnz!=colindex.size())
+        return 13; //! errortype 13 marks the mismatch of nnz and column indices' size
+
+    if(nnz!=values.size())
+        return 14; //! errortype 14 marks the mismatch of nnz and values' size
+
+    if(nnz!=rowshift[rowshift.size()-1])
+        return 20; //! errortype 15 marks the mismatch of nnz and rowshift.size
+
+    //! simple examinations
+    for(int j=0;j<rowshift.size();j++){
+        if(rowshift[j]>rowshift[j+1])
+            return 15; //! errortype 15 marks the rowshift elements' order error
+    }
+
+    if(rowshift[0]<0 || rowshift[rowshift.size()-1]>nnz)
+        return 16; //! errortype 16 marks the rowshift elements' range error
+
+    INT begin,end;
+    for(int j=0;j<rowshift.size();j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end)
+            continue;
+
+        if(end==begin+1){
+            if(0>colindex[begin] || colindex[begin]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+        }
+
+        if(end>begin+1){
+            for(int k=begin;k<end-1;k++){
+                if(colindex[k]>colindex[k+1])
+                    return 17; //! errortype 17 marks the colindex elements' order error
+            }
+            if(0>colindex[begin])
+                return 18; //! errortype 18 marks the colindex elements' range error
+
+            if(colindex[end-1]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+        }
+    }
+
+    //! exam diag and colindex
+    INT count=0;
+    for(INT j=0;j<rowshift.size();j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end)
+            return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+        for(INT k=begin;k<end;k++){
+            if(colindex[k]==j){
+                if(diag[count]!=k)
+                    return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+                else
+                    count++;
+            }
+        }
+    }
+    if(count!=diag.size())
+        return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+
+    return 0;
+}
+
+FaspErrorType MAT::CheckCSRx(INT column, INT nnz, std::vector<DBL> values,
+                        std::vector<INT> rowshift, std::vector<INT> colindex){
+    /*
+ * some simple examinations about parameters
+ * to judge whether they are CSRx' parameters
+ */
+    /*----------------  begin  ----------------*/
+    //! basic examinations
+
+
+    if(column <=0)
+        return 11; //! errortype 11 marks the row or column index error
+
+    if(nnz!=colindex.size())
+        return 13; //! errortype 13 marks the mismatch of nnz and column indices' size
+
+    if(nnz!=values.size())
+        return 14; //! errortype 14 marks the mismatch of nnz and values' size
+
+    if(nnz!=rowshift[rowshift.size()-1])
+        return 20; //! errortype 15 marks the mismatch of nnz and rowshift.size
+
+    //! simple examinations
+    for(int j=0;j<rowshift.size();j++){
+        if(rowshift[j]>rowshift[j+1])
+            return 15; //! errortype 15 marks the rowshift elements' order error
+    }
+
+    if(rowshift[0]<0 || rowshift[rowshift.size()-1]>nnz)
+        return 16; //! errortype 16 marks the rowshift elements' range error
+
+    INT begin,end;
+    INT count=0;
+    for(int j=0;j<rowshift.size();j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end){
+            return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+        }
+
+        if(end==begin+1){
+            if(0>colindex[begin] || colindex[begin]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+
+            if(colindex[begin]!=j){
+                return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+            }else{
+                count++;
+            }
+        }
+
+        if(end>begin+1){
+            for(int k=begin;k<end-1;k++){
+                if(colindex[k]>colindex[k+1])
+                    return 17; //! errortype 17 marks the colindex elements' order error
+
+                if(colindex[k]==j)
+                    count++;
+            }
+            if(colindex[end-1]==j)
+                count++;
+
+            if(0>colindex[begin])
+                return 18; //! errortype 18 marks the colindex elements' range error
+
+            if(colindex[end-1]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+
+        }
+    }
+
+    if(count!=(rowshift.size()>column?column:rowshift.size()))
+        return 19; //! errortype 19 marks the diagonal index (perhaps not contained in colindex) error
+
+    return 0;
+
+}
+
+FaspErrorType MAT::CheckCSR(INT row, INT column, INT nnz, std::vector<DBL> values,
+                       std::vector<INT> rowshift, std::vector<INT> colindex){
+    /*
+     * some simple examinations about parameters
+     * to judge whether they are CSRx' parameters
+     */
+    /*----------------  begin  ----------------*/
+    //! basic examinations
+    if(row!=rowshift.size()-1)
+        return 10; //! errortype 10 marks the mismatch of row and (the dimension of rowshift minus 1)
+
+    if(row<=0 || column <=0)
+        return 11; //! errortype 11 marks the row or column index error
+
+    if(nnz!=colindex.size())
+        return 13; //! errortype 13 marks the mismatch of nnz and column indices' size
+
+    if(nnz!=values.size())
+        return 14; //! errortype 14 marks the mismatch of nnz and values' size
+
+    if(nnz!=rowshift[rowshift.size()-1])
+        return 20; //! errortype 15 marks the mismatch of nnz and rowshift.size
+
+    //! simple examinations
+    for(int j=0;j<row;j++){
+        if(rowshift[j]>rowshift[j+1])
+            return 15; //! errortype 15 marks the rowshift elements' order error
+    }
+
+    if(rowshift[0]<0 || rowshift[row]>nnz)
+        return 16; //! errortype 16 marks the rowshift elements' range error
+
+    INT begin,end;
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end)
+            continue;
+
+        if(end==begin+1){
+            if(0>colindex[begin] || colindex[begin]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+        }
+
+        if(end>begin+1){
+            for(int k=begin;k<end;k++){
+                if(0>colindex[k] || colindex[k]>=column){
+                    return 18; //! errortype 18 marks the colindex elements' range error
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+FaspErrorType MAT::CheckCSR(INT column, INT nnz, std::vector<DBL> values,
+                       std::vector<INT> rowshift, std::vector<INT> colindex){
+    /*
+* some simple examinations about parameters
+* to judge whether they are CSRx' parameters
+*/
+    /*----------------  begin  ----------------*/
+    //! basic examinations
+
+    if(column <=0)
+        return 11; //! errortype 11 marks the row or column index error
+
+    if(nnz!=colindex.size())
+        return 13; //! errortype 13 marks the mismatch of nnz and column indices' size
+
+    if(nnz!=values.size())
+        return 14; //! errortype 14 marks the mismatch of nnz and values' size
+
+    if(nnz!=rowshift[rowshift.size()-1])
+        return 20; //! errortype 15 marks the mismatch of nnz and rowshift.size
+
+    //! simple examinations
+    for(int j=0;j<rowshift.size();j++){
+        if(rowshift[j]>rowshift[j+1])
+            return 15; //! errortype 15 marks the rowshift elements' order error
+    }
+
+    if(rowshift[0]<0 || rowshift[rowshift.size()-1]>nnz)
+        return 16; //! errortype 16 marks the rowshift elements' range error
+
+    INT begin,end;
+    for(int j=0;j<rowshift.size();j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end)
+            continue;
+
+        if(end==begin+1){
+            if(0>colindex[begin] || colindex[begin]>=column)
+                return 18; //! errortype 18 marks the colindex elements' range error
+        }
+
+        if(end>begin+1){
+            for(int k=begin;k<end;k++){
+                if(0>colindex[k] || colindex[k]>=column){
+                    return 18; //! errortype 18 marks the colindex elements' range error
+                }
+            }
+        }
+    }
+
+    return 0;
+}
+
+FaspErrorType MAT::ConvertCSR(INT row, INT column, INT nnz, std::vector<DBL> values,
+                         std::vector<INT> rowshift, std::vector<INT> colindex,MAT mat){
+    INT begin,end;
+    INT index;
+    DBL data;
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(end<=begin+1){
+            continue;
+        }
+        for(int k=begin+1;k<end;k++){
+            index=colindex[k];
+            data=values[k];
+            for(int j=k-1;j>=begin;j--){
+                if(index<colindex[j]){
+                    colindex[j+1]=colindex[j];
+                    values[j+1]=values[j];
+                }else{
+                    break;
+                }
+            }
+            colindex[j+1]=index;
+            values[j+1]=data;
+        }
+    }
+
+
+    mat.nnz=0;
+    INT mark;
+    mat.rowshift.reserve(row+1);
+    mat.rowshift[0]=0;
+
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end){
+            mat.nnz++;
+            mat.rowshift[j+1]=mat.rowshift[j]+1;
+            continue;
+        }
+        if(begin==end-1){
+            if(colindex[begin]==j){
+                mat.nnz++;
+                mat.rowshift[j+1]=mat.rowshift[j]+1;
+            }else{
+                mat.nnz+=2;
+                mat.rowshift[j+1]=mat.rowshift[j]+2;
+            }
+            continue;
+        }
+        for(int k=begin;k<end-1;k++){
+            if(colindex[k]<colindex[k+1]){
+                mat.nnz++;
+                if(colindex[k]==j){
+                    mark=1;
+                }
+            }
+        }
+        if(colindex[end-2]<colindex[end-1]){
+            mat.nnz++;
+            if(colindex[end-1]==j){
+                mark=1;
+            }
+        }
+
+        if(mark!=1){
+            mat.nnz++;
+            mat.rowshift[j+1]=mat.rowshift[j]+end-begin+1;
+        }else{
+            mat.rowshift[j+1]=mat.rowshift[j]+end-begin;
+            mark=0;
+        }
+    }
+
+    mat.colindex.reserve(mat.nnz);
+    mat.values.reserve(mat.nnz);
+
+    INT count=0;
+    INT less=0,equal=0,more=0;
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end){
+            mat.colindex[count]=j;
+            mat.values[count]=0.0;
+            count++;
+            continue;
+        }
+        if(begin==end-1){
+            if(colindex[begin]==j){
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]=values[begin];
+                count++;
+            }else{
+                if(colindex[begin]>j){
+                    mat.colindex[count]=j;
+                    mat.values[count]=0.0;
+                    count++;
+                    mat.colindex[count]=colindex[begin];
+                    mat.values[count]=values[begin];
+                    count++;
+                }
+                if(colindex[begin]<j){
+                    mat.colindex[count]=colindex[begin];
+                    mat.values[count]=values[begin];
+                    count++;
+                    mat.colindex[count]=j;
+                    mat.values[count]=0.0;
+                    count++;
+                }
+            }
+            continue;
+        }
+        if(begin==end-2){
+            if(colindex[begin]<j && colindex[begin+1]<j && colindex[begin]<colindex[begin+1]){
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]=values[begin];
+                count++;
+                mat.colindex[count]=colindex[begin+1];
+                mat.values[count]=values[begin+1];
+                count++;
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+            }
+            if(colindex[begin]<j && colindex[begin]==colindex[begin+1]){
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]+=(values[begin]+values[begin+1]);
+                count++;
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+            }
+            if(colindex[begin]<j && colindex[begin+1]==j){
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]=values[begin];
+                count++;
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+            }
+            if(colindex[begin]==j && colindex[begin+1]==j){
+                mat.colindex[count]=j;
+                mat.values[count]+=(values[begin]+values[begin+1]);
+            }
+            if(colindex[begin]==j && colindex[begin+1]>j){
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+                mat.colindex[count]=colindex[begin+1];
+                mat.values[count]=values[begin+1];
+                count++;
+            }
+            if(colindex[begin]>j && colindex[begin]==colindex[begin+1]){
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]+=(values[begin]+values[begin+1]);
+                count++;
+            }
+            if(colindex[begin]>j && colindex[begin+1]>j && colindex[begin]<colindex[begin+1]){
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]=values[begin];
+                count++;
+                mat.colindex[count]=colindex[begin+1];
+                mat.values[count]=values[begin+1];
+                count++;
+            }
+            continue;
+        }
+        for(int k=begin;k<end-1;k++){
+            if(colindex[k+1]<j && colindex[k]<colindex[k+1]){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                count++;
+                continue;
+            }
+            if(colindex[k]<j && colindex[k]==colindex[k+1]){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                continue;
+            }
+            if(colindex[k]<j && colindex[k+1]==j){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                count++;
+                continue;
+            }
+            if(colindex[k]==j && colindex[k+1]==j){
+                mat.colindex[count]=j;
+                mat.values[count]+=values[k];
+                continue;
+            }
+            if(colindex[k]<j && colindex[k+1]>j){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                count++;
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+                continue;
+            }
+            if(colindex[k]==j && colindex[k+1]>j){
+                mat.colindex[count]=j;
+                mat.values[count]+=values[k];
+                count++;
+                continue;
+            }
+            if(colindex[k]>j && colindex[k]==colindex[k+1]){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                continue;
+            }
+            if(colindex[k]>j && colindex[k+1]>colindex[k]){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                count++;
+                continue;
+            }
+        }
+        if(colindex[end-2]<colindex[end-1] && colindex[end-1]<j){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]==colindex[end-1] && colindex[end-1]<j){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]+=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]<colindex[end-1] && colindex[end-1]==j){
+            mat.colindex[count]=j;
+            mat.values[count]=0.0;
+            count++;
+        }
+        if(colindex[end-2]==colindex[end-1] && colindex[end-1]==j){
+            mat.colindex[count]=j;
+            mat.values[count]+=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]<j && colindex[end-1]>j){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]>j && colindex[end-1]>colindex[end-2]){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]==j && colindex[end-1]>j){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]>j && colindex[end-2]==colindex[end-1]){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+    }
+
+    mat.diag.reserve(row>column?column:row);
+    //! compute this->diag
+    count=0;
+    for(INT j=0;j<row;j++){
+        begin=mat.rowshift[j];
+        end=mat.rowshift[j+1];
+        for(INT k=begin;k<end;k++){
+            if(mat.colindex[k]==j){
+                mat.diag[count]=k;
+                count++;
+            }
+        }
+    }
+    return 0;
+}
+
+FaspErrorType MAT::ConvertCSR(INT column, INT nnz, std::vector<DBL> values,
+                         std::vector<INT> rowshift, std::vector<INT> colindex, MAT mat){
+    INT begin,end;
+    INT index;
+    INT row=rowshift.size()-1;
+    DBL data;
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(end<=begin+1){
+            continue;
+        }
+        for(int k=begin+1;k<end;k++){
+            index=colindex[k];
+            data=values[k];
+            for(int j=k-1;j>=begin;j--){
+                if(index<colindex[j]){
+                    colindex[j+1]=colindex[j];
+                    values[j+1]=values[j];
+                }else{
+                    break;
+                }
+            }
+            colindex[j+1]=index;
+            values[j+1]=data;
+        }
+    }
+
+
+    mat.nnz=0;
+    INT mark;
+    mat.rowshift.reserve(row+1);
+    mat.rowshift[0]=0;
+
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end){
+            mat.nnz++;
+            mat.rowshift[j+1]=mat.rowshift[j]+1;
+            continue;
+        }
+        if(begin==end-1){
+            if(colindex[begin]==j){
+                mat.nnz++;
+                mat.rowshift[j+1]=mat.rowshift[j]+1;
+            }else{
+                mat.nnz+=2;
+                mat.rowshift[j+1]=mat.rowshift[j]+2;
+            }
+            continue;
+        }
+        for(int k=begin;k<end-1;k++){
+            if(colindex[k]<colindex[k+1]){
+                mat.nnz++;
+                if(colindex[k]==j){
+                    mark=1;
+                }
+            }
+        }
+        if(colindex[end-2]<colindex[end-1]){
+            mat.nnz++;
+            if(colindex[end-1]==j){
+                mark=1;
+            }
+        }
+
+        if(mark!=1){
+            mat.nnz++;
+            mat.rowshift[j+1]=mat.rowshift[j]+end-begin+1;
+        }else{
+            mat.rowshift[j+1]=mat.rowshift[j]+end-begin;
+            mark=0;
+        }
+    }
+
+    mat.colindex.reserve(mat.nnz);
+    mat.values.reserve(mat.nnz);
+
+    INT count=0;
+    INT less=0,equal=0,more=0;
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        if(begin==end){
+            mat.colindex[count]=j;
+            mat.values[count]=0.0;
+            count++;
+            continue;
+        }
+        if(begin==end-1){
+            if(colindex[begin]==j){
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]=values[begin];
+                count++;
+            }else{
+                if(colindex[begin]>j){
+                    mat.colindex[count]=j;
+                    mat.values[count]=0.0;
+                    count++;
+                    mat.colindex[count]=colindex[begin];
+                    mat.values[count]=values[begin];
+                    count++;
+                }
+                if(colindex[begin]<j){
+                    mat.colindex[count]=colindex[begin];
+                    mat.values[count]=values[begin];
+                    count++;
+                    mat.colindex[count]=j;
+                    mat.values[count]=0.0;
+                    count++;
+                }
+            }
+            continue;
+        }
+        if(begin==end-2){
+            if(colindex[begin]<j && colindex[begin+1]<j && colindex[begin]<colindex[begin+1]){
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]=values[begin];
+                count++;
+                mat.colindex[count]=colindex[begin+1];
+                mat.values[count]=values[begin+1];
+                count++;
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+            }
+            if(colindex[begin]<j && colindex[begin]==colindex[begin+1]){
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]+=(values[begin]+values[begin+1]);
+                count++;
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+            }
+            if(colindex[begin]<j && colindex[begin+1]==j){
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]=values[begin];
+                count++;
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+            }
+            if(colindex[begin]==j && colindex[begin+1]==j){
+                mat.colindex[count]=j;
+                mat.values[count]+=(values[begin]+values[begin+1]);
+            }
+            if(colindex[begin]==j && colindex[begin+1]>j){
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+                mat.colindex[count]=colindex[begin+1];
+                mat.values[count]=values[begin+1];
+                count++;
+            }
+            if(colindex[begin]>j && colindex[begin]==colindex[begin+1]){
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]+=(values[begin]+values[begin+1]);
+                count++;
+            }
+            if(colindex[begin]>j && colindex[begin+1]>j && colindex[begin]<colindex[begin+1]){
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+                mat.colindex[count]=colindex[begin];
+                mat.values[count]=values[begin];
+                count++;
+                mat.colindex[count]=colindex[begin+1];
+                mat.values[count]=values[begin+1];
+                count++;
+            }
+            continue;
+        }
+        for(int k=begin;k<end-1;k++){
+            if(colindex[k+1]<j && colindex[k]<colindex[k+1]){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                count++;
+                continue;
+            }
+            if(colindex[k]<j && colindex[k]==colindex[k+1]){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                continue;
+            }
+            if(colindex[k]<j && colindex[k+1]==j){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                count++;
+                continue;
+            }
+            if(colindex[k]==j && colindex[k+1]==j){
+                mat.colindex[count]=j;
+                mat.values[count]+=values[k];
+                continue;
+            }
+            if(colindex[k]<j && colindex[k+1]>j){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                count++;
+                mat.colindex[count]=j;
+                mat.values[count]=0.0;
+                count++;
+                continue;
+            }
+            if(colindex[k]==j && colindex[k+1]>j){
+                mat.colindex[count]=j;
+                mat.values[count]+=values[k];
+                count++;
+                continue;
+            }
+            if(colindex[k]>j && colindex[k]==colindex[k+1]){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                continue;
+            }
+            if(colindex[k]>j && colindex[k+1]>colindex[k]){
+                mat.colindex[count]=colindex[k];
+                mat.values[count]+=values[k];
+                count++;
+                continue;
+            }
+        }
+        if(colindex[end-2]<colindex[end-1] && colindex[end-1]<j){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]==colindex[end-1] && colindex[end-1]<j){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]+=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]<colindex[end-1] && colindex[end-1]==j){
+            mat.colindex[count]=j;
+            mat.values[count]=0.0;
+            count++;
+        }
+        if(colindex[end-2]==colindex[end-1] && colindex[end-1]==j){
+            mat.colindex[count]=j;
+            mat.values[count]+=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]<j && colindex[end-1]>j){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]>j && colindex[end-1]>colindex[end-2]){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]==j && colindex[end-1]>j){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+        if(colindex[end-2]>j && colindex[end-2]==colindex[end-1]){
+            mat.colindex[count]=colindex[end-1];
+            mat.values[count]=values[end-1];
+            count++;
+        }
+    }
+
+    mat.diag.reserve(row>column?column:row);
+    //! compute this->diag
+    count=0;
+    for(INT j=0;j<row;j++){
+        begin=mat.rowshift[j];
+        end=mat.rowshift[j+1];
+        for(INT k=begin;k<end;k++){
+            if(mat.colindex[k]==j){
+                mat.diag[count]=k;
+                count++;
+            }
+        }
+    }
+    return 0;
+}
+
+FaspErrorType MAT::MatAssign(INT row,INT column, INT nnz, std::vector<DBL> values,
+                        std::vector<INT> rowshift, std::vector<INT> colindex,
+                        std::vector<INT> diag){
+    this->row=row;
+    this->column=column;
+    this->nnz=nnz;
+    this->rowshift.operator=(rowshift);
+    this->colindex.operator=(colindex);
+    this->values.operator=(values);
+    this->diag.operator=(diag);
+
+    return 0;
+}
+
+FaspErrorType MAT::MatAssign(INT row,INT column, INT nnz, std::vector<DBL> values,
+                        std::vector<INT> rowshift, std::vector<INT> colindex){
+    this->row=row;
+    this->column=column;
+    this->nnz=nnz;
+    this->values.operator=(values);
+    this->rowshift.operator=(rowshift);
+    this->colindex.operator=(colindex);
+
+    this->diag.reserve(row>column?column:row);
+    //! compute this->diag
+    INT count=0;
+    INT begin,end;
+    for(INT j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        for(INT k=begin;k<end;k++){
+            if(colindex[k]==j){
+                this->diag[count]=k;
+                count++;
+            }
+        }
+    }
+
+    return 0;
+}
+
+//! assign column, nnz, values, rowshift, colindex, diag to *this
+FaspErrorType MAT::MatAssign(INT column, INT nnz, std::vector<DBL> values,
+                        std::vector<INT> rowshift, std::vector<INT> colindex,
+                        std::vector<INT> diag){
+    this->row=rowshift.size()-1;
+    this->column=column;
+    this->nnz=nnz;
+    this->rowshift.operator=(rowshift);
+    this->colindex.operator=(colindex);
+    this->values.operator=(values);
+    this->diag.operator=(diag);
+
+    return 0;
+}
+
+FaspErrorType MAT::MatAssign(INT column, INT nnz, std::vector<DBL> values,
+                        std::vector<INT> rowshift, std::vector<INT> colindex){
+
+    this->row=rowshift.size()-1;
+    this->column=column;
+    this->nnz=nnz;
+    this->values.operator=(values);
+    this->rowshift.operator=(rowshift);
+    this->colindex.operator=(colindex);
+
+    this->diag.reserve(this->row>column?column:this->row);
+    //! compute this->diag
+    INT count=0;
+    INT begin,end;
+    for(INT j=0;j<this->row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        for(INT k=begin;k<end;k++){
+            if(colindex[k]==j){
+                this->diag[count]=k;
+                count++;
+            }
+        }
+    }
+
+    return 0;
 }
 
 //! get the row or column number of this->mat
-FaspErrorType MAT::GetSizes(INT &row, INT &col) {
+FaspErrorType MAT::GetSizes(INT &row, INT &column) {
     row = this->row;
-    col = this->col;
+    column = this->column;
+    return 0;
 }
 
 //! get (this->mat).nnz
-FaspErrorType MAT::Getnnz(INT &nnz) {
-    nnz = this->nnz;
+INT MAT::Getnnz() {
+    return this->nnz;
 }
 
 //! get (this->mat)[i][j]
@@ -263,11 +1229,10 @@ FaspErrorType MAT::GetElem(INT row, INT column, DBL &value) {
     if (column < 0 || column >= this->column)
         return 5; //! errortype 5 marks that the column index is not in 1 ~ this->column
 
-    int shift = this->rowshift[row - 1];
-    if (colindex[shift] <= column) {
-        for (int j = shift; j < this->column; j++) {
-            if (column == this->colindex[shift]) {
-                value = this->values[column];
+    if (colindex[rowshift[row-1]] <= column) {
+        for (int j = colindex[rowshift[row-1]]; j < colindex[rowshift[row]]; j++) {
+            if (column == colindex[j]) {
+                value = values[j];
                 return 0;
             }
         }
@@ -278,65 +1243,57 @@ FaspErrorType MAT::GetElem(INT row, INT column, DBL &value) {
 }
 
 //! get the whole jth-row elements in this->mat into VEC object
-FaspErrorType MAT::GetRow(INT row, VEC &vec) {
-    if(row<1 || row>=this->row)
+FaspErrorType MAT::GetRow(INT row, VEC &vec_obj) {
+    if(row<0 || row>=this->row)
         return 4; //! errortype 4 marks that the row index is not in 1 ~ this->row
 
     int len=rowshift[row]-rowshift[row-1];
-
-    DBL *p=new double[len];
+    vec_obj.SetSize(len);
     INT k=0;
     for(int j=rowshift[row-1];j<rowshift[row];j++){
-        p[k]=values[j];
+        vec_obj[k]=values[j];
         k++;
     }
-    vec.AssignByArray(len,p);
 
     return 0;
 }
 
 //! get the whole jth-column elements in this->mat into VEC object
-FaspErrorType MAT::GetCol(INT column, VEC &vec){
-    int count=0;
-    DBL *pcolumn=new DBL[row];
-    int l=0;
+FaspErrorType MAT::GetColumn(INT column, VEC &vec_obj){
+    INT count=0;
+    if(column<0 || column>=this->column)
+        return 5; //! errortype 5 marks the column index error
 
+    vec_obj.SetSize(row);
     for(int j=0;j<row;j++){
         if(column>=colindex[rowshift[j]]){
             for(int k=rowshift[j];k<rowshift[j+1];j++){
                 if(colindex[k]==column){
+                    vec_obj[count]=values[k];
                     count++;
-                    pcolumn[l]=values[colindex[k]];
                     break;
                 }
             }
         }
     }
-
-    DBL *array=new DBL[count];
-    for(int j=0;j<count;j++)
-        array[j]=pcolumn[j];
-
-    delete[] pcolumn;
-    vec.AssignByArray(count,array);
-    delete[] array;
+    vec_obj.SetSize(count);
+    return 0;
 }
 
 //! get the whole diagonal elements in this->mat into VEC object
-FaspErrorType MAT::GetDiag(VEC &vec){
+FaspErrorType MAT::GetDiag(VEC &vec_obj){
     INT len=row>column?column:row;
-    DBL *parray=new DBL[len];
     for(int j=0;j<len;j++)
-        parray[j]=values[diag[j]];
+        vec_obj[j]=values[diag[j]];
 
-    vec.AssignByArray(len,parray);
+    return 0;
 }
 
 //! zero all the elements
 FaspErrorType MAT::Zero(){
     nnz=row>column?column:row;
     std::vector<DBL> values_tmp(nnz,0.0);
-    std::vector<INT> rowshift_tmp(iota_iterator(1),iota_iterator(nnz+1));
+    std::vector<INT> rowshift_tmp(iota_iterator(1),iota_iterator(row+1));
     std::vector<INT> colindex_tmp(iota_iterator(1),iota_iterator(nnz));
     values.operator=(values_tmp);
     rowshift.operator=(rowshift_tmp);
@@ -353,7 +1310,7 @@ FaspErrorType MAT::Copy(MAT &mat){
 
 //! this->mat = a * this->mat
 FaspErrorType MAT::Scale(DBL a){
-    for(j=0;j<nnz;j++){
+    for(INT j=0;j<nnz;j++){
         values[j]=a*values[j];
     }
     return 0;
@@ -368,106 +1325,84 @@ FaspErrorType MAT::Shift(DBL a){
     return 0;
 }
 
-//! vec_b = this->mat * vec_x
-FaspErrorType MAT::MultVec(VEC vec_x, VEC vec_b){
-    int len;
-    DBL *x_array=new double[column];
-    DBL *b_array=new double[row];
-
-    vec_x.GetArray(len,x_array);
-
-    INT ibegin, iend;
+//! vec2_obj = this->mat * vec1_obj
+FaspErrorType MAT::MultVec(VEC vec1_obj, VEC &vec2_obj){
+    INT begin, end;
     for(int j=0;j<row;j++){
-        ibegin=rowshift[j];
-        iend=rowshift[j+1];
-        for(int k=ibegin;k<iend;k++){
-            b_array[j]+=this->values[this->colindex[k]]*x_array[this->colindex[k]];
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        for(int k=begin;k<end;k++){
+            vec2_obj[j]+=values[colindex[k]]*vec1_obj[colindex[k]];
         }
     }
-
-    vec_b.AssignByArray(row,b_array);
 
     return 0;
 }
 
 //! vec_z = vec_y + this->mat * vec_x
-FaspErrorType MAT::MultAdd(VEC vec_x, VEC vec_y, VEC vec_z){
-    int len;
-    DBL *x_array=new double[column];
-    DBL *b_array=new double[row];
-
-    vec_x.GetArray(len,x_array);
-
-    INT ibegin, iend;
+FaspErrorType MAT::MultAdd(VEC vec1_obj, VEC vec2_obj, VEC vec3_obj){
+    INT begin, end;
     for(int j=0;j<row;j++){
-        ibegin=rowshift[j];
-        iend=rowshift[j+1];
-        for(int k=ibegin;k<iend;k++){
-            b_array[j]+=this->values[this->colindex[k]]*x_array[this->colindex[k]];
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        for(int k=begin;k<end;k++){
+            vec3_obj[j]+=values[colindex[k]]*vec1_obj[colindex[k]]+vec2_obj[colindex[k]];
         }
     }
-
-    vec_b.AssignByArray(row,b_array);
-
-    vec_z.Add2(1.0, vec_y, 1.0, vec_b);
-
     return 0;
 }
 
-
-
 //! transpose this->mat
 FaspErrorType MAT::Transpose(){
-    INT tmp;
-    tmp=row;
-    row=column;
-    column=tmp;
 
-    INT i,j,k,p;
-    INT count;
+    MAT tmp;
+    tmp.row=column;
+    tmp.column=row;
+    tmp.nnz=nnz;
 
-    INT len=row>column:column?row;
+    tmp.rowshift.reserve(tmp.row+1);
+    tmp.colindex.reserve(tmp.nnz);
+    tmp.values.reserve(tmp.nnz);
+    tmp.diag.reserve(tmp.row>tmp.column?tmp.column:tmp.row);
 
-    INT *shift=new INT[column];
+    INT count,begin,end;
 
-    std::vector<INT> rowshift_new(column+1);
-    std::vector<INT> colindex_new(nnz);
-    std::vector<DBL> values_new(nnz);
-    std::vector<INT> diag_new(len);
+    tmp.rowshift[0]=0;
 
-    rowshift_new[0]=1;
+    for(int j=0;j<nnz;j++)
+        tmp.rowshift[colindex[j]+1]++;
 
-    for(j=0;j<nnz;j++)
-        rowshift_new[colindex[j]]++;
+    for(int j=1;j<=row;j++)
+        tmp.rowshift[j]+=tmp.rowshift[j-1];
 
-    for(j=1;j<=row;j++)
-        rowshift_new[j]+=rowshift_new[j-1];
-
-    count=0;
-    for(i=0;i<row;i++){
-        INT ibegin=rowshift[i],iend=rowshift[i+1];
-        for(p=ibegin;p<iend;p++){
-            j=colindex[p];
-            k=rowshift_new[j];
-            colindex[k]=i;
-            values_new[k]=values[p];
-            rowshift_new[j]=k;
-            if(p==(i+1))
-                diag_new[count]=k;
+    int l,k;
+    for(int j=0;j<row;j++){
+        begin=rowshift[j];
+        end=rowshift[j+1];
+        for(int p=begin;p<end;p++){
+            l=colindex[p]+1;
+            k=tmp.rowshift[l];
+            tmp.colindex[k]=j;
+            tmp.values[k]=values[p];
+            tmp.rowshift[l]=k+1;
         }
     }
+
+    (*this).operator=(tmp);
 
     return 0;
 }
 
 //! this->mat = a * this->mat + b * mat
 FaspErrorType MAT::Add(MAT mat, DBL a, DBL b){
-    int nnz_tmp
-    mat.Getnnz(nnz_tmp);
+    if(row!=mat.row || column!=mat.column)
+        return 6; //! errortype 6 marks the mismatch of matrices' rows and columns
+
+    int nnz_tmp=mat.Getnnz();
     int nnz_sum=nnz+nnz_tmp;
     MAT mat_tmp;
     //! mat != NULL and this->mat != NULL
-    mat_tmp.row=this.row;
+    mat_tmp.row=this->row;
     mat_tmp.column=this->column;
     mat_tmp.nnz=nnz_sum;
     mat_tmp.rowshift.assign(this->row+1,0);
@@ -477,17 +1412,17 @@ FaspErrorType MAT::Add(MAT mat, DBL a, DBL b){
 
     INT count=0, added, countrow;
 
-    for (int i=0; i<this->row; ++i) {
+    for (int i=0; i<this->row; i++) {
         countrow = 0;
-        for (int j=this->rowshift[i]; j<this->rowshift[i+1]; ++j) {
-            mat_tmp->values[count] = a * this->values[j];
-            mat_tmp->colindex[count] = this->colindex[j];
+        for (int j=this->rowshift[i]; j<this->rowshift[i+1]; j++) {
+            mat_tmp.values[count] = a * this->values[j];
+            mat_tmp.colindex[count] = this->colindex[j];
             mat_tmp.rowshift[i+1]++;
             count++;
             countrow++;
         } // end for js
 
-        for (int k=mat.rowshift[i]; k<mat.rowshift[i+1]; ++k) {
+        for (int k=mat.rowshift[i]; k<mat.rowshift[i+1]; k++) {
             added = 0;
 
             for (int l=mat_tmp.rowshift[i]; l<mat_tmp.rowshift[i]+countrow+1; l++) {
@@ -499,7 +1434,7 @@ FaspErrorType MAT::Add(MAT mat, DBL a, DBL b){
             } // end for l
 
             if (added == 0) {
-                mat_tmp.values[count] = beta * mat.values[k];
+                mat_tmp.values[count] = b * mat.values[k];
                 mat_tmp.colindex[count] = mat.colindex[k];
                 mat_tmp.rowshift[i+1]++;
                 count++;
@@ -513,10 +1448,363 @@ FaspErrorType MAT::Add(MAT mat, DBL a, DBL b){
 
     mat_tmp.nnz = count;
 
-    //diag
+    INT begin,end;
+    count=0;
+    for(INT j=0;j<row;j++){
+        begin=mat_tmp.rowshift[j];
+        end=mat_tmp.rowshift[j+1];
+        for(INT k=begin;k<end;k++){
+            if(mat_tmp.colindex[k-1]==j+1){
+                mat_tmp.diag[count]=k-1;
+                count++;
+            }
+        }
+    }
 
     this->operator=(mat_tmp);
+    return 0;
+}
+
+//! this->mat = this->mat * mat
+FaspErrorType MAT::MultLeft(MAT mat){
+    if(this->column!=mat.row)
+        return 7; //! errortype 7 marks the mismatch between row and column
+
+    INT count,l;
+    MAT tmp_mat;
+    INT *tmp = new INT[mat.column];
+
+    tmp_mat.row=this->row;
+
+    tmp_mat.column=mat.column;
+    tmp_mat.rowshift.reserve(tmp_mat.row+1);
+
+    for (int i=0;i<mat.column;++i) tmp[i]=-1;
+
+    // step 1: Find first the structure IA of C
+    for (int i=0;i<tmp_mat.row;++i) {
+        count=0;
+
+        for (int k=this->rowshift[i];k<this->rowshift[i+1];++k) {
+            for (int j=mat.rowshift[this->colindex[k]];j<mat.rowshift[this->colindex[k]+1];++j) {
+                for (l=0;l<count;l++) {
+                    if (tmp[l]==mat.colindex[j]) break;
+                }
+
+                if (l==count) {
+                    tmp[count]=mat.colindex[j];
+                    count++;
+                }
+            }
+        }
+        tmp_mat.rowshift[i+1]=count;
+        for (int j=0;j<count;++j) {
+            tmp[j]=-1;
+        }
+    }
+
+    for (int i=0;i<tmp_mat.row;++i) tmp_mat.rowshift[i+1]+=tmp_mat.rowshift[i];
+
+    // step 2: Find the structure JA of C
+    INT count_tmp;
+
+    tmp_mat.colindex.reserve(tmp_mat.rowshift[tmp_mat.row]);
+
+    for (int i=0;i<tmp_mat.row;++i) {
+        count_tmp=0;
+        count=tmp_mat.rowshift[i];
+        for (int k=this->rowshift[i];k<this->rowshift[i+1];++k) {
+            for (int j=mat.rowshift[this->colindex[k]];j<mat.rowshift[this->colindex[k]+1];++j) {
+                for (l=0;l<count_tmp;l++) {
+                    if (tmp[l]==mat.colindex[j]) break;
+                }
+
+                if (l==count_tmp) {
+                    tmp_mat.colindex[count]=mat.colindex[j];
+                    tmp[count_tmp]=mat.colindex[j];
+                    count++;
+                    count_tmp++;
+                }
+            }
+        }
+
+        for (int j=0;j<count_tmp;++j) tmp[j]=-1;
+    }
+
+    delete[] tmp;
+
+    // step 3: Find the structure A of C
+    tmp_mat.values.reserve(tmp_mat.rowshift[tmp_mat.row]);
+
+    for (int i=0;i<tmp_mat.row;++i) {
+        for (int j=tmp_mat.rowshift[i];j<tmp_mat.rowshift[i+1];++j) {
+            tmp_mat.values[j]=0;
+            for (int k=this->rowshift[i];k<this->rowshift[i+1];++k) {
+                for (l=mat.rowshift[this->colindex[k]];l<mat.rowshift[this->colindex[k]+1];l++) {
+                    if (mat.colindex[l]==tmp_mat.colindex[j]) {
+                        tmp_mat.values[j]+=this->values[k]*mat.values[l];
+                    } // end if
+                } // end for l
+            } // end for k
+        } // end for j
+    }    // end for i
+
+    tmp_mat.nnz = tmp_mat.rowshift[tmp_mat.row]-tmp_mat.rowshift[0];
+    this->operator=(tmp_mat);
+    return 0;
+}
+
+//! this->mat =  mat * this->mat
+FaspErrorType MAT::MultRight(MAT mat){
+    if(mat.column!=this->row)
+        return 7; //! errortype 7 marks the mismatch between row and column
+
+    INT l,count;
+    MAT tmp_mat;
+    INT *tmp = new INT[this->column];
+
+    tmp_mat.row=mat.row;
+    tmp_mat.column=this->column;
+    tmp_mat.rowshift.reserve(tmp_mat.row+1);
+
+    for (int i=0;i<this->column;++i) tmp[i]=-1;
+
+    // step 1: Find first the structure IA of C
+    for (int i=0;i<tmp_mat.row;++i) {
+        count=0;
+
+        for (int k=mat.rowshift[i];k<mat.rowshift[i+1];++k) {
+            for (int j=this->rowshift[mat.colindex[k]];j<this->rowshift[mat.colindex[k]+1];++j) {
+                for (l=0;l<count;l++) {
+                    if (tmp[l]==this->colindex[j]) break;
+                }
+
+                if (l==count) {
+
+                    tmp[count]=this->colindex[j];
+
+                    count++;
+                }
+            }
+        }
+        tmp_mat.rowshift[i+1]=count;
+        for (int j=0;j<count;++j) {
+            tmp[j]=-1;
+        }
+    }
+
+    for (int i=0;i<tmp_mat.row;++i) tmp_mat.rowshift[i+1]+=tmp_mat.rowshift[i];
+
+    INT count_tmp;
+
+    tmp_mat.colindex.reserve(tmp_mat.rowshift[tmp_mat.row]);
+
+    for (int i=0;i<tmp_mat.row;++i) {
+        count_tmp=0;
+        count=tmp_mat.rowshift[i];
+        for (int k=mat.rowshift[i];k<mat.rowshift[i+1];++k) {
+            for (int j=this->rowshift[mat.colindex[k]];j<this->rowshift[mat.colindex[k]+1];++j) {
+                for (l=0;l<count_tmp;l++) {
+                    if (tmp[l]==this->colindex[j]) break;
+                }
+
+                if (l==count_tmp) {
+                    tmp_mat.colindex[count]=this->colindex[j];
+                    tmp[count_tmp]=this->colindex[j];
+                    count++;
+                    count_tmp++;
+                }
+            }
+        }
+
+        for (int j=0;j<count_tmp;++j) tmp[j]=-1;
+    }
+
+    delete[] tmp;
+
+    // step 3: Find the structure A of C
+    tmp_mat.values.reserve(tmp_mat.rowshift[tmp_mat.row]);
+
+    for (int i=0;i<tmp_mat.row;++i) {
+        for (int j=tmp_mat.rowshift[i];j<tmp_mat.rowshift[i+1];++j) {
+            tmp_mat.values[j]=0;
+            for (int k=mat.rowshift[i];k<mat.rowshift[i+1];++k) {
+                for (l=this->rowshift[mat.colindex[k]];l<this->rowshift[mat.colindex[k]+1];l++) {
+                    if (this->colindex[l]==tmp_mat.colindex[j]) {
+                        tmp_mat.values[j]+=mat.values[k]*this->values[l];
+                    } // end if
+                } // end for l
+            } // end for k
+        } // end for j
+    }    // end for i
+
+    tmp_mat.nnz = tmp_mat.rowshift[tmp_mat.row]-tmp_mat.rowshift[0];
+
+    this->operator=(tmp_mat);
+    return 0;
+}
+
+//! this->mat = mat_left * this->mat * mat_right
+//! (m * n) * (n * n) * (n * m)
+FaspErrorType MAT::MultLeftRight(MAT matl, MAT matr){
+#if 0
+    void fasp_blas_dcsr_rap (const dCSRmat  *R,
+                             const dCSRmat  *A,
+                             const dCSRmat  *P,
+                             dCSRmat        *RAP)
+
+#endif
+        MAT tmpmat;
+
+        tmpmat.row=matl.row;
+        tmpmat.column=matr.column;
+
+        INT *Ps_marker = NULL;
+        INT *As_marker = NULL;
+
+        INT tmpi, tmpj, tmpk;
+        INT count, begin;
+        DBL tmp, tmp_pro, final_pro;
+
+        INT ps = matl.row+this->row + matl.row+1 + 1;
+        INT as=matl.row+this->row+2;
+
+        std::vector<DBL> ps_vec(ps);
+        std::vector<DBL> as_vec(as);
+
+
+        As_marker = Ps_marker + matl.row;
+
+        /*------------------------------------------------------*
+         *  First Pass: Determine size of RAP and set up tmp.rowshift  *
+         *------------------------------------------------------*/
+        tmpmat.rowshift.reserve(matl.row+1);
+
+        for(int j=0;j<matl.row+this->row;j++){
+            Ps_marker[j]=-1;
+        }
+
+        count = 0;
+        for (int j = 0; j < matl.row; j ++) {
+            Ps_marker[j] = count;
+            begin = count;
+            count ++;
+
+            for (int k = matl.rowshift[j]; k < matl.rowshift[j+1]; k ++) {
+                tmpi = matl.colindex[k];
+
+                for (int l = this->rowshift[tmpi]; l < this->rowshift[tmpi+1]; l ++) {
+                    tmpj = this->colindex[l];
+                    if (As_marker[tmpj] != j) {
+                        As_marker[tmpj] = j;
+                        for (int p = matr.rowshift[tmpj]; p < matr.rowshift[tmpj+1]; p ++) {
+                            tmpk = matr.colindex[p];
+                            if (Ps_marker[tmpk] < begin) {
+                                Ps_marker[tmpk] = count;
+                                count ++;
+                            }
+                        }
+                    }
+                }
+            }
+
+            tmpmat.rowshift[j] = begin;
+        }
+
+        tmpmat.rowshift[matl.row] = count;
+        tmpmat.nnz = count;
+
+        tmpmat.colindex.reserve(tmpmat.nnz);
+        tmpmat.values.reserve(tmpmat.nnz);
+
+        for(int j=0;j<matl.row+this->row;j++){
+           Ps_marker[j]=-1;
+        }
+
+        count = 0;
+        for (int j = 0; j < matl.row; j ++) {
+            Ps_marker[j] = count;
+            begin = count;
+            tmpmat.colindex[count] = j;
+            tmpmat.values[count] = 0.0;
+            count ++;
+
+            for (int k = matl.rowshift[j]; k < matl.rowshift[j+1]; k ++) {
+                tmp = matl.values[k];
+
+                tmpi = matl.colindex[k];
+                for (int l = this->rowshift[tmpi]; l < this->rowshift[tmpi+1]; l ++) {
+                    tmp_pro = tmp * this->values[l];
+
+                    tmpj = this->colindex[l];
+                    if (As_marker[tmpj] != j) {
+                        As_marker[tmpj] = j;
+                        for (int p = matr.rowshift[tmpj]; p < matr.rowshift[tmpj+1]; p ++) {
+                            final_pro = tmp_pro * matr.values[p];
+
+                            tmpk = matr.colindex[p];
+                            if (Ps_marker[tmpk] < begin) {
+                                Ps_marker[tmpk] = count;
+                                tmpmat.values[count] = final_pro;
+                                tmpmat.colindex[count] = tmpk;
+                                count ++;
+                            }
+                            else {
+                                tmpmat.values[Ps_marker[tmpk]] += final_pro;
+                            }
+                        }
+                    }
+                    else {
+                        for (int p = matr.rowshift[tmpj]; p < matr.rowshift[tmpj+1]; p ++) {
+                            tmpk = matr.colindex[p];
+                            final_pro = tmp_pro * matr.values[p];
+                            tmpmat.values[Ps_marker[tmpk]] += final_pro;
+                        }
+                    }
+                }
+            }
+        }
+
+        this->operator=(tmpmat);
+
+        fasp_mem_free(Ps_marker); Ps_marker = NULL;
 
     return 0;
 }
-#endif
+
+//! this->mat = transpose(P) * this->mat * P
+FaspErrorType MAT::MultP(MAT P) {
+    MAT Ptrans(P);
+    Ptrans.Transpose();
+    MAT tmp;
+
+
+}
+
+
+
+//! vec_z = vec_y + transpose(this->mat) * vec_x
+FaspErrorType MAT::MultTransposeAdd(VEC vec_x, VEC vec_y, VEC vec_z){
+    if(row!=vec_x.GetSize())
+        return 21; //! errortype 21 marks the mismatch of matrix's row and vector' size
+
+    if(column!=vec_y.GetSize())
+        return 21; //! errortype 21 marks the mismatch of matrix's column and vector' size
+
+    vec_z.operator=(vec_y);
+
+    INT begin,end;
+
+    for(int j=0;j<column;j++){
+        for(int k=0;k<row;k++){
+            begin=rowshift[k];
+            end=rowshift[k+1];
+            for(int l=begin;l<end;l++){
+                if(colindex[l]==j){
+                    vec_z[j]+=(values[l]*vec_x[l]);
+                }
+            }
+        }
+    }
+    return 0;
+}
