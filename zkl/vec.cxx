@@ -153,6 +153,11 @@ INT VEC::GetSize() const {
     return this->size;
 }
 
+//! get the capacity of VEC object
+INT VEC::GetCapacity() {
+    return this->vec.capacity();
+}
+
 //! scale this->vec[j] = a * this->vec[j] by a scalar
 void VEC::Scale(DBL a) {
     if (this->size == 0)
@@ -214,7 +219,7 @@ void VEC::Shift(DBL s) {
 
 //! compute abs(this->vec[j])
 void VEC::Abs() {
-    if (this->size == 0){
+    if (this->size == 0) {
         this->vec.resize(0);
         return;
     }
@@ -231,7 +236,7 @@ void VEC::Reciprocal(DBL tol) {
     }
 
     for (int j = 0; j < this->size; j++) {
-        if (fabs(this->vec[j]) <= tol){
+        if (fabs(this->vec[j]) <= tol) {
             std::cout << "-----------**********---------" << std::endl;
             std::cout << " Zero division error occurred " << std::endl;
             std::cout << "-----------**********---------" << std::endl;

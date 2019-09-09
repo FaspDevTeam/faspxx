@@ -88,6 +88,9 @@ public:
     //! get the size of this->vec
     INT GetSize() const;
 
+    //! get the capacity of VEC object
+    INT GetCapacity();
+
     //! scale this->vec[j] = a * this->vec[j] by a scalar
     void Scale(const DBL a);
 
