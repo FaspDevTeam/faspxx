@@ -2,7 +2,7 @@
  *  \brief Source file for the FASP++ Vector class
  *
  *-----------------------------------------------------------------------------------
- *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Copyright (C) 2019--present by the FASP++ team. All rights resized.
  *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
  *-----------------------------------------------------------------------------------
  */
@@ -39,7 +39,7 @@ VEC::VEC(const VEC &vec_obj) {
 
 //! random construction function, N DBL values from begin_value to end_value
 VEC::VEC(const DBL begin_value, const DBL end_value, const INT N) {
-    this->vec.reserve(N); // performance burdens
+    this->vec.resize(N); // performance burdens
     srand((unsigned) time(NULL));
 
     for (int j = 0; j < N; j++)
@@ -62,23 +62,21 @@ VEC &VEC::operator=(const VEC &vec_obj) {
 
 //! overload [] operator
 DBL &VEC::operator[](const INT position) {
-    return vec[position];
+    return this->vec[position];
 }
 
 //! overload += operator
 VEC &VEC::operator+=(const VEC &vec_obj) {
-    for (int j = 0; j < size; j++) {
-        vec[j] += vec_obj.vec[j];
-    }
+    for (int j = 0; j < size; j++)
+        this->vec[j] += vec_obj.vec[j];
 
     return *this;
 }
 
 //! overload -= operator
 VEC &VEC::operator-=(const VEC &vec_obj) {
-    for (int j = 0; j < size; j++) {
-        vec[j] -= vec_obj.vec[j];
-    }
+    for (int j = 0; j < size; j++)
+        this->vec[j] -= vec_obj.vec[j];
 
     return *this;
 }
@@ -86,11 +84,12 @@ VEC &VEC::operator-=(const VEC &vec_obj) {
 //! set the size of VEC object
 void VEC::SetSize(const INT size) {
     if (size < 0) {
-        this->size = 0;
         this->vec.resize(0);
+        this->size = 0;
+        return;
     }
     this->size = size;
-    vec.resize(size);
+    this->vec.resize(size);
 }
 
 //! set the size of VEC object and set the same value on VEC object
@@ -98,8 +97,9 @@ void VEC::SetValues(const INT size, const DBL value) {
     if (size <= 0) {
         this->size = 0;
         this->vec.resize(0);
+        return;
     }
-    vec.assign(value, size);
+    this->vec.assign(value, size);
     this->size = size;
 }
 
@@ -124,6 +124,7 @@ void VEC::SetValues(const INT size, const DBL *array) {
     if (array == nullptr || size == 0) {
         this->size = 0;
         this->vec.resize(0);
+        return;
     }
     this->vec.assign(array, array + size);
     this->size = size;
@@ -131,13 +132,14 @@ void VEC::SetValues(const INT size, const DBL *array) {
 
 //! get the value of this->vec[position]
 void VEC::Get(const INT position, DBL &value) const {
-    value = vec.at(position);
+    value = this->vec.at(position);
 }
 
 //! get array = this->vec of size = min(size, this->size)
 void VEC::GetArray(const INT &size, DBL **array) const {
     if (size == 0 || this->size == 0) {
         *array = nullptr;
+        return;
     }
 
     int len = size > this->size ? this->size : size;
@@ -154,7 +156,7 @@ INT VEC::GetSize() const {
 //! scale this->vec[j] = a * this->vec[j] by a scalar
 void VEC::Scale(DBL a) {
     if (this->size == 0)
-        this->vec.resize(0);
+        return;
     else {
         for (int j = 0; j < this->size; j++)
             this->vec[j] = a * this->vec[j];
@@ -169,13 +171,11 @@ void VEC::Copy(VEC &vec_obj) const {
 
 //! find max(this->vec[j])
 void VEC::Max(DBL &max) const {
-    if (this->size == 0) {
+    if (this->size == 0)
         max = 0;
-    }
 
-    if (this->size == 1) {
+    if (this->size == 1)
         max = this->vec[0];
-    }
 
     if (this->size > 1) {
         max = this->vec[0];
@@ -214,8 +214,10 @@ void VEC::Shift(DBL s) {
 
 //! compute abs(this->vec[j])
 void VEC::Abs() {
-    if (this->size == 0)
+    if (this->size == 0){
         this->vec.resize(0);
+        return;
+    }
 
     for (int j = 0; j < this->size; j++)
         this->vec[j] = fabs(this->vec[j]);
@@ -224,8 +226,8 @@ void VEC::Abs() {
 //! this->vec[j] = 1 / this->vec[j]
 void VEC::Reciprocal(DBL tol) {
     if (this->size == 0) {
-        this->size = 0;
         this->vec.resize(0);
+        return;
     }
 
     for (int j = 0; j < this->size; j++) {
@@ -239,8 +241,6 @@ void VEC::Reciprocal(DBL tol) {
 
     for (int j = 0; j < size; j++)
         vec[j] = 1 / vec[j];
-
-    return;
 }
 
 //! find l2-norm of this->vec
