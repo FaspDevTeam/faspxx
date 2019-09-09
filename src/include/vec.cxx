@@ -1,8 +1,10 @@
-/**
- * VEC source file
+/*! \file vec.cxx
+ *  \brief Source file for the FASP++ Vector class
  *
- * “//” marks comments left to developers.
- * "//!" marks comments left to the users.
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights resized.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
 #include "vec.hxx"
@@ -11,330 +13,346 @@
 #include <ctime>
 #include <iostream>
 
-//! developers' options
-//! attention : the only one can is 1 among ASSIGN_BY_INDEX, ASSIGN_BY_PUSHBACK, ASSIGN_BY_ITERATOR
-#define ASSIGN_BY_INDEX 1
-#define ASSIGN_BY_PUSHBACK 0
-#define ASSIGN_BY_ITERATOR 0
 /*
- * some temporary information in this file
- * errortype 1 marks the empty VEC
- * errortype 2 marks the dividing zero error
- * errortype 3 marks the mismatch of vectors' lengths
+ * 1 marks the mismatch of vectors' lengths
  */
 
-/*----------------------------------------------------------------------------*/
+//-----------------------------------------------------------------------------------
 
-//! set the length of vec and set the same value on class object
-VEC::VEC(INT length, DBL value) {
-    vec.assign(length, value);
+//! set the size of vec and set the same value on VEC object
+VEC::VEC(const INT size, const DBL value) {
+    this->vec.assign(size, value);
+    this->size = size;
 }
 
-//! assign vector1 to class object
-VEC::VEC(std::vector<DBL> vector1) {
-    vec.operator=(vector1);
+//! assign vector object to VEC object
+VEC::VEC(std::vector<DBL> vector_obj) {
+    this->vec.operator=(vector_obj);
+    this->size = vector_obj.size();
 }
 
-//! assign VEC object to class object
-VEC::VEC(const VEC &vec1) {
-    vec.operator=((vec1.vec));
+//! assign VEC object to VEC object
+VEC::VEC(const VEC &vec_obj) {
+    this->vec.operator=(vec_obj.vec);
+    this->size = vec_obj.size;
 }
 
-//! random constructed function, and random DBL values ranged from begin_value to
-//! end_value, and the number of random values is N
-VEC::VEC(DBL begin_value, DBL end_value, INT N) {
-    vec.reserve(N); // performance burdens
+//! random construction function, N DBL values from begin_value to end_value
+VEC::VEC(const DBL begin_value, const DBL end_value, const INT N) {
+    this->vec.resize(N); // performance burdens
     srand((unsigned) time(NULL));
-#if ASSIGN_BY_INDEX
+
     for (int j = 0; j < N; j++)
-        vec[j] = rand() / (DBL) RAND_MAX * (end_value - begin_value) + begin_value;
-#endif
-#if ASSIGN_BY_PUSHBACK
-    for (int j = 0; j < N; j++)
-        vec.push_back(rand() / (DBL) RAND_MAX * (end_value - begin_value) + begin_value);
-#endif
-#if ASSIGN_BY_ITERATOR
-    for (std::vector<DBL>::iterator iter = vec.begin(); iter != vec.end(); iter++)
-        *iter = rand() / (DBL) RAND_MAX * (end_value - begin_value) + begin_value;
-#endif
+        this->vec[j] = rand() / (DBL) RAND_MAX * (end_value - begin_value) + begin_value;
+
+    this->size = N;
 }
 
-//! random constructed function, and random INT values ranged from begin_value to
-//! end_value, and the number of random values is N
-VEC::VEC(INT begin_value, INT end_value, INT N) {
-    vec.reserve(N); // performance burdens
-    srand((unsigned) time(NULL));
-#if ASSIGN_BY_INDEX
-    for (int j = 0; j < N; j++)
-        vec[j] = rand() % (end_value - begin_value) + begin_value;
-#endif
-#if ASSIGN_BY_PUSHBACK
-    for(int j = 0; j < N; j++)
-        vec.push_back(rand() % (end_value - begin_value) + begin_value);
-#endif
-#if ASSIGN_BY_ITERATOR
-    for (std::vector<DBL>::iterator iter = vec.begin(); iter != vec.end(); iter++)
-        *iter = rand() % (end_value - begin_value) + begin_value;
-#endif
-}
-
-//! assign pointer to class object
-VEC::VEC(const DBL *pointer, const INT element_size) {
-    vec.assign(pointer, pointer + element_size);
-}
-
-//! get this->vec[position]
-FaspErrorType VEC::get(INT position, DBL *value) {
-    *value = vec.at(position);
-    return 0;
-}
-
-//! array = this->vec
-FaspErrorType VEC::getarr(INT *length, DBL **array) {
-    int len = vec.size();
-    if (len == 0)
-        return 1; //! errortype 1 marks the empty VEC
-
-    *length = vec.size();
-    *array = nullptr;
-    *array = new double[len];
-
-    for (int j = 0; j < len; j++)
-        (*array)[j] = vec[j];
-
-    return 0;
-}
-
-//! get the length of this->vec
-FaspErrorType VEC::len(INT *len) {
-    *len = vec.size();
-    return 0;
-}
-
-//! this->vec[j] = a * this->vec[j]
-FaspErrorType VEC::scale(DBL a) {
-    int len = vec.size();
-    if (len == 0)
-        return 1; //! errortype 1 marks the empty VEC
-
-    for (int j = 0; j < len; j++)
-        vec[j] = a * vec[j];
-
-    return 0;
-}
-
-//! vec1 = this->vec
-FaspErrorType VEC::copy(VEC *vec1) {
-    (*vec1).vec.operator=(vec);
-    return 0;
-}
-
-//! max(this->vec[j])
-FaspErrorType VEC::max(DBL *max) {
-    int len = vec.size();
-    if (len == 0)
-        return 1; //! errortype 1 marks the empty VEC
-
-    if (len == 1) {
-        *max = vec[0];
-        return 0;
-    }
-
-    *max = vec[0];
-    for (int j = 1; j < len; j++) {
-        if (*max < vec[j])
-            *max = vec[j];
-    }
-
-    return 0;
-}
-
-//! min(this->vec[j])
-FaspErrorType VEC::min(DBL *min) {
-    int len = vec.size();
-    if (len == 0)
-        return 1; //! errortype 1 marks the empty VEC object
-
-    if (len == 1) {
-        *min = vec[0];
-        return 0;
-    }
-
-    *min = vec[0];
-    for (int j = 1; j < len; j++) {
-        if (*min > vec[j])
-            *min = vec[j];
-    }
-
-    return 0;
-}
-
-//! this->vec[j] = s + this->vec[j]
-FaspErrorType VEC::shift(DBL s) {
-    int len = vec.size();
-    if (len == 0)
-        return 1; //! errortype 1 marks the empty VEC object
-
-    for (int j = 0; j < len; j++)
-        vec[j] += s;
-
-    return 0;
-}
-
-//! abs(this->vec[j])
-FaspErrorType VEC::abs() {
-    int len = vec.size();
-    if (len == 0)
-        return 1; //! errortype 1 marks the empty VEC object
-
-    for (int j = 0; j < len; j++)
-        vec[j] = fabs(vec[j]);
-
-    return 0;
-}
-
-//! this->vec[j] = 1 / this->vec[j]
-FaspErrorType VEC::reciprocal() {
-    int len = vec.size();
-    if (len == 0)
-        return 1; //! errortype 1 marks the empty VEC object
-
-    for (int j = 0; j < len; j++) {
-        if (fabs(vec[j]) <= 1e-43)
-            return 2; //! errortype 2 marks the dividing zero error
-    }
-
-    for (int j = 0; j < len; j++)
-        vec[j] = 1 / vec[j];
-
-    return 0;
-}
-
-//! Norm2(this->vec)
-FaspErrorType VEC::norm2(DBL *norm2) {
-    int len = vec.size();
-    if (len == 0)
-        return 1; //! errortype 1 marks the empty VEC
-
-    *norm2 = 0.0;
-    for (int j = 0; j < len; j++)
-        *norm2 += vec[j] * vec[j];
-
-    *norm2 = sqrt(*norm2);
-
-    return 0;
-}
-
-//! NormInifinity(this->vec)
-FaspErrorType VEC::normInf(DBL *normInf) {
-    int len = vec.size();
-    if (len == 0)
-        return 1; //! errortype 1 marks the empty VEC
-
-    *normInf = 0.0;
-    if (len == 1)
-        *normInf = fabs(vec[0]);
-    else {
-        for (int j = 1; j < len; j++) {
-            if (*normInf < fabs(vec[j]))
-                *normInf = fabs(vec[j]);
-        }
-    }
-
-    return 0;
-}
-
-//! this->vec = a * this->vec + b * vec1
-FaspErrorType VEC::add(VEC vec1, DBL a, DBL b) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
-    if (len != len1)
-        return 3; //! 3 marks the mismatch of vectors' lengths
-
-    if (len == 0)
-        return 1; //! 1 marks the empty VEC
-
-    for (int j = 0; j < len; j++)
-        vec[j] = a * vec[j] + b * vec1.vec[j];
-
-    return 0;
-}
-
-//! dot = this->vec dot vec1
-FaspErrorType VEC::dot(VEC vec1, DBL *dot) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
-    if (len != len1)
-        return 3; //! 3 marks the mismatch of vectors' lengths
-
-    if (len == 0)
-        return 1; //! 1 marks the empty VEC
-
-    *dot = 0.0;
-    for (int j = 0; j < len; j++)
-        *dot += vec[j] * vec1.vec[j];
-
-    return 0;
-}
-
-//! this->vec[j] = this->vec[j] * vec1[j]
-FaspErrorType VEC::pointwisemult(VEC vec1) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
-    if (len != len1)
-        return 3; //! 3 marks the mismatch of vectors' lengths
-
-    if (len == 0)
-        return 1; //! 1 marks the empty VEC
-
-    for (int j = 0; j < len; j++)
-        vec[j] *= vec1.vec[j];
-
-    return 0;
-}
-
-//! this->vec[j] = this->vec[j] / vec1[j]
-FaspErrorType VEC::pointwisedivide(VEC vec1) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
-    if (len != len1)
-        return 3; //! 3 marks the mismatch of vectors' lengths
-
-    if (len == 0)
-        return 1; //! 1 marks the empty VEC
-
-    for (int j = 0; j < len; j++)
-        if (fabs(vec1.vec[j]) <= 1e-43)
-            return 2; //! 2 marks the dividing zero error
-
-    for (int j = 0; j < len; j++)
-        vec[j] /= vec1.vec[j];
-
-    return 0;
-}
-
-//! this->vec[j] = vec1[j] / this->vec[j]
-FaspErrorType VEC::pointwisedivided(VEC vec1) {
-    int len = vec.size();
-    int len1 = vec1.vec.size();
-    if (len != len1)
-        return 3; //! 3 marks the mismatch of vectors' lengths
-
-    if (len == 0)
-        return 1; //! 1 marks the empty VEC
-
-    for (int j = 0; j < len; j++)
-        if (fabs(vec[j]) <= 1e-43)
-            return 2; //! 2 marks the dividing zero error
-
-    for (int j = 0; j < len; j++)
-        vec[j] = vec1.vec[j] / vec[j];
-
-    return 0;
+//! assign pointer to VEC object
+VEC::VEC(const DBL *pointer, const INT size) {
+    this->vec.assign(pointer, pointer + size);
+    this->size = size;
 }
 
 //! overload equals operator
-//! this->vec = vec1
-VEC &VEC::operator=(const VEC &vector1) {
-    vec.operator=(vector1.vec);
+VEC &VEC::operator=(const VEC &vec_obj) {
+    this->vec.operator=(vec_obj.vec);
+    this->size = vec_obj.size;
+}
+
+//! overload [] operator
+DBL &VEC::operator[](const INT position) {
+    return this->vec[position];
+}
+
+//! overload += operator
+VEC &VEC::operator+=(const VEC &vec_obj) {
+    for (int j = 0; j < size; j++)
+        this->vec[j] += vec_obj.vec[j];
+
+    return *this;
+}
+
+//! overload -= operator
+VEC &VEC::operator-=(const VEC &vec_obj) {
+    for (int j = 0; j < size; j++)
+        this->vec[j] -= vec_obj.vec[j];
+
+    return *this;
+}
+
+//! set the size of VEC object
+void VEC::SetSize(const INT size) {
+    if (size < 0) {
+        this->vec.resize(0);
+        this->size = 0;
+        return;
+    }
+    this->size = size;
+    this->vec.resize(size);
+}
+
+//! set the size of VEC object and set the same value on VEC object
+void VEC::SetValues(const INT size, const DBL value) {
+    if (size <= 0) {
+        this->size = 0;
+        this->vec.resize(0);
+        return;
+    }
+    this->vec.assign(value, size);
+    this->size = size;
+}
+
+//! assign vector object to VEC object
+void VEC::SetValues(const std::vector<DBL> vector_object) {
+    this->vec.operator=(vector_object);
+    this->size = vector_object.size();
+}
+
+//! random construction function, N DBL values from begin_value to end_value
+void VEC::SetValues(const DBL begin_value, const DBL end_value, const INT N) {
+    this->vec.resize(N); // performance burdens
+    srand((unsigned) time(NULL));
+    for (int j = 0; j < N; j++)
+        this->vec[j] = rand() / (DBL) RAND_MAX * (end_value - begin_value) + begin_value;
+
+    this->size = N;
+}
+
+//! this->vec = array
+void VEC::SetValues(const INT size, const DBL *array) {
+    if (array == nullptr || size == 0) {
+        this->size = 0;
+        this->vec.resize(0);
+        return;
+    }
+    this->vec.assign(array, array + size);
+    this->size = size;
+}
+
+//! get the value of this->vec[position]
+void VEC::Get(const INT position, DBL &value) const {
+    value = this->vec.at(position);
+}
+
+//! get array = this->vec of size = min(size, this->size)
+void VEC::GetArray(const INT &size, DBL **array) const {
+    if (size == 0 || this->size == 0) {
+        *array = nullptr;
+        return;
+    }
+
+    int len = size > this->size ? this->size : size;
+    *array = new DBL[len];
+    for (int j = 0; j < len; j++)
+        (*array)[j] = this->vec[j];
+}
+
+//! get the size of this->vec
+INT VEC::GetSize() const {
+    return this->size;
+}
+
+//! get the capacity of VEC object
+INT VEC::GetCapacity() {
+    return this->vec.capacity();
+}
+
+//! scale this->vec[j] = a * this->vec[j] by a scalar
+void VEC::Scale(DBL a) {
+    if (this->size == 0)
+        return;
+    else {
+        for (int j = 0; j < this->size; j++)
+            this->vec[j] = a * this->vec[j];
+    }
+}
+
+//! copy vec_obj = this->vec
+void VEC::Copy(VEC &vec_obj) const {
+    vec_obj.vec.operator=(this->vec);
+    vec_obj.size = this->size;
+}
+
+//! find max(this->vec[j])
+void VEC::Max(DBL &max) const {
+    if (this->size == 0)
+        max = 0;
+
+    if (this->size == 1)
+        max = this->vec[0];
+
+    if (this->size > 1) {
+        max = this->vec[0];
+        for (int j = 1; j < this->size; j++) {
+            if (max < this->vec[j])
+                max = this->vec[j];
+        }
+    }
+}
+
+//! find min(this->vec[j])
+void VEC::Min(DBL &min) const {
+    if (this->size == 0)
+        min = 0;
+
+    if (this->size == 1)
+        min = this->vec[0];
+
+    if (this->size > 1) {
+        min = this->vec[0];
+        for (int j = 1; j < this->size; j++) {
+            if (min > this->vec[j])
+                min = this->vec[j];
+        }
+    }
+}
+
+//! shift this->vec[j] += s by a scalar
+void VEC::Shift(DBL s) {
+    if (this->size == 0)
+        this->vec.resize(0);
+
+    for (int j = 0; j < this->size; j++)
+        this->vec[j] += s;
+}
+
+//! compute abs(this->vec[j])
+void VEC::Abs() {
+    if (this->size == 0) {
+        this->vec.resize(0);
+        return;
+    }
+
+    for (int j = 0; j < this->size; j++)
+        this->vec[j] = fabs(this->vec[j]);
+}
+
+//! this->vec[j] = 1 / this->vec[j]
+void VEC::Reciprocal(DBL tol) {
+    if (this->size == 0) {
+        this->vec.resize(0);
+        return;
+    }
+
+    for (int j = 0; j < this->size; j++) {
+        if (fabs(this->vec[j]) <= tol) {
+            std::cout << "-----------**********---------" << std::endl;
+            std::cout << " Zero division error occurred " << std::endl;
+            std::cout << "-----------**********---------" << std::endl;
+        }
+        return;
+    }
+
+    for (int j = 0; j < size; j++)
+        vec[j] = 1 / vec[j];
+}
+
+//! find l2-norm of this->vec
+DBL VEC::Norm2() const {
+    if (size == 0)
+        return 0;
+
+    DBL norm2 = 0.0;
+    for (int j = 0; j < size; j++)
+        norm2 += vec[j] * vec[j];
+
+    return sqrt(norm2);
+}
+
+//! find infinity norm of this->vec
+DBL VEC::NormInf() const {
+    if (size == 0)
+        return 0;
+
+    DBL normInf = 0.0;
+    if (size == 1)
+        normInf = fabs(vec[0]);
+    else {
+        for (int j = 1; j < size; j++) {
+            if (normInf < fabs(vec[j]))
+                normInf = fabs(vec[j]);
+        }
+    }
+
+    return normInf;
+}
+
+//! this->vec = a * this->vec + b * vec_obj
+FaspErrorType VEC::Add(const VEC &vec_obj, const DBL a, const DBL b) {
+    if (this->size != vec_obj.size)
+        return 1; //! 1 marks the mismatch of vectors' lengths
+
+    if (this->size == 0)
+        return 0;
+
+    for (int j = 0; j < this->size; j++)
+        this->vec[j] = a * this->vec[j] + b * vec_obj.vec[j];
+
+    return 0;
+}
+
+//! this->vec = a * vec1_obj + b * vec2_obj
+FaspErrorType VEC::Add(const DBL a, const VEC &vec1_obj, const DBL b, const VEC &vec2_obj) {
+    if (vec1_obj.size != vec2_obj.size)
+        return 1; //! 1 marks the mismatch of vectors' lengths
+
+    this->size = vec1_obj.size;
+    this->vec.resize(this->size);
+    for (int j = 0; j < vec1_obj.size; j++)
+        this->vec[j] = a * vec1_obj.vec[j] + b * vec2_obj.vec[j];
+
+    return 0;
+}
+
+//! dot product of this->vec and vec
+FaspErrorType VEC::Dot(const VEC &vec_obj, DBL &dot) const {
+    if (this->size != vec_obj.size)
+        return 1; //! 1 marks the mismatch of vectors' lengths
+
+    if (this->size == 0)
+        dot = 0.0;
+
+    dot = 0.0;
+    for (int j = 0; j < this->size; j++)
+        dot += this->vec[j] * vec_obj.vec[j];
+
+    return 0;
+}
+
+//! scale this->vec[j] *= vec[j] by a vector
+FaspErrorType VEC::PointWiseMult(const VEC &vec_obj) {
+    if (this->size != vec_obj.size)
+        return 1; //! 1 marks the mismatch of vectors' lengths
+
+    if (this->size == 0)
+        return 0;
+
+    for (int j = 0; j < this->size; j++)
+        this->vec[j] *= vec_obj.vec[j];
+
+    return 0;
+}
+
+//! this->vec[j] = this->vec[j] / vec[j]
+FaspErrorType VEC::PointWiseDivide(const VEC &vec_obj, DBL tol) {
+    if (this->size != vec_obj.size)
+        return 1; //! 1 marks the mismatch of vectors' lengths
+
+    if (this->size == 0)
+        return 0;
+
+    for (int j = 0; j < this->size; j++) {
+        if (fabs(vec_obj.vec[j]) <= tol) {
+            std::cout << "-----------**********---------" << std::endl;
+            std::cout << " Zero division error occurred " << std::endl;
+            std::cout << "-----------**********---------" << std::endl;
+            return 0;
+        }
+    }
+
+    for (int j = 0; j < this->size; j++)
+        this->vec[j] /= vec_obj.vec[j];
+
+    return 0;
 }
