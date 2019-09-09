@@ -9,9 +9,9 @@
 /*---------------------------------------------------------------------------------*/
 
 //! assign row, column, nnz, values, rowshift, colindex, diag to this->mat
-MAT::MAT(INT row, INT column, INT nnz, std::vector<DBL>  values,
+MAT::MAT(INT row, INT column, INT nnz, std::vector<DBL> values,
          std::vector<INT> rowshift, std::vector<INT> colindex,
-         std::vector<INT> diag){
+         std::vector<INT> diag) {
 
     /*
      * some simple examinations about parameters
@@ -19,91 +19,91 @@ MAT::MAT(INT row, INT column, INT nnz, std::vector<DBL>  values,
      */
     /*----------------  begin  ----------------*/
     //! basic examinations
-    INT mark=0;
-    INT count=0;
-    INT begin,end;
-    if(row!=rowshift.size()-1)
+    INT mark = 0;
+    INT count = 0;
+    INT begin, end;
+    if (row != rowshift.size() - 1)
         goto Return;
 
-    if(row<=0 || column <=0)
+    if (row <= 0 || column <= 0)
         goto Return;
 
-    if(((row>column)?column:row)!=diag.size())
+    if (((row > column) ? column : row) != diag.size())
         goto Return;
 
 
-    if(nnz!=colindex.size())
+    if (nnz != colindex.size())
         goto Return;
 
-    if(nnz!=values.size())
+    if (nnz != values.size())
         goto Return;
 
-    if(nnz!=rowshift[rowshift.size()-1])
+    if (nnz != rowshift[rowshift.size() - 1])
         goto Return;
 
     //! simple examinations
-    for(INT j=0;j<row;j++){
-        if(rowshift[j]>=rowshift[j+1]){
+    for (INT j = 0; j < row; j++) {
+        if (rowshift[j] >= rowshift[j + 1]) {
             goto Return;
         }
     }
 
-    if(rowshift[0]<0 || rowshift[row]>nnz)
+    if (rowshift[0] < 0 || rowshift[row] > nnz)
         goto Return;
 
-    for(INT j=0;j<row;j++){
-        begin=rowshift[j];
-        end=rowshift[j+1];
-        if(begin==end)
+    for (INT j = 0; j < row; j++) {
+        begin = rowshift[j];
+        end = rowshift[j + 1];
+        if (begin == end)
             goto Return;
 
-        if(end==begin+1){
-            if(colindex[begin]!=j)
+        if (end == begin + 1) {
+            if (colindex[begin] != j)
                 goto Return;
         }
 
-        if(end>begin+1){
-            for(INT k=begin;k<end-1;k++){
-                if(colindex[k]>colindex[k+1])
+        if (end > begin + 1) {
+            for (INT k = begin; k < end - 1; k++) {
+                if (colindex[k] >= colindex[k + 1])
                     goto Return;
             }
-            if(0>colindex[begin])
+            if (0 > colindex[begin])
                 goto Return;
 
-            if(colindex[end-1]>=column)
+            if (colindex[end - 1] >= column)
                 goto Return;
         }
     }
 
     //! exam diag and colindex
-    for(INT j=0;j<row;j++){
-        begin=rowshift[j];
-        end=rowshift[j+1];
-        for(INT k=begin;k<end;k++){
-            if(colindex[k]==j){
-                if(diag[count]!=k)
+    for (INT j = 0; j < row; j++) {
+        begin = rowshift[j];
+        end = rowshift[j + 1];
+        for (INT k = begin; k < end; k++) {
+            if (colindex[k] == j) {
+                if (diag[count] != k)
                     goto Return;
                 else
                     count++;
             }
         }
     }
-    if(count!=diag.size())
+    if (count != diag.size())
         goto Return;
 
-    mark=1;
+    mark = 1;
 
-    if(mark==0){
+    if (mark == 0) {
         Return:
-        std::cout<<"----------**********----------"<<std::endl;
-        std::cout<<"     data type isn't CSRx     "<<std::endl;
-        std::cout<<"----------**********----------"<<std::endl;
-        return ;
+        std::cout << "----------**********----------" << std::endl;
+        std::cout << "     data type isn't CSRx     " << std::endl;
+        std::cout << "----------**********----------" << std::endl;
+        return;
     }
 
-    this->row=row;
-    this->column=column;
-    this->nnz=nnz;
+    this->row = row;
+    this->column = column;
+    this->nnz = nnz;
     this->values.operator=(values);
     this->rowshift.operator=(rowshift);
     this->colindex.operator=(colindex);
