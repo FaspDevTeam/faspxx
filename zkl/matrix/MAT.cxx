@@ -9,9 +9,9 @@
 /*---------------------------------------------------------------------------------*/
 
 //! assign row, column, nnz, values, rowshift, colindex, diag to this->mat
-MAT::MAT(INT row, INT column, INT nnz, std::vector<DBL> values,
-         std::vector<INT> rowshift, std::vector<INT> colindex,
-         std::vector<INT> diag) {
+MAT::MAT(const INT row, const INT column, const INT nnz, const std::vector<DBL>
+		values, const std::vector<INT> rowshift, const std::vector<INT> 
+		colindex, const std::vector<INT> diag) {
 
     /*
      * some simple examinations about parameters
