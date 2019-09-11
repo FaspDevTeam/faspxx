@@ -6,135 +6,188 @@
  */
 
 #include "vec.hxx"
-
-class MAT:public VEC{
+/*----------------------------------------------------------------------------*/
+/*! \class MAT
+ *  \brief basic mat class
+ *
+ *  This class defines the basic mat data structure and some basic operations.
+ *  attention :
+ *  there are two simple examples
+ *  the first ex :
+ *  \[
+ *  \begin{pmatrix}
+ *  1 & 0 & 2 \\
+ *  0 & 1 & 0 \\
+ *  3 & 0 & 0 \\
+ *  \end{pmatrix}
+ *  \]
+ *  and nnz = 5 ; row = 3 ; column = 3 ;
+ *  values = { 1, 2, 1, 3, 0 }
+ *  rowshift = { 0, 2, 3, 5 }
+ *  colindex = { 0, 2, 1, 0, 2 }
+ *  diag = { 0, 2, 4 }
+ *  the second ex :
+ *  \[
+ *  \begin{pmatrix}
+ *  1 & 7 & 2 \\
+ *  0 & 0 & 0 \\
+ *  3 & 0 & 4 \\
+ *  \end{pmatrix}
+ *  \]
+ *  and nnz = 6 ; row = 3 ; column = 3 ;
+ *  values = { 1, 7, 2, 0, 3, 4 }
+ *  rowshift = { 0, 3, 4, 6 }
+ *  colindex = { 0, 1, 2, 1, 0, 2 }
+ *  diag = { 0, 3, 5 }
+ */
+class MAT {
 private:
 
     //! implement the CSRx(CSR extension) data structure
-    //! the CSRx is only applicable in the SPD matrix here
 
-    //! the number of entries of this->mat
+    //! the number of entries of *this
     INT nnz;
 
-    //! AA contains the non-zero entries of this->mat, stored row by row, its size is nnz
-    VEC AA;
+    //! the row number of *this
+    INT row;
 
-    //! IA contains the column indices of the non-zero entries stored in AA;
-    //! its size row + 1, row is the this->mat's row number
-    VEC IA;
+    //! the column number of *this
+    INT column;
 
-    //! JA contains the indices to the beginning of each row in the vector AA and JA;
-    //! its size is nnz
-    VEC JA;
+    //! values contains the non-zero entries of *this, stored row by
+    //! row, its size is nnz
+    std::vector<DBL> values;
 
-    //! DIA contains the indices of diagonal entries in AA, and its size is
-    VEC DIA;
+    //! rowshift contains the column indices of the non-zero and diagonal
+    //! entries stored in this->values;
+    //! its size row + 1, row is the *this 's row number
+    std::vector<INT> rowshift;
+
+    //! colindex contains the indices to the beginning of each row in the
+    //! vector this->values and this->rowshift; its size is nnz
+    std::vector<INT> colindex;
+
+    //! diag contains the indices of diagonal entries in this->values,
+    //! and its size is min(row, column)
+    std::vector<INT> diag;
 public:
 
     //! initial contructed function
-    MAT(){};
+    MAT() : row(0), column(0), nnz(0), values(0), rowshift(0),
+            colindex(0), diag(0) {};
 
-    //! assign MAT object to this->mat
-    MAT(const MAT& mat1);
+    //! assign row, column, nnz, values, rowshift, colindex, diag to this->mat
+    MAT(const INT row, const INT column, const INT nnz, const std::vector<DBL>
+    values, const std::vector<INT> rowshift, const std::vector<INT> colindex,
+        const std::vector<INT> diag);
 
-    //! assign nnz, AA, IA, JA, DIA to this->mat
-    MAT(INT nnz, VEC AA, VEC IA, VEC JA, VEC DIA);
-
-    //! assign nnz, AA, IA, JA to this->mat
-    MAT(INT nnz, VEC AA, VEC IA, VEC JA);
-
-    //! assign scalar matrix to this->mat
-    MAT(DBL value, INT size);
+    //! assign row, column, nnz, values, rowshift, colindex to *this
+    MAT(const INT row, const INT column, const INT nnz, const std::vector<DBL>
+    values, const std::vector<INT> rowshift, const std::vector<INT>
+        colindex);
 
     //! assign diagonal matrix to this->mat
-    MAT(VEC vec1);
+    MAT(VEC &vec_obj);
 
-    //! assign tridiagonal matrix to this->mat
-    //! attention : whether the tridiagonal matrix is needed to judge a spd matrix?
-    MAT(DBL down, DBL diag, DBL up, INT size);
+    //! assign diagonal matrix to this->mat
+    MAT(const std::vector<DBL> &vector_obj);
 
-    //! get the row or column number of this->mat
-    FaspErrorType getsize(INT *row);
+    //! assign MAT object to this->mat
+    MAT(const MAT &mat);
 
-    //! get (this->mat).nnz
-    FaspErrorType getelemsize(INT *nnz);
-
-    //! get (this->mat)[i][j]
-    FaspErrorType getelem(INT row, INT column);
-
-    //! get the whole jth-row elements in this->mat into VEC object
-    FaspErrorType getrowvec(INT row, VEC *vec1);
-
-    //! get the whole jth-row elements in this->mat into Array object
-    FaspErrorType getrowarr(INT row, DBL *array);
-
-    //! get the whole jth-column elements in this->mat into VEC object
-    FaspErrorType getcolvec(INT column, VEC *vec1);
-
-    //! get the whole jth-column elements in this->mat into Array object
-    FaspErrorType getcolarr(INT column, DBL *array);
-
-    //! get the whole diagonal elements in this->mat into VEC object
-    FaspErrorType getdiagvec(VEC *vec1);
-
-    //! get the whole diagonal elements in this->mat into Array object
-    FaspErrorType getdiagarr(DBL *array);
-
-    //! get the whole elements into VEC object
-    FaspErrorType getwholevec(VEC vec1);
-
-    //! get the whole elements into Array object
-    FaspErrorType getwholearr(DBL *array);
-
-    //! zero all the elements
-    FaspErrorType zero();
-
-    //! copy this->mat into mat1
-    FaspErrorType copy(MAT *mat1);
-
-    //! this->mat = a * this->mat
-    FaspErrorType scale(DBL a);
-
-    //! this->mat = a + this->mat
-    FaspErrorType shift(DBL a);
-
-    //! this->mat[j] = a + this->mat[j] and j is the only diagonal elements' indices
-    FaspErrorType shiftdiag(DBL a);
-
-    //! transpose this->mat
-    FaspErrorType transpose();
-
-    //! this->mat = a * this->mat + b * mat1
-    FaspErrorType add(MAT mat1, DBL a, DBL b);
-
-    //! this->mat = this->mat * mat1
-    FaspErrorType multl(MAT mat1);
-
-    //! this->mat =  mat1 * this->mat
-    FaspErrorType multr(MAT mat1);
-
-    //! this->mat = mat1 * this->mat * mat2
-    FaspErrorType multlr(MAT mat1, MAt mat2);
-
-    //! vec2 = this->mat * vec1
-    FaspErrorType multvec(VEC vec1, VEC vec2);
-
-    //! vec3 = vec2 + this->mat * vec1
-    FaspErrorType multadd(VEC vec1, VEC vec2, VEC vec3);
-
-    //! vec3 = vec2 + transpose(this->mat) * vec1
-    FaspErrorType multtransposeadd(VEC vec1, VEC vec2, VEC vec3);
-
-    //! norm1(this->mat)
-    FaspErrorType norm1(DBL *norm1);
-
-    //! norm2(this->mat)
-    //! programing is very hard
-    FaspErrorType norm2(DBL *norm2);
-
-    //! normInf(this->mat)
-    FaspErrorType normInf(DBL *normInf);
+    //! overload equals operator
+    MAT &operator=(const MAT &mat);
 
     //! destructor
-    ~MAT(){};
+    ~MAT() {};
+
+    FaspErrorType CheckCSRx(const INT row, const INT column, const INT nnz,
+                            const std::vector<DBL> values,
+                            const std::vector<INT> rowshift,
+                            const std::vector<INT> colindex,
+                            const std::vector<INT> diag);
+
+    FaspErrorType CheckCSR(const INT row, const INT column, const INT nnz,
+                           const std::vector<DBL> values,
+                           const std::vector<INT> rowshift,
+                           const std::vector<INT> colindex);
+
+    FaspErrorType ConvertCSR(const INT row, const INT column, const INT nnz,
+                             const std::vector<DBL> values,
+                             const std::vector<INT> rowshift,
+                             const std::vector<INT> colindex, MAT &mat);
+
+    //! assign row, column, nnz, values, rowshift, colindex to *this
+    void SetValues(const INT row, const INT column, const INT nnz,
+                   const std::vector<DBL> values, const std::vector<INT> rowshift,
+                   const std::vector<INT> colindex, const std::vector<INT> diag);
+
+    //! assign row, column, nnz, values, rowshift, colindex to *this
+    void SetValues(const INT row, const INT column, const INT nnz,
+                   const std::vector<DBL> values, const std::vector<INT> rowshift,
+                   const std::vector<INT> colindex);
+
+    //! get the row or column number of this->mat
+    void GetSizes(INT &row, INT &col) const;
+
+    //! get (this->mat).nnz
+    INT Getnnz() const;
+
+    //! get (this->mat)[i][j]
+    FaspErrorType GetElem(const INT row, const INT column, DBL &value) const;
+
+    //! get the whole jth-row elements in this->mat into VEC object
+    FaspErrorType GetRow(const INT row, std::vector<DBL> &vector_obj) const;
+
+    //! get the whole jth-column elements in this->mat into VEC object
+    FaspErrorType GetColumn(const INT column, std::vector<DBL> &vec_obj) const;
+
+    //! get the whole diagonal elements in this->mat into VEC object
+    void GetDiag(std::vector<DBL> &vector_obj) const;
+
+    //! zero all the elements
+    void Zero();
+
+    //! copy this->mat into mat
+    void Copy(MAT &mat) const;
+
+    //! this->mat = a * this->mat
+    void Scale(const DBL a);
+
+    //! this->mat = a * I + this->mat
+    void Shift(const DBL a);
+
+    //! vec_b = this->mat * vec_x
+    FaspErrorType MultVec(VEC vec_x, VEC &vec_b) const;
+
+    //! transpose this->mat
+    void Transpose();
+
+    //! vec3 = vec2 + transpose(this->mat) * vec1
+    FaspErrorType MultTransposeAdd(const VEC vec1, const VEC vec2, VEC &vec3) const;
+
+    //! *this = a * *this + b * mat
+    FaspErrorType Add(const DBL a, const DBL b, const MAT mat);
+
+    //! *this = *this * mat
+    FaspErrorType MultLeft(const MAT mat);
+
+    //! *this = mat * *this
+    FaspErrorType MultRight(const MAT mat);
+
+    //! mat3 = a * mat1 + b * mat2
+    friend FaspErrorType
+    Add(const DBL a, const MAT mat1, const DBL b, const MAT mat2,
+        MAT &mat3);
+
+    //! mat3 = mat1 * mat2
+    friend FaspErrorType Mult2(const MAT mat1, const MAT mat2, MAT &mat3);
+
+    //! mat4 = mat1 * mat2 * mat3
+    friend FaspErrorType Mult3(const MAT mat1, const MAT mat2, const MAT mat3, MAT
+    &mat4);
+
+    //! mat3 = transpose(mat1) * mat2 * mat1
+    friend FaspErrorType MultP(const MAT mat1, const MAT mat2, MAT &mat3);
+
 };
