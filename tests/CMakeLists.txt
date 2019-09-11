@@ -15,7 +15,7 @@ link_libraries (
 )
 
 
-add_executable(test_ex gtest_examples.cpp)
+add_executable(TestAll tests_main.cpp)
 
 add_executable(speedtest_p0 speedtest.cxx)
 set_target_properties(speedtest_p0 PROPERTIES CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
