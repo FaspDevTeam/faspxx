@@ -1,12 +1,5 @@
 /** \file testErrorCode.cxx
- *  \brief Test error code in FASP++
- *
- *  Compile:
- *      g++ testErrorCode.cxx -o testErrorCode
- *
- *  Expected results:
- *      ### ERROR: Unknown error type!
- *      ### ERROR: Check testErrorCode.cxx at Line 142
+ *  \brief Test error code output
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.

@@ -8,7 +8,6 @@
 typedef int FaspErrorType;
 typedef int INT;
 typedef double DBL;
-typedef unsigned long long uint64;
 
 #endif /* end if for __FASPXX_HEADER__ */
 

@@ -14,10 +14,6 @@
 #include <iostream>
 #include "faspxx.hxx"
 
-/*---------------------------------*/
-/*--      Public Functions       --*/
-/*---------------------------------*/
-
 /// \brief Error code definition
 enum FaspErrorCode {
     SUCCESS                = 0,    //! Everything is fine
