@@ -1,10 +1,9 @@
 
 #include <gtest/gtest.h>
 #include <iostream>
-#include "gtest_examples.cpp"
+#include "gtest_examples.cxx"
 
 using namespace std;
-
 
 int main(int argc, char* argv[])
 {

@@ -2,9 +2,9 @@
  * a part of source code about mat.hxx
  */
 
-#include "mat.hxx"
-#include "fasp++.hxx"
 #include <iostream>
+#include "timing.hxx"
+#include "mat.hxx"
 
 /*---------------------------------------------------------------------------------*/
 

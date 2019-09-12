@@ -1,4 +1,3 @@
-
 1. What is the difference between gtest and gmock?
 ref: https://stackoverflow.com/questions/13696376/what-is-the-difference-between-gtest-and-gmock
 
@@ -16,8 +15,6 @@ option(gtest_build_samples "Build gtest's sample programs." OFF) # 同时编译g
 
 set (CMAKE_CXX_STANDARD 11)           # 以c++11标准编译
 set (CMAKE_CXX_STANDARD_REQUIRED ON)  # 以c++11标准编译
-
-
 
 3.　编写测试的基本步骤:
 // Step 1. Include necessary header files such that the stuff your
@@ -52,8 +49,6 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)  # 以c++11标准编译
 // RUN_ALL_TESTS() macro magically knows about all the tests we
 // defined.  Isn't this convenient?
 
-
-
 4. test fixture
 // A test fixture is a place to hold objects and functions shared by
 // all tests in a test case.  Using a test fixture avoids duplicating
@@ -79,7 +74,6 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)  # 以c++11标准编译
 // in a global function.  That's why you should put test sub-routines
 // in a test fixture.
 
-
 5. sub-test-fixture
 // This sample teaches how to reuse a test fixture in multiple test
 // cases by deriving sub-fixtures from it.
@@ -96,15 +90,12 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)  # 以c++11标准编译
 // test fixture, and then have each test case use a fixture derived
 // from this super fixture.
 
-
-
 6. 仔细阅读googletest/samples 下的 6,7,8,9,10.
 
 7. 参考: https://www.cnblogs.com/coderzh/archive/2009/03/31/1426758.html
 EXPECT系列和ASSERT系列的区别是：
     1. EXPECT_*  失败时，案例继续往下执行。
     2. ASSERT_* 失败时，直接在当前函数中返回，当前函数中ASSERT_*后面的语句将不会执行。
-
 
 7.gtest系列之事件机制(section 3 in ref: https://blog.csdn.net/ONEDAY_789/article/details/76718463)
 “事件” 本质是框架给你提供了一个机会, 让你能在这样的几个机会来执行你自己定制的代码, 来给测试用例准备/清理数据。gtest提供了多种事件机制，总结一下gtest的事件一共有三种：
@@ -116,24 +107,3 @@ EXPECT系列和ASSERT系列的区别是：
 要实现全局事件，必须写一个类，继承testing::Environment类，实现里面的SetUp和TearDown方法。SetUp方法在所有案例执行前执行；TearDown方法在所有案例执行后执行。
 例如全局事件可以按照下列方式来使用：
 除了要继承testing::Environment类，还要定义一个该全局环境的一个对象并将该对象添加到全局环境测试中去。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

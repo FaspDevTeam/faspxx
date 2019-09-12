@@ -12,7 +12,7 @@
 
 #include <vector>
 #include <cmath>
-#include "errortype.hxx"
+#include "error.hxx"
 
 /*! \class VEC
  *  \brief basic vec class
@@ -29,6 +29,8 @@ private:
 
     //! size of vec
     INT size;
+
+    void WarningPrint(const INT warningtype) const ;
 
 public:
     //! default constructed function
@@ -49,7 +51,7 @@ public:
      * this->vec and its size on this->size
      */
     //! assign vector object to VEC object
-    VEC(const std::vector<DBL> &vector_obj);
+    VEC(const std::vector<DBL> vector_obj);
 
     /**
      * no matter what the input parameter "vec_obj" is, set its values on
@@ -63,14 +65,14 @@ public:
      * size = 0, other cases are normally dealt
      */
     //! random construction function, N DBL values from begin_value to end_value
-    VEC(const DBL begin_value, const DBL end_value, const INT N);
+    VEC(const INT N,const DBL min, const DBL max);
 
     /**
      * if the input parameter "pointer" is null or the input parameter
      * "size" is not more than 0, the VEC object is set as null
      */
     //! assign pointer to VEC object
-    VEC(const DBL *pointer, const INT size);
+    VEC(const INT size, const DBL *pointer);
 
     //! destructor function
     ~VEC() {}
@@ -88,6 +90,13 @@ public:
      */
     //! overload [] operator
     DBL &operator [] (const INT position);
+
+    /**
+     * attention : the overloaded function doesn't check whether
+     * the index crossover
+     */
+     //! overload [] operator
+     const DBL &operator [] (const INT position) const;
 
     /**
      * attention : the overloaded function doesn't check whether
@@ -129,7 +138,7 @@ public:
      * size = 0, other cases are normally dealt
      */
     //! random construction function, N DBL values from begin_value to end_value
-    void SetValues(const DBL begin_value, const DBL end_value, const INT N);
+    void SetValues(const INT N,const DBL min, const DBL max);
 
     /**
      * if the input parameter "size" is 0, or "array" is null,
@@ -143,7 +152,7 @@ public:
      * and the "this->vec.at()" avoids the error in the vector object
      */
     //! get the value of this->vec[position]
-    void Get(const INT position, DBL &value) const;
+    DBL Get(const INT position) const;
 
     /**
      * if the input parameter "size" <= 0 or this->size == 0,
@@ -163,7 +172,7 @@ public:
      * get the size of allocated memory for the VEC object
      */
     //! get the capacity of VEC object
-    INT GetCapacity() const;
+    INT GetCapacity();
 
     /**
      * if VEC object 's size == 0, return the inital VEC object
@@ -256,10 +265,10 @@ public:
      * vectors' lengths
      */
     //! scale this->vec[j] *= vec_obj[j] by a vector
-    FaspErrorType PointWiseMult(const VEC &vec_obj);
+    FaspErrorType PointwiseMult(const VEC &vec_obj);
 
     //! this->vec[j] = this->vec[j] / vec_obj[j]
-    FaspErrorType PointWiseDivide(const VEC &vec_obj,DBL tol);
+    FaspErrorType PointwiseDivide(const VEC &vec_obj,DBL tol);
 };
 
 #endif /* end if for __VEC_HEADER__ */

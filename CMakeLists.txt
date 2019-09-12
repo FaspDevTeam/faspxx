@@ -1,12 +1,19 @@
+cmake_minimum_required(VERSION 3.14)
 
-cmake_minimum_required(VERSION 3.5)
+project(faspxx)
 
-project(FASPXX)
+set(CMAKE_CXX_STANDARD 11)
 
-set (CMAKE_C_FLAGS_DEBUG "-D_DEBUG")
-set (CMAKE_CXX_STANDARD 11)           # 以c++11标准编译
-set (CMAKE_CXX_STANDARD_REQUIRED ON)  # 以c++11标准编译
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+include_directories(include/)
 
+file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
+add_library(faspxx ${SRC_FILES})
 
-add_subdirectory(tests tests)
+# Test error code class
+add_executable(testErrorCode test/testErrorCode.cxx)
+
+# Test vector operations
+add_executable(testVector test/testVector.cxx)
+
+# Test Google Test environment
+# add_executable(testGoogle test/testGoogle.cxx)
