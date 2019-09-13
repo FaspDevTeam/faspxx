@@ -30,8 +30,6 @@ private:
     //! size of vec
     INT size;
 
-    void WarningPrint(const INT warningtype) const ;
-
 public:
     //! default constructed function
     VEC():size(0), vec(0) {}
