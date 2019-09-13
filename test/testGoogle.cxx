@@ -1,6 +1,5 @@
 
 #include <gtest/gtest.h>
-#include <iostream>
 #include "gtest_examples.cxx"
 
 using namespace std;

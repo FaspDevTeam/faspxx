@@ -30,20 +30,28 @@ project(faspxx)
 include_directories(include/
                     src)
 
-# Add source code from src
+# Find source code from src
 file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
+
+# Build faspxx library
 add_library(faspxx ${SRC_FILES})
 
-# Test error code class
+# Build error-code test
 add_executable(testErrorCode test/testErrorCode.cxx)
 target_link_libraries(testErrorCode faspxx)
 
-# Test vector operations
+# Build vector-operation test
 add_executable(testVecSpeed test/testVecSpeed.cxx)
 
-# Test VEC class operations
+# Build VEC class test
 add_executable(testVEC test/testVEC.cxx)
 target_link_libraries(testVEC faspxx)
 
-# Test Google Test environment
-# add_executable(testGoogle test/testGoogle.cxx)
+# Build GTest test
+enable_testing()
+find_package(GTest REQUIRED)
+message("${GTEST_INCLUDE_DIRS}")
+message("${GTEST_LIBRARIES}")
+include_directories(${GTEST_INCLUDE_DIRS})
+add_executable(testGoogle test/testGoogle.cxx)
+target_link_libraries(testGoogle ${GTEST_LIBRARIES})

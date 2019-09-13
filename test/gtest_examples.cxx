@@ -1,15 +1,13 @@
-
 #include <gtest/gtest.h>
 #include <iostream>
 
 using namespace std;
 
-
-
 bool Positive(int a)
 {
     return a > 0;
 }
+
 class IsPositiveTest: public testing::TestWithParam<int>
 {
 public:
@@ -20,13 +18,13 @@ public:
 protected:
     int num;
 };
+
 TEST_P(IsPositiveTest, ParamTest)
 {
     int n = GetParam();
     EXPECT_TRUE(Positive(n));
 }
 INSTANTIATE_TEST_CASE_P(ReturnTrue, IsPositiveTest, testing::Values(1,2,3,4,5,6));
-
 
 TEST(ExplicitTest, Demo)
 {
@@ -37,11 +35,11 @@ TEST(ExplicitTest, Demo)
     cout << "------------------------- After FAIL()  stop. ------------------------\n\n" << endl;
 }
 
-
 int Add(int a, int b)
 {
     return a + b;
 }
+
 TEST(AddTest, SimpleAdd)
 {
     //ref: https://www.cnblogs.com/coderzh/archive/2009/04/06/1430364.html
@@ -50,7 +48,6 @@ TEST(AddTest, SimpleAdd)
     cout << "------------------------- After ASSERT_EQ() stop. ------------------------\n\n" << endl;
 }
 
-
 int Foo(int a, int b) //求最大公约数的
 {
     if (a == 0 || b == 0) throw "don't do that";
@@ -58,11 +55,10 @@ int Foo(int a, int b) //求最大公约数的
     if (c == 0) return b;
     return Foo(b, c);
 }
+
 TEST(FooTest, HandleNoneZeroInput)
 {
     //ref: https://www.cnblogs.com/coderzh/archive/2009/03/31/1426758.html
     EXPECT_EQ(2, Foo(4, 10));
     EXPECT_EQ(6, Foo(30, 18));
 }
-
-
