@@ -20,18 +20,12 @@ set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
 find_program(THE_C NAMES $ENV{CC} clang gcc icc)
 set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
 
-# Set linker flags for clang
-if(USE_CLANG)
-    set(CMAKE_CXX_FLAGS "-std=c++11")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
-endif(USE_CLANG)
-
-# Configuration types
+# Set configuration types
 SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -funroll-loops")
 
-# Setup project name
+# Set project name
 project(faspxx)
 
 # Add include directory
