@@ -13,18 +13,15 @@ See the GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with FASPxx. If not, see <http://www.gnu.org/licenses/>.
 
-The FASPxx package is designed for developing and testing new efficient solvers
-and preconditioners for discrete partial differential equations (PDEs) or
-systems of PDEs. The main components of the package are standard Krylov methods,
-algebraic multigrid methods, and incomplete factorization methods. Based on
-these standard techniques, we build efficient solvers, based on the framework
-of Auxiliary Space Preconditioning, for several complicated applications.
-Current examples include the fluid dynamics, underground water simulation,
-the black oil model in reservoir simulation, and so on.
+The FASPxx is a C++ package designed for developing parallel iterative solvers
+and preconditioners for PDEs and systems of PDEs. The main components of the
+package are standard Krylov methods, algebraic multigrid methods, Schwarz
+methods, and ILU methods.
 
-There is a top level Makefile which calls cmake for configuration and building
-of the FASP shared library and the test programs suite.
+There is a top level cmake for configuration and building of the FASPxx shared
+library and the test programs suite. You can use a straightforward cmake-style
+way to compile the package. For example, the typical command to configure is:
 
-The command to configure is:
-
-    $ make             // to compile the FASPxx static or shared library
+    $ mkdir Debug; cd Debug; cmake ..   # configuration using cmake
+    $ make                              # make the library as well as examples
+    $ make install                      # make the library and install it

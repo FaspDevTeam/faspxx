@@ -25,7 +25,7 @@ const std::string getErrorCode(const FaspErrorCode code) {
         case ERROR_INPUT_PAR:
             return "Wrong input argument!";
 	case ERROR_DIVIDE_ZERO:
-	    return "Incorrect divisor!"
+	    return "Divided by zero!";
         case ERROR_VEC_SIZE:
             return "Wrong vector size!";
         case ERROR_MAT_SIZE:

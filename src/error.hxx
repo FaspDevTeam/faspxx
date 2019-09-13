@@ -22,7 +22,7 @@ enum FaspErrorCode {
     ERROR_INPUT_FILE       = -11,  //! Wrong input file
     ERROR_INPUT_PAR        = -12,  //! Wrong input argument
     //---------- VEC or MAT data problems -----------------------------------------//
-    ERROR_DIVIDE_ZERO      = -13,  //! Incorrect divisor
+    ERROR_DIVIDE_ZERO      = -13,  //! Divided by zero!
     ERROR_VEC_SIZE         = -14,  //! Wrong vector size
     ERROR_MAT_SIZE         = -15,  //! Wrong matrix size
     ERROR_NONMATCH_SIZE    = -16,  //! Two sizes do not match
