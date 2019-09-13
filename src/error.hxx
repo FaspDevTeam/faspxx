@@ -20,8 +20,9 @@ enum FaspErrorCode {
     //---------- Input problems ---------------------------------------------------//
     ERROR_OPEN_FILE        = -10,  //! Failed to open a file
     ERROR_INPUT_FILE       = -11,  //! Wrong input file
-    ERROR_INPUT_PAR        = -13,  //! Wrong input argument
+    ERROR_INPUT_PAR        = -12,  //! Wrong input argument
     //---------- VEC or MAT data problems -----------------------------------------//
+    ERROR_DIVIDE_ZERO      = -13,  //! Incorrect divisor
     ERROR_VEC_SIZE         = -14,  //! Wrong vector size
     ERROR_MAT_SIZE         = -15,  //! Wrong matrix size
     ERROR_NONMATCH_SIZE    = -16,  //! Two sizes do not match
