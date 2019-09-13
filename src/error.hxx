@@ -1,5 +1,7 @@
 /** \file error.hxx
- *  \brief Error code defined in FASP++
+ *  \brief Error code definition
+ *  \author Chensong Zhang
+ *  \date Sep/12/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -22,10 +24,10 @@ enum FaspErrorCode {
     ERROR_INPUT_FILE       = -11,  //! Wrong input file
     ERROR_INPUT_PAR        = -12,  //! Wrong input argument
     //---------- VEC or MAT data problems -----------------------------------------//
-    ERROR_DIVIDE_ZERO      = -13,  //! Divided by zero!
     ERROR_VEC_SIZE         = -14,  //! Wrong vector size
     ERROR_MAT_SIZE         = -15,  //! Wrong matrix size
     ERROR_NONMATCH_SIZE    = -16,  //! Two sizes do not match
+    ERROR_DIVIDE_ZERO      = -18,  //! Divided by zero!
     ERROR_MAT_ZERODIAG     = -19,  //! MAT has zero diagonal entries
     //---------- Memory or function call problems ---------------------------------//
     ERROR_ALLOC_MEM        = -20,  //! Failed to allocate memory
@@ -44,7 +46,11 @@ enum FaspErrorCode {
     ERROR_AMG_COARSEING    = -43,  //! AMG coarsening step failed to complete
     ERROR_AMG_SETUP        = -49,  //! AMG setup failed to complete
     //---------- ILU method problems ----------------------------------------------//
+    ERROR_ILU_TYPE         = -50,  //! Unknown ILU method type
     ERROR_ILU_SETUP        = -59,  //! ILU setup failed to complete
+    //---------- ILU method problems ----------------------------------------------//
+    ERROR_SWZ_TYPE         = -60,  //! Unknown Schwarz method type
+    ERROR_SWZ_SETUP        = -69,  //! Schwarz method setup failed to complete
     //---------- Unknown problems (default) ---------------------------------------//
     ERROR_UNKNOWN          = -99,  //! Unknown error type
 };

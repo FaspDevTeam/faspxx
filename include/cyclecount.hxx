@@ -1,5 +1,7 @@
 /** \file cyclecount.hxx
  *  \brief Count CPU cycles used
+ *  \author Chensong Zhang
+ *  \date Sep/12/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -20,12 +22,12 @@ typedef unsigned long long uint64; //! Long long int type
 class CycleCount {
 
 private:
-    uint64 cycleClock; //!< Current CPU cycle clock
+    uint64 cycleClock = 0; //!< Current CPU cycle clock
 
 private:
 
     //! Read Time Stamp Counter (TSC)
-    static __inline__ uint64 startRDTSC (void) {
+    static __inline__ uint64 startRDTSC ( ) {
         unsigned cycleLow, cycleHigh;
         asm volatile ("CPUID\n\t"
                       "RDTSC\n\t"
@@ -35,7 +37,7 @@ private:
     }
 
     //! Read Time Stamp Counter and Processor ID (TSCP)
-    static __inline__ uint64 stopRDTSCP (void) {
+    static __inline__ uint64 stopRDTSCP ( ) {
         unsigned cycleLow, cycleHigh;
         asm volatile ("RDTSCP\n\t"
                       "mov %%edx, %0\n\t"
