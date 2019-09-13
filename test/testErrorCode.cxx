@@ -7,9 +7,7 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <string>
 #include <iostream>
-#include <exception>
 #include "error.hxx"
 
 /*---------------------------------*/
@@ -22,18 +20,19 @@ int main()
 {
     FaspErrorCode errorCode = FaspErrorCode::SUCCESS; // Return success if no-throw
 
-	try {
+    cout << "Initial error code : " << errorCode << endl;
+
+    try {
 	    errorCode = FaspErrorCode::ERROR_UNKNOWN; // Error type found
     	throw( FaspException(getErrorCode(errorCode), __FILE__, __LINE__) );
     }
-
     catch (FaspException& ex) {
     	cout << "### ERROR: " << ex.what() << endl;
         cout << "### ERROR: Check " << ex.getFile() << " at Line " << ex.getLine() << endl;
-        return EXIT_FAILURE;
+        return errorCode;
     }
 
-    return errorCode;
+    cout << "Final error code : " << errorCode << endl;
 }
 
 /*---------------------------------*/

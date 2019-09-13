@@ -7,28 +7,36 @@
 # Minimum cmake version needed
 cmake_minimum_required(VERSION 2.8)
 
-# Enforce language standard C++11
+# Set C++ language standard to ANSI C++11
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_program(THE_C NAMES gcc icc clang)
+# Set default C++ compiler and flags
+find_program(THE_CXX NAMES $ENV{CXX} clang++ g++ icc)
+set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
+
+# Set default C compiler order and flags
+find_program(THE_C NAMES $ENV{CC} clang gcc icc)
 set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
 
-find_program(THE_CXX NAMES g++ icc clang)
-set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
+# Set linker flags for clang
+if(USE_CLANG)
+    set(CMAKE_CXX_FLAGS "-std=c++11")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
+endif(USE_CLANG)
 
 # Configuration types
 SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -funroll-loops")
-# message("CMAKE_CXX_FLAGS_DEBUG is ${CMAKE_CXX_FLAGS_DEBUG}")
-# message("CMAKE_CXX_FLAGS_RELEASE is ${CMAKE_CXX_FLAGS_RELEASE}")
 
 # Setup project name
 project(faspxx)
 
 # Add include directory
-include_directories(include/
-                    src)
+include_directories(${PROJECT_SOURCE_DIR}/include/
+                    ${PROJECT_SOURCE_DIR}/src/)
 
 # Find source code from src
 file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
@@ -48,10 +56,7 @@ add_executable(testVEC test/testVEC.cxx)
 target_link_libraries(testVEC faspxx)
 
 # Build GTest test
-enable_testing()
 find_package(GTest REQUIRED)
-message("${GTEST_INCLUDE_DIRS}")
-message("${GTEST_LIBRARIES}")
 include_directories(${GTEST_INCLUDE_DIRS})
-add_executable(testGoogle test/testGoogle.cxx)
-target_link_libraries(testGoogle ${GTEST_LIBRARIES})
+add_executable(testGoogleTest test/testGoogleTest.cxx)
+target_link_libraries(testGoogleTest ${GTEST_LIBRARIES})

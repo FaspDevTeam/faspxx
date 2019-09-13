@@ -55,7 +55,6 @@ const std::string getErrorCode(const FaspErrorCode code);
 class FaspException : public std::runtime_error {
 
 private:
-    const std::string&  msg;   //! Which exception type caught
     const char*         file;  //! Which file throws exception
     const int           line;  //! Which line throws exception
 
@@ -64,7 +63,7 @@ public:
     FaspException (const std::string& msg_,
                    const char* file_,
                    const int line_) : std::runtime_error(msg_),
-                                      msg (msg_), file (file_), line (line_)
+                                      file(file_), line(line_)
     { }
 
     const int getLine() const { return line; } //! return thrown line number
