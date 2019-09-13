@@ -1,4 +1,4 @@
-# Main CMake file for FASP++
+# Unit Test CMake file for FASP++
 # Some smaple usages:
 #   cmake -DCMAKE_VERBOSE_MAKEFILE=ON // To make cmake verbose
 #   cmake -DCMAKE_BUILD_TYPE=Debug    // To build Debug target
@@ -26,29 +26,29 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -funroll-loops")
 
 # Set project name
-project(faspxx)
+project(faspxx_utest)
+
+# Set FASP++ location
+SET(FASPXX_DIR "${PROJECT_SOURCE_DIR}/.." CACHE PATH "FASP++ directory override" FORCE)
+
+# Set required packages: GTest
+find_package(GTest REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
+
+# Set required packages: FASP++ library
+link_directories("${FASPXX_DIR}/lib/")
 
 # Add include directory
-include_directories(${PROJECT_SOURCE_DIR}/include/
-                    ${PROJECT_SOURCE_DIR}/src/)
+include_directories(${FASPXX_DIR}/include/
+                    ${FASPXX_DIR}/src/)
 
 # Find source code from src
-file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
+#file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
 
-# Build faspxx library
-add_library(faspxx ${SRC_FILES})
-
-set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
-install(TARGETS faspxx
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-# Build error-code test
-add_executable(testErrorCode test/testErrorCode.cxx)
-target_link_libraries(testErrorCode faspxx)
-
-# Build vector-operation test
-add_executable(testVecSpeed test/testVecSpeed.cxx)
+# Build GTest test
+add_executable(unitGTest unitGTest.cxx)
+target_link_libraries(unitGTest ${GTEST_LIBRARIES} faspxx)
 
 # Build VEC class test
-add_executable(testVEC test/testVEC.cxx)
-target_link_libraries(testVEC faspxx)
+add_executable(unitVEC unitVEC.cxx)
+target_link_libraries(unitVEC ${GTEST_LIBRARIES} faspxx)
