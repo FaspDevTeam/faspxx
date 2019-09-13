@@ -1,5 +1,5 @@
 /** \file testGoogleTest.cxx
- *  \brief GTest unit test suite
+ *  \brief Test GTest unit-test suite
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
