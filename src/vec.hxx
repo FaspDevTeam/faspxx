@@ -229,7 +229,6 @@ public:
      */
     //! find l2-norm of this->vec
     DBL Norm2() const;
-
     /**
      * if the VEC object doesn't contain any elements, set the infinity
      * norm to zero, other cases is normally dealt
@@ -242,14 +241,14 @@ public:
      * vectors' lengths
      */
     //! this->vec = a * vec_obj + b * this->vec
-    FaspErrorType Add(const VEC &vec_obj, const DBL a, const DBL b);
+    void Add(const VEC &vec_obj, const DBL a, const DBL b);
 
     /**
      * there is only a possible error that 1 marks the mismatch of vectors'
      * lengths
      */
     //! this->vec = a * vec1_obj + b * vec2_obj
-    FaspErrorType Add(const DBL a, const VEC &vec1_obj, const DBL b, const VEC &vec2_obj);
+    void Add(const DBL a, const VEC &vec1_obj, const DBL b, const VEC &vec2_obj);
 
     /**
      * if the input parameter "vec_obj" 's size is not equal to this->size,
@@ -258,17 +257,17 @@ public:
      * as zero, and output the warning message.
      */
     //! dot product of this->vec and vec_obj
-    FaspErrorType Dot(const VEC &vec_obj, DBL &dot) const;
+    void Dot(const VEC &vec_obj, DBL &dot) const;
 
     /**
      * there is only a possible error that 1 marks the mismatch of
      * vectors' lengths
      */
     //! scale this->vec[j] *= vec_obj[j] by a vector
-    FaspErrorType PointwiseMult(const VEC &vec_obj);
+    void PointwiseMult(const VEC &vec_obj);
 
     //! this->vec[j] = this->vec[j] / vec_obj[j]
-    FaspErrorType PointwiseDivide(const VEC &vec_obj,DBL tol);
+    void PointwiseDivide(const VEC &vec_obj,DBL tol);
 };
 
 #endif /* end if for __VEC_HEADER__ */

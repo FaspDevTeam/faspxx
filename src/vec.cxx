@@ -8,89 +8,10 @@
  */
 
 #include "vec.hxx"
+#include "error.hxx"
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
-
-/*
- * 1 marks the mismatch of vectors' lengths
- */
-
-//-----------------------------------------------------------------------------------
-
-void VEC::WarningPrint(const INT warningtype) const {
-    switch (warningtype) {
-        case 1:
-            std::cout << "----------------***************----------------"
-                      << std::endl;
-            std::cout << "Warning : the parameter 'size' < 0" << std::endl;
-            std::cout << "and VEC object 's size is automatically set to 0"
-                      << std::endl;
-            std::cout << "----------------***************-----------------"
-                      << std::endl;
-            break;
-        case 2:
-            std::cout << "----------------***************----------------"
-                      << std::endl;
-            std::cout << "Warning : the parameter 'N' < 0" << std::endl;
-            std::cout << "and VEC object 's size is automatically set to 0"
-                      << std::endl;
-            std::cout << "----------------***************-----------------"
-                      << std::endl;
-            break;
-        case 3:
-            std::cout << "----------------***************----------------"
-                      << std::endl;
-            std::cout << "Warning : the parameter 'pointer' == nullptr or"
-                      << std::endl;
-            std::cout << " the parameter 'size' <= 0, and then VEC object "
-                      << std::endl;
-            std::cout << "'s size is automatically set to 0" << std::endl;
-            std::cout << "----------------***************-----------------"
-                      << std::endl;
-            break;
-        case 4:
-            std::cout<<"-----------------*****************-----------------"<<std
-            ::endl;
-            std::cout<<"'position' is more than the dimension of VEC object"<<std
-            ::endl;
-            std::cout<<"-----------------*****************-----------------"<<std
-            ::endl;
-            break;
-        case 5:
-            std::cout << "----------***********----------" << std::endl;
-            std::cout << "the VEC object is empty, and set " << std::endl;
-            std::cout << "its maximum as zero" << std::endl;
-            std::cout << "----------***********----------" << std::endl;
-            break;
-        case 6:
-            std::cout << "----------***********----------" << std::endl;
-            std::cout << "the VEC object is empty, so set " << std::endl;
-            std::cout << "its minimum as zero" << std::endl;
-            std::cout << "----------***********----------" << std::endl;
-            break;
-        case 7:
-            std::cout << "----------**********----------" << std::endl;
-            std::cout << "  Warning : empty VEC object  " << std::endl;
-            std::cout << "----------**********----------" << std::endl;
-            break;
-        case 8:
-            std::cout << "------------------****************------------------"
-                      << std::endl;
-            std::cout << "the size of VEC object is zero and set 'dot' as zero"
-                      << std::endl;
-            std::cout << "------------------****************-------------------"
-                      << std::endl;
-            break;
-        case 9:
-            std::cout << "-----------**********---------" << std::endl;
-            std::cout << " Zero division error occurred " << std::endl;
-            std::cout << "-----------**********---------" << std::endl;
-            break;
-        default:
-            break;
-    }
-}
 
 /**
  * set VEC object 's length to "size" and all its elements ' values is "value"
@@ -100,10 +21,16 @@ void VEC::WarningPrint(const INT warningtype) const {
  */
 //! set the size of vec and set the same value on VEC object
 VEC::VEC(const INT size, const DBL value) {
-    if(size<0){
-        this->size=0;
-        this->vec.resize(0);
-        WarningPrint(1);
+    FaspErrorCode errorCode=FaspErrorCode::SUCCESS;
+    try{
+        if(size<0){
+            errorCode=FaspErrorCode::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
         return;
     }
 
@@ -137,10 +64,16 @@ VEC::VEC(const VEC &vec_obj) {
  */
 //! random construction function, N DBL values from begin_value to end_value
 VEC::VEC(const INT N,const DBL min, const DBL max) {
-    if(N<0){
-        this->vec.resize(0);
-        this->size=0;
-        WarningPrint(2);
+    FaspErrorCode errorCode=FaspErrorCode::SUCCESS;
+    try{
+        if(N<0){
+            errorCode=FaspErrorCode ::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
         return ;
     }
     this->vec.resize(N); // performance burdens
@@ -158,10 +91,22 @@ VEC::VEC(const INT N,const DBL min, const DBL max) {
  */
 //! assign pointer to VEC object
 VEC::VEC(const INT size, const DBL *pointer) {
-    if(pointer== nullptr || size <=0){
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try {
+        if (size < 0) {
+            errorCode = FaspErrorCode::ERROR_VEC_SIZE;
+            throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return ;
+    }
+
+    if(pointer== nullptr || size ==0){
         this->vec.resize(0);
         this->size=0;
-        WarningPrint(3);
         return;
     }
     this->vec.assign(pointer, pointer + size);
@@ -228,10 +173,16 @@ VEC &VEC::operator-=(const VEC &vec_obj) {
  */
 //! set the size of VEC object
 void VEC::SetSize(const INT size) {
-    if (size < 0) {
-        this->vec.resize(0);
-        this->size = 0;
-        WarningPrint(1);
+    FaspErrorCode errorCode=FaspErrorCode::SUCCESS;
+    try{
+        if(size<0){
+            errorCode=FaspErrorCode ::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
         return;
     }
     this->size = size;
@@ -243,11 +194,16 @@ void VEC::SetSize(const INT size) {
  */
 //! set the size of VEC object and set the same value on VEC object
 void VEC::SetValues(const INT size, const DBL value) {
-    if (size < 0) {
-        this->size = 0;
-        this->vec.resize(0);
-        WarningPrint(1);
-        return;
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(size<0){
+            errorCode=FaspErrorCode::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
     }
     this->vec.assign(size, value);
     this->size = size;
@@ -269,11 +225,16 @@ void VEC::SetValues(const std::vector<DBL> vector_object) {
  */
 //! random construction function, N DBL values from begin_value to end_value
 void VEC::SetValues(const INT N, const DBL min, const DBL max) {
-    if(N<0){
-        this->vec.resize(0);
-        this->size=0;
-        WarningPrint(2);
-        return ;
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(N<0){
+            errorCode=FaspErrorCode ::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
     }
     this->vec.resize(N); // performance burdens
     srand((unsigned) time(NULL));
@@ -289,6 +250,17 @@ void VEC::SetValues(const INT N, const DBL min, const DBL max) {
  */
 //! this->vec = array
 void VEC::SetValues(const INT size, const DBL *array) {
+    FaspErrorCode errorCode=FaspErrorCode::SUCCESS;
+    try{
+        if(size<0){
+            errorCode=FaspErrorCode ::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+    }
     if (array == nullptr || size == 0) {
         this->size = 0;
         this->vec.resize(0);
@@ -304,12 +276,19 @@ void VEC::SetValues(const INT size, const DBL *array) {
  */
 //! get the value of this->vec[position]
 DBL VEC::Get(const INT position) const {
-    if (position<size) {
-        return this->vec.at(position);
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(position>=size || position<0){
+            errorCode=FaspErrorCode ::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
     }
-    else {
-        WarningPrint(4);
-    }
+
+    return this->vec.at(position);
 }
 
 /**
@@ -319,7 +298,19 @@ DBL VEC::Get(const INT position) const {
  */
 //! get array = this->vec of size = min(size, this->size)
 void VEC::GetArray(const INT &size, DBL **array) const {
-    if (size <= 0 || this->size == 0) {
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(size<0){
+            errorCode=FaspErrorCode ::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return;
+    }
+    if (size == 0 || this->size == 0) {
         *array = nullptr;
         return;
     }
@@ -374,22 +365,29 @@ void VEC::Copy(VEC &vec_obj) const {
  */
 //! find max(this->vec[j])
 void VEC::Max(DBL &max) const {
-    switch(this->size){
-        case 0:
-            max=0;
-            WarningPrint(5);
-            break;
-        case 1:
-            max=this->vec[0];
-            break;
-        default:
-            max=this->vec[0];
-            for(INT j=1;j<this->size;j++){
-                if(max<this->vec[j])
-                    max=this->vec[j];
-            }
-            break;
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(this->size==0){
+            errorCode=FaspErrorCode ::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return ;
     }
+
+    if(this->size==1){
+        max=this->vec[0];
+    }else{
+        max=this->vec[0];
+        for(INT j=1;j<this->size;j++) {
+            if (max < this->vec[j])
+                max = this->vec[j];
+        }
+    }
+
 }
 
 /**
@@ -398,21 +396,28 @@ void VEC::Max(DBL &max) const {
  */
 //! find min(this->vec[j])
 void VEC::Min(DBL &min) const {
-    switch(this->size){
-        case 0:
-            min=0;
-            WarningPrint(6);
-            break;
-        case 1:
-            min=this->vec[0];
-            break;
-        default:
-            min=this->vec[0];
-            for(INT j=1;j<this->size;j++){
-                if(min>this->vec[j])
-                    min=this->vec[j];
-            }
-            break;
+    FaspErrorCode errorCode = FaspErrorCode::SUCCESS;
+    try {
+        if (this->size == 0) {
+            errorCode = FaspErrorCode::ERROR_VEC_SIZE;
+            throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
+        }
+    } catch (FaspException &ex) {
+        std::cerr<< " ### ERROR : " << ex.what() << std::endl;
+        std::cerr<< " ### ERROR : Check " << ex.getFile() << " at Line "
+                  << ex.getLine()
+                  << std::endl;
+        return;
+    }
+
+    if (this->size == 1) {
+        min = this->vec[0];
+    } else {
+        min = this->vec[0];
+        for (INT j = 1; j < this->size; j++) {
+            if (min > this->vec[j])
+                min = this->vec[j];
+        }
     }
 }
 
@@ -452,16 +457,24 @@ void VEC::Abs() {
  */
 //! this->vec[j] = 1 / this->vec[j]
 void VEC::Reciprocal(DBL tol) {
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
     if (this->size == 0) {
         this->vec.resize(0);
         return;
     }
 
     for (INT j = 0; j < this->size; j++) {
-        if (fabs(this->vec[j]) <= tol) {
-            WarningPrint(9);
+        try{
+            if(fabs(this->vec[j]<=tol)){
+                errorCode=FaspErrorCode ::ERROR_DIVIDE_ZERO;
+                throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+            }
+        }catch(FaspException& ex){
+            std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+            std::cerr<<" ### ERROR : Check : "<<ex.getFile()<<" at Line "<<ex
+            .getLine()<<ex.getLine()<<std::endl;
+            return ;
         }
-        return;
     }
 
     for (INT j = 0; j < this->size; j++)
@@ -474,9 +487,17 @@ void VEC::Reciprocal(DBL tol) {
  */
 //! find l2-norm of this->vec
 DBL VEC::Norm2() const {
-    if (this->size == 0){
-        WarningPrint(7);
-        return 0.0;
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(this->size==0){
+            errorCode=FaspErrorCode::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return 0;
     }
 
     DBL norm2 = 0.0;
@@ -492,9 +513,17 @@ DBL VEC::Norm2() const {
  */
 //! find infinity norm of this->vec
 DBL VEC::NormInf() const {
-    if (this->size == 0){
-        WarningPrint(7);
-        return 0.0;
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(this->size==0){
+            errorCode=FaspErrorCode::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+                 <<std::endl;
+        return 0;
     }
 
     DBL normInf = 0.0;
@@ -515,17 +544,22 @@ DBL VEC::NormInf() const {
  * vectors' lengths
  */
 //! this->vec = a * this->vec + b * vec_obj
-FaspErrorType VEC::Add(const VEC &vec_obj, const DBL a, const DBL b) {
-    if (this->size != vec_obj.size)
-        return 1; //! 1 marks the mismatch of vectors' lengths
-
-    if (this->size == 0)
-        return 0;
+void VEC::Add(const VEC &vec_obj, const DBL a, const DBL b) {
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(this->size!=vec_obj.size){
+            errorCode=FaspErrorCode::ERROR_NONMATCH_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return ;
+    }
 
     for (INT j = 0; j < this->size; j++)
         this->vec[j] = a * this->vec[j] + b * vec_obj.vec[j];
-
-    return 0;
 }
 
 /**
@@ -533,16 +567,25 @@ FaspErrorType VEC::Add(const VEC &vec_obj, const DBL a, const DBL b) {
  * lengths
  */
 //! this->vec = a * vec1_obj + b * vec2_obj
-FaspErrorType VEC::Add(const DBL a, const VEC &vec1_obj, const DBL b, const VEC &vec2_obj) {
-    if (vec1_obj.size != vec2_obj.size)
-        return 1; //! 1 marks the mismatch of vectors' lengths
+void VEC::Add(const DBL a, const VEC &vec1_obj, const DBL b, const VEC &vec2_obj){
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(vec1_obj.size != vec2_obj.size){
+            errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return;
+    }
 
     this->size = vec1_obj.size;
     this->vec.resize(this->size);
     for (INT j = 0; j < vec1_obj.size; j++)
         this->vec[j] = a * vec1_obj.vec[j] + b * vec2_obj.vec[j];
 
-    return 0;
 }
 
 /**
@@ -552,21 +595,35 @@ FaspErrorType VEC::Add(const DBL a, const VEC &vec1_obj, const DBL b, const VEC 
  * as zero, and output the warning message.
  */
 //! dot product of this->vec and vec_obj
-FaspErrorType VEC::Dot(const VEC &vec_obj, DBL &dot) const {
-    if (this->size != vec_obj.size)
-        return 1; //! 1 marks the mismatch of vectors' lengths
-
-    if (this->size == 0){
-        WarningPrint(8);
-        dot=0.0;
-        return 0;
+void VEC::Dot(const VEC &vec_obj, DBL &dot) const {
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(this->size!=vec_obj.size || this->size==0){
+            errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return;
+    }
+    try{
+        if(this->size==0){
+            errorCode=FaspErrorCode ::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return;
     }
 
     dot = 0.0;
     for (INT j = 0; j < this->size; j++)
         dot += this->vec[j] * vec_obj.vec[j];
 
-    return 0;
 }
 
 /**
@@ -574,17 +631,34 @@ FaspErrorType VEC::Dot(const VEC &vec_obj, DBL &dot) const {
  * vectors' lengths
  */
 //! scale this->vec[j] *= vec_obj[j] by a vector
-FaspErrorType VEC::PointwiseMult(const VEC &vec_obj) {
-    if (this->size != vec_obj.size)
-        return 1; //! 1 marks the mismatch of vectors' lengths
-
-    if (this->size == 0)
-        return 0;
+void VEC::PointwiseMult(const VEC &vec_obj) {
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(this->size!=vec_obj.size){
+            errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return;
+    }
+    try{
+        if(this->size==0){
+            errorCode=FaspErrorCode::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+        <<std::endl;
+        return ;
+    }
 
     for (INT j = 0; j < this->size; j++)
         this->vec[j] *= vec_obj.vec[j];
 
-    return 0;
 }
 
 /**
@@ -596,22 +670,47 @@ FaspErrorType VEC::PointwiseMult(const VEC &vec_obj) {
  * the function and give warning message.
  */
 //! this->vec[j] = this->vec[j] / vec_obj[j]
-FaspErrorType VEC::PointwiseDivide(const VEC &vec_obj, DBL tol) {
-    if (this->size != vec_obj.size)
-        return 1; //! 1 marks the mismatch of vectors' lengths
-
-    if (this->size == 0)
-        return 0;
-
-    for (INT j = 0; j < this->size; j++) {
-        if (fabs(vec_obj.vec[j]) <= tol) {
-            WarningPrint(9);
-            return 0;
+void VEC::PointwiseDivide(const VEC &vec_obj, DBL tol) {
+    FaspErrorCode errorCode=FaspErrorCode ::SUCCESS;
+    try{
+        if(this->size!=vec_obj.size){
+            errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+                 <<std::endl;
+        return;
+    }
+    try{
+        if(this->size==0){
+            errorCode=FaspErrorCode::ERROR_VEC_SIZE;
+            throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+        }
+    }catch(FaspException& ex){
+        std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+        std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex.getLine()
+                 <<std::endl;
+        return ;
+    }
+    for(INT j=0;j<this->size;j++){
+        try{
+            if(fabs(vec_obj[j]<=tol)){
+                errorCode=FaspErrorCode ::ERROR_DIVIDE_ZERO;
+                throw(FaspException(getErrorCode(errorCode),__FILE__,__LINE__));
+            }
+        }catch(FaspException& ex){
+            std::cerr<<" ### ERROR : "<<ex.what()<<std::endl;
+            std::cerr<<" ### ERROR : Check "<<ex.getFile()<<" at Line "<<ex
+            .getLine()<<std::endl;
+            return ;
         }
     }
 
-    for (INT j = 0; j < this->size; j++)
-        this->vec[j] /= vec_obj.vec[j];
-
-    return 0;
+    for (INT j = 0; j < this->size; j++){
+        if(fabs(vec_obj.vec[j])<=tol){
+            this->vec[j]/=vec_obj.vec[j];
+        }
+    }
 }
