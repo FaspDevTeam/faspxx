@@ -709,8 +709,8 @@ void VEC::PointwiseDivide(const VEC &vec_obj, DBL tol) {
     }
 
     for (INT j = 0; j < this->size; j++){
-        if(fabs(vec_obj.vec[j])<=tol){
-            this->vec[j]/=vec_obj.vec[j];
+        if(fabs(vec_obj.vec[j])<=tol){ //fff > tol ?
+            this->vec[j]/=vec_obj.vec[j]; //fff 为啥访问私有变量　.vec ?
         }
     }
 }

@@ -8,7 +8,8 @@
  */
 
 #include <gtest/gtest.h>
-#include "simple.cxx"
+//#include "simple.cxx"
+#include "unitVEC.cxx"
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/

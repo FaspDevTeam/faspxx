@@ -45,10 +45,14 @@ include_directories(${FASPXX_DIR}/include/
 # Find source code from src
 #file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
 
-# Build GTest test
-add_executable(unitGTest unitGTest.cxx)
-target_link_libraries(unitGTest ${GTEST_LIBRARIES} faspxx)
+## Build GTest test
+#add_executable(unitGTest unitGTest.cxx)
+#target_link_libraries(unitGTest ${GTEST_LIBRARIES} faspxx)
+#
+## Build VEC class test
+#add_executable(unitVEC unitVEC.cxx)
+#target_link_libraries(unitVEC ${GTEST_LIBRARIES} faspxx)
 
-# Build VEC class test
-add_executable(unitVEC unitVEC.cxx)
-target_link_libraries(unitVEC ${GTEST_LIBRARIES} faspxx)
+# Test All at once
+add_executable(testAll unitGTestAll.cxx)
+target_link_libraries(testAll ${GTEST_LIBRARIES} faspxx pthread) # add pthread by fan

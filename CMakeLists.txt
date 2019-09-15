@@ -40,7 +40,9 @@ add_library(faspxx ${SRC_FILES})
 
 set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
 install(TARGETS faspxx
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # added by fan
+        )
 
 # Build error-code test
 add_executable(testErrorCode test/testErrorCode.cxx)
