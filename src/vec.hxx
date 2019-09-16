@@ -32,14 +32,14 @@ private:
 
 public:
     //! default constructed function
-    VEC():size(0), vec(0) {}
+    VEC() : size(0), vec(0) {}
 
     /**
      * set VEC object 's length to "size" and all its elements ' values is "value"
-    * if the input parameter "size" <= 0, then let this->size=0, and this->vec.resize(0);
-    * if the input parameter "size" > 0, the let this->size=size, and all it's elements
-    * is the same as "value"
-    */
+     * if the input parameter "size" <= 0, and iniialize it by default constructor;
+     * if the input parameter "size" > 0, the let this->size=size, and all it's elements
+     * is the same as "value"
+     */
     //! set the size of vec and set the same value on VEC object
     VEC(const INT size, const DBL value);
 
@@ -63,7 +63,7 @@ public:
      * size = 0, other cases are normally dealt
      */
     //! random construction function, N DBL values from begin_value to end_value
-    VEC(const INT N,const DBL min, const DBL max);
+    VEC(const INT N, const DBL min, const DBL max);
 
     /**
      * if the input parameter "pointer" is null or the input parameter
@@ -80,47 +80,47 @@ public:
      * *this
      */
     //! overload equals operator
-    VEC &operator = (const VEC &vec_obj);
+    VEC &operator=(const VEC &vec_obj);
 
     /**
      * attention : the overloaded function doesn't check whether
      * the index crossover
      */
     //! overload [] operator
-    DBL &operator [] (const INT position);
+    DBL &operator[](const INT position);
 
     /**
      * attention : the overloaded function doesn't check whether
      * the index crossover
      */
-     //! overload [] operator
-     const DBL &operator [] (const INT position) const;
+    //! overload [] operator
+    const DBL &operator[](const INT position) const;
 
     /**
-     * attention : the overloaded function doesn't check whether
-     * the sizes of both VEC objects match or their sizes both aren't
-     * zero
+     * if there is a mismatch between "vec_obj" 's size and *this 's size
+     * it throws an exception and return the *this
      */
     //! overload += operator
-    VEC &operator += (const VEC &vec_obj);
+    VEC &operator+=(const VEC &vec_obj);
 
     /**
-     * attention : the overloaded function doesn't check whether
-     * the sizes of both VEC objects match or their sizes both aren't
-     * zero
+     * if there is a mismatch between "vec_obj" 's size and *this 's size
+     * it throws an exception and return the *this
      */
     //! overload -= operator
-    VEC &operator -= (const VEC &vec_obj);
+    VEC &operator-=(const VEC &vec_obj);
 
     /**
-     * if the input parameter "size" < 0, and set the size of VEC object to zero
-    */
+     * if the input parameter "size" < 0, throw an ecxeption.
+     * Don't change the *this
+     */
     //! set the size of VEC object
     void SetSize(const INT size);
 
     /**
-     * if the input parameter "size" < 0, then set the VEC object 's size to zero
-    */
+     * if the input parameter "size" < 0, throw an ecxeption.
+     * Don't change the *this
+     */
     //! set the size of VEC object and set the same value on VEC object
     void SetValues(const INT size, const DBL value);
 
@@ -132,31 +132,24 @@ public:
     void SetValues(const std::vector<DBL> vector_obj);
 
     /**
-     * if the input parameter "N" <= 0, let this->values.size() = 0, and
-     * size = 0, other cases are normally dealt
-     */
-    //! random construction function, N DBL values from begin_value to end_value
-    void SetValues(const INT N,const DBL min, const DBL max);
-
-    /**
-     * if the input parameter "size" is 0, or "array" is null,
-     * then set the this->size = 0, and this->vec.size()=0
+     * if the input parameter "size" < 0, throw an ecxeption.
+     * Don't change the *this
      */
     //! this->vec = array
     void SetValues(const INT size, const DBL *array);
 
     /**
-     * "postion < size" avoids the error in the VEC object' size;
-     * and the "this->vec.at()" avoids the error in the vector object
+     * if "position >= size" or "position < 0" happens , then throw an
+     * exception, and return zero
      */
     //! get the value of this->vec[position]
     DBL Get(const INT position) const;
 
     /**
-     * if the input parameter "size" <= 0 or this->size == 0,
-     * set the input parameter "array" to null. other cases are
+     * if the input parameter "size" < 0, throw an exception.
+     * if size == 0 , set "array" as nullptr, other cases are
      * normally dealt
-    */
+     */
     //! get array = this->vec of size = min(size, this->size)
     void GetArray(const INT &size, DBL **array) const;
 
@@ -181,22 +174,22 @@ public:
     /**
      * no matter what the *this is, copy it into the vec_obj
      */
-    //! copy vec_obj = this->vec
-    void Copy(VEC &vec_obj) const;
+    //! copy this->vec to vec_obj
+    void CopyTo(VEC &vec_obj) const;
 
     /**
      * if the VEC object doesn't contain any elements,
-     * set the maximum value to zero
+     * throw an exception and set the maximum value to zero
      */
     //! find max(this->vec[j])
-    void Max(DBL &max) const;
+    DBL Max() const;
 
     /**
      * if the VEC object doesn't contain any elements,
-     * set the minimum value to zero
+     * throw an exception and set the minimum value to zero
      */
     //! find min(this->vec[j])
-    void Min(DBL &min) const;
+    DBL Min() const;
 
     /**
      * if the VEC object doesn't contain any elements,
@@ -222,50 +215,56 @@ public:
     void Reciprocal(DBL tol);
 
     /**
-     * if the VEC object doesn't contain any elements, set l2-norm to
-     * zero, other cases is normally dealt.
+     * if the VEC object doesn't contain any elements, throw an exception and set
+     * l2-norm to zero, other cases is normally dealt.
      */
     //! find l2-norm of this->vec
     DBL Norm2() const;
+
     /**
-     * if the VEC object doesn't contain any elements, set the infinity
-     * norm to zero, other cases is normally dealt
+     * if the VEC object doesn't contain any elements, throw an exception and set the
+     * infinity norm to zero, other cases is normally dealt
      */
     //! find infinity norm of this->vec
     DBL NormInf() const;
 
     /**
-     * there is only a possible error that 1 marks the mismatch of
-     * vectors' lengths
+     * if there is a mismatch between "vec_obj" and *this, throw an exception and end
+     * the function
      */
     //! this->vec = a * vec_obj + b * this->vec
     void Add(const VEC &vec_obj, const DBL a, const DBL b);
 
     /**
-     * there is only a possible error that 1 marks the mismatch of vectors'
-     * lengths
+     * there is a mismatch between "vec1_obj" and "vec2_obj", throw an exception and
+     * end the function
      */
     //! this->vec = a * vec1_obj + b * vec2_obj
     void Add(const DBL a, const VEC &vec1_obj, const DBL b, const VEC &vec2_obj);
 
     /**
      * if the input parameter "vec_obj" 's size is not equal to this->size,
-     * 1 marks the mismatch of vectors lengths.
-     * if the *this 's size is equal to zero, we define the input paramter dot
-     * as zero, and output the warning message.
+     * throw an exception and end the function.
+     * if the *this 's size is equal to zero, throw an exception and end the function.
      */
     //! dot product of this->vec and vec_obj
     void Dot(const VEC &vec_obj, DBL &dot) const;
 
     /**
-     * there is only a possible error that 1 marks the mismatch of
-     * vectors' lengths
+     * if "this->size" is not equal to "vec_obj.size" or "this->size" is equal to zero,
+     * throw an exception and end the function.
      */
     //! scale this->vec[j] *= vec_obj[j] by a vector
     void PointwiseMult(const VEC &vec_obj);
 
+    /**
+     * if "this->size" is not equal to "vec_obj.size" or "this->size" is equal to zero.
+     * throw an exception.
+     * if there is an element whose absolute value is less than "tol", throw an
+     * exception and end the function.
+     */
     //! this->vec[j] = this->vec[j] / vec_obj[j]
-    void PointwiseDivide(const VEC &vec_obj,DBL tol);
+    void PointwiseDivide(const VEC &vec_obj, DBL tol);
 };
 
 #endif /* end if for __VEC_HEADER__ */
