@@ -571,11 +571,12 @@ void VEC::Add(const DBL a, const VEC &vec1_obj, const DBL b, const VEC &vec2_obj
 
 /**
  * if the input parameter "vec_obj" 's size is not equal to this->size,
- * throw an exception and end the function.
- * if the *this 's size is equal to zero, throw an exception and end the function.
+ * throw an exception and end the function and set the returned value as zero.
+ * if the *this 's size is equal to zero, throw an exception and end the function and
+ * set the returned value as zero.
  */
 //! dot product of this->vec and vec_obj
-void VEC::Dot(const VEC &vec_obj, DBL &dot) const {
+DBL VEC::Dot(const VEC &vec_obj) const {
     try {
         if ( this->size != vec_obj.size || this->size == 0 ) {
             FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
@@ -586,7 +587,7 @@ void VEC::Dot(const VEC &vec_obj, DBL &dot) const {
         std::cerr << " ### ERROR : Check " << ex.getFile() << " at Line "
                   << ex.getLine()
                   << std::endl;
-        return;
+        return 0;
     }
     try {
         if ( this->size == 0 ) {
@@ -598,12 +599,14 @@ void VEC::Dot(const VEC &vec_obj, DBL &dot) const {
         std::cerr << " ### ERROR : Check " << ex.getFile() << " at Line "
                   << ex.getLine()
                   << std::endl;
-        return;
+        return 0;
     }
 
-    dot = 0.0;
+    DBL dot = 0.0;
     for ( INT j = 0; j < this->size; j++ )
         dot += this->vec[j] * vec_obj.vec[j];
+
+    return dot;
 
 }
 

@@ -244,11 +244,12 @@ public:
 
     /**
      * if the input parameter "vec_obj" 's size is not equal to this->size,
-     * throw an exception and end the function.
-     * if the *this 's size is equal to zero, throw an exception and end the function.
+     * throw an exception and end the function and set the returned value as zero.
+     * if the *this 's size is equal to zero, throw an exception and end the function and
+     * set the returned value as zero.
      */
     //! dot product of this->vec and vec_obj
-    void Dot(const VEC &vec_obj, DBL &dot) const;
+    DBL Dot(const VEC &vec_obj) const;
 
     /**
      * if "this->size" is not equal to "vec_obj.size" or "this->size" is equal to zero,
