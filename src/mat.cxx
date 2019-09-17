@@ -1,7 +1,11 @@
-/**
- * a part of source code about mat.hxx
+/*! \file vec.cxx
+ *  \brief Source file for the FASP++ Matrix class
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights resized.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
-
 #include "mat.hxx"
 #include "error.hxx"
 #include <iostream>
@@ -2674,7 +2678,8 @@ void MAT::MultLeft(const MAT mat) {
 
 //! *this = mat * *this
 void MAT::MultRight(const MAT mat) {
-    this->operator=(Mult2(mat, *this));
+    MAT tmp = Mult2(mat, *this);
+    this->operator=(tmp);
 
 }
 
