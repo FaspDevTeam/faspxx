@@ -101,8 +101,8 @@ public:
      */
     //! assign row, column, nnz, rowshift, colindex, diag to *this
     MAT(const INT row, const INT column, const INT nnz, const std::vector<INT>
-            rowshift, const std::vector<INT> colindex, const std::vector<INT>
-                    diag);
+    rowshift, const std::vector<INT> colindex, const std::vector<INT>
+        diag);
 
     /**
      * if "row == 0" or "column ==0 " or "nnz == 0" happens, set *this by default.
@@ -122,7 +122,7 @@ public:
      */
     //! assign row, column, nnz, rowshift, colindex to *this
     MAT(const INT row, const INT column, const INT nnz, const std::vector<INT>
-            rowshift, const std::vector<INT> colindex);
+    rowshift, const std::vector<INT> colindex);
 
     //! assign diagonal matrix to this->mat
     MAT(VEC &vec_obj);
@@ -206,7 +206,7 @@ public:
      * dimension is not equal to "vec2" 's . throw an exception.
      */
     //! vec3 = vec2 + transpose(*this) * vec1
-    VEC MultTransposeAdd(const VEC vec1,const VEC vec2) const;
+    VEC MultTransposeAdd(const VEC vec1, const VEC vec2) const;
 
     /**
      * if these matrices both 's dimensions do not match, throw an exception.
@@ -237,9 +237,9 @@ public:
      */
     //! convert the data CSR format to CSRx format
     friend MAT ConvertCSR(const INT row, const INT column, const INT nnz,
-                             const std::vector<DBL> values,
-                             const std::vector<INT> rowshift,
-                             const std::vector<INT> colindex);
+                          const std::vector<DBL> values,
+                          const std::vector<INT> rowshift,
+                          const std::vector<INT> colindex);
 
 };
 
@@ -250,9 +250,9 @@ public:
  */
 //! convert the data CSR format to CSRx format
 MAT ConvertCSR(const INT row, const INT column, const INT nnz,
-                 const std::vector<DBL> values,
-                 const std::vector<INT> rowshift,
-                 const std::vector<INT> colindex);
+               const std::vector<DBL> values,
+               const std::vector<INT> rowshift,
+               const std::vector<INT> colindex);
 
 #endif /* end if for __MAT_HEADER__ */
 

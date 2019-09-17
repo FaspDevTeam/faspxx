@@ -108,18 +108,18 @@ values, const std::vector<INT> rowshift, const std::vector<INT>
     mark = 1;
 
     Return:
-    try{
-        if(mark==0){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_INPUT_FILE;
+    try {
+        if ( mark == 0 ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_INPUT_FILE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        this->row=0;
-        this->column=0;
-        this->nnz=0;
+        this->row = 0;
+        this->column = 0;
+        this->nnz = 0;
         this->rowshift.resize(0);
         this->colindex.resize(0);
         this->diag.resize(0);
@@ -238,18 +238,18 @@ rowshift, const std::vector<INT> colindex, const std::vector<INT>
     mark = 1;
 
     Return:
-    try{
-        if(mark==0){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_INPUT_FILE;
+    try {
+        if ( mark == 0 ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_INPUT_FILE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        this->row=0;
-        this->column=0;
-        this->nnz=0;
+        this->row = 0;
+        this->column = 0;
+        this->nnz = 0;
         this->rowshift.resize(0);
         this->colindex.resize(0);
         this->diag.resize(0);
@@ -342,18 +342,18 @@ values, const std::vector<INT> rowshift, const std::vector<INT> colindex) {
     mark = 1;
 
     Return:
-    try{
-        if(mark==0){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_INPUT_FILE;
+    try {
+        if ( mark == 0 ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_INPUT_FILE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        this->row=0;
-        this->column=0;
-        this->nnz=0;
+        this->row = 0;
+        this->column = 0;
+        this->nnz = 0;
         this->rowshift.resize(0);
         this->colindex.resize(0);
         this->diag.resize(0);
@@ -732,18 +732,18 @@ rowshift, const std::vector<INT> colindex) {
     mark = 1;
 
     Return:
-    try{
-        if(mark==0){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_INPUT_FILE;
+    try {
+        if ( mark == 0 ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_INPUT_FILE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        this->row=0;
-        this->column=0;
-        this->nnz=0;
+        this->row = 0;
+        this->column = 0;
+        this->nnz = 0;
         this->rowshift.resize(0);
         this->colindex.resize(0);
         this->diag.resize(0);
@@ -1079,7 +1079,7 @@ MAT::MAT(VEC &vec_obj) {
         this->diag.assign(array, array + size);
 
         delete[] array;
-        array= nullptr;
+        array = nullptr;
     }
 }
 
@@ -1114,7 +1114,7 @@ MAT::MAT(const std::vector<DBL> &vector_obj) {
         this->values.assign(vector_obj.begin(), vector_obj.begin() + size);
 
         delete[] p;
-        p= nullptr;
+        p = nullptr;
     }
 }
 
@@ -1240,18 +1240,18 @@ void MAT::SetValues(const INT row, const INT column, const INT nnz,
     mark = 1;
 
     Return:
-    try{
-        if(mark==0){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_INPUT_FILE;
+    try {
+        if ( mark == 0 ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_INPUT_FILE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        this->row=0;
-        this->column=0;
-        this->nnz=0;
+        this->row = 0;
+        this->column = 0;
+        this->nnz = 0;
         this->rowshift.resize(0);
         this->colindex.resize(0);
         this->diag.resize(0);
@@ -1345,18 +1345,18 @@ void MAT::SetValues(const INT row, const INT column, const INT nnz,
     mark = 1;
 
     Return:
-    try{
-        if(mark==0){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_INPUT_FILE;
+    try {
+        if ( mark == 0 ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_INPUT_FILE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        this->row=0;
-        this->column=0;
-        this->nnz=0;
+        this->row = 0;
+        this->column = 0;
+        this->nnz = 0;
         this->rowshift.resize(0);
         this->colindex.resize(0);
         this->diag.resize(0);
@@ -1675,12 +1675,12 @@ INT MAT::Getnnz() const {
  */
 //! get (*this)[i][j]
 DBL MAT::GetElem(const INT row, const INT column) const {
-    try{
-        if(row<0 || row>=this->row || column<0 || column>=this->column){
-            FaspErrorCode errorCode=FaspErrorCode::ERROR_MAT_SIZE;
+    try {
+        if ( row < 0 || row >= this->row || column < 0 || column >= this->column ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_MAT_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
@@ -1708,12 +1708,12 @@ DBL MAT::GetElem(const INT row, const INT column) const {
 //! get the whole jth-row elements in *this into vector object
 std::vector<DBL> MAT::GetRow(const INT row) const {
     std::vector<DBL> vec;
-    try{
-        if(row<0 || row>=this->row){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_MAT_SIZE;
+    try {
+        if ( row < 0 || row >= this->row ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_MAT_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
@@ -1743,12 +1743,12 @@ std::vector<DBL> MAT::GetRow(const INT row) const {
 std::vector<DBL> MAT::GetColumn(const INT column)
 const {
     std::vector<DBL> vec;
-    try{
-        if(column<0 || column>=this->column){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_MAT_SIZE;
+    try {
+        if ( column < 0 || column >= this->column ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_MAT_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
@@ -1795,7 +1795,7 @@ std::vector<DBL> MAT::GetDiag() const {
 
 //! zero all the elements
 void MAT::Zero() {
-    this->nnz = this->row>this->column?this->column:this->row;
+    this->nnz = this->row > this->column ? this->column : this->row;
     INT *pcol = new INT[this->nnz];
     INT *prow = new INT[this->row + 1];
 
@@ -1819,8 +1819,8 @@ void MAT::Zero() {
 
     delete[] pcol;
     delete[] prow;
-    pcol= nullptr;
-    prow=nullptr;
+    pcol = nullptr;
+    prow = nullptr;
 
 }
 
@@ -1863,12 +1863,12 @@ void MAT::Shift(const DBL a) {
 //! vec_b = *this * vec_x
 VEC MAT::MultVec(const VEC vec) const {
     VEC vec_;
-    try{
-        if(this->column!=vec.GetSize()){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+    try {
+        if ( this->column != vec.GetSize()) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
@@ -1974,12 +1974,12 @@ void MAT::Transpose() {
 VEC MAT::MultTransposeAdd(const VEC vec1, const VEC vec2)
 const {
     VEC vec;
-    try{
-        if(this->row!=vec1.GetSize() || this->column!=vec2.GetSize()){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+    try {
+        if ( this->row != vec1.GetSize() || this->column != vec2.GetSize()) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
@@ -2064,24 +2064,24 @@ const {
  */
 //! *this = a * *this + b * mat
 void MAT::Add(const DBL a, const DBL b, const MAT mat) {
-    try{
-        if(mat.row!=this->row || mat.column!=this->column){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+    try {
+        if ( mat.row != this->row || mat.column != this->column ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
         return;
     }
 
-    try{
-        if(this->row==0 || this->column==0){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+    try {
+        if ( this->row == 0 || this->column == 0 ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
@@ -2275,18 +2275,18 @@ void MAT::Add(const DBL a, const DBL b, const MAT mat) {
 //! mat3 = a * mat1 + b * mat2
 MAT Add(const DBL a, const MAT mat1, const DBL b, const MAT mat2) {
     MAT mat;
-    try{
-        if(mat2.row!=mat1.row || mat2.column!=mat1.column){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+    try {
+        if ( mat2.row != mat1.row || mat2.column != mat1.column ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        mat.row=0;
-        mat.column=0;
-        mat.nnz=0;
+        mat.row = 0;
+        mat.column = 0;
+        mat.nnz = 0;
         mat.rowshift.resize(0);
         mat.colindex.resize(0);
         mat.values.resize(0);
@@ -2294,18 +2294,18 @@ MAT Add(const DBL a, const MAT mat1, const DBL b, const MAT mat2) {
         return mat;
     }
 
-    try{
-        if(mat1.row==0 || mat1.column==0){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+    try {
+        if ( mat1.row == 0 || mat1.column == 0 ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        mat.row=0;
-        mat.column=0;
-        mat.nnz=0;
+        mat.row = 0;
+        mat.column = 0;
+        mat.nnz = 0;
         mat.rowshift.resize(0);
         mat.colindex.resize(0);
         mat.values.resize(0);
@@ -2313,28 +2313,28 @@ MAT Add(const DBL a, const MAT mat1, const DBL b, const MAT mat2) {
         return mat;
     }
 
-    if ( mat1.nnz == 0 ){
-        mat.row=mat2.row;
-        mat.column=mat2.column;
-        mat.nnz=mat2.nnz;
+    if ( mat1.nnz == 0 ) {
+        mat.row = mat2.row;
+        mat.column = mat2.column;
+        mat.nnz = mat2.nnz;
         mat.rowshift.operator=(mat2.rowshift);
         mat.colindex.operator=(mat2.colindex);
         mat.diag.operator=(mat2.diag);
-        for(int j=0;j<mat2.nnz;j++)
-            mat.values[j]=b*mat2.values[j];
+        for ( int j = 0; j < mat2.nnz; j++ )
+            mat.values[j] = b * mat2.values[j];
 
         return mat;
     }
 
-    if ( mat2.nnz == 0 ){
-        mat.row=mat1.row;
-        mat.column=mat1.column;
-        mat.nnz=mat1.nnz;
+    if ( mat2.nnz == 0 ) {
+        mat.row = mat1.row;
+        mat.column = mat1.column;
+        mat.nnz = mat1.nnz;
         mat.rowshift.operator=(mat1.rowshift);
         mat.colindex.operator=(mat1.colindex);
         mat.diag.operator=(mat1.diag);
-        for(int j=0;j<mat1.nnz;j++)
-            mat.values[j]=a*mat1.values[j];
+        for ( int j = 0; j < mat1.nnz; j++ )
+            mat.values[j] = a * mat1.values[j];
 
         return mat;
     }
@@ -2521,18 +2521,18 @@ MAT Add(const DBL a, const MAT mat1, const DBL b, const MAT mat2) {
 //! mat3 = mat1 * mat2
 MAT Mult2(const MAT matl, const MAT matr) {
     MAT mat;
-    try{
-        if(matl.column!=matr.row){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_NONMATCH_SIZE;
+    try {
+        if ( matl.column != matr.row ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        mat.row=0;
-        mat.column=0;
-        mat.nnz=0;
+        mat.row = 0;
+        mat.column = 0;
+        mat.nnz = 0;
         mat.rowshift.resize(0);
         mat.diag.resize(0);
         mat.rowshift.resize(0);
@@ -2669,12 +2669,12 @@ MAT Mult2(const MAT matl, const MAT matr) {
 
 //! *this = *this * mat
 void MAT::MultLeft(const MAT mat) {
-    this->operator=(Mult2(*this,mat));
+    this->operator=(Mult2(*this, mat));
 }
 
 //! *this = mat * *this
 void MAT::MultRight(const MAT mat) {
-    this->operator=(Mult2(mat,*this));
+    this->operator=(Mult2(mat, *this));
 
 }
 
@@ -2685,9 +2685,9 @@ void MAT::MultRight(const MAT mat) {
  */
 //! convert the data CSR format to CSRx format
 MAT ConvertCSR(const INT row, const INT column, const INT nnz,
-                         const std::vector<DBL> values,
-                         const std::vector<INT> rowshift,
-                         const std::vector<INT> colindex) {
+               const std::vector<DBL> values,
+               const std::vector<INT> rowshift,
+               const std::vector<INT> colindex) {
 
     MAT mat;
     if ( row == 0 || column == 0 || nnz == 0 ) {
@@ -2756,18 +2756,18 @@ MAT ConvertCSR(const INT row, const INT column, const INT nnz,
     mark = 1;
 
     Return:
-    try{
-        if(mark==0){
-            FaspErrorCode errorCode=FaspErrorCode ::ERROR_INPUT_FILE;
+    try {
+        if ( mark == 0 ) {
+            FaspErrorCode errorCode = FaspErrorCode::ERROR_INPUT_FILE;
             throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
         }
-    }catch(FaspException& ex){
+    } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
                   << std::endl;
-        mat.row=0;
-        mat.column=0;
-        mat.nnz=0;
+        mat.row = 0;
+        mat.column = 0;
+        mat.nnz = 0;
         mat.rowshift.resize(0);
         mat.colindex.resize(0);
         mat.diag.resize(0);
