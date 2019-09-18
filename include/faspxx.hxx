@@ -16,6 +16,10 @@ typedef int FaspErrorType;
 typedef int INT;
 typedef double DBL;
 
+
+#include "../src/vec.hxx"
+
+
 #endif /* end if for __FASPXX_HEADER__ */
 
 /*---------------------------------*/
