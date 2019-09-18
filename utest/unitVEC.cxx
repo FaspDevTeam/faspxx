@@ -28,6 +28,18 @@ VEC v5(21, 34, 6);
 auto *p = new double[4]{452, 0.1234, 8964, 0.567};
 VEC v6(4, p);
 
+auto *q = new double[100] {85, 89 , 23, 39, 99 ,41 ,48 ,68 ,8  ,16, 24,
+                           28 , 94, 93, 9  ,49 ,97 ,40 ,60 ,27,92, 100,
+                           95, 5 , 81 ,14, 21, 22, 7  ,37,46, 71 , 34,
+                           90, 33 ,54 ,29, 19, 31, 64,74, 12 , 58, 59,
+                           83, 88, 15, 52, 10, 18, 66, 38 , 53, 57, 73,
+                           1, 70, 67, 72, 78, 36, 47 , 51, 84, 76 ,45,
+                           26, 43, 65, 42, 80, 56 , 91, 11, 30 ,82 ,62,
+                           6, 87 ,13,32, 3 , 77, 4 , 61 ,35 ,50 ,69,
+                           20,98, 86, 96, 75, 25, 79 ,17 ,2  ,55 ,44,63};
+VEC v7(100, q);
+
+
 /*---------------------------------*/
 /*--     Beginning of TEST       --*/
 /*---------------------------------*/
@@ -113,23 +125,21 @@ TEST(VEC_Scale, Scale)
 TEST(VEC_Copy, Copy)
 {
     VEC v;
-    v6.Copy(v);
+    v6.CopyTo(v);
     for (int i=0; i<v6.GetSize(); i++)
         EXPECT_EQ(v[i], v6[i]);
 }
 
 TEST(VEC_Min, Min)
 {
-    DBL min;
-    v6.Min(min); //fff最好是Min(), 而不是Min(DBL&)
+    DBL min = v6.Min();
     EXPECT_NE(min, 0.1234+TOL);
     EXPECT_EQ(min, 0.1234);
 }
 
 TEST(VEC_Max, Max)
 {
-    DBL max;
-    v6.Max(max); //fff最好是Max(), 而不是Max(DBL&)
+    DBL max = v6.Max();
     EXPECT_NE(max, 8964+TOL);
     EXPECT_EQ(max, 8964);
 }
@@ -144,7 +154,7 @@ TEST(VEC_Shift, Shift)
 
 TEST(VEC_Abs, Abs)
 {
-    VEC v(100, 1, 100);
+    VEC v = v7;
     VEC vv(v);
     for (int i=0; i<v.GetSize(); i++) {
         v[i] *= pow(-1.0, i%2);
@@ -158,7 +168,7 @@ TEST(VEC_Abs, Abs)
 
 TEST(VEC_Reciprocal, Reciprocal)
 {
-    VEC v(100, 1, 100);
+    VEC v = v7;
     VEC vv(v);
     for (int i=0; i<v.GetSize(); i++) {
         v[i] = 1.0 / v[i];
@@ -173,7 +183,7 @@ TEST(VEC_Reciprocal, Reciprocal)
 
 TEST(VEC_Norm2, Norm2)
 {
-    VEC v(100, 1, 100);
+    VEC v=v7;
     double norm2 = 0.0;
     for (int i=0; i<v.GetSize(); i++) {
         norm2 += v[i]*v[i];
@@ -185,7 +195,7 @@ TEST(VEC_Norm2, Norm2)
 
 TEST(VEC_Add, Add)
 {
-    VEC v(100, 1, 100);
+    VEC v=v7;
     VEC v1(v), v2(v), v3(v), v4;
     double a = 3.14159;
     double b = 3.14159;
@@ -204,22 +214,21 @@ TEST(VEC_Add, Add)
 }
 
 TEST(VEC_Dot, Dot) {
-    VEC v(100, 1, 100);
+    VEC v=v7;
     DBL dot1 = 0.0;
     for (int i = 0; i < v.GetSize(); i++) {
         dot1 += v[i] * v[i];
     }
 
-    DBL dot2;
-    v.Dot(v, dot2);
+    DBL dot2 = v.Dot(v);
     EXPECT_EQ(dot1, dot2);
     EXPECT_NE(dot1, dot2+TOL);
 }
 
 TEST(VEC_PointwiseMult, PointwiseMult)
 {
-    VEC v1(100, 1, 100);
-    VEC v2(100, 1, 100);
+    VEC v1 = v7;
+    VEC v2 = v7;
     VEC v3(v1);
     for (int i=0; i<v1.GetSize(); i++) {
         v3[i] = v1[i] * v2[i];
@@ -233,8 +242,8 @@ TEST(VEC_PointwiseMult, PointwiseMult)
 
 TEST(VEC_PointwiseDivide, PointwiseDivide)
 {
-    VEC v1(100, 1, 100);
-    VEC v2(100, 1, 100); // v1==v2, 没有正真的随机, 随机数生成器要修改
+    VEC v1 = v7;
+    VEC v2 = v7;
     VEC v3(v1);
     for (int i=0; i<v1.GetSize(); i++) {
         v3[i] = v1[i] / v2[i];

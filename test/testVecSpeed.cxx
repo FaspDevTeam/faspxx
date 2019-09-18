@@ -15,7 +15,7 @@
 #include <cstdlib>
 #include <cstring>
 #include "cyclecount.hxx"
-#include "vec.hxx"
+#include "../src/vec.hxx"
 
 const int LENGTH = 32000000;
 const int count = 10;

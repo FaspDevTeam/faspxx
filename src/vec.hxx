@@ -63,7 +63,7 @@ public:
      * size = 0, other cases are normally dealt
      */
     //! random construction function, N DBL values from begin_value to end_value
-    VEC(const INT N, const DBL min, const DBL max);
+    //VEC(const INT N, const DBL min, const DBL max);
 
     /**
      * if the input parameter "pointer" is null or the input parameter

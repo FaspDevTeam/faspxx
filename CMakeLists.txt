@@ -49,8 +49,8 @@ add_executable(testErrorCode test/testErrorCode.cxx)
 target_link_libraries(testErrorCode faspxx)
 
 # Build vector-operation test
-add_executable(testVecSpeed test/testVecSpeed.cxx)
+#add_executable(testVecSpeed test/testVecSpeed.cxx)
 
 # Build VEC class test
-add_executable(testVEC test/testVEC.cxx)
-target_link_libraries(testVEC faspxx)
+#add_executable(testVEC test/testVEC.cxx)
+#target_link_libraries(testVEC faspxx)
