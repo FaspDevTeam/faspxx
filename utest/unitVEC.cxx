@@ -23,7 +23,7 @@ std::vector<double> v2{1.23, 0.98, 234.67, 456};
 VEC v3(v2);
 VEC v4(v3);
 
-VEC v5(21, 34, 6);
+VEC v5(v4);
 
 auto *p = new double[4]{452, 0.1234, 8964, 0.567};
 VEC v6(4, p);
@@ -48,7 +48,7 @@ TEST(VEC_size, Size)
 {
     EXPECT_EQ(v0.GetSize(), 0);
     EXPECT_EQ(v1.GetSize(), 4);
-    EXPECT_EQ(v5.GetSize(), 21);
+    EXPECT_EQ(v5.GetSize(), 4);
     EXPECT_EQ(v6.GetSize(), 4);
 }
 
