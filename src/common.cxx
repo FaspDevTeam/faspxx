@@ -102,12 +102,13 @@ INT CheckCSRx(const INT row, const INT column, const INT nnz,
     try {
         if ( mark == 0 ) {
             FaspErrorCode errorCode = FaspErrorCode::ERROR_INPUT_FILE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
+            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
-                  << std::endl;
+        std::cerr << " ### ERROR : " << ex.getFile()
+                  << " in Function " << ex.getFunc()
+                  << " at Line "     << ex.getLine() << std::endl;
 
         return FaspErrorCode::ERROR_INPUT_FILE;
     }
@@ -181,12 +182,13 @@ INT CheckCSR(const INT row, const INT column, const INT nnz,
     try {
         if ( mark == 0 ) {
             FaspErrorCode errorCode = FaspErrorCode::ERROR_INPUT_FILE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __LINE__));
+            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspException &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : " << ex.getFile() << " at Line " << ex.getLine()
-                  << std::endl;
+        std::cerr << " ### ERROR : " << ex.getFile()
+                  << " in Function " << ex.getFunc()
+                  << " at Line "     << ex.getLine() << std::endl;
 
         return FaspErrorCode::ERROR_INPUT_FILE;
     }

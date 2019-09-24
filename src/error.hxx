@@ -62,20 +62,22 @@ const std::string getErrorCode(const FaspErrorCode code);
 class FaspException : public std::runtime_error {
 
 private:
-    const char*         file;  //! Which file throws exception
-    const int           line;  //! Which line throws exception
+    const char*        file;  //! Which file throws exception
+    const char*        func;  //! Which function throws exception
+    const unsigned int line;  //! Which line throws exception
 
 public:
     // Default constructor
-    FaspException (const std::string& msg_,
-                   const char* file_,
-                   const int line_) : std::runtime_error(msg_),
-                                      file(file_), line(line_)
+    FaspException ( const std::string& msg_,
+                    const char* file_,
+                    const char* func_,
+                    const unsigned int line_)
+                  : std::runtime_error(msg_), file(file_), func(func_), line(line_)
     { }
 
-    const int getLine() const { return line; } //! return thrown line number
-
     const char* getFile() const { return file; } //! return thrown file name
+    const char* getFunc() const { return func; } //! return thrown function name
+    const int   getLine() const { return line; } //! return thrown line number
 };
 
 #endif /* end if for __ERROR_HEADER__ */
