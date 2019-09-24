@@ -23,7 +23,7 @@ set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
 # Set configuration types
 SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -funroll-loops")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
 # Set project name
 project(faspxx)
@@ -49,7 +49,8 @@ add_executable(testErrorCode test/testErrorCode.cxx)
 target_link_libraries(testErrorCode faspxx)
 
 # Build vector-operation test
-#add_executable(testVecSpeed test/testVecSpeed.cxx)
+add_executable(testVecSpeed test/testVecSpeed.cxx)
+target_link_libraries(testVecSpeed faspxx)
 
 # Build VEC class test
 #add_executable(testVEC test/testVEC.cxx)
