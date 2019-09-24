@@ -1,7 +1,7 @@
 /** \file timing.hxx
  *  \brief Count CPU-cycles and wall-time used
  *  \author Chensong Zhang
- *  \date Sep/23/2019
+ *  \date Sep/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -10,42 +10,46 @@
  */
 
 #ifndef __TIMING_HEADER__      /*-- allow multiple inclusions --*/
-#define __TIMING_HEADER__      /**< indicate timing.hxx has been included */
+#define __TIMING_HEADER__      /*-- indicate timing.hxx has been included --*/
 
-typedef unsigned long long uint64; //! Unsigned long long int type
+typedef unsigned long long uint64; //!< Unsigned long long int
 
-#include <chrono>
+#include <chrono>    // For high-resolution CPU time
 
 /*! \class GetWallTime
  *  \brief Get elapsed wall-time in seconds
  *
- *  This class read the current wall-time and return duration upon stop().
+ *  Read the current wall-time and return duration upon stop().
  */
 class GetWallTime {
 
 private:
-    std::chrono::system_clock::time_point timeStamp;
+
+    std::chrono::system_clock::time_point timeStamp; //!< Current CPU time
 
 public:
-    //! Start the timer
-    __inline__ void start() {timeStamp = std::chrono::system_clock::now();}
 
-    //! Stop the timer and return duration in seconds from start()
-    __inline__ double stop() const {
+    //! Start the timer
+    __inline__ void start ( ) {timeStamp = std::chrono::system_clock::now();}
+
+    //! Stop the timer and return duration from start() in seconds
+    __inline__ double stop ( ) const {
         std::chrono::duration<double> elapsedTime = std::chrono::system_clock::now() - timeStamp;
         return elapsedTime.count();
     }
+
 };
 
 /*! \class CountCycle
  *  \brief Get CPU-cycle count
  *
- *  This class read the CPU cycle count with a piece of ASM code and return cycle count upon stop().
+ *  Read the CPU cycles with a piece of ASM code and return cycle count upon stop().
  */
 class CycleCount {
 
 private:
-    uint64 cycleClock = 0; //!< Current CPU cycle clock
+
+    uint64 cycleClock = 0; //!< Current CPU cycle counter
 
     //! Read Time Stamp Counter (TSC)
     static __inline__ uint64 startRDTSC ( ) {
@@ -70,13 +74,14 @@ private:
 public:
 
     //! Start the cycle count clock
-    __inline__ void start() {cycleClock = startRDTSC();}
+    __inline__ void start ( ) {cycleClock = startRDTSC();}
 
     //! Stop the cycle count clock and return number of cycles from start()
-    __inline__ unsigned long long stop() const {return stopRDTSCP() - cycleClock;}
+    __inline__ unsigned long long stop ( ) const {return stopRDTSCP() - cycleClock;}
+
 };
 
-#endif /* end if for __TIMING_HEADER__ */
+#endif /*-- end if for __TIMING_HEADER__ --*/
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/
