@@ -13,12 +13,8 @@
 #define __FASPXX_HEADER__      /**< indicate vec.hxx has been included before */
 
 typedef int FaspErrorType;
-typedef int INT;
+typedef unsigned int INT;
 typedef double DBL;
-
-
-#include "../src/vec.hxx"
-
 
 #endif /* end if for __FASPXX_HEADER__ */
 

@@ -166,10 +166,11 @@ VEC &VEC::operator-=(const VEC &vec_obj) {
 }
 
 /**
- * if the input parameter "size" < 0, throw an ecxeption.
+ * If the input parameter "size" < 0, throw an exception.
  * Don't change the *this
  */
-//! set the size of VEC object
+//! reserve the memory for VEC object only
+// TODO: Change the method name to "Reserve" in the future!
 void VEC::SetSize(const INT size) {
     try {
         if ( size < 0 ) {
@@ -183,12 +184,12 @@ void VEC::SetSize(const INT size) {
                   << std::endl;
         return;
     }
-    this->size = size;
-    this->vec.resize(size);
+
+    this->vec.reserve(size);
 }
 
 /**
- * if the input parameter "size" < 0, throw an ecxeption.
+ * if the input parameter "size" < 0, throw an exception.
  * Don't change the *this
  */
 //! set the size of VEC object and set the same value on VEC object
@@ -204,8 +205,8 @@ void VEC::SetValues(const INT size, const DBL value) {
                   << ex.getLine()
                   << std::endl;
     }
-    this->vec.assign(size, value);
     this->size = size;
+    this->vec.assign(size, value);
 }
 
 /**
@@ -219,7 +220,7 @@ void VEC::SetValues(const std::vector<DBL> vector_object) {
 }
 
 /**
- * if the input parameter "size" < 0, throw an ecxeption.
+ * if the input parameter "size" < 0, throw an exception.
  * Don't change the *this
  */
 //! this->vec = array
@@ -241,6 +242,7 @@ void VEC::SetValues(const INT size, const DBL *array) {
         this->vec.resize(0);
         return;
     }
+
     this->vec.assign(array, array + size);
     this->size = size;
 }
@@ -314,7 +316,7 @@ INT VEC::GetCapacity() {
 }
 
 /**
- * if VEC object 's size == 0, return the inital VEC object
+ * if VEC object 's size == 0, return the initial VEC object
  */
 //! scale this->vec[j] = a * this->vec[j] by a scalar
 void VEC::Scale(DBL a) {
@@ -526,6 +528,7 @@ DBL VEC::NormInf() const {
  */
 //! this->vec = a * this->vec + b * vec_obj
 void VEC::Add(const VEC &vec_obj, const DBL a, const DBL b) {
+    /*
     try {
         if ( this->size != vec_obj.size ) {
             FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
@@ -538,7 +541,7 @@ void VEC::Add(const VEC &vec_obj, const DBL a, const DBL b) {
                   << std::endl;
         return;
     }
-
+    */
     for ( INT j = 0; j < this->size; j++ )
         this->vec[j] = a * this->vec[j] + b * vec_obj.vec[j];
 }
@@ -577,6 +580,7 @@ void VEC::Add(const DBL a, const VEC &vec1_obj, const DBL b, const VEC &vec2_obj
  */
 //! dot product of this->vec and vec_obj
 DBL VEC::Dot(const VEC &vec_obj) const {
+    /*
     try {
         if ( this->size != vec_obj.size || this->size == 0 ) {
             FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
@@ -601,13 +605,12 @@ DBL VEC::Dot(const VEC &vec_obj) const {
                   << std::endl;
         return 0;
     }
-
+    */
     DBL dot = 0.0;
-    for ( INT j = 0; j < this->size; j++ )
-        dot += this->vec[j] * vec_obj.vec[j];
+    //for ( INT j = 0; j < this->size; j++ ) dot += this->vec[j] * vec_obj.vec[j];
+    for ( INT j = 0; j < this->size; j++ ) dot += this->vec[j] * vec_obj.vec[j];
 
     return dot;
-
 }
 
 /**

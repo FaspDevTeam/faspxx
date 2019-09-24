@@ -18,16 +18,19 @@
 #include "timing.hxx"
 #include "vec.hxx"
 
-const INT LENGTH = 32000000;
-const int count = 10;
+const INT LENGTH = 10000000;
+const int count = 100;
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/
 /*---------------------------------*/
 
 int main() {
+    std::cout << "Problem size " << LENGTH << ", repeat " << count << " times:" << std::endl;
+    if ( count < 1 ) return 0; // Do nothing at all!
+
     int j, k;
-    double sum, add;
+    double sum;
     CycleCount cycle;
     GetWallTime timer;
 
@@ -42,16 +45,16 @@ int main() {
 
     /*------------------------------------------------------------*/
     std::cout << "\n------ allocation ------" << std::endl;
-
-    cycle.start();
+    /*------------------------------------------------------------*/
     timer.start();
+    cycle.start();
     auto *ptr1 = new double[LENGTH];
     auto *ptr2 = new double[LENGTH];
     std::cout << "pointer cycles : " << cycle.stop() << std::endl;
     std::cout << "pointer time   : " << timer.stop() << " seconds" << std::endl;
 
-    cycle.start();
     timer.start();
+    cycle.start();
     // Standard declaration of vector is slow (initialization cost):
     //     std::vector<double> vec1(LENGTH), vec2(LENGTH);
     // A much faster way is used as follows (do not initialize!):
@@ -61,8 +64,8 @@ int main() {
     std::cout << "vector cycles  : " << cycle.stop() << std::endl;
     std::cout << "vector time    : " << timer.stop() << " seconds" << std::endl;
 
-    cycle.start();
     timer.start();
+    cycle.start();
     VEC nvec1, nvec2;
     nvec1.SetSize(LENGTH);
     nvec2.SetSize(LENGTH);
@@ -71,9 +74,9 @@ int main() {
 
     /*------------------------------------------------------------*/
     std::cout << "\n------ assignment ------" << std::endl;
-
-    cycle.start();
+    /*------------------------------------------------------------*/
     timer.start();
+    cycle.start();
     for ( k = 0; k < count; k++ ) {
         memcpy(ptr1, test1, LENGTH * sizeof(double));
         memcpy(ptr2, test2, LENGTH * sizeof(double));
@@ -81,8 +84,8 @@ int main() {
     std::cout << "pointer cycles : " << cycle.stop() / count << std::endl;
     std::cout << "pointer time   : " << timer.stop() / count << " seconds" << std::endl;
 
-    cycle.start();
     timer.start();
+    cycle.start();
     for ( k = 0; k < count; k++ ) {
         vec1.assign(test1, test1 + LENGTH);
         vec2.assign(test2, test2 + LENGTH);
@@ -90,8 +93,8 @@ int main() {
     std::cout << "vector cycles  : " << cycle.stop() / count << std::endl;
     std::cout << "vector time    : " << timer.stop() / count << " seconds" << std::endl;
 
-    cycle.start();
     timer.start();
+    cycle.start();
     for ( k = 0; k < count; k++ ) {
         nvec1.SetValues(LENGTH, test1);
         nvec2.SetValues(LENGTH, test2);
@@ -101,39 +104,34 @@ int main() {
 
     /*------------------------------------------------------------*/
     std::cout << "\n------ addition ------" << std::endl;
-
-    cycle.start();
+    /*------------------------------------------------------------*/
     timer.start();
+    cycle.start();
     for ( k = 0; k < count; k++ ) {
-        for ( add = 0.0, j = 0; j < LENGTH; j++ ) add += ptr1[j] + ptr2[j];
+        for ( j = 0; j < LENGTH; j++ ) ptr1[j] += ptr2[j];
     }
-    std::cout << "pointer add    : " << add << std::endl;
     std::cout << "pointer cycles : " << cycle.stop() / count << std::endl;
     std::cout << "pointer time   : " << timer.stop() / count << " seconds" << std::endl;
 
-    cycle.start();
     timer.start();
+    cycle.start();
     for ( k = 0; k < count; k++ ) {
-        for ( add = 0.0, j = 0; j < LENGTH; j++ ) add += vec1[j] + vec2[j];
+        for ( j = 0; j < LENGTH; j++ ) vec1[j] += vec2[j];
     }
-    std::cout << "vector add     : " << add << std::endl;
     std::cout << "vector cycles  : " << cycle.stop() / count << std::endl;
     std::cout << "vector time    : " << timer.stop() / count << " seconds" << std::endl;
 
-    cycle.start();
     timer.start();
-    for ( k = 0; k < count; k++ ) {
-        for ( add = 0.0, j = 0; j < LENGTH; j++ ) add += nvec1[j] + nvec2[j];
-    }
-    std::cout << "new VEC add    : " << add << std::endl;
+    cycle.start();
+    for ( k = 0; k < count; k++ ) nvec1.Add(nvec2, 1.0, 1.0);
     std::cout << "new VEC cycles : " << cycle.stop() / count << std::endl;
     std::cout << "new VEC time   : " << timer.stop() / count << " seconds" << std::endl;
 
     /*------------------------------------------------------------*/
     std::cout << "\n------ dot product ------" << std::endl;
-
-    cycle.start();
+    /*------------------------------------------------------------*/
     timer.start();
+    cycle.start();
     for ( k = 0; k < count; k++ ) {
         for ( sum = 0.0, j = 0; j < LENGTH; j++ ) sum += ptr1[j] * ptr2[j];
     }
@@ -141,8 +139,8 @@ int main() {
     std::cout << "pointer cycles : " << cycle.stop() / count << std::endl;
     std::cout << "pointer time   : " << timer.stop() / count << " seconds" << std::endl;
 
-    cycle.start();
     timer.start();
+    cycle.start();
     for ( k = 0; k < count; k++ ) {
         for ( sum = 0.0, j = 0; j < LENGTH; j++ ) sum += vec1[j] * vec2[j];
     }
@@ -150,10 +148,12 @@ int main() {
     std::cout << "vector cycles  : " << cycle.stop() / count << std::endl;
     std::cout << "vector time    : " << timer.stop() / count << " seconds" << std::endl;
 
-    cycle.start();
     timer.start();
+    cycle.start();
     for ( k = 0; k < count; k++ ) {
-        for ( sum = 0.0, j = 0; j < LENGTH; j++ ) sum += nvec1[j] * nvec2[j];
+        // One can use the overloaded [ ] operator for VEC as well (but slower):
+        //     for ( sum = 0.0, j = 0; j < LENGTH; j++ ) sum += nvec1[j] * nvec2[j];
+        sum = nvec1.Dot(nvec2);
     }
     std::cout << "new VEC dot    : " << sum << std::endl;
     std::cout << "new VEC cycles : " << cycle.stop() / count << std::endl;

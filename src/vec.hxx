@@ -111,14 +111,14 @@ public:
     VEC &operator-=(const VEC &vec_obj);
 
     /**
-     * if the input parameter "size" < 0, throw an ecxeption.
+     * if the input parameter "size" < 0, throw an exception.
      * Don't change the *this
      */
     //! set the size of VEC object
     void SetSize(const INT size);
 
     /**
-     * if the input parameter "size" < 0, throw an ecxeption.
+     * if the input parameter "size" < 0, throw an exception.
      * Don't change the *this
      */
     //! set the size of VEC object and set the same value on VEC object
@@ -132,7 +132,7 @@ public:
     void SetValues(const std::vector<DBL> vector_obj);
 
     /**
-     * if the input parameter "size" < 0, throw an ecxeption.
+     * if the input parameter "size" < 0, throw an exception.
      * Don't change the *this
      */
     //! this->vec = array
