@@ -371,8 +371,7 @@ std::vector<DBL> MAT::GetColumn(const INT column) const {
 
     std::vector<DBL> vec(count);
 
-    for(int j=0;j<count;j++)
-        vec[j]=tmp[j];
+    vec.assign(tmp.begin(),tmp.end());
 
     return vec;
 }
