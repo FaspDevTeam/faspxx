@@ -8,6 +8,7 @@
  */
 
 #include "vec.hxx"
+#include <cmath>
 
 //! set the size of vec and set the same value on VEC object
 VEC::VEC(const INT size, const DBL value) {
