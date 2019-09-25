@@ -2,16 +2,22 @@
  * a function for reading files
  */
 
-#ifndef READ_FILE_HXX
-#define READ_FILE_HXX
+#ifndef __READ_FILE_HXX__
+#define __READ_FILE_HXX__
 
 #include "faspxx.hxx"
 #include "mat.hxx"
 
-FaspErrorCode ReadMtx(const char *filename,INT &row,INT &column,INT &nnz,
-        std::vector<INT> &rowind,std::vector<INT> &colind,std::vector<DBL> &data);
+FaspRetCode ReadMtx(const char *filename, INT &row, INT &col, INT &nnz,
+                    std::vector<INT> &rowInd, std::vector<INT> &colInd,
+                    std::vector<DBL> &values);
 
-void MtxtoCSRx(INT row,INT column,INT nnz,std::vector<INT> rowind,
-        std::vector<INT> colind,std::vector<DBL> data,MAT &mat);
+FaspRetCode MtxToMAT(const INT row, const INT col, const INT nnz,
+                     const std::vector<INT> rowInd, const std::vector<INT> colInd,
+                     const std::vector<DBL> values, MAT &mat);
 
-#endif //READ_FILE_HXX
+#endif // __READ_FILE_HXX__
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

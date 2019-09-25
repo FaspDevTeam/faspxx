@@ -5,159 +5,150 @@
 #include "auxmat.hxx"
 
 //! check GetElem function
-FaspErrorCode MatCheck_CrossOver(const MAT mat, const INT row, const INT col) {
+FaspRetCode MatCheck_CrossOver(const MAT mat, const INT row, const INT col) {
     try {
         if ( row < 0 || row >= mat.GetRowSize() || col < 0 ||
              col >= mat.GetColSize()) {
-            FaspErrorCode errorCode = FaspErrorCode::ERROR_MAT_SIZE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__,
-                                 __LINE__));
+            FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
+            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspException &ex ) {
+    } catch ( FaspExcep &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
                   << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
 
-        return FaspErrorCode::ERROR_MAT_SIZE;
+        return FaspRetCode::ERROR_MAT_SIZE;
     }
-    return FaspErrorCode::SUCCESS;
+    return FaspRetCode::SUCCESS;
 }
 
 //! Check GetRow function
-FaspErrorCode MatCheck_CrossOverRow(const MAT mat, const INT row) {
+FaspRetCode MatCheck_CrossOverRow(const MAT mat, const INT row) {
     try {
         if ( row < 0 || row >= mat.GetRowSize()) {
-            FaspErrorCode errorCode = FaspErrorCode::ERROR_MAT_SIZE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__,
-                                 __LINE__));
+            FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
+            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspException &ex ) {
+    } catch ( FaspExcep &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
                   << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
 
-        return FaspErrorCode::ERROR_MAT_SIZE;
+        return FaspRetCode::ERROR_MAT_SIZE;
     }
 
-    return FaspErrorCode::SUCCESS;
+    return FaspRetCode::SUCCESS;
 }
 
 //! Check GetCol function
-FaspErrorCode MatCheck_CrossOverCol(const MAT mat, const INT col) {
+FaspRetCode MatCheck_CrossOverCol(const MAT mat, const INT col) {
     try {
         if ( col < 0 || col >= mat.GetColSize()) {
-            FaspErrorCode errorCode = FaspErrorCode::ERROR_MAT_SIZE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__,
-                                 __LINE__));
+            FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
+            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspException &ex ) {
+    } catch ( FaspExcep &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
                   << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
 
-        return FaspErrorCode::ERROR_MAT_SIZE;
+        return FaspRetCode::ERROR_MAT_SIZE;
     }
 
-    return FaspErrorCode::SUCCESS;
+    return FaspRetCode::SUCCESS;
 }
 
 //! Check MultVec function
-FaspErrorCode MatCheck_MultVec(const MAT mat,const VEC vec) {
+FaspRetCode MatCheck_MultVec(const MAT mat,const VEC vec) {
     try {
         if ( mat.GetColSize() != vec.GetSize()) {
-            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__,
-                                 __LINE__));
+            FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
+            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspException &ex ) {
+    } catch ( FaspExcep &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
                   << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
 
-        return FaspErrorCode::ERROR_NONMATCH_SIZE;
+        return FaspRetCode::ERROR_NONMATCH_SIZE;
     }
 
-    return FaspErrorCode::SUCCESS;
+    return FaspRetCode::SUCCESS;
 }
 
 //! Check MultTransposeAdd function
-FaspErrorCode MatCheck_MultTransposeAdd(const MAT mat, const VEC vec1, const VEC
+FaspRetCode MatCheck_MultTransposeAdd(const MAT mat, const VEC vec1, const VEC
 vec2) {
     try {
         if ( mat.GetRowSize() != vec1.GetSize() || mat.GetColSize() != vec2.GetSize()) {
-            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__,
-                                 __LINE__));
+            FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
+            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspException &ex ) {
+    } catch ( FaspExcep &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
                   << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
 
-        return FaspErrorCode::ERROR_NONMATCH_SIZE;
+        return FaspRetCode::ERROR_NONMATCH_SIZE;
     }
 
-    return FaspErrorCode::SUCCESS;
+    return FaspRetCode::SUCCESS;
 }
 
 //! Check Add function
-FaspErrorCode MatCheck_Add(const MAT mat1, const MAT mat2) {
+FaspRetCode MatCheck_Add(const MAT mat1, const MAT mat2) {
     try {
         if ( mat1.GetRowSize() != mat2.GetRowSize() ||
              mat2.GetColSize() != mat2.GetColSize()) {
-            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__,
-                                 __LINE__));
+            FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
+            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspException &ex ) {
+    } catch ( FaspExcep &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
                   << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
 
-        return FaspErrorCode::ERROR_NONMATCH_SIZE;
+        return FaspRetCode::ERROR_NONMATCH_SIZE;
     }
 
     try {
         if ( mat1.GetRowSize() == 0 || mat1.GetColSize() == 0 ) {
-            FaspErrorCode errorCode = FaspErrorCode::ERROR_MAT_SIZE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__,
-                                 __LINE__));
+            FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
+            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspException &ex ) {
+    } catch ( FaspExcep &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
                   << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
 
-        return FaspErrorCode::ERROR_MAT_SIZE;
+        return FaspRetCode::ERROR_MAT_SIZE;
     }
 
-    return FaspErrorCode::SUCCESS;
+    return FaspRetCode::SUCCESS;
 }
 
 //! Check Mult function
-FaspErrorCode MatCheck_Mult(const MAT mat1,const MAT mat2) {
+FaspRetCode MatCheck_Mult(const MAT mat1,const MAT mat2) {
     try {
         if ( mat1.GetColSize() != mat2.GetRowSize()) {
-            FaspErrorCode errorCode = FaspErrorCode::ERROR_NONMATCH_SIZE;
-            throw (FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__,
-                                 __LINE__));
+            FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
+            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspException &ex ) {
+    } catch ( FaspExcep &ex ) {
         std::cerr << " ### ERROR : " << ex.what() << std::endl;
         std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
                   << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
 
-        return FaspErrorCode::ERROR_NONMATCH_SIZE;
+        return FaspRetCode::ERROR_NONMATCH_SIZE;
     }
 
-    return FaspErrorCode::SUCCESS;
+    return FaspRetCode::SUCCESS;
 }
 
 //! Sort "colInd" on the order from small to large by its rows and change the
 //! positions of "values" according to "colInd"
-FaspErrorCode Sort(const INT row,const std::vector<INT> rowPtr,std::vector<INT>
-        &colInd,std::vector<DBL> &values){
-
+FaspRetCode Sort(const INT row, const std::vector<INT> rowPtr,
+                 std::vector<INT> &colInd, std::vector<DBL> &values) {
     INT l;
     INT begin,end;
     INT index;
@@ -183,16 +174,18 @@ FaspErrorCode Sort(const INT row,const std::vector<INT> rowPtr,std::vector<INT>
             values[l + 1] = data;
         }
     }
+
+    return FaspRetCode::SUCCESS;
 }
 
 //! check whether the input data are CSRx
-FaspErrorCode CheckCSRx(const INT row, const INT col, const INT nnz,
+FaspRetCode CheckCSRx(const INT row, const INT col, const INT nnz,
               const std::vector<DBL> values,
               const std::vector<INT> rowPtr,
               const std::vector<INT> colInd,
               const std::vector<INT> diagPtr) {
     if ( row == 0 || col == 0 || nnz == 0 )
-        return FaspErrorCode::SUCCESS;
+        return FaspRetCode::SUCCESS;
 
     /*
      * some simple examinations about parameters
@@ -275,19 +268,19 @@ FaspErrorCode CheckCSRx(const INT row, const INT col, const INT nnz,
     flag=1;
     if(flag==0){
         Return:
-        return FaspErrorCode::ERROR_INPUT_PAR;
+        return FaspRetCode::ERROR_INPUT_PAR;
     }
 
-    return FaspErrorCode::SUCCESS;
+    return FaspRetCode::SUCCESS;
 }
 
 //! check whether the input data are CSR
-FaspErrorCode CheckCSR(const INT row, const INT col, const INT nnz,
+FaspRetCode CheckCSR(const INT row, const INT col, const INT nnz,
              const std::vector<DBL> values,
              const std::vector<INT> rowPtr,
              const std::vector<INT> colInd) {
     if ( row == 0 || col == 0 || nnz == 0 )
-        return FaspErrorCode ::SUCCESS;
+        return FaspRetCode ::SUCCESS;
 
     /*
      * some simple examinations about parameters
@@ -344,8 +337,12 @@ FaspErrorCode CheckCSR(const INT row, const INT col, const INT nnz,
     flag=1;
     if(flag==0){
         Return:
-        return FaspErrorCode ::ERROR_INPUT_PAR;
+        return FaspRetCode ::ERROR_INPUT_PAR;
     }
 
-    return FaspErrorCode::SUCCESS;
+    return FaspRetCode::SUCCESS;
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

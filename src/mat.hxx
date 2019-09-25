@@ -114,7 +114,7 @@ public:
     //! default destructor
     ~MAT() {};
 
-    //! assign row, col, nnz, values, rowPtr, colInd to *this
+    //! assign row, col, nnz, values, colInd, rowPtr, diagPtr to *this
     void SetValues(const INT row, const INT col, const INT nnz,
                    const std::vector<DBL> values, const std::vector<INT> rowPtr,
                    const std::vector<INT> colInd, const std::vector<INT> diagPtr);
@@ -136,25 +136,25 @@ public:
     //! get (*this)[i][j]
     DBL GetElem(const INT row, const INT col) const;
 
-    //! get the whole jth-row elements in *this into VEC object
-    std::vector<DBL> GetRow(const INT row) const;
+    //! get the whole i-th row in *this into VEC object
+    std::vector<DBL> GetRow(const INT i) const; // Todo: Needed???
     
     //! get the whole j-th column in *this into VEC object
-    std::vector<DBL> GetCol(const INT j) const;
+    std::vector<DBL> GetCol(const INT j) const; // Todo: Needed???
 
-    //! get the whole diagonal elements in *this into VEC object
+    //! get the whole diagonal entries in *this into VEC object
     std::vector<DBL> GetDiag() const;
 
-    //! zero all the elements
+    //! set all the entries to zero 
     void Zero();
 
-    //! copy *this into mat
+    //! copy *this to mat
     void CopyTo(MAT &mat) const;
 
     //! *this = a * (*this)
     void Scale(const DBL a);
 
-    //! *this = a * I + *this
+    //! *this += a * I
     void Shift(const DBL a);
 
     //! ReturnedValue = *this * vec
@@ -181,20 +181,7 @@ public:
     //! *this = mat * *this
     void MultRight(const MAT mat);
 
-    //! convert the data CSR format to CSRx format
-    friend MAT ConvertFromCSR(const INT row, const INT col, const INT nnz,
-                              const std::vector<DBL> values,
-                              const std::vector<INT> rowPtr,
-                              const std::vector<INT> colInd);
-
 };
-
-//! convert a CSR data structure to CSRx
-// Todo: Why need this???
-MAT ConvertFromCSR(const INT row, const INT col, const INT nnz,
-                   const std::vector<DBL> values,
-                   const std::vector<INT> rowPtr,
-                   const std::vector<INT> colInd);
 
 #endif /* end if for __MAT_HEADER__ */
 

@@ -10,11 +10,14 @@
  */
 
 #include <string>
+
 #include "error.hxx"
 
- /// \brief Get error message from FaspErrorCode
-const std::string getErrorCode(const FaspErrorCode code) {
+ /// \brief Decode FaspRetCode to a readable error message
+const std::string getRetCode(const FaspRetCode code) {
     switch(code) {
+        case SUCCESS:
+            return "Finish successfully!";
         case ERROR_OPEN_FILE:
             return "Failed to open a file!";
         case ERROR_INPUT_FILE:
@@ -71,5 +74,5 @@ const std::string getErrorCode(const FaspErrorCode code) {
 }
 
 /*---------------------------------*/
-/*--     Beginning of main       --*/
+/*--        End of File          --*/
 /*---------------------------------*/

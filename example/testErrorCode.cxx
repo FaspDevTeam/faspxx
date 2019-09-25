@@ -21,17 +21,18 @@ using namespace std;
 
 int main()
 {
-    FaspErrorCode errorCode = FaspErrorCode::SUCCESS; // Return success if no-throw
+    FaspRetCode errorCode = FaspRetCode::SUCCESS; // Return success if no-throw
 
     cout << "Initial error code : " << errorCode << endl;
 
     try {
-	    errorCode = FaspErrorCode::ERROR_UNKNOWN; // Error type found
-    	throw( FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__, __LINE__) );
+	    errorCode = FaspRetCode::ERROR_UNKNOWN; // Error type found
+    	throw( FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__) );
     }
-    catch (FaspException& ex) {
+    catch (FaspExcep& ex) {
     	cout << "### ERROR: " << ex.what() << endl;
-        cout << "### ERROR: Check " << ex.getFile() << " in Function " << ex.getFunc() <<" at Line " << ex.getLine() << endl;
+        cout << "### ERROR: Check " << ex.getFile() << " in Function "
+             << ex.getFunc() <<" at Line " << ex.getLine() << endl;
         return errorCode;
     }
 

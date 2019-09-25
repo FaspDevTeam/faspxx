@@ -16,8 +16,8 @@
 #include <iostream>
 #include "faspxx.hxx"
 
-/// \brief Error code definition
-enum FaspErrorCode {
+/// \brief Return code definition
+enum FaspRetCode {
     SUCCESS                = 0,    //! Everything is fine
     //---------- Input problems ---------------------------------------------------//
     ERROR_OPEN_FILE        = -10,  //! Failed to open a file
@@ -56,10 +56,10 @@ enum FaspErrorCode {
 };
 
 /// \brief Get error message from FaspErrorCode
-const std::string getErrorCode(const FaspErrorCode code);
+const std::string getRetCode(const FaspRetCode code);
 
 /// \brief Standard exception capturing
-class FaspException : public std::runtime_error {
+class FaspExcep : public std::runtime_error {
 
 private:
     const char*        file;  //! Which file throws exception
@@ -68,11 +68,9 @@ private:
 
 public:
     // Default constructor
-    FaspException ( const std::string& msg_,
-                    const char* file_,
-                    const char* func_,
-                    const unsigned int line_)
-                  : std::runtime_error(msg_), file(file_), func(func_), line(line_)
+    FaspExcep ( const std::string& msg_, const char* file_,
+                const char* func_, const unsigned int line_)
+              : std::runtime_error(msg_), file(file_), func(func_), line(line_)
     { }
 
     const char* getFile() const { return file; } //! return thrown file name
@@ -83,5 +81,5 @@ public:
 #endif /* end if for __ERROR_HEADER__ */
 
 /*---------------------------------*/
-/*--     Beginning of main       --*/
+/*--        End of File          --*/
 /*---------------------------------*/
