@@ -1,7 +1,7 @@
-/** \file error.hxx
- *  \brief Transform error code into a readable string
+/** \file RetCode.hxx
+ *  \brief Decode return code into a readable string
  *  \author Chensong Zhang
- *  \date Sep/12/2019
+ *  \date Sep/25/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -11,7 +11,7 @@
 
 #include <string>
 
-#include "error.hxx"
+#include "RetCode.hxx"
 
  /// \brief Decode FaspRetCode to a readable error message
 const std::string getRetCode(const FaspRetCode code) {

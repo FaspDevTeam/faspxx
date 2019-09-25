@@ -1,15 +1,16 @@
-/*! \file vec.cxx
+/*! \file MAT.cxx
  *  \brief Source file for the FASP++ Matrix class
+ *  \author Kailei Zhang
+ *  \date Sep/25/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights resized.
  *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
  *-----------------------------------------------------------------------------------
  */
-#include "mat.hxx"
-#include "auxmat.hxx"
 
-/*---------------------------------------------------------------------------------*/
+#include "MAT.hxx"
+#include "MATUtil.hxx"
 
 //! assign row, col, nnz, values, rowPtr, colInd, diag to *this
 MAT::MAT(const INT row, const INT col, const INT nnz, 

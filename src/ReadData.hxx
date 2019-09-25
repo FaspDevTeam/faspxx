@@ -6,7 +6,7 @@
 #define __READ_FILE_HXX__
 
 #include "faspxx.hxx"
-#include "mat.hxx"
+#include "MAT.hxx"
 
 FaspRetCode ReadMtx(const char *filename, INT &row, INT &col, INT &nnz,
                     std::vector<INT> &rowInd, std::vector<INT> &colInd,

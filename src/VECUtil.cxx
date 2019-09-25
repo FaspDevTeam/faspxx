@@ -1,9 +1,17 @@
-/**
- * source codes for VEC auxiliary functions
+/*! \file VECUtil.cxx
+ *  \brief Some auxiliary functions for VEC
+ *  \author Kailei Zhang
+ *  \date Sep/25/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
-#include "auxvec.hxx"
 #include <cmath>
+
+#include "VECUtil.hxx"
 
 //! Check whether sizes match
 FaspRetCode VECCheck_SizeMatch(VEC vec1, VEC vec2) {

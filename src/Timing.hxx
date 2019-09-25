@@ -1,4 +1,4 @@
-/** \file timing.hxx
+/** \file Timing.hxx
  *  \brief Count CPU-cycles and wall-time used
  *  \author Chensong Zhang
  *  \date Sep/24/2019

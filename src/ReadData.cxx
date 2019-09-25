@@ -4,7 +4,7 @@
 
 #include <fstream>
 
-#include "read.hxx"
+#include "ReadData.hxx"
 
 /// \brief Read a MTX data file
 FaspRetCode ReadMtx(const char *filename, INT &row, INT &col, INT &nnz,

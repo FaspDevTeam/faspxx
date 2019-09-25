@@ -11,7 +11,7 @@
  */
 
 #include <iostream>
-#include "error.hxx"
+#include "RetCode.hxx"
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/
@@ -21,23 +21,22 @@ using namespace std;
 
 int main()
 {
-    FaspRetCode errorCode = FaspRetCode::SUCCESS; // Return success if no-throw
+    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
 
-    cout << "Initial error code : " << errorCode << endl;
+    cout << "Initial retCode = " << retCode << endl;
 
     try {
-	    errorCode = FaspRetCode::ERROR_UNKNOWN; // Error type found
-    	throw( FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__) );
+        retCode = FaspRetCode::ERROR_UNKNOWN; // Error type found
+        cout << "Final retCode = " << retCode << endl;
+    	throw( FaspExcep(getRetCode(retCode), __FILE__, __FUNCTION__, __LINE__) );
     }
     catch (FaspExcep& ex) {
     	cout << "### ERROR: " << ex.what() << endl;
         cout << "### ERROR: Check " << ex.getFile() << " in Function "
              << ex.getFunc() <<" at Line " << ex.getLine() << endl;
-        return errorCode;
+        return retCode;
     }
 
-    // This line should never be reached!
-    cout << "Final error code : " << errorCode << endl;
 }
 
 /*---------------------------------*/

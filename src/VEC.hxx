@@ -11,7 +11,8 @@
 #define __VEC_HEADER__      /**< indicate vec.hxx has been included before */
 
 #include <vector>
-#include "error.hxx"
+
+#include "RetCode.hxx"
 
 /*! \class VEC
  *  \brief basic vec class

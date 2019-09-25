@@ -1,4 +1,4 @@
-/*! \file mat.hxx
+/*! \file MAT.hxx
  *  \brief Header file for the FASP++ Matrix class
  *
  *-----------------------------------------------------------------------------------
@@ -10,10 +10,12 @@
 #ifndef __MAT_HEADER__      /*-- allow multiple inclusions --*/
 #define __MAT_HEADER__      /**< indicate mat.hxx has been included before */
 
-#include "vec.hxx"
+#include "VEC.hxx"
 
 /*! \class MAT
  *  \brief Basic double matrix class in the CSRx data structure
+ *  \author Kailei Zhang
+ *  \date Sep/25/2019
  *
  *  This class defines the basic MAT data structure and its basic operations. We
  *  give two simple examples here as follows:

@@ -5,7 +5,7 @@
 #ifndef SRC_AUXMAT_HXX
 #define SRC_AUXMAT_HXX
 
-#include "mat.hxx"
+#include "MAT.hxx"
 
 //! check GetElem function
 FaspRetCode MatCheck_CrossOver(const MAT mat, const INT row, const INT column);

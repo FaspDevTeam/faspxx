@@ -1,8 +1,15 @@
-/**
- * a source file about some auxiliary functions
+/*! \file MATUtil.cxx
+ *  \brief Some auxiliary functions for MAT
+ *  \author Kailei Zhang
+ *  \date Sep/25/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
-#include "auxmat.hxx"
+#include "MATUtil.hxx"
 
 //! check GetElem function
 FaspRetCode MatCheck_CrossOver(const MAT mat, const INT row, const INT col) {
