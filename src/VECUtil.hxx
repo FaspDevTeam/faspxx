@@ -5,7 +5,7 @@
 #ifndef SRC_AUXVEC_HXX
 #define SRC_AUXVEC_HXX
 
-#include "vec.hxx"
+#include "VEC.hxx"
 
 //! Check whether sizes match
 FaspRetCode VECCheck_SizeMatch(VEC vec1,VEC vec2);

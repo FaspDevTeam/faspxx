@@ -7,263 +7,227 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include "vec.hxx"
 #include <cmath>
+#include "VEC.hxx"
 
 //! set the size of vec and set the same value on VEC object
-VEC::VEC(const INT size, const DBL value) {
-    this->vec_.assign(size, value);
-    this->size_ = size;
+VEC::VEC(const INT &size, const DBL &value) {
+    this->vec.assign(size, value);
+    this->size = size;
 }
 
 //! assign vector object to VEC object
-VEC::VEC(std::vector<DBL> vect) {
-    this->vec_.operator=(vect);
-    this->size_ = vect.size();
+VEC::VEC(const std::vector<DBL> &vt) {
+    this->vec.operator=(vt);
+    this->size = vt.size();
 }
 
 //! assign VEC object to VEC object
-VEC::VEC(const VEC &vec) {
-    this->vec_.operator=(vec.vec_);
-    this->size_ = vec.size_;
+VEC::VEC(const VEC &v) {
+    this->vec.operator=(v.vec);
+    this->size = v.size;
 }
 
 //! assign pointer to VEC object
-VEC::VEC(const INT size, const DBL *ptr) {
+VEC::VEC(const INT &size, const DBL *ptr) {
     if ( ptr == nullptr || size == 0 ) {
-        this->vec_.resize(0);
-        this->size_ = 0;
+        this->vec.resize(0);
+        this->size = 0;
         return;
     }
-    this->vec_.assign(ptr, ptr + size);
-    this->size_ = size;
+    this->vec.assign(ptr, ptr + size);
+    this->size = size;
 }
 
 //! overload equals operator
-VEC &VEC::operator=(const VEC &vec) {
-    this->vec_.operator=(vec.vec_);
-    this->size_ = vec.size_;
-
+VEC &VEC::operator=(const VEC &v) {
+    this->vec.operator=(v.vec);
+    this->size = v.size;
     return *this;
 }
 
 //! overload [] operator
-DBL &VEC::operator[](const INT position) {
-    return this->vec_[position];
+DBL &VEC::operator[](const INT &position) {
+    return this->vec[position];
 }
 
 //! overload [] operator
-const DBL &VEC::operator[](const INT position) const {
-    return this->vec_[position];
+const DBL &VEC::operator[](const INT &position) const {
+    return this->vec[position];
 }
 
 //! overload += operator
-VEC &VEC::operator+=(const VEC &vec) {
-    for ( INT j = 0; j < this->size_; j++ )
-        this->vec_[j] += vec.vec_[j];
-
+VEC &VEC::operator+=(const VEC &v) {
+    for ( INT j = 0; j < this->size; j++ ) this->vec[j] += v.vec[j];
     return *this;
 }
 
 //! overload -= operator
-VEC &VEC::operator-=(const VEC &vec) {
-    for ( INT j = 0; j < this->size_; j++ )
-        this->vec_[j] -= vec.vec_[j];
-
+VEC &VEC::operator-=(const VEC &v) {
+    for ( INT j = 0; j < this->size; j++ ) this->vec[j] -= v.vec[j];
     return *this;
 }
 
 //! reserve the memory for VEC object only
-void VEC::Reserve(const INT size) {
-    this->vec_.reserve(size);
+void VEC::SetSize(const INT &size) {
+    this->size = size;
+    this->vec.resize(size);
 }
 
 //! set the size of VEC object and set the same value on VEC object
-void VEC::SetValues(const INT size, const DBL value) {
-    this->size_ = size;
-    this->vec_.assign(size, value);
+void VEC::SetValues(const INT &size, const DBL &value) {
+    this->size = size;
+    this->vec.assign(size, value);
 }
 
 //! assign vector object to VEC object
-void VEC::SetValues(const std::vector<DBL> vect) {
-    this->vec_.operator=(vect);
-    this->size_ = vect.size();
+void VEC::SetValues(const std::vector<DBL> &vt) {
+    this->vec.operator=(vt);
+    this->size = vt.size();
 }
 
 //! *this = array
-void VEC::SetValues(const INT size, const DBL *array) {
+void VEC::SetValues(const INT &size, const DBL *array) {
     if ( array == nullptr || size == 0 ) {
-        this->size_ = 0;
-        this->vec_.resize(0);
+        this->size = 0;
+        this->vec.resize(0);
         return;
     }
 
-    this->vec_.assign(array, array + size);
-    this->size_ = size;
+    this->vec.assign(array, array + size);
+    this->size = size;
 }
 
 //! get the value of (*this)[position]
-DBL VEC::Get(const INT position) const {
-    return this->vec_.at(position);
+DBL VEC::GetValue(const INT &position) const {
+    return this->vec.at(position);
 }
 
 //! get array = *this of size = min(size, this->GetSize())
-void VEC::GetArray(const INT size, DBL **array) const {
-    if ( size == 0 || this->size_ == 0 ) {
+// Todo: Need to fix **array!!!
+void VEC::GetArray(const INT &size, DBL **array) const {
+    if ( size == 0 || this->size == 0 ) {
         delete[] *array;
         *array = nullptr;
         return;
     }
 
-    INT len = size > this->size_ ? this->size_ : size;
+    INT len = size > this->size ? this->size : size;
     delete[] *array;
     *array=nullptr;
     *array = new DBL[len];
     for ( INT j = 0; j < len; j++ )
-        (*array)[j] = this->vec_[j];
+        (*array)[j] = this->vec[j];
 }
 
 //! get the size of *this
 INT VEC::GetSize() const {
-    return this->size_;
+    return this->size;
 }
 
 //! get the capacity of VEC object
-INT VEC::GetCapacity() {
-    return this->vec_.capacity();
+INT VEC::GetCapacity() const {
+    return this->vec.capacity();
 }
 
 //! scale (*this)[j] = a * (*this)[j] by a scalar
-void VEC::Scale(DBL a) {
-    if ( this->size_ == 0 )
+void VEC::Scale(const DBL &a) {
+    if ( this->size == 0 )
         return;
     else {
-        for ( INT j = 0; j < this->size_; j++ )
-            this->vec_[j] = a * this->vec_[j];
+        for ( INT j = 0; j < this->size; j++ ) this->vec[j] *= a;
     }
 }
 
 //! copy vec = *this
 void VEC::CopyTo(VEC &vec) const {
-    vec.vec_.operator=(this->vec_);
-    vec.size_ = this->size_;
+    vec.vec.operator=(this->vec);
+    vec.size = this->size;
 }
 
 //! find max(*this)
 DBL VEC::Max() const {
-    DBL max;
-    if ( this->size_ == 1 )
-        max = this->vec_[0];
-    else {
-        max = this->vec_[0];
-        for ( INT j = 1; j < this->size_; j++ ) {
-            if ( max < this->vec_[j] )
-                max = this->vec_[j];
-        }
+    DBL max = this->vec[0];
+    for ( INT j = 1; j < this->size; j++ ) {
+        if ( max < this->vec[j] ) max = this->vec[j];
     }
-
     return max;
 }
 
 //! find min(*this)
 DBL VEC::Min() const {
-    DBL min = 0;
-    if ( this->size_ == 1 )
-        min = this->vec_[0];
-    else {
-        min = this->vec_[0];
-        for ( INT j = 1; j < this->size_; j++ ) {
-            if ( min > this->vec_[j] )
-                min = this->vec_[j];
-        }
+    DBL min = this->vec[0];
+    for ( INT j = 1; j < this->size; j++ ) {
+        if ( min > this->vec[j] ) min = this->vec[j];
     }
-
     return min;
 }
 
-//! shift (*this)[j] += s by a scalar
-void VEC::Shift(DBL s) {
-    if ( this->size_ == 0 )
-        this->vec_.resize(0);
-    for ( INT j = 0; j < this->size_; j++ )
-        this->vec_[j] += s;
+//! shift (*this)[j] += a
+void VEC::Shift(const DBL &a) {
+    if ( this->size == 0 ) return; // do nothing
+    for ( INT j = 0; j < this->size; j++ ) this->vec[j] += a;
 }
 
 //! compute abs((*this)[j])
 void VEC::Abs() {
-    if ( this->size_ == 0 ) {
-        this->vec_.resize(0);
-        return;
-    }
-    for ( INT j = 0; j < this->size_; j++ )
-        this->vec_[j] = fabs(this->vec_[j]);
+    if ( this->size == 0 ) return; // do nothing
+    for ( INT j = 0; j < this->size; j++ ) this->vec[j] = fabs(this->vec[j]);
 }
 
 //! (*this)[j] = 1 / (*this)[j]
-void VEC::Reciprocal(DBL tol) {
-    if ( this->size_ == 0 ) {
-        this->vec_.resize(0);
-        return;
-    }
-    for ( INT j = 0; j < this->size_; j++ )
-        this->vec_[j] = 1 / this->vec_[j];
+void VEC::Reciprocal() {
+    if ( this->size == 0 ) return; // do nothing
+    for ( INT j = 0; j < this->size; j++ ) this->vec[j] = 1 / this->vec[j];
 }
 
 //! find l2-norm of *this
 DBL VEC::Norm2() const {
     DBL norm2 = 0.0;
-    for ( INT j = 0; j < this->size_; j++ )
-        norm2 += this->vec_[j] * this->vec_[j];
-
+    for ( INT j = 0; j < this->size; j++ ) norm2 += this->vec[j] * this->vec[j];
     return sqrt(norm2);
 }
 
 //! find infinity norm of *this
 DBL VEC::NormInf() const {
-    DBL normInf = 0.0;
-    if ( this->size_ == 1 )
-        normInf = fabs(this->vec_[0]);
-    else {
-        for ( INT j = 1; j < this->size_; j++ ) {
-            if ( normInf < fabs(this->vec_[j]))
-                normInf = fabs(this->vec_[j]);
-        }
+    DBL normInf = fabs(this->vec[0]), absValue;
+    for ( INT j = 1; j < this->size; j++ ) {
+        absValue = fabs(this->vec[j]);
+        if ( normInf < absValue ) normInf = absValue;
     }
-
     return normInf;
 }
 
 //! *this = a * *this + b * vec
-void VEC::Add(const VEC &vec, const DBL a, const DBL b) {
-    for ( INT j = 0; j < this->size_; j++ )
-        this->vec_[j] = a * this->vec_[j] + b * vec.vec_[j];
+void VEC::Add(const VEC &v, const DBL &a, const DBL &b) {
+    for ( INT j = 0; j < this->size; j++ )
+        this->vec[j] = a * this->vec[j] + b * v.vec[j];
 }
 
 //! *this = a * vec1 + b * vec2
-void VEC::Add(const DBL a, const VEC &vec1, const DBL b, const VEC &vec2) {
-    this->size_ = vec1.size_;
-    this->vec_.resize(vec1.size_);
-    for ( INT j = 0; j < vec1.size_; j++ )
-        this->vec_[j] = a * vec1.vec_[j] + b * vec2.vec_[j];
+void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
+    this->size = v1.size;
+    this->vec.resize(v1.size);
+    for ( INT j = 0; j < v1.size; j++ ) this->vec[j] = a * v1.vec[j] + b * v2.vec[j];
 }
 
 //! dot product of *this and vec
-DBL VEC::Dot(const VEC &vec) const {
+DBL VEC::Dot(const VEC &v) const {
     DBL dot = 0.0;
-    for ( INT j = 0; j < this->size_; j++ )
-        dot += this->vec_[j] * vec.vec_[j];
-
+    for ( INT j = 0; j < this->size; j++ ) dot += this->vec[j] * v.vec[j];
     return dot;
 }
 
 //! scale (*this)[j] *= vec[j] by a vector
-void VEC::PointwiseMult(const VEC &vec) {
-    for ( INT j = 0; j < this->size_; j++ )
-        this->vec_[j] *= vec.vec_[j];
+void VEC::PointwiseMult(const VEC &v) {
+    for ( INT j = 0; j < this->size; j++ ) this->vec[j] *= v.vec[j];
 }
 
 //! (*this)[j] = (*this)[j] / vec[j]
-void VEC::PointwiseDivide(const VEC &vec) {
-    for ( INT j = 0; j < this->size_; j++ )
-        this->vec_[j] /= vec.vec_[j];
+void VEC::PointwiseDivide(const VEC &v) {
+    for ( INT j = 0; j < this->size; j++ ) this->vec[j] /= v.vec[j];
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

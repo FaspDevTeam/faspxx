@@ -1,5 +1,7 @@
 /*! \file MAT.hxx
  *  \brief Header file for the FASP++ Matrix class
+ *  \author Kailei Zhang
+ *  \date Sep/25/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -14,8 +16,6 @@
 
 /*! \class MAT
  *  \brief Basic double matrix class in the CSRx data structure
- *  \author Kailei Zhang
- *  \date Sep/25/2019
  *
  *  This class defines the basic MAT data structure and its basic operations. We
  *  give two simple examples here as follows:
@@ -23,9 +23,9 @@
  *  Example 1.
  *  \[
  *  \begin{pmatrix}
- *      1 & 0 & 2 \\
- *      0 & 1 & 0 \\
- *      3 & 0 & 0 \\
+ *      1&  0&  2 \\
+ *      0&  1&  0 \\
+ *      3&  0&  0 \\
  *  \end{pmatrix}
  *  \]
  *  and
@@ -38,9 +38,9 @@
  *  Example 2.
  *  \[
  *  \begin{pmatrix}
- *      1 & 7 & 2 \\
- *      0 & 0 & 0 \\
- *      3 & 0 & 4 \\
+ *      1&  7&  2 \\
+ *      0&  0&  0 \\
+ *      3&  0&  4 \\
  *  \end{pmatrix}
  *  \]
  *  and
@@ -54,8 +54,8 @@ class MAT {
 
 private:
 
-    INT row;    //! the row number of the matrix
-    INT col;    //! the column number of the matrix
+    INT nrow;   //! the row number of the matrix
+    INT ncol;   //! the column number of the matrix
     INT nnz;    //! the number of nonzeros of the matrix
 
     //! values contains the nonzero entries of the matrix, compressed row by row
@@ -79,52 +79,52 @@ public:
     //-----------------------------------------------------------------------//
 
     //! initial constructor
-    MAT() : row(0), col(0), nnz(0),
+    MAT() : nrow(0), ncol(0), nnz(0),
             values(0), colInd(0), rowPtr(0), diagPtr(0) {};
 
-    //! assign row, col, nnz, values, rowPtr, colInd, diagPtr to *this
-    MAT(const INT row, const INT col, const INT nnz,
-        const std::vector<DBL> values, const std::vector<INT> rowPtr, 
-        const std::vector<INT> colInd, const std::vector<INT> diagPtr);
+    //! assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
+    MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+        const std::vector<DBL>& values, const std::vector<INT>& colInd,
+        const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
 
-    //! assign row, col, nnz, values, rowPtr, colInd to *this, generate diagPtr
-    MAT(const INT row, const INT col, const INT nnz,
-        const std::vector<DBL> values, const std::vector<INT> rowPtr,
-        const std::vector<INT> colInd);
+    //! assign nrow, ncol, nnz, values, colInd, rowPtr to *this, generate diagPtr
+    MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+        const std::vector<DBL>& values, const std::vector<INT>& colInd,
+        const std::vector<INT>& rowPtr);
 
-    //! assign row, col, nnz, rowPtr, colInd, diagPtr to *this (sparse structure)
-    MAT(const INT row, const INT col, const INT nnz,
-        const std::vector<INT> rowPtr, const std::vector<INT> colInd,
-        const std::vector<INT> diagPtr);
+    //! assign nrow, ncol, nnz, colInd, rowPtr, diagPtr to *this (sparse structure)
+    MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+        const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
+        const std::vector<INT>& diagPtr);
 
-    //! assign row, col, nnz, rowPtr, colInd to *this (sparse structure), generate diagPtr
-    MAT(const INT row, const INT col, const INT nnz,
-        const std::vector<INT> rowPtr, const std::vector<INT> colInd);
+    //! assign nrow, ncol, nnz, colInd, rowPtr to *this (sparse structure), generate diagPtr
+    MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+        const std::vector<INT>& colInd, const std::vector<INT>& rowPtr);
 
     //! assign diagonal values to *this from a VEC
-    MAT(VEC &vec);
+    MAT(const VEC& v);
 
     //! assign diagonal values to *this from a vector
-    MAT(const std::vector<DBL> &vect);
+    MAT(const std::vector<DBL>& vt);
 
     //! assign MAT object to *this
-    MAT(const MAT &mat);
+    MAT(const MAT& mat);
 
     //! overload equals operator
-    MAT &operator=(const MAT &mat);
+    MAT& operator=(const MAT& mat);
 
     //! default destructor
     ~MAT() {};
 
-    //! assign row, col, nnz, values, colInd, rowPtr, diagPtr to *this
-    void SetValues(const INT row, const INT col, const INT nnz,
-                   const std::vector<DBL> values, const std::vector<INT> rowPtr,
-                   const std::vector<INT> colInd, const std::vector<INT> diagPtr);
+    //! assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
+    void SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+                   const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                   const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
 
-    //! assign row, col, nnz, values, rowPtr, colInd to *this
-    void SetValues(const INT row, const INT col, const INT nnz,
-                   const std::vector<DBL> values, const std::vector<INT> rowPtr,
-                   const std::vector<INT> colInd);
+    //! assign nrow, ncol, nnz, values, rowPtr, colInd to *this
+    void SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+                   const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                   const std::vector<INT>& rowPtr);
 
     //! get row size
     INT GetRowSize() const;
@@ -136,22 +136,19 @@ public:
     INT GetNNZ() const;
 
     //! get (*this)[i][j]
-    DBL GetElem(const INT row, const INT col) const;
+    DBL GetValue(const INT& row, const INT& col) const;
 
-    //! get the whole i-th row in *this into VEC object
-    std::vector<DBL> GetRow(const INT i) const; // Todo: Needed???
+    //! get the whole row-th row in *this into VEC object
+    void GetRow(const INT& row, std::vector<DBL>& v) const;
     
-    //! get the whole j-th column in *this into VEC object
-    std::vector<DBL> GetCol(const INT j) const; // Todo: Needed???
-
+    //! get the whole col-th column in *this into VEC object
+    void GetCol(const INT& col, std::vector<DBL>& v) const;
+    
     //! get the whole diagonal entries in *this into VEC object
-    std::vector<DBL> GetDiag() const;
-
-    //! set all the entries to zero 
-    void Zero();
+    void GetDiag(std::vector<DBL>& v) const;
 
     //! copy *this to mat
-    void CopyTo(MAT &mat) const;
+    void CopyTo(MAT& mat) const;
 
     //! *this = a * (*this)
     void Scale(const DBL a);
@@ -159,30 +156,39 @@ public:
     //! *this += a * I
     void Shift(const DBL a);
 
-    //! ReturnedValue = *this * vec
-    VEC MultVec(const VEC vec) const;
+    //! set all the entries to zero
+    void Zero();
 
-    //! transpose *this
+    //! Return Value = *this * vec
+    VEC MultVec(const VEC& vec) const;
+
+    //! transpose *this // Todo: Check???
     void Transpose();
 
-    //! A'*vec1 + vec2 // Todo: Check???
-    VEC MultTransposeAdd(const VEC vec1, const VEC vec2) const;
-
-    //! *this = a * *this + b * mat
-    void Add(const DBL a, const DBL b, const MAT mat);
-
-    //! a * mat1 + b * mat2 // Todo: Check???
-    friend MAT Add(const DBL a, const MAT mat1, const DBL b, const MAT mat2);
-
-    //! *this = matl * matr
-    friend MAT Mult(const MAT matl, const MAT matr);
-
     //! *this = *this * mat
-    void MultLeft(const MAT mat);
+    void MultLeft(const MAT& mat);
 
     //! *this = mat * *this
-    void MultRight(const MAT mat);
+    void MultRight(const MAT& mat);
 
+    //! *this = a * *this + b * mat
+    void Add(const DBL a, const DBL b, const MAT& mat);
+
+    //! A'*vec1 + vec2 // Todo: Check???
+    VEC MultTransposeAdd(const VEC& vec1, const VEC& vec2) const;
+
+    //! a * mat1 + b * mat2 // Todo: Check???
+    friend MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2);
+
+    //! *this = matl * matr
+    friend MAT Mult(const MAT& matl, const MAT& matr);
+
+private:
+    //! form diagonal pointer from colInd and rowPtr
+    void FormDiagPtr(std::vector<INT>& diagPtr);
+
+    //! make an empty matrix
+    void Empty();
 };
 
 #endif /* end if for __MAT_HEADER__ */

@@ -51,5 +51,9 @@ add_executable(testVecSpeed example/testVecSpeed.cxx)
 target_link_libraries(testVecSpeed faspxx)
 
 # Build VEC class test
-#add_executable(testVEC test/testVEC.cxx)
-#target_link_libraries(testVEC faspxx)
+add_executable(testVEC example/testVEC.cxx)
+target_link_libraries(testVEC faspxx)
+
+# Build MAT class test
+add_executable(testMAT example/testMAT.cxx)
+target_link_libraries(testMAT faspxx)

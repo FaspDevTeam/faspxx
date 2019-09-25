@@ -14,9 +14,8 @@
 #include <vector>
 #include <cstdlib>
 #include <cstring>
-
-#include "timing.hxx"
-#include "vec.hxx"
+#include "Timing.hxx"
+#include "VEC.hxx"
 
 const INT LENGTH = 10000000;
 const int count = 100;
@@ -67,8 +66,8 @@ int main() {
     timer.start();
     cycle.start();
     VEC nvec1, nvec2;
-    nvec1.Reserve(LENGTH);
-    nvec2.Reserve(LENGTH);
+    nvec1.SetSize(LENGTH);
+    nvec2.SetSize(LENGTH);
     std::cout << "new VEC cycles : " << cycle.stop() << std::endl;
     std::cout << "new VEC time   : " << timer.stop() << " seconds" << std::endl;
 

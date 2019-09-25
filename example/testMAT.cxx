@@ -2,9 +2,9 @@
  * a test file
  */
 
-#include "mat.hxx"
 #include <iostream>
 #include <vector>
+#include "MAT.hxx"
 
 using namespace std;
 
@@ -64,78 +64,65 @@ int main() {
     vcol1[9] = 3;
     VEC vec(vval1);
 
-    //MAT() : row(0), column(0), nnz(0), values(0), rowshift(0),
-    //       colindex(0), diag(0) {};
     /**
      * output :
      * MAT() 1 :
-     * Getnnz() : 0
+     * GetNNZ() : 0
      */
     MAT m0;
     cout << "MAT() 1 : " << endl;
-    cout << "Getnnz() : " << m0.Getnnz() << endl;
+    cout << "GetNNZ() : " << m0.GetNNZ() << endl;
 
-    //MAT(const INT row, const INT column, const INT nnz, const std::vector<DBL>
-    //values, const std::vector<INT> rowshift, const std::vector<INT> colindex,
-    //const std::vector<INT> diag);
     /**
-     * MAT() 2 :
+     * MAT() 1 :
      * 0  0  1  0
      * 2  3  0  4
      * 5  0  2  1
      * 0  0  2  1
      */
-    cout << "MAT() 2 : " << endl;
-    MAT m1(row1, col1, nnz1, vval1, vrow1, vcol1, vdia1);
-    for ( int j = 0; j < row1; j++ ) {
-        for ( int k = 0; k < col1; k++ ) {
-            cout << m1.GetElem(j, k) << "  ";
+    cout << "MAT() 1 : " << endl;
+    MAT m1(row1, col1, nnz1, vval1, vcol1, vrow1, vdia1);
+    for ( int j = 0; j < m1.GetRowSize(); j++ ) {
+        for ( int k = 0; k < m1.GetColSize(); k++ ) {
+            cout << m1.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //MAT(const INT row, const INT column, const INT nnz, const std::vector<INT>
-    //rowshift, const std::vector<INT> colindex, const std::vector<INT>
-    //diag);
     /**
      * output :
-     * MAT() 3 :
+     * MAT() 2 :
      * 1  0  1  0
      * 1  1  0  1
      * 1  0  1  1
      * 0  0  1  1
      */
-    MAT m2(row1, col1, nnz1, vrow1, vcol1, vdia1);
-    cout << "MAT() 3 : " << endl;
+    MAT m2(row1, col1, nnz1, vcol1, vrow1, vdia1);
+    cout << "MAT() 2 : " << endl;
     for ( int j = 0; j < row1; j++ ) {
         for ( int k = 0; k < col1; k++ ) {
-            cout << m2.GetElem(j, k) << "  ";
+            cout << m2.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //MAT(const INT row, const INT column, const INT nnz, const std::vector<DBL>
-    //values, const std::vector<INT> rowshift, const std::vector<INT>
-    //colindex);
     /**
      * output :
-     * MAT() 4 :
+     * MAT() 3 :
      * 0  0  1  0
      * 2  3  0  4
      * 5  0  2  1
      * 0  0  2  1
      */
-    MAT m3(row1, col1, nnz1, vval1, vrow1, vcol1);
-    cout << "MAT() 4 : " << endl;
+    MAT m3(row1, col1, nnz1, vval1, vcol1, vrow1);
+    cout << "MAT() 3 : " << endl;
     for ( int j = 0; j < row1; j++ ) {
         for ( int k = 0; k < col1; k++ ) {
-            cout << m3.GetElem(j, k) << "  ";
+            cout << m3.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //MAT(const INT row, const INT column, const INT nnz, const std::vector<INT>
-    //rowshift, const std::vector<INT> colindex);
     /**
      * output :
      * MAT() 5 :
@@ -144,16 +131,15 @@ int main() {
      * 1  0  1  1
      * 0  0  1  1
      */
-    MAT m4(row1, col1, nnz1, vrow1, vcol1);
+    MAT m4(row1, col1, nnz1, vcol1, vrow1);
     cout << "MAT() 5 : " << endl;
     for ( int j = 0; j < row1; j++ ) {
         for ( int k = 0; k < col1; k++ ) {
-            cout << m4.GetElem(j, k) << "  ";
+            cout << m4.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //MAT(VEC &vec_obj);
     /**
      * output :
      * MAT() 6 :
@@ -172,12 +158,11 @@ int main() {
     cout << "MAT() 6 : " << endl;
     for ( int j = 0; j < vec.GetSize(); j++ ) {
         for ( int k = 0; k < vec.GetSize(); k++ ) {
-            cout << m5.GetElem(j, k) << "  ";
+            cout << m5.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //MAT(const std::vector<DBL> &vector_obj);
     /**
      * output :
      * MAT() 7 :
@@ -196,12 +181,11 @@ int main() {
     cout << "MAT() 7 : " << endl;
     for ( int j = 0; j < vval1.size(); j++ ) {
         for ( int k = 0; k < vval1.size(); k++ ) {
-            cout << m6.GetElem(j, k) << "  ";
+            cout << m6.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //MAT(const MAT &mat);
     /**
      * output :
      * MAT() 8 :
@@ -214,12 +198,11 @@ int main() {
     cout << "MAT() 8 : " << endl;
     for ( int j = 0; j < row1; j++ ) {
         for ( int k = 0; k < col1; k++ ) {
-            cout << m7.GetElem(j, k) << "  ";
+            cout << m7.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //MAT &operator=(const MAT &mat);
     /**
      * output :
      * operator= :
@@ -233,14 +216,11 @@ int main() {
     cout << "operator= : " << endl;
     for ( int j = 0; j < row1; j++ ) {
         for ( int k = 0; k < col1; k++ ) {
-            cout << m8.GetElem(j, k) << "  ";
+            cout << m8.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //void SetValues(const INT row, const INT column, const INT nnz,
-    //               const std::vector<DBL> values, const std::vector<INT> rowshift,
-    //               const std::vector<INT> colindex, const std::vector<INT> diag);
     /**
      * output :
      * SetValues 1 :
@@ -251,17 +231,14 @@ int main() {
      */
     MAT m9;
     cout << "SetValues 1 : " << endl;
-    m9.SetValues(row1, col1, nnz1, vval1, vrow1, vcol1, vdia1);
+    m9.SetValues(row1, col1, nnz1, vval1, vcol1, vrow1, vdia1);
     for ( int j = 0; j < row1; j++ ) {
         for ( int k = 0; k < col1; k++ ) {
-            cout << m9.GetElem(j, k) << "  ";
+            cout << m9.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //void SetValues(const INT row, const INT column, const INT nnz,
-    //               const std::vector<DBL> values, const std::vector<INT> rowshift,
-    //               const std::vector<INT> colindex);
     /**
      * output :
      * SetValues 2 :
@@ -272,78 +249,71 @@ int main() {
      */
     MAT m10;
     cout << "SetValues 2 : " << endl;
-    m10.SetValues(row1, col1, nnz1, vval1, vrow1, vcol1);
+    m10.SetValues(row1, col1, nnz1, vval1, vcol1, vrow1);
 
     for ( int j = 0; j < row1; j++ ) {
         for ( int k = 0; k < col1; k++ ) {
-            cout << m10.GetElem(j, k) << "  ";
+            cout << m10.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //void GetSizes(INT &row, INT &col) const;
     /**
      * output :
      * GetSize() :
      * row : 4
      * col : 4
      */
-    int tmprow, tmpcol;
+    INT tmprow = m10.GetRowSize(), tmpcol = m10.GetColSize();
     cout << "GetSizes() : " << endl;
-    m10.GetSizes(tmprow, tmpcol);
     cout << "row : " << tmprow << endl;
     cout << "col : " << tmpcol << endl;
 
-    //INT Getnnz() const;
     /**
      * output :
-     * Getnnz : 10
+     * GetNNZ : 10
      */
-    cout << "Getnnz : " << m10.Getnnz() << endl;
+    cout << "GetNNZ : " << m10.GetNNZ() << endl;
 
-    //FaspErrorType GetRow(const INT row, std::vector<DBL> &vector_obj) const;
     /**
      * output :
-     * Getnnz :
+     * GetRow :
      * 2  3  4
      */
-    vector<DBL> vecrow;
-    vecrow = m10.GetRow(1);
-    cout << "GetRow : " << endl;
-    for ( int j = 0; j < vecrow.size(); j++ ) {
-        cout << vecrow[j] << "  ";
+    vector<DBL> rowVec;
+    m10.GetRow(1, rowVec);
+    cout << "GetRow : " << rowVec.size() << endl;
+    for ( int j = 0; j < rowVec.size(); j++ ) {
+        cout << rowVec[j] << "  ";
     }
     cout << endl;
 
-    //FaspErrorType GetColumn(const INT column, std::vector<DBL> &vec_obj) const;
     /**
      * output :
-     * GetColumn :
+     * GetCol :
      * 3
      */
-    vector<DBL> veccol;
-    veccol = m10.GetColumn(1);
-    cout << "GetColumn : " << endl;
-    for ( int j = 0; j < veccol.size(); j++ ) {
-        cout << veccol[j] << "  ";
+    vector<DBL> colVec;
+    m10.GetCol(1, colVec);
+    cout << "GetCol : " << endl;
+    for ( int j = 0; j < colVec.size(); j++ ) {
+        cout << colVec[j] << "  ";
     }
     cout << endl;
 
-    //void GetDiag(std::vector<DBL> &vector_obj) const;
     /**
      * output :
      * GetDiag :
      * 0  3  2  1
      */
     vector<DBL> diag;
-    diag.operator=(m10.GetDiag());
+    m10.GetDiag(diag);
     cout << "GetDiag : " << endl;
     for ( int j = 0; j < diag.size(); j++ ) {
         cout << diag[j] << "  ";
     }
     cout << endl;
 
-    //void Zero();
     /**
      * output :
      * Zero :
@@ -356,12 +326,11 @@ int main() {
     cout << "Zero : " << endl;
     for ( int j = 0; j < tmprow; j++ ) {
         for ( int k = 0; k < tmpcol; k++ ) {
-            cout << m10.GetElem(j, k) << "  ";
+            cout << m10.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //void Copy(MAT &mat) const;
     /**
      * output :
      * m1.CopyTo() :
@@ -375,12 +344,11 @@ int main() {
     m1.CopyTo(m11);
     for ( int j = 0; j < tmprow; j++ ) {
         for ( int k = 0; k < tmpcol; k++ ) {
-            cout << m11.GetElem(j, k) << "  ";
+            cout << m11.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //void Scale(const DBL a)
     /**
      * output :
      * Scale :
@@ -393,12 +361,11 @@ int main() {
     m1.Scale(2.87);
     for ( int j = 0; j < tmprow; j++ ) {
         for ( int k = 0; k < tmpcol; k++ ) {
-            cout << m1.GetElem(j, k) << "  ";
+            cout << m1.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //void Shift(const DBL a);
     /**
      * output :
      * Shift :
@@ -411,12 +378,11 @@ int main() {
     cout << "Shift : " << endl;
     for ( int j = 0; j < tmprow; j++ ) {
         for ( int k = 0; k < tmpcol; k++ ) {
-            cout << m1.GetElem(j, k) << "  ";
+            cout << m1.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //FaspErrorType MAT::MultVec(const VEC vec_x, VEC &vec_b) const
     /**
      * output :
      * MultVec :
@@ -424,49 +390,42 @@ int main() {
      * 1.88714  9.09658  8.1954  3.6895
      */
     VEC v(4, 0.314);
-    VEC w;
-    w.operator=(m1.MultVec(v));
+    VEC w = m1.MultVec(v);
     cout << "MultVec : " << endl;
-    for ( int j = 0; j < 4; j++ )
-        cout << v[j] << "  ";
+    for ( int j = 0; j < v.GetSize(); j++ ) cout << v[j] << "  ";
     cout << endl;
-    for ( int j = 0; j < 4; j++ )
-        cout << w[j] << "  ";
+    for ( int j = 0; j < w.GetSize(); j++ ) cout << w[j] << "  ";
     cout << endl;
 
-    //void Transpose();
     /**
      * Transpose :
-     * 3.14  5.74  14.35  0
-     * 0  11.75  0  0
-     * 2.87  0  8.88  5.74
-     * 0  11.48  2.87  6.01
+     * 3.14  5.74  14.35  0.0
+     * 0.0  11.75   0.0   0.0
+     * 2.87  0.0    8.88  5.74
+     * 0.0  11.48   2.87  6.01
      */
     m1.Transpose();
     cout << "Transpose : " << endl;
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
-            cout << m1.GetElem(j, k) << "  ";
+            cout << m1.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //FaspErrorType MultTransposeAdd(const VEC vec1,const VEC vec2, VEC &vec3) const
     /**
      * output :
      * 3.77428  18.1932  16.3908  7.379
      */
-    VEC v3;
     MAT m12;
     m1.CopyTo(m12);
+    VEC v3 = m12.MultTransposeAdd(v, w);
     cout << "MultTransposeAdd : " << endl;
-    v3.operator=(m12.MultTransposeAdd(v, w));
     for ( int j = 0; j < 4; j++ ) {
         cout << v3[j] << "  ";
     }
     cout << endl;
 
-    //FaspErrorType Add(const DBL a, const DBL b, const MAT mat)
     /**
      * output :
      * Add 1 :
@@ -475,19 +434,16 @@ int main() {
      * 7.87  0  10.88  6.74
      * 0 11.48  4.87  7.01
      */
-    MAT m13(row1, col1, nnz1, vval1, vrow1, vcol1, vdia1);
+    MAT m13(row1, col1, nnz1, vval1, vcol1, vrow1, vdia1);
     cout << "Add 1 : " << endl;
     m12.Add(1, 1, m13);
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
-            cout << m12.GetElem(j, k) << "  ";
+            cout << m12.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //friend FaspErrorType
-    //Add(const DBL a, const MAT mat1, const DBL b, const MAT mat2,
-    //    MAT &mat3);
     /**
      * output :
      * Add 2 :
@@ -502,12 +458,11 @@ int main() {
     m15.operator=(Add(1.23, m1, 9.87, m13));
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
-            cout << m15.GetElem(j, k) << "  ";
+            cout << m15.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
-    //friend FaspErrorType Mult2(const MAT mat1, const MAT mat2, MAT &mat3);
     /**
      * output :
      * Mult2 :
@@ -527,25 +482,25 @@ int main() {
      * 126.11  34.44  81.98  84.04
      */
     MAT m16;
-    m16 = Mult2(m1, m13);
+    m16 = Mult(m1, m13);
     cout << "Left : " << endl;
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
-            cout << m1.GetElem(j, k) << "  ";
+            cout << m1.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
     cout << "Right : " << endl;
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
-            cout << m13.GetElem(j, k) << "  ";
+            cout << m13.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
     cout << "Mult2 : " << endl;
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
-            cout << m16.GetElem(j, k) << "  ";
+            cout << m16.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
@@ -554,42 +509,23 @@ int main() {
     m1.MultLeft(m13);
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
-            cout << m1.GetElem(j, k) << "  ";
+            cout << m1.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
-
 
     cout << "MultRight : " << endl;
     m1.MultRight(m13);
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
-            cout << m1.GetElem(j, k) << "  ";
-        }
-        cout << endl;
-    }
-
-    //friend MAT ConvertCSR(const INT row, const INT column, const INT nnz,
-    //                      const std::vector<DBL> values,
-    //                      const std::vector<INT> rowshift,
-    //                      const std::vector<INT> colindex);
-    /**
-     * output :
-     * ConvertCSR :
-     * 0  0  1  0
-     * 2  3  0  4
-     * 5  0  2  1
-     * 0  0  2  1
-     */
-    cout << "ConvertCSR : " << endl;
-    MAT m18;
-    m18 = ConvertCSR(row1, col1, nnz1, vval1, vrow1, vcol1);
-    for ( int j = 0; j < 4; j++ ) {
-        for ( int k = 0; k < 4; k++ ) {
-            cout << m18.GetElem(j, k) << "  ";
+            cout << m1.GetValue(j, k) << "  ";
         }
         cout << endl;
     }
 
     return 0;
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

@@ -11,7 +11,7 @@
  */
 
 #include <iostream>
-#include "vec.hxx"
+#include "VEC.hxx"
 
 using namespace std;
 
@@ -28,8 +28,6 @@ int main()
     VEC v0;
     cout << "v0.GetSize() : " << v0.GetSize() << endl;
 
-    //VEC(const INT size, const DBL value)
-    //DBL &operator [] (const INT position)
     /**
      * output :
      * v1.GetSize() : 4
@@ -40,8 +38,6 @@ int main()
     for ( int j=0; j<4; j++ ) cout << v1[j] << "  ";
     cout<<endl;
 
-    //VEC(const std::vector<DBL> vector_obj)
-    //DBL &operator [] (const INT position)
     /**
      * output:
      * 1.23, 0.98, 234.67, 456
@@ -62,8 +58,6 @@ int main()
     for ( int j=0; j<4; j++ ) cout << v2[j] << "  ";
     cout << endl;
 
-    //VEC(const VEC &vec_obj)
-    //DBL &operator [] (const INT position)
     /**
      * output:
      * v3.GetSize() : 4
@@ -74,19 +68,6 @@ int main()
     for ( int j=0; j<4; j++ ) cout << v3[j] << "  ";
     cout << endl;
 
-    //VEC(const DBL begin_value, const DBL end_value, const INT N)
-    //DBL &operator [] (const INT position)
-    /**
-     * output :
-     * attention: random values aren't uncertain
-     */
-    VEC v4(21,34,6);
-    cout << "v4.GetSize() : " << v4.GetSize() << endl;
-    for ( int j=0; j<6; j++ ) cout << v4[j] << "  ";
-    cout << endl;
-
-    //VEC(const DBL *pointer, const INT size)
-    //DBL &operator [] (const INT position)
     /**
      * output:
      * v5.GetSize() : 4
@@ -102,8 +83,6 @@ int main()
     for ( int j=0; j<4; j++ ) cout << v5[j] << "  ";
     cout << endl;
 
-    //VEC &operator = (const VEC &vec_obj)
-    //DBL &operator [] (const INT position)
     /**
      * output :
      * v6.GetSize() : 4
@@ -114,7 +93,6 @@ int main()
     for ( int j=0; j<4; j++ ) cout << v6[j] << "  ";
     cout << endl;
 
-    //VEC &operator += (const VEC &vec_obj)
     /**
      * output :
      * v6.GetSize() : 4
@@ -125,7 +103,6 @@ int main()
     for ( int j=0; j<4; j++ ) cout << v6[j] << "  ";
     cout << endl;
 
-    //VEC &operator -= (const VEC &vec_obj)
     /**
      * output :
      * 452, 0.12354, 8964, 0.567
@@ -135,7 +112,6 @@ int main()
     for ( int j=0; j<4; j++ ) cout << v6[j] << "  ";
     cout << endl;
 
-    //void SetSize(const INT size)
     /**
      * output :
      * v6.GetSize() : 10
@@ -143,10 +119,6 @@ int main()
     v6.SetSize(10);
     cout << "v6.GetSize() : " << v6.GetSize() << endl;
 
-    //void SetValues(const INT size, const DBL value)
-    //void SetValues(const std::vector<DBL> vector_obj)
-    //void SetValues(const DBL begin_value, const DBL end_value, const INT N)
-    //void SetValues(const INT size, const DBL *array)
     /**
      * output :
      * v7.GetSize() : 6
@@ -169,26 +141,19 @@ int main()
     for (int j=0; j<6; j++ ) cout << v8[j] << "  ";
     cout << endl;
 
-    v9.SetValues(10,100,6);
-    cout << "v9.GetSize() : " << v9.GetSize() << endl;
-    for (int j=0; j<6; j++ ) cout << v9[j] << "  ";
-    cout << endl;
-
     v10.SetValues(4,p);
     cout << "v10.GetSize() : " << v10.GetSize() << endl;
     for (int j=0; j<6; j++ ) cout << v10[j] << "  ";
     cout << endl;
 
-    //void Get(const INT position, DBL &value) const
     /**
      * output :
      * 8964
      */
     DBL value;
-    value = v10.Get(2);
-    cout << "v10.Get() : " << value << endl;
+    value = v10.GetValue(2);
+    cout << "v10.GetValuec() : " << value << endl;
 
-    //void GetArray(const INT &size, DBL **array) const
     /**
      * output :
      * 452, 0.12354, 8964
@@ -209,7 +174,6 @@ int main()
     cout << "v10.GetSize() : " << v10.GetSize() << endl;
     cout << "v10.GetCapacity() : " << v10.GetCapacity() << endl;
 
-    //void Scale(const DBL a)
     /**
      * output :
      * v10.Scale() : 1297.24, 0.35456, 25726.7, 1.62729
@@ -219,31 +183,25 @@ int main()
     for ( int j=0; j<v10.GetSize(); j++ ) cout << v10[j] << "  ";
     cout<<endl;
 
-    //void Copy(VEC &vec_obj) const
     /**
      * output :
-     * v10.Copy() : 1297.24, 0.35456, 25726.7, 1.62729
+     * v10.CopyTo() : 1297.24, 0.35456, 25726.7, 1.62729
      */
     VEC v11;
-    cout << "v10.Copy() : ";
-    v10.Copy(v11);
+    cout << "v10.CopyTo() : ";
+    v10.CopyTo(v11);
     for (int j=0; j<v10.GetSize(); j++) cout << v11[j] << "  ";
     cout << endl;
 
-    //void Max(DBL &max) const
-    //void Min(DBL &min) const
     /**
      * output :
      * max : 25726.7
      * min : 0.35456
      */
-    DBL max,min;
-    v10.Max(max);
-    v10.Min(min);
+    DBL max = v10.Max(), min = v10.Min();
     cout << "max : " << max << endl;
     cout << "min : " << min << endl;
 
-    //void Shift(DBL s)
     /**
      * output :
      * v10.Shift() : 2297.24  1000.35  26726.7  1001.63
@@ -253,7 +211,6 @@ int main()
     for ( int j=0; j<v10.GetSize(); j++ ) cout << v10[j] << "  ";
     cout << endl;
 
-    //void Abs()
     /**
      * output :
      * v10.Abs() : 2297.24  1000.35  26726.7  1001.63
@@ -271,12 +228,10 @@ int main()
      */
     cout << "v10.GetSize() : " << v10.GetSize() << endl;
     cout << "v10.Reciprocal() : ";
-    v10.Reciprocal(10e-5);
+    v10.Reciprocal();
     for ( int j=0; j<v10.GetSize(); j++ ) cout << v10[j] << "  ";
     cout << endl;
 
-    //DBL Norm2() const
-    //DBL NormInf() const
     /**
      * output :
      * Norm2 : 0.00147883
@@ -301,18 +256,14 @@ int main()
     for ( int j=0; j<4; j++ ) cout << v12[j] << "  ";
     cout << endl;
 
-    //FaspErrorType Dot(const VEC &vec_obj, DBL &dot) const
     /**
      * output :
      * v12.Dot() : 2.29059e+09
      */
-    DBL dot;
+    DBL dot = v12.Dot(v1);
     cout << "v12.Dot() : ";
-    v12.Dot(v1,dot);
     cout << dot << endl;
 
-    //FaspErrorType PointWiseMult(const VEC &vec_obj)
-    //FaspErrorType PointWiseDivide(const VEC &vec_obj,DBL tol)
     /**
      * output :
      * v12.PointWiseMult : 5.86817e+06, 182.884, 2.28472e+09, 252.476
@@ -324,7 +275,7 @@ int main()
     cout << endl;
 
     cout << "v12.PointwiseDivide : ";
-    v12.PointwiseDivide(v1,10e-4);
+    v12.PointwiseDivide(v1);
     for ( int j=0; j<4; j++ ) cout<<v12[j]<<"  ";
     cout << endl;
 

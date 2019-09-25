@@ -10,11 +10,10 @@
  */
 
 #ifndef __FASPXX_HEADER__      /*-- allow multiple inclusions --*/
-#define __FASPXX_HEADER__      /**< indicate vec.hxx has been included before */
+#define __FASPXX_HEADER__      /**< indicate faspxx.hxx has been included before */
 
-typedef int FaspErrorType;
-typedef unsigned int INT;
-typedef double DBL;
+typedef unsigned int INT;      /**< integer type for FASP++ */
+typedef double       DBL;      /**< double type for FASP++ */
 
 #endif /* end if for __FASPXX_HEADER__ */
 
