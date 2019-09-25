@@ -52,9 +52,9 @@ class MAT {
 
 private:
 
-    INT nnz;    //! the number of nonzeros of the matrix
     INT row;    //! the row number of the matrix
     INT col;    //! the column number of the matrix
+    INT nnz;    //! the number of nonzeros of the matrix
 
     //! values contains the nonzero entries of the matrix, compressed row by row
     std::vector<DBL> values;
@@ -70,64 +70,48 @@ private:
 
 public:
 
-    //! initial contructed function
-    MAT() : row(0), col(0), nnz(0), values(0), rowPtr(0),
-            colInd(0), diagPtr(0) {};
+    //------------------- Default Constructor Behavior ----------------------//
+    // If "row == 0" or "col ==0 " or "nnz == 0", set *this as empty matrix. //
+    // If these parameters can't form a CSRx data type, throw an exception.  //
+    // If "values" are not assigned, the matrix is just a sparse structure.  //
+    //-----------------------------------------------------------------------//
 
-    /**
-     * if "row == 0" or "col ==0 " or "nnz == 0" happens, set *this by default.
-     * if these parameters can't form a CSRx data type, throw an exception. or set these
-     * parameters to *this.
-     */
+    //! initial constructor
+    MAT() : row(0), col(0), nnz(0),
+            values(0), colInd(0), rowPtr(0), diagPtr(0) {};
+
     //! assign row, col, nnz, values, rowPtr, colInd, diagPtr to *this
     MAT(const INT row, const INT col, const INT nnz,
         const std::vector<DBL> values, const std::vector<INT> rowPtr, 
         const std::vector<INT> colInd, const std::vector<INT> diagPtr);
 
-    /**
-     * if "row == 0" or "col ==0 " or "nnz == 0" happens, set *this by default.
-     * if these parameters can't form a CSRx data type, throw an exception. or set these
-     * parameters to *this.
-     * attention : all the CSRx data 's values are one
-     */
-    //! assign row, col, nnz, rowPtr, colInd, diagPtr to *this
-    MAT(const INT row, const INT col, const INT nnz, const std::vector<INT>
-    rowPtr, const std::vector<INT> colInd, const std::vector<INT>
-        diagPtr);
+    //! assign row, col, nnz, values, rowPtr, colInd to *this, generate diagPtr
+    MAT(const INT row, const INT col, const INT nnz,
+        const std::vector<DBL> values, const std::vector<INT> rowPtr,
+        const std::vector<INT> colInd);
 
-    /**
-     * if "row == 0" or "col ==0 " or "nnz == 0" happens, set *this by default.
-     * if these parameters can't form a CSRx data type, throw an exception. or set these
-     * parameters to *this.
-     */
-    //! assign row, col, nnz, values, rowPtr, colInd to *this
-    MAT(const INT row, const INT col, const INT nnz, const std::vector<DBL>
-    values, const std::vector<INT> rowPtr, const std::vector<INT>
-        colInd);
+    //! assign row, col, nnz, rowPtr, colInd, diagPtr to *this (sparse structure)
+    MAT(const INT row, const INT col, const INT nnz,
+        const std::vector<INT> rowPtr, const std::vector<INT> colInd,
+        const std::vector<INT> diagPtr);
 
-    /**
-     * if "row == 0" or "col ==0 " or "nnz == 0" happens, set *this by default.
-     * if these parameters can't form a CSRx data type, throw an exception. or set these
-     * parameters to *this.
-     * attention : all the elements in the CSRx 's values are one
-     */
-    //! assign row, col, nnz, rowPtr, colInd to *this
-    MAT(const INT row, const INT col, const INT nnz, const std::vector<INT>
-    rowPtr, const std::vector<INT> colInd);
+    //! assign row, col, nnz, rowPtr, colInd to *this (sparse structure), generate diagPtr
+    MAT(const INT row, const INT col, const INT nnz,
+        const std::vector<INT> rowPtr, const std::vector<INT> colInd);
 
-    //! assign diagonal matrix to this->mat
-    MAT(VEC &vec_obj);
+    //! assign diagonal values to *this from a VEC
+    MAT(VEC &vec);
 
-    //! assign diagonal matrix to this->mat
-    MAT(const std::vector<DBL> &vector_obj);
+    //! assign diagonal values to *this from a vector
+    MAT(const std::vector<DBL> &vect);
 
-    //! assign MAT object to this->mat
+    //! assign MAT object to *this
     MAT(const MAT &mat);
 
     //! overload equals operator
     MAT &operator=(const MAT &mat);
 
-    //! destructor
+    //! default destructor
     ~MAT() {};
 
     //! assign row, col, nnz, values, rowPtr, colInd to *this
@@ -140,9 +124,6 @@ public:
                    const std::vector<DBL> values, const std::vector<INT> rowPtr,
                    const std::vector<INT> colInd);
 
-    //! get the row or column number of *this
-    void GetSizes(INT &row, INT &col) const;
-
     //! get row size
     INT GetRowSize() const;
 
@@ -152,24 +133,12 @@ public:
     //! get number of nonzeros
     INT GetNNZ() const;
 
-    /**
-     * if "row < 0" or "row > this->row" or "col < 0" or "col >=this->coliumn"
-     * happens, throw an exception. In other cases,it is normally dealt.
-     */
     //! get (*this)[i][j]
     DBL GetElem(const INT row, const INT col) const;
 
-    /**
-     * if "row < 0" or "row > this->row" happens,
-     * throw an exception. In other cases,it is normally dealt.
-     */
     //! get the whole jth-row elements in *this into VEC object
     std::vector<DBL> GetRow(const INT row) const;
-
-    /**
-     * if "col < 0" or "col > this->row" happens,
-     * throw an exception. In other cases,it is normally dealt.
-     */
+    
     //! get the whole j-th column in *this into VEC object
     std::vector<DBL> GetCol(const INT j) const;
 
@@ -188,38 +157,23 @@ public:
     //! *this = a * I + *this
     void Shift(const DBL a);
 
-    /**
-     * if *this 's column dimension does not match "vec" 's dimension, throw an
-     * exception.
-     */
-    //! vec_b = *this * vec_x
+    //! ReturnedValue = *this * vec
     VEC MultVec(const VEC vec) const;
 
     //! transpose *this
     void Transpose();
 
-    /**
-     * if "this->row" 's dimension is not equal to "vec1" 's or "this->col" 's
-     * dimension is not equal to "vec2" 's . throw an exception.
-     */
-    //! vec3 = vec2 + transpose(*this) * vec1
+    //! A'*vec1 + vec2 // Todo: Check???
     VEC MultTransposeAdd(const VEC vec1, const VEC vec2) const;
 
-    /**
-     * if these matrices both 's dimensions do not match, throw an exception.
-     */
     //! *this = a * *this + b * mat
     void Add(const DBL a, const DBL b, const MAT mat);
 
-    /**
-     * if these matrices both 's dimensions do not match, throw an exception.
-     */
-    //! mat3 = a * mat1 + b * mat2
-    friend MAT
-    Add(const DBL a, const MAT mat1, const DBL b, const MAT mat2);
+    //! a * mat1 + b * mat2 // Todo: Check???
+    friend MAT Add(const DBL a, const MAT mat1, const DBL b, const MAT mat2);
 
-    //! mat3 = mat1 * mat2
-    friend MAT Mult2(const MAT matl, const MAT matr);
+    //! *this = matl * matr
+    friend MAT Mult(const MAT matl, const MAT matr);
 
     //! *this = *this * mat
     void MultLeft(const MAT mat);
@@ -227,29 +181,20 @@ public:
     //! *this = mat * *this
     void MultRight(const MAT mat);
 
-    /**
-     * if "row == 0" or "col == 0" or "nnz == 0" happens, set the returned values
-     * by default constructor. if these data are not CSRx, set the returned values by
-     * default constructor and throw an exception.
-     */
     //! convert the data CSR format to CSRx format
-    friend MAT ConvertCSR(const INT row, const INT col, const INT nnz,
-                          const std::vector<DBL> values,
-                          const std::vector<INT> rowPtr,
-                          const std::vector<INT> colInd);
+    friend MAT ConvertFromCSR(const INT row, const INT col, const INT nnz,
+                              const std::vector<DBL> values,
+                              const std::vector<INT> rowPtr,
+                              const std::vector<INT> colInd);
 
 };
 
-/**
- * if "row == 0" or "col == 0" or "nnz == 0" happens, set the returned values
- * by default constructor. if these data are not CSRx, set the returned values by
- * default constructor and throw an exception.
- */
-//! convert the data CSR format to CSRx format
-MAT ConvertCSR(const INT row, const INT col, const INT nnz,
-               const std::vector<DBL> values,
-               const std::vector<INT> rowPtr,
-               const std::vector<INT> colInd);
+//! convert a CSR data structure to CSRx
+// Todo: Why need this???
+MAT ConvertFromCSR(const INT row, const INT col, const INT nnz,
+                   const std::vector<DBL> values,
+                   const std::vector<INT> rowPtr,
+                   const std::vector<INT> colInd);
 
 #endif /* end if for __MAT_HEADER__ */
 

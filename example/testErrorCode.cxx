@@ -31,7 +31,7 @@ int main()
     }
     catch (FaspException& ex) {
     	cout << "### ERROR: " << ex.what() << endl;
-        cout << "### ERROR: Check " << ex.getFile() << " at Line " << ex.getLine() << endl;
+        cout << "### ERROR: Check " << ex.getFile() << " in Function " << ex.getFunc() <<" at Line " << ex.getLine() << endl;
         return errorCode;
     }
 
