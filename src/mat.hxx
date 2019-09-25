@@ -10,119 +10,110 @@
 #ifndef __MAT_HEADER__      /*-- allow multiple inclusions --*/
 #define __MAT_HEADER__      /**< indicate mat.hxx has been included before */
 
-
 #include "vec.hxx"
 
-/*---------------------------------------------------------------------------------*/
 /*! \class MAT
- *  \brief basic mat class
+ *  \brief Basic double matrix class in the CSRx data structure
  *
- *  This class defines the basic mat data structure and some basic operations.
- *  attention :
- *  there are two simple examples
- *  the first ex :
+ *  This class defines the basic MAT data structure and its basic operations. We
+ *  give two simple examples here as follows:
+ *
+ *  Example 1.
  *  \[
  *  \begin{pmatrix}
- *  1 & 0 & 2 \\
- *  0 & 1 & 0 \\
- *  3 & 0 & 0 \\
+ *      1 & 0 & 2 \\
+ *      0 & 1 & 0 \\
+ *      3 & 0 & 0 \\
  *  \end{pmatrix}
  *  \]
- *  and nnz = 5 ; row = 3 ; column = 3 ;
- *  values = { 1, 2, 1, 3, 0 }
- *  rowshift = { 0, 2, 3, 5 }
- *  colindex = { 0, 2, 1, 0, 2 }
- *  diag = { 0, 2, 4 }
- *  the second ex :
+ *  and
+ *  nnz = 5, row = 3, col = 3,
+ *  values = { 1, 2, 1, 3, 0 },
+ *  colInd = { 0, 2, 1, 0, 2 },
+ *  rowPtr = { 0, 2, 3, 5 },
+ *  diagPtr = { 0, 2, 4 }.
+ *
+ *  Example 2.
  *  \[
  *  \begin{pmatrix}
- *  1 & 7 & 2 \\
- *  0 & 0 & 0 \\
- *  3 & 0 & 4 \\
+ *      1 & 7 & 2 \\
+ *      0 & 0 & 0 \\
+ *      3 & 0 & 4 \\
  *  \end{pmatrix}
  *  \]
- *  and nnz = 6 ; row = 3 ; column = 3 ;
- *  values = { 1, 7, 2, 0, 3, 4 }
- *  rowshift = { 0, 3, 4, 6 }
- *  colindex = { 0, 1, 2, 1, 0, 2 }
- *  diag = { 0, 3, 5 }
+ *  and
+ *  nnz = 6, row = 3, col = 3,
+ *  values = { 1, 7, 2, 0, 3, 4 },
+ *  colInd = { 0, 1, 2, 1, 0, 2 },
+ *  rowPtr = { 0, 3, 4, 6 },
+ *  diagPtr = { 0, 3, 5 }.
  */
 class MAT {
+
 private:
 
-    //! implement the CSRx(CSR extension) data structure
+    INT nnz;    //! the number of nonzeros of the matrix
+    INT row;    //! the row number of the matrix
+    INT col;    //! the column number of the matrix
 
-    //! the number of entries of *this
-    INT nnz;
-
-    //! the row number of *this
-    INT row;
-
-    //! the column number of *this
-    INT column;
-
-    //! values contains the non-zero entries of *this, stored row by
-    //! row, its size is nnz
+    //! values contains the nonzero entries of the matrix, compressed row by row
     std::vector<DBL> values;
 
-    //! rowshift contains the column indices of the non-zero and diagonal
-    //! entries stored in this->values;
-    //! its size row + 1, row is the *this 's row number
-    std::vector<INT> rowshift;
+    //! colInd contains the column indices of the nonzero as standard CSR
+    std::vector<INT> colInd;
 
-    //! colindex contains the indices to the beginning of each row in the
-    //! vector this->values and this->rowshift; its size is nnz
-    std::vector<INT> colindex;
+    //! rowPtr contains the pointers to the beginning of each row as standard CSR
+    std::vector<INT> rowPtr;
 
-    //! diag contains the indices of diagonal entries in this->values,
-    //! and its size is min(row, column)
-    std::vector<INT> diag;
+    //! diagPtr contains the pointers to diagonal entries in values
+    std::vector<INT> diagPtr;
+
 public:
 
     //! initial contructed function
-    MAT() : row(0), column(0), nnz(0), values(0), rowshift(0),
-            colindex(0), diag(0) {};
+    MAT() : row(0), col(0), nnz(0), values(0), rowPtr(0),
+            colInd(0), diagPtr(0) {};
 
     /**
-     * if "row == 0" or "column ==0 " or "nnz == 0" happens, set *this by default.
+     * if "row == 0" or "col ==0 " or "nnz == 0" happens, set *this by default.
      * if these parameters can't form a CSRx data type, throw an exception. or set these
      * parameters to *this.
      */
-    //! assign row, column, nnz, values, rowshift, colindex, diag to *this
-    MAT(const INT row, const INT column, const INT nnz, const std::vector<DBL>
-    values, const std::vector<INT> rowshift, const std::vector<INT> colindex,
-        const std::vector<INT> diag);
+    //! assign row, col, nnz, values, rowPtr, colInd, diagPtr to *this
+    MAT(const INT row, const INT col, const INT nnz,
+        const std::vector<DBL> values, const std::vector<INT> rowPtr, 
+        const std::vector<INT> colInd, const std::vector<INT> diagPtr);
 
     /**
-     * if "row == 0" or "column ==0 " or "nnz == 0" happens, set *this by default.
+     * if "row == 0" or "col ==0 " or "nnz == 0" happens, set *this by default.
      * if these parameters can't form a CSRx data type, throw an exception. or set these
      * parameters to *this.
      * attention : all the CSRx data 's values are one
      */
-    //! assign row, column, nnz, rowshift, colindex, diag to *this
-    MAT(const INT row, const INT column, const INT nnz, const std::vector<INT>
-    rowshift, const std::vector<INT> colindex, const std::vector<INT>
-        diag);
+    //! assign row, col, nnz, rowPtr, colInd, diagPtr to *this
+    MAT(const INT row, const INT col, const INT nnz, const std::vector<INT>
+    rowPtr, const std::vector<INT> colInd, const std::vector<INT>
+        diagPtr);
 
     /**
-     * if "row == 0" or "column ==0 " or "nnz == 0" happens, set *this by default.
+     * if "row == 0" or "col ==0 " or "nnz == 0" happens, set *this by default.
      * if these parameters can't form a CSRx data type, throw an exception. or set these
      * parameters to *this.
      */
-    //! assign row, column, nnz, values, rowshift, colindex to *this
-    MAT(const INT row, const INT column, const INT nnz, const std::vector<DBL>
-    values, const std::vector<INT> rowshift, const std::vector<INT>
-        colindex);
+    //! assign row, col, nnz, values, rowPtr, colInd to *this
+    MAT(const INT row, const INT col, const INT nnz, const std::vector<DBL>
+    values, const std::vector<INT> rowPtr, const std::vector<INT>
+        colInd);
 
     /**
-     * if "row == 0" or "column ==0 " or "nnz == 0" happens, set *this by default.
+     * if "row == 0" or "col ==0 " or "nnz == 0" happens, set *this by default.
      * if these parameters can't form a CSRx data type, throw an exception. or set these
      * parameters to *this.
      * attention : all the elements in the CSRx 's values are one
      */
-    //! assign row, column, nnz, rowshift, colindex to *this
-    MAT(const INT row, const INT column, const INT nnz, const std::vector<INT>
-    rowshift, const std::vector<INT> colindex);
+    //! assign row, col, nnz, rowPtr, colInd to *this
+    MAT(const INT row, const INT col, const INT nnz, const std::vector<INT>
+    rowPtr, const std::vector<INT> colInd);
 
     //! assign diagonal matrix to this->mat
     MAT(VEC &vec_obj);
@@ -139,28 +130,34 @@ public:
     //! destructor
     ~MAT() {};
 
-    //! assign row, column, nnz, values, rowshift, colindex to *this
-    void SetValues(const INT row, const INT column, const INT nnz,
-                   const std::vector<DBL> values, const std::vector<INT> rowshift,
-                   const std::vector<INT> colindex, const std::vector<INT> diag);
+    //! assign row, col, nnz, values, rowPtr, colInd to *this
+    void SetValues(const INT row, const INT col, const INT nnz,
+                   const std::vector<DBL> values, const std::vector<INT> rowPtr,
+                   const std::vector<INT> colInd, const std::vector<INT> diagPtr);
 
-    //! assign row, column, nnz, values, rowshift, colindex to *this
-    void SetValues(const INT row, const INT column, const INT nnz,
-                   const std::vector<DBL> values, const std::vector<INT> rowshift,
-                   const std::vector<INT> colindex);
+    //! assign row, col, nnz, values, rowPtr, colInd to *this
+    void SetValues(const INT row, const INT col, const INT nnz,
+                   const std::vector<DBL> values, const std::vector<INT> rowPtr,
+                   const std::vector<INT> colInd);
 
     //! get the row or column number of *this
     void GetSizes(INT &row, INT &col) const;
 
-    //! get this->nnz
-    INT Getnnz() const;
+    //! get row size
+    INT GetRowSize() const;
+
+    //! get column size
+    INT GetColSize() const;
+
+    //! get number of nonzeros
+    INT GetNNZ() const;
 
     /**
-     * if "row < 0" or "row > this->row" or "column < 0" or "column >=this->coliumn"
+     * if "row < 0" or "row > this->row" or "col < 0" or "col >=this->coliumn"
      * happens, throw an exception. In other cases,it is normally dealt.
      */
     //! get (*this)[i][j]
-    DBL GetElem(const INT row, const INT column) const;
+    DBL GetElem(const INT row, const INT col) const;
 
     /**
      * if "row < 0" or "row > this->row" happens,
@@ -170,11 +167,11 @@ public:
     std::vector<DBL> GetRow(const INT row) const;
 
     /**
-     * if "column < 0" or "column > this->row" happens,
+     * if "col < 0" or "col > this->row" happens,
      * throw an exception. In other cases,it is normally dealt.
      */
-    //! get the whole jth-column elements in *this into VEC object
-    std::vector<DBL> GetColumn(const INT column) const;
+    //! get the whole j-th column in *this into VEC object
+    std::vector<DBL> GetCol(const INT j) const;
 
     //! get the whole diagonal elements in *this into VEC object
     std::vector<DBL> GetDiag() const;
@@ -202,7 +199,7 @@ public:
     void Transpose();
 
     /**
-     * if "this->row" 's dimension is not equal to "vec1" 's or "this->column" 's
+     * if "this->row" 's dimension is not equal to "vec1" 's or "this->col" 's
      * dimension is not equal to "vec2" 's . throw an exception.
      */
     //! vec3 = vec2 + transpose(*this) * vec1
@@ -231,28 +228,28 @@ public:
     void MultRight(const MAT mat);
 
     /**
-     * if "row == 0" or "column == 0" or "nnz == 0" happens, set the returned values
+     * if "row == 0" or "col == 0" or "nnz == 0" happens, set the returned values
      * by default constructor. if these data are not CSRx, set the returned values by
      * default constructor and throw an exception.
      */
     //! convert the data CSR format to CSRx format
-    friend MAT ConvertCSR(const INT row, const INT column, const INT nnz,
+    friend MAT ConvertCSR(const INT row, const INT col, const INT nnz,
                           const std::vector<DBL> values,
-                          const std::vector<INT> rowshift,
-                          const std::vector<INT> colindex);
+                          const std::vector<INT> rowPtr,
+                          const std::vector<INT> colInd);
 
 };
 
 /**
- * if "row == 0" or "column == 0" or "nnz == 0" happens, set the returned values
+ * if "row == 0" or "col == 0" or "nnz == 0" happens, set the returned values
  * by default constructor. if these data are not CSRx, set the returned values by
  * default constructor and throw an exception.
  */
 //! convert the data CSR format to CSRx format
-MAT ConvertCSR(const INT row, const INT column, const INT nnz,
+MAT ConvertCSR(const INT row, const INT col, const INT nnz,
                const std::vector<DBL> values,
-               const std::vector<INT> rowshift,
-               const std::vector<INT> colindex);
+               const std::vector<INT> rowPtr,
+               const std::vector<INT> colInd);
 
 #endif /* end if for __MAT_HEADER__ */
 

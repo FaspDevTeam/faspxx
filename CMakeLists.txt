@@ -7,30 +7,29 @@
 # Minimum cmake version needed
 cmake_minimum_required(VERSION 2.8)
 
-# Set C++ language standard to ANSI C++11
+# Set C++ language standard to ANSI C++ 11
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Set default C++ compiler and flags
+# Set default C++ compiler order
 find_program(THE_CXX NAMES $ENV{CXX} clang++ g++ icc)
 set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
 
-# Set default C compiler order and flags
+# Set default C compiler order
 find_program(THE_C NAMES $ENV{CC} clang gcc icc)
 set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
 
-# Set configuration types
+# Set default configuration types and flags
 SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -funroll-loops")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 
 # Set project name
 project(faspxx)
 
 # Add include directory
-include_directories(${PROJECT_SOURCE_DIR}/include/
-                    ${PROJECT_SOURCE_DIR}/src/)
+include_directories(${PROJECT_SOURCE_DIR}/src/)
 
 # Find source code from src
 file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
@@ -41,15 +40,14 @@ add_library(faspxx ${SRC_FILES})
 set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
 install(TARGETS faspxx
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} # added by fan
-        )
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 # Build error-code test
-add_executable(testErrorCode test/testErrorCode.cxx)
+add_executable(testErrorCode example/testErrorCode.cxx)
 target_link_libraries(testErrorCode faspxx)
 
 # Build vector-operation test
-add_executable(testVecSpeed test/testVecSpeed.cxx)
+add_executable(testVecSpeed example/testVecSpeed.cxx)
 target_link_libraries(testVecSpeed faspxx)
 
 # Build VEC class test

@@ -27,7 +27,7 @@ int main()
 
     try {
 	    errorCode = FaspErrorCode::ERROR_UNKNOWN; // Error type found
-    	throw( FaspException(getErrorCode(errorCode), __FILE__, __LINE__) );
+    	throw( FaspException(getErrorCode(errorCode), __FILE__, __FUNCTION__, __LINE__) );
     }
     catch (FaspException& ex) {
     	cout << "### ERROR: " << ex.what() << endl;

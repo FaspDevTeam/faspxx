@@ -67,8 +67,8 @@ int main() {
     timer.start();
     cycle.start();
     VEC nvec1, nvec2;
-    nvec1.SetSize(LENGTH);
-    nvec2.SetSize(LENGTH);
+    nvec1.Reserve(LENGTH);
+    nvec2.Reserve(LENGTH);
     std::cout << "new VEC cycles : " << cycle.stop() << std::endl;
     std::cout << "new VEC time   : " << timer.stop() << " seconds" << std::endl;
 
