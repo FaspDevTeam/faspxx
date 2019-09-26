@@ -107,13 +107,14 @@ FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec)
 }
 
 //! Sort "colInd" of each row in ascending order and rearrange "values" accordingly
-FaspRetCode SortRow(const INT& row, const std::vector<INT>& rowPtr,
-                    std::vector<INT>& colInd, std::vector<DBL>& values)
+FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
+                       const std::vector<INT>& rowPtr,
+                       std::vector<INT>& colInd, std::vector<DBL>& values)
 {
-    INT l;
-    INT begin,end;
-    INT index;
+    auto retCode = FaspRetCode::SUCCESS;
+    INT l, begin, end, index;
     DBL data;
+
     for ( INT j = 0; j < row; j++ ) {
         begin = rowPtr[j];
         end = rowPtr[j + 1];
@@ -136,7 +137,17 @@ FaspRetCode SortRow(const INT& row, const std::vector<INT>& rowPtr,
         }
     }
 
-    return FaspRetCode::SUCCESS;
+    try {
+        retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
+        if ( retCode < 0 )
+            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+    }
+    catch ( FaspExcep& ex ) {
+        ex.LogExcep();
+        return ex.errorCode;
+    }
+
+    return retCode;
 }
 
 //! Check whether the data is good for CSRx
@@ -295,10 +306,189 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
     flag=1;
     if(flag==0){
         Return:
-        return FaspRetCode ::ERROR_INPUT_PAR;
+        return FaspRetCode ::ERROR_MAT_DATA;
     }
 
     return FaspRetCode::SUCCESS;
+}
+
+/// \brief Convert MTX data (indices from 0) to CSR data structure
+static
+FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
+                     const std::vector<INT>& rowInd, const std::vector<INT>& colInd,
+                     const std::vector<DBL>& values,
+                     std::vector<DBL>& valuesCSR, std::vector<INT>& colIndCSR,
+                     std::vector<INT>& rowPtrCSR)
+{
+    auto retCode = FaspRetCode::SUCCESS;
+
+    // Todo: Check whether this succeeded???
+    valuesCSR.resize(nnz);
+    colIndCSR.resize(nnz);
+    rowPtrCSR.resize(row + 1);
+
+    // 1. Count number of non zeros in each row -> rowPtrCSR[row+1]
+    rowPtrCSR[0] = 0;
+    for ( INT j = 0; j < nnz; j++ ) rowPtrCSR[rowInd[j]+1]++;
+
+    // 2. Form an initial pointer for each row -> rowPtrCSR[row+1]
+    for ( INT i = 1; i < row; i++ ) rowPtrCSR[i] += rowPtrCSR[i-1];
+
+    // 3. Set values and colInd for CSR
+    // Note: rowPtr used as a temporary pointer for current insertion position
+    INT irow, jptr;
+    for ( INT j = 0; j < nnz; j++ ) {
+        irow = rowInd[j];
+        jptr = rowPtrCSR[irow];
+        colIndCSR[jptr] = colInd[j];
+        valuesCSR[jptr] = values[j];
+        rowPtrCSR[irow] = ++jptr;
+    }
+
+    // 4. Restore rowPtr back to the  original value
+    for ( INT i = row; i > 0; i-- ) rowPtrCSR[i] = rowPtrCSR[i-1];
+    rowPtrCSR[0] = 0;
+
+    // 5. Check whether the format is CSR or not
+    try {
+        retCode = CheckCSR(row, col, nnz, valuesCSR, colIndCSR, rowPtrCSR);
+        if ( retCode < 0 )
+            throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
+    }
+    catch ( FaspExcep &ex ) {
+        ex.LogExcep();
+        return ex.errorCode;
+    }
+
+    return retCode;
+}
+
+///
+static
+FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
+                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                     const std::vector<INT>& rowPtr, MAT& mat)
+{
+    auto retCode = FaspRetCode::SUCCESS;
+    INT begin, end, numZeroDiag = 0;
+    std::vector<bool> isZeroDiag(row);
+
+    for ( INT i = 0; i < row; i++) {
+        isZeroDiag[i] = false; // Set a marker for diagonal pointer
+        begin = rowPtr[i];
+        end   = rowPtr[i+1];
+        for ( INT k = begin; k < end; k++ ) {
+            if ( colInd[k] == i ) {
+                isZeroDiag[i] = true; // Diagonal entry found
+                break;
+            }
+        }
+        if ( !isZeroDiag[i] ) numZeroDiag++; // If no diagonal entry, insert a zero
+    }
+
+    if ( numZeroDiag == 0 ) {
+        // Set values for MAT matrix
+        try {
+            retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
+            if ( retCode < 0 )
+                throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            else
+                mat.SetValues(row, col, nnz, values, colInd, rowPtr);
+        }
+        catch ( FaspExcep& ex ) {
+            ex.LogExcep();
+            return ex.errorCode;
+        }
+    }
+
+    // Add a spot for each zero diagonal entry
+    INT nnzNew = nnz + numZeroDiag, count = 0;
+    INT diagLocation, nextEntry, diagZeroAdded = 0;
+    std::vector<INT> colIndNew(nnzNew);
+    std::vector<DBL> valuesNew(nnzNew);
+    std::vector<INT> rowPtrNew(row+1);
+
+    rowPtrNew[0] = 0; // Starting index always 0
+
+    for ( INT i = 0; i < row; i++) {
+
+        begin = rowPtr[i];
+        end   = rowPtr[i+1];
+
+        if ( !isZeroDiag[i] ) { // No diagonal entry
+            // Lower triangular part
+            nextEntry = begin;
+            for ( INT k = begin; k < end; k++ ) {
+                if ( colInd[k] < i ) {
+                    valuesNew[count] = values[k];
+                    colIndNew[count] = colInd[k];
+                    count++;
+                } else {
+                    nextEntry = k; // Record next nonzero location
+                    break;
+                }
+            }
+            // Zero diagonal part
+            valuesNew[count] = 0.0;
+            colIndNew[count] = i;
+            diagLocation = count++;
+            // Upper triangular part
+            for ( INT k = nextEntry; k < end; k++ ) {
+                valuesNew[count] = values[k];
+                colIndNew[count] = colInd[k];
+                count++;
+            }
+            // Update row pointers
+            isZeroDiag[i] = diagLocation;
+            diagZeroAdded++;
+        } else { // With diagonal entry, just copy
+            for ( INT k = begin; k < end; k++ ) {
+                valuesNew[count] = values[k];
+                colIndNew[count] = colInd[k];
+                count++;
+            }
+        }
+        rowPtrNew[i+1] = rowPtr[i+1] + diagZeroAdded;
+
+    }
+
+    // Set values for MAT matrix
+    try {
+        retCode = CheckCSR(row, col, nnzNew, valuesNew, colIndNew, rowPtrNew);
+        if ( retCode < 0 )
+            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+        else
+            mat.SetValues(row, col, nnzNew, valuesNew, colIndNew, rowPtrNew);
+    }
+    catch ( FaspExcep& ex ) {
+        ex.LogExcep();
+        return ex.errorCode;
+    }
+
+    return retCode;
+}
+
+/// \brief Convert MTX data to MAT data structure
+FaspRetCode MTXtoMAT(const INT& row, const INT& col, const INT& nnz,
+                     const std::vector<INT>& rowInd, const std::vector<INT>& colInd,
+                     const std::vector<DBL>& values, MAT& mat)
+{
+    auto retCode = FaspRetCode::SUCCESS;
+
+    std::vector<INT> rowPtrCSR;
+    std::vector<INT> colIndCSR;
+    std::vector<DBL> valuesCSR;
+
+    // Convert data format from MTX to CSR
+    MTXtoCSR(row, col, nnz, rowInd, colInd, values,valuesCSR, colIndCSR,rowPtrCSR);
+
+    // Sort CSR matrix row by row
+    SortCSRRow(row, col, nnz, rowPtrCSR, colIndCSR, valuesCSR);
+
+    // Check whether diagonal is a nonzero position
+    CSRtoMAT(row, col, nnz, valuesCSR, colIndCSR, rowPtrCSR, mat);
+
+    return retCode;
 }
 
 /*---------------------------------*/

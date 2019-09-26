@@ -30,7 +30,7 @@ private:
 
 public:
     //! default constructed function
-    VEC() : size(0), vec(0) {}
+    VEC() : vec(0), size(0) {}
 
     //! set the size of vec and set the same value on VEC object
     VEC(const INT& size, const DBL& value);

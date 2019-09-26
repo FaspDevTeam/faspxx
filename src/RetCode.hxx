@@ -23,6 +23,7 @@ enum FaspRetCode {
     ERROR_OPEN_FILE        = -10,  //! Failed to open a file
     ERROR_INPUT_FILE       = -11,  //! Wrong input file
     ERROR_INPUT_PAR        = -12,  //! Wrong input argument
+    ERROR_MAT_DATA         = -13,  //! Wrong matrix format
     //---------- VEC or MAT data problems -----------------------------------------//
     ERROR_VEC_SIZE         = -14,  //! Wrong vector size
     ERROR_MAT_SIZE         = -15,  //! Wrong matrix size

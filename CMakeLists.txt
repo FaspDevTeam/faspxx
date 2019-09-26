@@ -52,10 +52,6 @@ install(TARGETS faspxx
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-# Build error-code test
-add_executable(testErrorCode example/testErrorCode.cxx)
-target_link_libraries(testErrorCode faspxx)
-
 # Build vector-operations speed test
 add_executable(testVecSpeed example/testVecSpeed.cxx)
 target_link_libraries(testVecSpeed faspxx)
@@ -67,3 +63,7 @@ target_link_libraries(testVEC faspxx)
 # Build MAT class test
 add_executable(testMAT example/testMAT.cxx)
 target_link_libraries(testMAT faspxx)
+
+# Build ReadData test
+add_executable(testReadData example/testReadData.cxx)
+target_link_libraries(testReadData faspxx)

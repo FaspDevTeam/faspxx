@@ -12,8 +12,8 @@
 #ifndef __FASPXX_HEADER__      /*-- allow multiple inclusions --*/
 #define __FASPXX_HEADER__      /**< indicate faspxx.hxx has been included before */
 
-typedef unsigned int INT;      /**< integer type for FASP++ */
-typedef double       DBL;      /**< double type for FASP++ */
+typedef unsigned int INT;      /**< Index type: Must be non-negative! */
+typedef double       DBL;      /**< Double type */
 
 #endif /* end if for __FASPXX_HEADER__ */
 

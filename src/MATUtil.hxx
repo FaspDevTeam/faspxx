@@ -33,8 +33,14 @@ FaspRetCode CheckMATColSize(const MAT& mat, const INT& col);
 FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec);
 
 //! Sort "colInd" of each row in ascending order and rearrange "values" accordingly
-FaspRetCode SortRow(const INT& row, const std::vector<INT>& rowPtr,
-                    std::vector<INT>& colInd, std::vector<DBL>& values);
+FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
+                       const std::vector<INT>& rowPtr,
+                       std::vector<INT>& colInd, std::vector<DBL>& values);
+
+//! convert the data CSR format to CSRx format
+MAT ConvertFromCSR(const INT& row, const INT& col, const INT& nnz,
+                   const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                   const std::vector<INT>& rowPtr);
 
 //! Check whether the data is good for CSRx
 FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
@@ -42,10 +48,14 @@ FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
                       const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
 
 //! Check whether the data is good for CSR
-// Todo: Why check CSR???
 FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
                      const std::vector<INT>& rowPtr);
+
+//! Convert MTX data to MAT data structure
+FaspRetCode MTXtoMAT(const INT& row, const INT& col, const INT& nnz,
+                     const std::vector<INT>& rowInd, const std::vector<INT>& colInd,
+                     const std::vector<DBL>& values, MAT& mat);
 
 #endif /* end if for __MATUTIL_HXX__ */
 

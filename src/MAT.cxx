@@ -331,29 +331,26 @@ void MAT::Shift(const DBL a) {
 
 //! RetValue = *this * vec
 VEC MAT::MultVec(const VEC& vec) const {
-    VEC vec_;
+    VEC w;
+    w.SetSize(this->nrow);
 
-    INT begin, end;
-    vec_.SetSize(this->nrow);
+    INT begin, end, i, k;
     if ( this->values.size() == 0 ) {
-        for ( INT j = 0; j < this->nrow; j++ ) {
-            begin = this->rowPtr[j];
-            end = this->rowPtr[j + 1];
-            for ( INT k = begin; k < end; k++ ) {
-                vec_[j] += vec[this->colInd[k]];
-            }
+        for ( i = 0; i < this->nrow; i++ ) {
+            begin = this->rowPtr[i];
+            end   = this->rowPtr[i+1];
+            for ( k = begin; k < end; k++ ) w[i] += vec[this->colInd[k]];
         }
     } else {
-        for ( INT j = 0; j < this->nrow; j++ ) {
-            begin = this->rowPtr[j];
-            end = this->rowPtr[j + 1];
-            for ( INT k = begin; k < end; k++ ) {
-                vec_[j] += this->values[k] * vec[this->colInd[k]];
-            }
+        for ( i = 0; i < this->nrow; i++ ) {
+            begin = this->rowPtr[i];
+            end   = this->rowPtr[i+1];
+            for ( k = begin; k < end; k++ )
+                w[i] += this->values[k] * vec[this->colInd[k]];
         }
     }
 
-    return vec_;
+    return w;
 }
 
 //! transpose *this in place
@@ -512,7 +509,7 @@ void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
     for ( int j = 0; j < this->nrow; j++ )
         tmp1.rowPtr[j + 1] = this->rowPtr[j + 1] + mat.rowPtr[j + 1];
 
-    SortRow(tmp1.nrow, tmp1.rowPtr, tmp1.colInd, tmp1.values);
+    SortCSRRow(tmp1.nrow, tmp1.ncol, tmp1.nnz, tmp1.rowPtr, tmp1.colInd, tmp1.values);
 
     tmp2.nrow = tmp1.nrow;
     tmp2.ncol = tmp1.ncol;
@@ -673,7 +670,7 @@ MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2) {
 
     INT begin, end;
 
-    SortRow(mat1.nrow, tmp.rowPtr, tmp.colInd, tmp.values);
+    SortCSRRow(tmp.nrow, tmp.ncol, tmp.nnz, tmp.rowPtr, tmp.colInd, tmp.values);
 
     mat.nrow = tmp.nrow;
     mat.ncol = tmp.ncol;

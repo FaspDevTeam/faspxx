@@ -21,6 +21,8 @@ const std::string GetRetCode(const FaspRetCode code) {
             return "Failed to open a file!";
         case ERROR_INPUT_FILE:
             return "Wrong input file!";
+        case ERROR_MAT_DATA:
+            return "Wrong matrix format!";
         case ERROR_INPUT_PAR:
             return "Wrong input argument!";
         case ERROR_VEC_SIZE:
@@ -77,7 +79,7 @@ void FaspExcep::LogExcep(std::ostream& stream) const
 {
     stream << "### ERROR: " << this->what() << std::endl;
     stream << "### ERROR: Check " << this->GetFile() << " in "
-           << this->GetFunc() << "() at Line " << this->GetLine() << std::endl;
+           << this->GetFunc() << "( ) at Line " << this->GetLine() << std::endl;
 }
 
 /*---------------------------------*/
