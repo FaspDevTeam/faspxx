@@ -12,6 +12,7 @@
 #ifndef __MAT_HEADER__      /*-- allow multiple inclusions --*/
 #define __MAT_HEADER__      /**< indicate mat.hxx has been included before */
 
+#include "faspxx.hxx"
 #include "VEC.hxx"
 
 /*! \class MAT

@@ -1,5 +1,12 @@
-/**
- * a function for reading files
+/**\file ReadData.cxx
+ *  \brief Reading data from disk files
+ *  \author Kailei Zhang
+ *  \date Sep/24/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
 #include <fstream>
@@ -14,26 +21,28 @@ FaspRetCode ReadMtx(const char *filename, INT &row, INT &col, INT &nnz,
 
     // Open the file to read
     std::ifstream infile(filename);
+    if ( !infile ) return FaspRetCode::ERROR_OPEN_FILE;
 
     // Get matrix size and number of nonzeros
     infile >> row >> col >> nnz;
     if ( row <= 0 || col <= 0 || nnz <= 0 ) return FaspRetCode::ERROR_INPUT_FILE;
 
-    // Reserve memory space for matrix data
+    // Reserve memory space for MTX data: (i, j, value)
     rowInd.resize(nnz);
     colInd.resize(nnz);
     values.resize(nnz);
     
     // Read data from file and store them in vectors
     INT count = 0, rowValue, colValue;
-    DBL tmpValue;
-    while ( infile >> rowValue >> colValue >> tmpValue ) {
-         rowInd[count] = rowValue - 1;
-         colInd[count] = colValue - 1;
-         values[count] = tmpValue;
+    DBL value;
+    while ( infile >> rowValue >> colValue >> value ) {
+         rowInd[count] = rowValue - 1; // MTX indices start from 1
+         colInd[count] = colValue - 1; // MTX indices start from 1
+         values[count] = value;
          count++;
     }
 
+    // Check whether file provides enough data
     if ( count != nnz ) return FaspRetCode::ERROR_INPUT_FILE;
 
     return FaspRetCode::SUCCESS;
@@ -73,85 +82,84 @@ FaspRetCode MtxToMAT(const INT row, const INT col, const INT nnz,
 
     // Convert CSR format to CSRx format
     INT begin, end;
-    INT flag = 0;
-    INT realnnz = 0;
-    std::vector<INT> realshift(row+1);
-    for ( INT j = 0; j < row + 1; j++ )
-        realshift[j] = 0;
+    INT nnzNew = 0;
+    std::vector<INT> shiftNew(row+1);
+    for ( INT j = 0; j < row + 1; j++ ) shiftNew[j] = 0; // Todo: Repeat???
+
+    INT flag = 0; // Todo: What is flag for ???
 
     for ( INT j = 0; j < row; j++ ) {
         begin = tmpshift[j];
         end = tmpshift[j + 1];
         if ( begin == end ) {
-            realnnz++;
-            realshift[j + 1] = realshift[j] + 1;
+            nnzNew++;
+            shiftNew[j + 1] = shiftNew[j] + 1;
             continue;
         }
         if ( begin == end - 1 ) {
             if ( csrindex[begin] == j ) {
-                realnnz++;
-                realshift[j + 1] = realshift[j] + 1;
+                nnzNew++;
+                shiftNew[j + 1] = shiftNew[j] + 1;
             } else {
-                realnnz += 2;
-                realshift[j + 1] = realshift[j] + 2;
+                nnzNew += 2;
+                shiftNew[j + 1] = shiftNew[j] + 2;
             }
             continue;
         }
         for ( INT k = begin; k < end - 1; k++ ) {
             if ( csrindex[k] < csrindex[k + 1] ) {
-                realnnz++;
+                nnzNew++;
                 if ( csrindex[k] == j )
                     flag = 1;
             }
         }
         if ( csrindex[end - 2] < csrindex[end - 1] ) {
-            realnnz++;
-            if ( csrindex[end - 1] == j )
-                flag = 1;
+            nnzNew++;
+            if ( csrindex[end - 1] == j ) flag = 1;
         }
 
         if ( flag != 1 ) {
-            realnnz++;
-            realshift[j + 1] = realshift[j] + end - begin + 1;
+            nnzNew++;
+            shiftNew[j + 1] = shiftNew[j] + end - begin + 1;
         } else {
-            realshift[j + 1] = realshift[j] + end - begin;
+            shiftNew[j + 1] = shiftNew[j] + end - begin;
             flag = 0;
         }
     }
 
     // Todo: Check whether this succeeded???
-    std::vector<INT> realcolIndex(realnnz);
-    std::vector<DBL> realvalues(realnnz);
+    std::vector<INT> colIndNew(nnzNew);
+    std::vector<DBL> realvalues(nnzNew);
 
     INT count = 0;
     for ( INT j = 0; j < row; j++ ) {
-        begin = realshift[j];
-        end = realshift[j + 1];
+        begin = shiftNew[j];
+        end = shiftNew[j + 1];
         if ( begin == end ) {
-            realcolIndex[count] = j;
+            colIndNew[count] = j;
             realvalues[count] = 0.0;
             count++;
             continue;
         }
         if ( begin == end - 1 ) {
             if ( csrindex[begin] == j ) {
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] = csrvalues[begin];
                 count++;
             } else {
                 if ( csrindex[begin] > j ) {
-                    realcolIndex[count] = j;
+                    colIndNew[count] = j;
                     realvalues[count] = 0.0;
                     count++;
-                    realcolIndex[count] = csrindex[begin];
+                    colIndNew[count] = csrindex[begin];
                     realvalues[count] = csrvalues[begin];
                     count++;
                 }
                 if ( csrindex[begin] < j ) {
-                    realcolIndex[count] = csrindex[begin];
+                    colIndNew[count] = csrindex[begin];
                     realvalues[count] = csrvalues[begin];
                     count++;
-                    realcolIndex[count] = j;
+                    colIndNew[count] = j;
                     realvalues[count] = 0.0;
                     count++;
                 }
@@ -160,174 +168,175 @@ FaspRetCode MtxToMAT(const INT row, const INT col, const INT nnz,
         }
         if ( begin == end - 2 ) {
             if ( csrindex[begin + 1] < j && csrindex[begin] < csrindex[begin + 1] ) {
-                realcolIndex[count] = csrindex[begin];
+                colIndNew[count] = csrindex[begin];
                 realvalues[count] = csrvalues[begin];
                 count++;
-                realcolIndex[count] = csrindex[begin + 1];
+                colIndNew[count] = csrindex[begin + 1];
                 realvalues[count] = csrvalues[begin + 1];
                 count++;
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] = 0.0;
                 count++;
             }
             if ( csrindex[begin] < j && csrindex[begin] == csrindex[begin + 1] ) {
-                realcolIndex[count] = csrindex[begin];
+                colIndNew[count] = csrindex[begin];
                 realvalues[count] += (csrvalues[begin] + csrvalues[begin + 1]);
                 count++;
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] = 0.0;
                 count++;
             }
             if ( csrindex[begin] < j && csrindex[begin + 1] == j ) {
-                realcolIndex[count] = csrindex[begin];
+                colIndNew[count] = csrindex[begin];
                 realvalues[count] = csrvalues[begin];
                 count++;
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] = csrvalues[begin + 1];
                 count++;
             }
             if ( csrindex[begin] == j && csrindex[begin + 1] == j ) {
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] += (csrvalues[begin] + csrvalues[begin + 1]);
                 count++;
             }
             if ( csrindex[begin] == j && csrindex[begin + 1] > j ) {
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] = csrvalues[begin];
                 count++;
-                realcolIndex[count] = csrindex[begin + 1];
+                colIndNew[count] = csrindex[begin + 1];
                 realvalues[count] = csrvalues[begin + 1];
                 count++;
             }
             if ( csrindex[begin] > j && csrindex[begin] == csrindex[begin + 1] ) {
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] = 0.0;
                 count++;
-                realcolIndex[count] = csrindex[begin];
+                colIndNew[count] = csrindex[begin];
                 realvalues[count] += (csrvalues[begin] + csrvalues[begin + 1]);
                 count++;
             }
             if ( csrindex[begin] > j && csrindex[begin] < csrindex[begin + 1] ) {
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] = 0.0;
                 count++;
-                realcolIndex[count] = csrindex[begin];
+                colIndNew[count] = csrindex[begin];
                 realvalues[count] = csrvalues[begin];
                 count++;
-                realcolIndex[count] = csrindex[begin + 1];
+                colIndNew[count] = csrindex[begin + 1];
                 realvalues[count] = csrvalues[begin + 1];
                 count++;
             }
             continue;
         }
+        
         for ( INT k = begin; k < end - 1; k++ ) {
             if ( csrindex[k + 1] < j && csrindex[k] < csrindex[k + 1] ) {
-                realcolIndex[count] = csrindex[k];
+                colIndNew[count] = csrindex[k];
                 realvalues[count] += csrvalues[k];
                 count++;
             }
             if ( csrindex[k] < j && csrindex[k] == csrindex[k + 1] ) {
-                realcolIndex[count] = csrindex[k];
+                colIndNew[count] = csrindex[k];
                 realvalues[count] += csrvalues[k];
             }
             if ( csrindex[k] < j && csrindex[k + 1] == j ) {
-                realcolIndex[count] = csrindex[k];
+                colIndNew[count] = csrindex[k];
                 realvalues[count] += csrvalues[k];
                 count++;
             }
             if ( csrindex[k] == j && csrindex[k + 1] == j ) {
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] += csrvalues[k];
             }
             if ( csrindex[k] < j && csrindex[k + 1] > j ) {
-                realcolIndex[count] = csrindex[k];
+                colIndNew[count] = csrindex[k];
                 realvalues[count] += csrvalues[k];
                 count++;
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] = 0.0;
                 count++;
             }
             if ( csrindex[k] == j && csrindex[k + 1] > j ) {
-                realcolIndex[count] = j;
+                colIndNew[count] = j;
                 realvalues[count] += csrvalues[k];
                 count++;
             }
             if ( csrindex[k] > j && csrindex[k] == csrindex[k + 1] ) {
-                realcolIndex[count] = csrindex[k];
+                colIndNew[count] = csrindex[k];
                 realvalues[count] += csrvalues[k];
             }
             if ( csrindex[k] > j && csrindex[k + 1] > csrindex[k] ) {
-                realcolIndex[count] = csrindex[k];
+                colIndNew[count] = csrindex[k];
                 realvalues[count] += csrvalues[k];
                 count++;
             }
         }
         if ( csrindex[end - 2] < csrindex[end - 1] && csrindex[end - 1] < j ) {
-            realcolIndex[count] = csrindex[end - 1];
+            colIndNew[count] = csrindex[end - 1];
             realvalues[count] += csrvalues[end - 1];
             count++;
-            realcolIndex[count] = j;
+            colIndNew[count] = j;
             realvalues[count] = 0.0;
             count++;
         }
         if ( csrindex[end - 2] == csrindex[end - 1] && csrindex[end - 1] < j ) {
-            realcolIndex[count] = csrindex[end - 1];
+            colIndNew[count] = csrindex[end - 1];
             realvalues[count] += csrvalues[end - 1];
             count++;
-            realcolIndex[count] = j;
+            colIndNew[count] = j;
             realvalues[count] = 0.0;
             count++;
         }
         if ( csrindex[end - 2] < csrindex[end - 1] && csrindex[end - 1] == j ) {
-            realcolIndex[count] = j;
+            colIndNew[count] = j;
             realvalues[count] += csrvalues[end - 1];
             count++;
         }
         if ( csrindex[end - 2] == csrindex[end - 1] && csrindex[end - 1] == j ) {
-            realcolIndex[count] = j;
+            colIndNew[count] = j;
             realvalues[count] += csrvalues[end - 1];
             count++;
         }
         if ( csrindex[end - 2] < j && csrindex[end - 1] > j ) {
-            realcolIndex[count] = csrindex[end - 1];
+            colIndNew[count] = csrindex[end - 1];
             realvalues[count] += csrvalues[end - 1];
             count++;
         }
         if ( csrindex[end - 2] > j && csrindex[end - 1] > csrindex[end - 2] ) {
-            realcolIndex[count] = csrindex[end - 1];
+            colIndNew[count] = csrindex[end - 1];
             realvalues[count] += csrvalues[end - 1];
             count++;
         }
         if ( csrindex[end - 2] == j && csrindex[end - 1] > j ) {
-            realcolIndex[count] = csrindex[end - 1];
+            colIndNew[count] = csrindex[end - 1];
             realvalues[count] += csrvalues[end - 1];
             count++;
         }
         if ( csrindex[end - 2] > j && csrindex[end - 2] == csrindex[end - 1] ) {
-            realcolIndex[count] = csrindex[end - 1];
+            colIndNew[count] = csrindex[end - 1];
             realvalues[count] += csrvalues[end - 1];
             count++;
         }
     }
 
     // Generate diagonal pointer for CSRx
-    std::vector<INT> realdiag(row > col ? col : row);
+    std::vector<INT> diagIndNew(row > col ? col : row);
     // Todo: Check whether this succeeded???
 
     count = 0;
     for ( INT j = 0; j < row; j++ ) {
-        begin = realshift[j];
-        end = realshift[j + 1];
+        begin = shiftNew[j];
+        end = shiftNew[j + 1];
         for ( INT k = begin; k < end; k++ ) {
-            if ( realcolIndex[k] == j ) {
-                realdiag[count] = k;
+            if ( colIndNew[k] == j ) {
+                diagIndNew[count] = k;
                 count++;
             }
         }
     }
 
     // Set values for MAT matrix
-    mat.SetValues(row, col, realnnz, realvalues, realshift, realcolIndex, realdiag);
+    mat.SetValues(row, col, nnzNew, realvalues, shiftNew, colIndNew, diagIndNew);
 
     return FaspRetCode::SUCCESS;
 }

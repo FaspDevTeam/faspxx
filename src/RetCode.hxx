@@ -15,7 +15,6 @@
 #include <string>
 #include <ostream>
 #include <iostream>
-#include "faspxx.hxx"
 
 /// \brief Return code definition
 enum FaspRetCode {

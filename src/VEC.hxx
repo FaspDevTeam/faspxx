@@ -11,6 +11,7 @@
 #define __vecHEADER__      /**< indicate vec.hxx has been included before */
 
 #include <vector>
+#include "faspxx.hxx"
 #include "RetCode.hxx"
 
 /*! \class VEC
