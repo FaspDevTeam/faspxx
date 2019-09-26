@@ -10,6 +10,7 @@
  */
 
 #include "MATUtil.hxx"
+#include "RetCode.hxx"
 
 //! check GetElem function
 FaspRetCode MatCheck_CrossOver(const MAT mat, const INT row, const INT col) {
@@ -20,10 +21,7 @@ FaspRetCode MatCheck_CrossOver(const MAT mat, const INT row, const INT col) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_MAT_SIZE;
     }
     return FaspRetCode::SUCCESS;
@@ -37,10 +35,7 @@ FaspRetCode MatCheck_CrossOverRow(const MAT mat, const INT row) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_MAT_SIZE;
     }
 
@@ -55,10 +50,7 @@ FaspRetCode MatCheck_CrossOverCol(const MAT mat, const INT col) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_MAT_SIZE;
     }
 
@@ -73,10 +65,7 @@ FaspRetCode MatCheck_MultVec(const MAT mat,const VEC vec) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_NONMATCH_SIZE;
     }
 
@@ -92,10 +81,7 @@ vec2) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_NONMATCH_SIZE;
     }
 
@@ -111,10 +97,7 @@ FaspRetCode MatCheck_Add(const MAT mat1, const MAT mat2) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_NONMATCH_SIZE;
     }
 
@@ -124,10 +107,7 @@ FaspRetCode MatCheck_Add(const MAT mat1, const MAT mat2) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_MAT_SIZE;
     }
 
@@ -142,10 +122,7 @@ FaspRetCode MatCheck_Mult(const MAT mat1,const MAT mat2) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_NONMATCH_SIZE;
     }
 

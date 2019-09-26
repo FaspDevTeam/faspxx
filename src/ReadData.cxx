@@ -3,7 +3,6 @@
  */
 
 #include <fstream>
-
 #include "ReadData.hxx"
 
 /// \brief Read a MTX data file

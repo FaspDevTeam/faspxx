@@ -30,7 +30,7 @@ int main() {
 
     int j, k;
     double sum;
-    CycleCount cycle;
+    GetCycleNum cycle;
     GetWallTime timer;
 
     srand((unsigned) time(nullptr));

@@ -1,5 +1,5 @@
 /** \file Timing.hxx
- *  \brief Count CPU-cycles and wall-time used
+ *  \brief Measure elapsed wall-time and CPU-cycles
  *  \author Chensong Zhang
  *  \date Sep/24/2019
  *
@@ -19,7 +19,7 @@ typedef unsigned long long uint64; //!< Unsigned long long int
 /*! \class GetWallTime
  *  \brief Get elapsed wall-time in seconds
  *
- *  Read the current wall-time and return duration upon stop().
+ *  Read the current wall-time and return duration from start() to stop().
  */
 class GetWallTime {
 
@@ -40,12 +40,12 @@ public:
 
 };
 
-/*! \class CountCycle
- *  \brief Get CPU-cycle count
+/*! \class GetCycleNum
+ *  \brief Get CPU-cycle number
  *
- *  Read the CPU cycles with a piece of ASM code and return cycle count upon stop().
+ *  Read the CPU cycles and return number of cycles from start() to stop().
  */
-class CycleCount {
+class GetCycleNum {
 
 private:
 

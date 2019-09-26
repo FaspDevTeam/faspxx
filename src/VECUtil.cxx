@@ -21,10 +21,7 @@ FaspRetCode VECCheck_SizeMatch(VEC vec1, VEC vec2) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_NONMATCH_SIZE;
     }
 
@@ -39,10 +36,7 @@ FaspRetCode VECCheck_Get(VEC vec, INT position) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_INPUT_PAR;
     }
 
@@ -58,10 +52,7 @@ FaspRetCode VECCheck_TOL(VEC vec, DBL tol) {
                 throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
             }
         } catch ( FaspExcep &ex ) {
-            std::cerr << " ### ERROR : " << ex.what() << std::endl;
-            std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                      << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+            ex.LogExcep();
             return FaspRetCode::ERROR_DIVIDE_ZERO;
         }
     }
@@ -76,10 +67,7 @@ FaspRetCode VECCheck_SizeZero(VEC vec) {
             throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
-        std::cerr << " ### ERROR : " << ex.what() << std::endl;
-        std::cerr << " ### ERROR : Check " << ex.getFile() << " in Function : "
-                  << ex.getFunc() << " at Line " << ex.getLine() << std::endl;
-
+        ex.LogExcep();
         return FaspRetCode::ERROR_VEC_SIZE;
     }
 

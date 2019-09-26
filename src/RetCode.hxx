@@ -1,5 +1,5 @@
-/** \file error.hxx
- *  \brief Error code definition
+/** \file RetCode.hxx
+ *  \brief Exception types and return code definitions
  *  \author Chensong Zhang
  *  \date Sep/12/2019
  *
@@ -9,10 +9,11 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __ERROR_HEADER__      /*-- allow multiple inclusions --*/
-#define __ERROR_HEADER__      /**< indicate error.hxx has been included before */
+#ifndef __RETCODE_HEADER__      /*-- allow multiple inclusions --*/
+#define __RETCODE_HEADER__      /**< indicate RetCode.hxx has been included before */
 
 #include <string>
+#include <ostream>
 #include <iostream>
 #include "faspxx.hxx"
 
@@ -55,10 +56,10 @@ enum FaspRetCode {
     ERROR_UNKNOWN          = -99,  //! Unknown error type
 };
 
-/// \brief Get error message from FaspErrorCode
+/// \brief Get error message from FaspRetCode
 const std::string getRetCode(const FaspRetCode code);
 
-/// \brief Standard exception capturing
+/// \brief Standard exception capturing class
 class FaspExcep : public std::runtime_error {
 
 private:
@@ -73,12 +74,17 @@ public:
               : std::runtime_error(msg_), file(file_), func(func_), line(line_)
     { }
 
-    const char* getFile() const { return file; } //! return thrown file name
-    const char* getFunc() const { return func; } //! return thrown function name
-    const int   getLine() const { return line; } //! return thrown line number
+    // Get exception location
+    const char* GetFile() const { return file; } //! return thrown file name
+    const char* GetFunc() const { return func; } //! return thrown function name
+    const int   GetLine() const { return line; } //! return thrown line number
+
+    // Stardard output
+    //! Output log messages to a file or screen by default
+    void LogExcep(std::ostream& stream=std::cout) const;
 };
 
-#endif /* end if for __ERROR_HEADER__ */
+#endif /* end if for __RETCODE_HEADER__ */
 
 /*---------------------------------*/
 /*--        End of File          --*/

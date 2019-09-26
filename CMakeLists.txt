@@ -1,22 +1,28 @@
 # Main CMake file for FASP++
+# by Chensong Zhang, modified on Sep/26/2019
+#
 # Some smaple usages:
-#   cmake -DCMAKE_VERBOSE_MAKEFILE=ON // To make cmake verbose
-#   cmake -DCMAKE_BUILD_TYPE=Debug    // To build Debug target
-#   cmake -DCMAKE_BUILD_TYPE=Release  // To build Release target
+#   cmake -DCMAKE_VERBOSE_MAKEFILE=ON . // build . dir with verbose
+#   cmake -DCMAKE_BUILD_TYPE=Debug .    // build . in Debug configuration
+#   cmake -DCMAKE_BUILD_TYPE=Release .  // build . in Release configuration
+
+#-----------------------------#
+# General environment setting #
+#-----------------------------#
 
 # Minimum cmake version needed
 cmake_minimum_required(VERSION 2.8)
 
-# Set C++ language standard to ANSI C++ 11
+# Set C++ language standard (ANSI C++ 11)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Set default C++ compiler order
+# Default C++ compiler look-up order
 find_program(THE_CXX NAMES $ENV{CXX} clang++ g++ icc)
 set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
 
-# Set default C compiler order
+# Default C compiler look-up order
 find_program(THE_C NAMES $ENV{CC} clang gcc icc)
 set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
 
@@ -25,7 +31,11 @@ SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 
-# Set project name
+#-----------------------------#
+# Project specific parameters #
+#-----------------------------#
+
+# Name of the project
 project(faspxx)
 
 # Add include directory
@@ -46,7 +56,7 @@ install(TARGETS faspxx
 add_executable(testErrorCode example/testErrorCode.cxx)
 target_link_libraries(testErrorCode faspxx)
 
-# Build vector-operation test
+# Build vector-operations speed test
 add_executable(testVecSpeed example/testVecSpeed.cxx)
 target_link_libraries(testVecSpeed faspxx)
 

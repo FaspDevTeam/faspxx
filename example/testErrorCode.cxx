@@ -31,9 +31,7 @@ int main()
     	throw( FaspExcep(getRetCode(retCode), __FILE__, __FUNCTION__, __LINE__) );
     }
     catch (FaspExcep& ex) {
-    	cout << "### ERROR: " << ex.what() << endl;
-        cout << "### ERROR: Check " << ex.getFile() << " in Function "
-             << ex.getFunc() <<" at Line " << ex.getLine() << endl;
+        ex.LogExcep();
         return retCode;
     }
 

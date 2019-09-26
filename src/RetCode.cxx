@@ -10,10 +10,17 @@
  */
 
 #include <string>
-
 #include "RetCode.hxx"
 
- /// \brief Decode FaspRetCode to a readable error message
+/// \brief Output log messages to a file or screen by default
+void FaspExcep::LogExcep(std::ostream& stream) const
+{
+    stream << "### ERROR: " << this->what() << std::endl;
+    stream << "### ERROR: Check " << this->GetFile() << " in "
+           << this->GetFunc() << "() at Line " << this->GetLine() << std::endl;
+}
+
+/// \brief Decode FaspRetCode to a readable error message
 const std::string getRetCode(const FaspRetCode code) {
     switch(code) {
         case SUCCESS:
