@@ -28,13 +28,12 @@ int main()
     try {
         retCode = FaspRetCode::ERROR_UNKNOWN; // Error type found
         cout << "Final retCode = " << retCode << endl;
-    	throw( FaspExcep(getRetCode(retCode), __FILE__, __FUNCTION__, __LINE__) );
+    	throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
     }
     catch (FaspExcep& ex) {
         ex.LogExcep();
-        return retCode;
+        return ex.errorCode;
     }
-
 }
 
 /*---------------------------------*/

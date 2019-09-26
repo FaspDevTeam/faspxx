@@ -56,27 +56,31 @@ enum FaspRetCode {
 };
 
 /// \brief Get error message from FaspRetCode
-const std::string getRetCode(const FaspRetCode code);
+const std::string GetRetCode(const FaspRetCode code);
 
 /// \brief Standard exception capturing class
 class FaspExcep : public std::runtime_error {
 
 private:
-    const char*        file;  //! Which file throws exception
-    const char*        func;  //! Which function throws exception
+    const char *       file;  //! Which file throws exception
+    const char *       func;  //! Which function throws exception
     const unsigned int line;  //! Which line throws exception
 
 public:
+    const FaspRetCode  errorCode;  //! Error Code
+
+public:
     // Default constructor
-    FaspExcep ( const std::string& msg_, const char* file_,
+    FaspExcep ( const FaspRetCode code_, const char* file_,
                 const char* func_, const unsigned int line_)
-              : std::runtime_error(msg_), file(file_), func(func_), line(line_)
+              : std::runtime_error(GetRetCode(code_)),
+                file(file_), func(func_), line(line_), errorCode(code_)
     { }
 
     // Get exception location
-    const char* GetFile() const { return file; } //! return thrown file name
-    const char* GetFunc() const { return func; } //! return thrown function name
-    const int   GetLine() const { return line; } //! return thrown line number
+    const char * GetFile() const { return file; } //! return thrown file name
+    const char * GetFunc() const { return func; } //! return thrown function name
+    unsigned int GetLine() const { return line; } //! return thrown line number
 
     // Stardard output
     //! Output log messages to a file or screen by default

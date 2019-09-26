@@ -12,16 +12,8 @@
 #include <string>
 #include "RetCode.hxx"
 
-/// \brief Output log messages to a file or screen by default
-void FaspExcep::LogExcep(std::ostream& stream) const
-{
-    stream << "### ERROR: " << this->what() << std::endl;
-    stream << "### ERROR: Check " << this->GetFile() << " in "
-           << this->GetFunc() << "() at Line " << this->GetLine() << std::endl;
-}
-
 /// \brief Decode FaspRetCode to a readable error message
-const std::string getRetCode(const FaspRetCode code) {
+const std::string GetRetCode(const FaspRetCode code) {
     switch(code) {
         case SUCCESS:
             return "Finish successfully!";
@@ -78,6 +70,14 @@ const std::string getRetCode(const FaspRetCode code) {
         default:
             return "Unknown error type!";
     }
+}
+
+/// \brief Output log messages to a file or screen by default
+void FaspExcep::LogExcep(std::ostream& stream) const
+{
+    stream << "### ERROR: " << this->what() << std::endl;
+    stream << "### ERROR: Check " << this->GetFile() << " in "
+           << this->GetFunc() << "() at Line " << this->GetLine() << std::endl;
 }
 
 /*---------------------------------*/

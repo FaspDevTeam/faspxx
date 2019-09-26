@@ -10,68 +10,68 @@
  */
 
 #include <cmath>
-
 #include "VECUtil.hxx"
 
-//! Check whether sizes match
-FaspRetCode VECCheck_SizeMatch(VEC vec1, VEC vec2) {
+//! Check whether the size of VEC object is zero
+FaspRetCode CheckVECSize(const VEC& v) {
+    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     try {
-        if ( vec1.GetSize() != vec2.GetSize()) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+        if ( v.GetSize() == 0 ) {
+            retCode = FaspRetCode::ERROR_VEC_SIZE;
+            throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
+        return ex.errorCode;
     }
+    return retCode;
+}
 
-    return FaspRetCode::SUCCESS;
+//! Check whether two VEC sizes match
+FaspRetCode CheckVECSize(const VEC& v1, const VEC& v2) {
+    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
+    try {
+        if ( v1.GetSize() != v2.GetSize()) {
+            retCode = FaspRetCode::ERROR_NONMATCH_SIZE;
+            throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
+        }
+    } catch ( FaspExcep &ex ) {
+        ex.LogExcep();
+        return ex.errorCode;
+    }
+    return retCode;
 }
 
 //! Check whether vector crossover
-FaspRetCode VECCheck_Get(VEC vec, INT position) {
+FaspRetCode CheckVECSize(const VEC& v, const INT& position) {
+    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     try {
-        if ( position >= vec.GetSize() || position < 0 ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_VEC_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+        if ( position >= v.GetSize() || position < 0 ) {
+            retCode = FaspRetCode::ERROR_VEC_SIZE;
+            throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_INPUT_PAR;
+        return ex.errorCode;
     }
-
-    return FaspRetCode::SUCCESS;
+    return retCode;
 }
 
-//! Check whether there is a zero in VEC object
-FaspRetCode VECCheck_TOL(VEC vec, DBL tol) {
-    for ( INT j = 0; j < vec.GetSize(); j++ ) {
+//! Check whether there is a zero entry in VEC object
+FaspRetCode CheckVECZero(const VEC& v, const DBL tol) {
+    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
+    for ( INT j = 0; j < v.GetSize(); j++ ) {
         try {
-            if ( fabs(vec[j]) <= tol ) {
-                FaspRetCode errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
-                throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+            if ( fabs(v[j]) <= tol ) {
+                retCode = FaspRetCode::ERROR_DIVIDE_ZERO;
+                throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
             }
         } catch ( FaspExcep &ex ) {
             ex.LogExcep();
-            return FaspRetCode::ERROR_DIVIDE_ZERO;
+            return ex.errorCode;
         }
     }
-    return FaspRetCode::SUCCESS;
-}
-
-//! Check whether the size of VEC object is zero
-FaspRetCode VECCheck_SizeZero(VEC vec) {
-    try {
-        if ( vec.GetSize() == 0 ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_VEC_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
-        }
-    } catch ( FaspExcep &ex ) {
-        ex.LogExcep();
-        return FaspRetCode::ERROR_VEC_SIZE;
-    }
-
-    return FaspRetCode::SUCCESS;
+    return retCode;
 }
 
 /*---------------------------------*/

@@ -16,13 +16,13 @@
 FaspRetCode MatCheck_CrossOver(const MAT mat, const INT row, const INT col) {
     try {
         if ( row < 0 || row >= mat.GetRowSize() || col < 0 ||
-             col >= mat.GetColSize()) {
+             col >= mat.GetColSize() ) {
             FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_MAT_SIZE;
+        return ex.errorCode;
     }
     return FaspRetCode::SUCCESS;
 }
@@ -30,45 +30,42 @@ FaspRetCode MatCheck_CrossOver(const MAT mat, const INT row, const INT col) {
 //! Check GetRow function
 FaspRetCode MatCheck_CrossOverRow(const MAT mat, const INT row) {
     try {
-        if ( row < 0 || row >= mat.GetRowSize()) {
+        if ( row < 0 || row >= mat.GetRowSize() ) {
             FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_MAT_SIZE;
+        return ex.errorCode;
     }
-
     return FaspRetCode::SUCCESS;
 }
 
 //! Check GetCol function
 FaspRetCode MatCheck_CrossOverCol(const MAT mat, const INT col) {
     try {
-        if ( col < 0 || col >= mat.GetColSize()) {
+        if ( col < 0 || col >= mat.GetColSize() ) {
             FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_MAT_SIZE;
+        return ex.errorCode;
     }
-
     return FaspRetCode::SUCCESS;
 }
 
 //! Check MultVec function
 FaspRetCode MatCheck_MultVec(const MAT mat,const VEC vec) {
     try {
-        if ( mat.GetColSize() != vec.GetSize()) {
+        if ( mat.GetColSize() != vec.GetSize() ) {
             FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
+        return ex.errorCode;
     }
-
     return FaspRetCode::SUCCESS;
 }
 
@@ -76,15 +73,14 @@ FaspRetCode MatCheck_MultVec(const MAT mat,const VEC vec) {
 FaspRetCode MatCheck_MultTransposeAdd(const MAT mat, const VEC vec1, const VEC
 vec2) {
     try {
-        if ( mat.GetRowSize() != vec1.GetSize() || mat.GetColSize() != vec2.GetSize()) {
+        if ( mat.GetRowSize() != vec1.GetSize() || mat.GetColSize() != vec2.GetSize() ) {
             FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
+        return ex.errorCode;
     }
-
     return FaspRetCode::SUCCESS;
 }
 
@@ -92,23 +88,23 @@ vec2) {
 FaspRetCode MatCheck_Add(const MAT mat1, const MAT mat2) {
     try {
         if ( mat1.GetRowSize() != mat2.GetRowSize() ||
-             mat2.GetColSize() != mat2.GetColSize()) {
+             mat2.GetColSize() != mat2.GetColSize() ) {
             FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
+        return ex.errorCode;
     }
 
     try {
         if ( mat1.GetRowSize() == 0 || mat1.GetColSize() == 0 ) {
             FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_MAT_SIZE;
+        return ex.errorCode;
     }
 
     return FaspRetCode::SUCCESS;
@@ -117,13 +113,13 @@ FaspRetCode MatCheck_Add(const MAT mat1, const MAT mat2) {
 //! Check Mult function
 FaspRetCode MatCheck_Mult(const MAT mat1,const MAT mat2) {
     try {
-        if ( mat1.GetColSize() != mat2.GetRowSize()) {
+        if ( mat1.GetColSize() != mat2.GetRowSize() ) {
             FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(getRetCode(errorCode), __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
+        return ex.errorCode;
     }
 
     return FaspRetCode::SUCCESS;

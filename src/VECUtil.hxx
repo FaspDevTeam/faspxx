@@ -1,25 +1,32 @@
-/**
- * a header file for VEC auxiliary function
+/**\file VECUtil.hxx
+ *  \brief Tools for checking and manipulating VEC
+ *  \author Chensong Zhang, Kailei Zhang
+ *  \date Sep/24/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
-#ifndef SRC_AUXVEC_HXX
-#define SRC_AUXVEC_HXX
+#ifndef __VECUTIL_HXX__      /*-- allow multiple inclusions --*/
+#define __VECUTIL_HXX__      /**< indicate VECUtil.hxx has been included before */
 
 #include "VEC.hxx"
 
-//! Check whether sizes match
-FaspRetCode VECCheck_SizeMatch(VEC vec1,VEC vec2);
+//! Check whether the size of VEC object is zero
+FaspRetCode CheckVECSize(const VEC& v);
+
+//! Check whether two VEC sizes match
+FaspRetCode CheckVECSize(const VEC& v1, const VEC& v2);
 
 //! Check whether vector crossover
-FaspRetCode VECCheck_Get(VEC vec,INT position);
+FaspRetCode CheckVECSize(const VEC& v, const INT& position);
 
-//! Check whether there is a zero in VEC object
-FaspRetCode VECCheck_TOL(VEC vec,DBL tol);
+//! Check whether there is a zero entry in VEC object
+FaspRetCode CheckVECZero(const VEC& v, const DBL tol=1e-14);
 
-//! Check whether the size of VEC object is zero
-FaspRetCode VECCheck_SizeZero(VEC vec);
-
-#endif // SRC_AUXVEC_HXX
+#endif /* end if for __VECUTIL_HXX__ */
 
 /*---------------------------------*/
 /*--        End of File          --*/
