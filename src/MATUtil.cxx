@@ -1,7 +1,7 @@
 /*! \file MATUtil.cxx
  *  \brief Some auxiliary functions for MAT
- *  \author Kailei Zhang
- *  \date Sep/25/2019
+ *  \author Chensong Zhang, Kailei Zhang
+ *  \date Sep/26/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -12,123 +12,104 @@
 #include "MATUtil.hxx"
 #include "RetCode.hxx"
 
-//! check GetElem function
-FaspRetCode MatCheck_CrossOver(const MAT mat, const INT row, const INT col) {
-    try {
-        if ( row < 0 || row >= mat.GetRowSize() || col < 0 ||
-             col >= mat.GetColSize() ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
-        }
-    } catch ( FaspExcep &ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-    return FaspRetCode::SUCCESS;
-}
-
-//! Check GetRow function
-FaspRetCode MatCheck_CrossOverRow(const MAT mat, const INT row) {
-    try {
-        if ( row < 0 || row >= mat.GetRowSize() ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
-        }
-    } catch ( FaspExcep &ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-    return FaspRetCode::SUCCESS;
-}
-
-//! Check GetCol function
-FaspRetCode MatCheck_CrossOverCol(const MAT mat, const INT col) {
-    try {
-        if ( col < 0 || col >= mat.GetColSize() ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
-        }
-    } catch ( FaspExcep &ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-    return FaspRetCode::SUCCESS;
-}
-
-//! Check MultVec function
-FaspRetCode MatCheck_MultVec(const MAT mat,const VEC vec) {
-    try {
-        if ( mat.GetColSize() != vec.GetSize() ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
-        }
-    } catch ( FaspExcep &ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-    return FaspRetCode::SUCCESS;
-}
-
-//! Check MultTransposeAdd function
-FaspRetCode MatCheck_MultTransposeAdd(const MAT mat, const VEC vec1, const VEC
-vec2) {
-    try {
-        if ( mat.GetRowSize() != vec1.GetSize() || mat.GetColSize() != vec2.GetSize() ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
-        }
-    } catch ( FaspExcep &ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-    return FaspRetCode::SUCCESS;
-}
-
-//! Check Add function
-FaspRetCode MatCheck_Add(const MAT mat1, const MAT mat2) {
+//! Check whether two matrices have same sizes for addition
+FaspRetCode CheckMATAddSize(const MAT& mat1, const MAT& mat2)
+{
     try {
         if ( mat1.GetRowSize() != mat2.GetRowSize() ||
-             mat2.GetColSize() != mat2.GetColSize() ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
+             mat2.GetColSize() != mat2.GetColSize() ||
+             mat1.GetRowSize() <= 0 || mat1.GetColSize() <= 0 ) {
+            auto errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
             throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
-
-    try {
-        if ( mat1.GetRowSize() == 0 || mat1.GetColSize() == 0 ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
-        }
-    } catch ( FaspExcep &ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-
     return FaspRetCode::SUCCESS;
 }
 
-//! Check Mult function
-FaspRetCode MatCheck_Mult(const MAT mat1,const MAT mat2) {
+//! Check MAT-MAT multiplication sizes
+FaspRetCode CheckMATMultSize(const MAT& mat1, const MAT& mat2)
+{
     try {
-        if ( mat1.GetColSize() != mat2.GetRowSize() ) {
-            FaspRetCode errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
+        if ( mat1.GetColSize() != mat2.GetRowSize() ||
+             mat1.GetColSize() <= 0 || mat2.GetRowSize() <= 0 ) {
+            auto errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
             throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
     } catch ( FaspExcep &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
-
     return FaspRetCode::SUCCESS;
 }
 
-//! Sort "colInd" on the order from small to large by its rows and change the
-//! positions of "values" according to "colInd"
-FaspRetCode Sort(const INT row, const std::vector<INT> rowPtr,
-                 std::vector<INT> &colInd, std::vector<DBL> &values) {
+//! Check whether (row,col) is out of bound
+FaspRetCode CheckMATSize(const MAT& mat, const INT& row, const INT& col)
+{
+    try {
+        if ( row < 0 || row >= mat.GetRowSize() ||
+             col < 0 || col >= mat.GetColSize() ) {
+            auto errorCode = FaspRetCode::ERROR_MAT_SIZE;
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+        }
+    } catch ( FaspExcep &ex ) {
+        ex.LogExcep();
+        return ex.errorCode;
+    }
+    return FaspRetCode::SUCCESS;
+}
+
+//! Check whether (row,:) is out of bound
+FaspRetCode CheckMATRowSize(const MAT& mat, const INT& row)
+{
+    try {
+        if ( row < 0 || row >= mat.GetRowSize() ) {
+            auto errorCode = FaspRetCode::ERROR_MAT_SIZE;
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+        }
+    } catch ( FaspExcep &ex ) {
+        ex.LogExcep();
+        return ex.errorCode;
+    }
+    return FaspRetCode::SUCCESS;
+}
+
+//! Check whether (:,col) is out of bound
+FaspRetCode CheckMATColSize(const MAT& mat, const INT& col)
+{
+    try {
+        if ( col < 0 || col >= mat.GetColSize() ) {
+            auto errorCode = FaspRetCode::ERROR_MAT_SIZE;
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+        }
+    } catch ( FaspExcep &ex ) {
+        ex.LogExcep();
+        return ex.errorCode;
+    }
+    return FaspRetCode::SUCCESS;
+}
+
+//! Check MAT-VEC multiplication sizes
+FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec)
+{
+    try {
+        if ( mat.GetColSize() != vec.GetSize() ) {
+            auto errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
+            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+        }
+    } catch ( FaspExcep &ex ) {
+        ex.LogExcep();
+        return ex.errorCode;
+    }
+    return FaspRetCode::SUCCESS;
+}
+
+//! Sort "colInd" of each row in ascending order and rearrange "values" accordingly
+FaspRetCode SortRow(const INT& row, const std::vector<INT>& rowPtr,
+                    std::vector<INT>& colInd, std::vector<DBL>& values)
+{
     INT l;
     INT begin,end;
     INT index;
@@ -158,14 +139,12 @@ FaspRetCode Sort(const INT row, const std::vector<INT> rowPtr,
     return FaspRetCode::SUCCESS;
 }
 
-//! check whether the input data are CSRx
-FaspRetCode CheckCSRx(const INT row, const INT col, const INT nnz,
-              const std::vector<DBL> values,
-              const std::vector<INT> rowPtr,
-              const std::vector<INT> colInd,
-              const std::vector<INT> diagPtr) {
-    if ( row == 0 || col == 0 || nnz == 0 )
-        return FaspRetCode::SUCCESS;
+//! Check whether the data is good for CSRx
+FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
+                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                      const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr)
+{
+    if ( row == 0 || col == 0 || nnz == 0 ) return FaspRetCode::SUCCESS;
 
     /*
      * some simple examinations about parameters
@@ -244,7 +223,6 @@ FaspRetCode CheckCSRx(const INT row, const INT col, const INT nnz,
     if ( count != diagPtr.size())
         goto Return;
 
-
     flag=1;
     if(flag==0){
         Return:
@@ -254,11 +232,11 @@ FaspRetCode CheckCSRx(const INT row, const INT col, const INT nnz,
     return FaspRetCode::SUCCESS;
 }
 
-//! check whether the input data are CSR
-FaspRetCode CheckCSR(const INT row, const INT col, const INT nnz,
-             const std::vector<DBL> values,
-             const std::vector<INT> rowPtr,
-             const std::vector<INT> colInd) {
+//! Check whether the data is good for CSR
+FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
+                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                     const std::vector<INT>& rowPtr)
+{
     if ( row == 0 || col == 0 || nnz == 0 )
         return FaspRetCode ::SUCCESS;
 

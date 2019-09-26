@@ -512,7 +512,7 @@ void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
     for ( int j = 0; j < this->nrow; j++ )
         tmp1.rowPtr[j + 1] = this->rowPtr[j + 1] + mat.rowPtr[j + 1];
 
-    Sort(tmp1.nrow, tmp1.rowPtr, tmp1.colInd, tmp1.values);
+    SortRow(tmp1.nrow, tmp1.rowPtr, tmp1.colInd, tmp1.values);
 
     tmp2.nrow = tmp1.nrow;
     tmp2.ncol = tmp1.ncol;
@@ -673,7 +673,7 @@ MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2) {
 
     INT begin, end;
 
-    Sort(mat1.nrow, tmp.rowPtr, tmp.colInd, tmp.values);
+    SortRow(mat1.nrow, tmp.rowPtr, tmp.colInd, tmp.values);
 
     mat.nrow = tmp.nrow;
     mat.ncol = tmp.ncol;
