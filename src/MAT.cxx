@@ -12,7 +12,7 @@
 #include "MAT.hxx"
 #include "MATUtil.hxx"
 
-//! assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
+/// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
 MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
          const std::vector<DBL>& values, const std::vector<INT>& colInd,
          const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr)
@@ -31,7 +31,7 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->diagPtr.operator=(diagPtr);
 }
 
-//! assign nrow, ncol, nnz, colInd, rowPtr, diagPtr to *this
+/// Assign nrow, ncol, nnz, values, colInd, rowPtr to *this, generate diagPtr
 MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
          const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
          const std::vector<INT>& diagPtr)
@@ -50,7 +50,7 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->diagPtr.operator=(diagPtr);
 }
 
-//! assign nrow, ncol, nnz, values, colInd, rowPtr to *this
+/// Assign nrow, ncol, nnz, colInd, rowPtr, diagPtr to *this (sparse structure)
 MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
          const std::vector<DBL>& values, const std::vector<INT>& colInd,
          const std::vector<INT>& rowPtr)
@@ -69,7 +69,7 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->FormDiagPtr(this->diagPtr);
 }
 
-//! assign nrow, ncol, nnz, colInd, rowPtr to *this
+/// Assign nrow, ncol, nnz, colInd, rowPtr to *this (sparse structure), generate diagPtr
 MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
          const std::vector<INT>& colInd, const std::vector<INT>& rowPtr)
 {
@@ -87,7 +87,7 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->FormDiagPtr(this->diagPtr);
 }
 
-//! assign VEC object to form the diagonal matrix
+/// Assign diagonal values to *this from a VEC
 MAT::MAT(const VEC& v)
 {
     INT size = v.GetSize();
@@ -122,7 +122,7 @@ MAT::MAT(const VEC& v)
     delete[] p;
 }
 
-//! assign vector object to form the diagonal matrix
+/// Assign diagonal values to *this from a vector
 MAT::MAT(const std::vector<DBL>& vt)
 {
     const INT size = vt.size();
@@ -157,7 +157,7 @@ MAT::MAT(const std::vector<DBL>& vt)
     delete[] p;
 }
 
-//! assign MAT object to *this
+/// Assign MAT object to *this
 MAT::MAT(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
@@ -168,7 +168,7 @@ MAT::MAT(const MAT& mat) {
     this->rowPtr.operator=(mat.rowPtr);
 }
 
-//! overload = operator
+/// Overload = operator
 MAT& MAT::operator=(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
@@ -180,7 +180,7 @@ MAT& MAT::operator=(const MAT& mat) {
     return *this;
 }
 
-//! assign nrow, ncol, nnz, values, rowPtr, colInd, diag to *this
+/// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
 void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
                     const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr)
@@ -199,7 +199,7 @@ void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
     this->diagPtr.operator=(diagPtr);
 }
 
-//! assign nrow, ncol, nnz, values, rowPtr, colInd to *this
+/// Assign nrow, ncol, nnz, values, rowPtr, colInd to *this
 void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
                     const std::vector<INT>& rowPtr)
@@ -218,22 +218,22 @@ void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
     this->FormDiagPtr(this->diagPtr);
 }
 
-//! get row size
+/// Get row size
 INT MAT::GetRowSize() const {
     return this->nrow;
 }
 
-//! get column size
+/// Get column size
 INT MAT::GetColSize() const {
     return this->ncol;
 }
 
-//! get number of nonzeros
+/// Get number of nonzeros
 INT MAT::GetNNZ() const {
     return this->nnz;
 }
 
-//! get (*this)[i][j] if (i,j) is a nonzero entry
+/// Get (*this)[i][j]
 //! Note: If *this is a sparse structure, it will return 1.0 for nonzero entries
 DBL MAT::GetValue(const INT& row, const INT& ncol) const {
     if ( this->colInd[this->rowPtr[row]] <= ncol ) {
@@ -250,7 +250,7 @@ DBL MAT::GetValue(const INT& row, const INT& ncol) const {
     return 0.0;
 }
 
-//! put the whole row in *this into a vector object
+/// Get the whole row-th row in *this into VEC object
 void MAT::GetRow(const INT& row, std::vector<DBL>& v) const {
     const INT begin = this->rowPtr[row], end = this->rowPtr[row + 1];
     const INT len = end - begin;
@@ -260,7 +260,7 @@ void MAT::GetRow(const INT& row, std::vector<DBL>& v) const {
     for ( INT j = begin; j < end; j++ ) v[k++] = this->values[j];
 }
 
-//! put the whole column in *this into a vector object
+/// Get the whole col-th column in *this into VEC object
 void MAT::GetCol(const INT& col, std::vector<DBL>& v) const {
     std::vector<DBL> tmp;
     INT count = 0;
@@ -285,7 +285,7 @@ void MAT::GetCol(const INT& col, std::vector<DBL>& v) const {
     v.assign(tmp.begin(),tmp.end());
 }
 
-//! get the whole diagonal elements in *this into VEC object
+/// Get the whole diagonal entries in *this into VEC object
 void MAT::GetDiag(std::vector<DBL>& v) const {
     INT len = this->nrow > this->ncol ? this->ncol : this->nrow;
     v.resize(len);
@@ -297,12 +297,12 @@ void MAT::GetDiag(std::vector<DBL>& v) const {
     }
 }
 
-//! copy *this into mat
+/// Copy *this to mat
 void MAT::CopyTo(MAT& mat) const {
     mat.operator=(*this);
 }
 
-//! *this = a * (*this)
+/// Scale *this *= a
 void MAT::Scale(const DBL a) {
     if ( this->values.size() == 0 ) {
         this->values.resize(this->nnz);
@@ -314,7 +314,7 @@ void MAT::Scale(const DBL a) {
     }
 }
 
-//! *this = a * I + *this
+/// Shift *this += a * I
 void MAT::Shift(const DBL a) {
     if ( this->values.size() == 0 ) {
         if ( a == 0 )
@@ -329,31 +329,35 @@ void MAT::Shift(const DBL a) {
     }
 }
 
-//! RetValue = *this * vec
-VEC MAT::MultVec(const VEC& vec) const {
-    VEC w;
-    w.SetSize(this->nrow);
+/// Set all the entries to zero
+void MAT::Zero() {
+    this->nnz = this->nrow > this->ncol ? this->ncol : this->nrow;
+    INT *pcol = new INT[this->nnz];
+    INT *prow = new INT[this->nrow + 1];
 
-    INT begin, end, i, k;
-    if ( this->values.size() == 0 ) {
-        for ( i = 0; i < this->nrow; i++ ) {
-            begin = this->rowPtr[i];
-            end   = this->rowPtr[i+1];
-            for ( k = begin; k < end; k++ ) w[i] += vec[this->colInd[k]];
-        }
-    } else {
-        for ( i = 0; i < this->nrow; i++ ) {
-            begin = this->rowPtr[i];
-            end   = this->rowPtr[i+1];
-            for ( k = begin; k < end; k++ )
-                w[i] += this->values[k] * vec[this->colInd[k]];
-        }
-    }
+    for ( INT j = 0; j < this->diagPtr.size(); j++ ) pcol[j] = j;
 
-    return w;
+    for ( INT j = 0; j < this->nrow + 1; j++ ) prow[j] = j;
+
+    std::vector<INT> rowPtrtmp(this->nrow + 1);
+    std::vector<INT> colIndtmp(this->nnz);
+    std::vector<DBL> valuestmp(this->nnz);
+
+    rowPtrtmp.assign(prow, prow + this->nrow);
+    colIndtmp.assign(pcol, pcol + this->nnz);
+    valuestmp.assign(this->nnz, 0);
+
+    this->rowPtr.operator=(rowPtrtmp);
+    this->colInd.operator=(colIndtmp);
+    this->values.operator=(valuestmp);
+
+    delete[] pcol;
+    delete[] prow;
+    pcol = nullptr;
+    prow = nullptr;
 }
 
-//! transpose *this in place
+/// Transpose *this // Todo: Check???
 void MAT::Transpose() {
     MAT tmp;
     tmp.nrow = this->ncol;
@@ -420,42 +424,18 @@ void MAT::Transpose() {
     this->operator=(tmp);
 }
 
-//! RetValue = transpose(*this) * v1 + v2
-VEC MAT::MultTransposeAdd(const VEC& v1, const VEC& v2) const {
-
-    MAT tmp;
-    tmp.nrow = this->ncol;
-    tmp.ncol = this->nrow;
-    tmp.nnz  = this->nnz;
-    tmp.values.resize(tmp.nnz);
-    tmp.colInd.resize(tmp.nnz);
-    tmp.rowPtr.resize(tmp.nrow + 1);
-    tmp.Transpose();
-
-    VEC v(v2);
-    INT begin, end;
-    if ( this->values.size()) {
-        for ( INT j = 0; j < tmp.nrow; j++ ) {
-            begin = tmp.rowPtr[j];
-            end = tmp.rowPtr[j + 1];
-            for ( INT k = begin; k < end; k++ ) {
-                v[j] += v1[this->colInd[k]] * tmp.values[k];
-            }
-        }
-    } else {
-        for ( INT j = 0; j < tmp.nrow; j++ ) {
-            begin = tmp.rowPtr[j];
-            end = tmp.rowPtr[j + 1];
-            for ( INT k = begin; k < end; k++ ) {
-                v[j] += v1[this->colInd[k]];
-            }
-        }
-    }
-
-    return v;
+/// *this = *this * mat // Todo: Check???
+void MAT::MultRight(const MAT& mat) {
+    this->operator=(Mult(*this, mat));
 }
 
-//! *this = a * *this + b * mat
+/// *this = mat * *this // Todo: Check???
+void MAT::MultLeft(const MAT& mat) {
+    MAT tmp = Mult(mat, *this);
+    this->operator=(tmp);
+}
+
+/// *this = a * *this + b * mat
 void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
 
     if ( this->nnz == 0 )
@@ -591,7 +571,66 @@ void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
     this->operator=(tmp2);
 }
 
-//! ReturnedValues = a * mat1 + b * mat2
+/// Return VEC = *this * vec
+VEC MAT::MultVec(const VEC& v) const {
+    VEC w;
+    w.SetSize(this->nrow);
+
+    INT begin, end, i, k;
+    if ( this->values.size() == 0 ) {
+        for ( i = 0; i < this->nrow; i++ ) {
+            begin = this->rowPtr[i];
+            end   = this->rowPtr[i+1];
+            for ( k = begin; k < end; k++ ) w[i] += v[this->colInd[k]];
+        }
+    } else {
+        for ( i = 0; i < this->nrow; i++ ) {
+            begin = this->rowPtr[i];
+            end   = this->rowPtr[i+1];
+            for ( k = begin; k < end; k++ )
+                w[i] += this->values[k] * v[this->colInd[k]];
+        }
+    }
+
+    return w;
+}
+
+/// Return VEC = A'*vec1 + vec2 // Todo: Check???
+VEC MAT::MultTransposeAdd(const VEC& v1, const VEC& v2) const {
+
+    MAT tmp;
+    tmp.nrow = this->ncol;
+    tmp.ncol = this->nrow;
+    tmp.nnz  = this->nnz;
+    tmp.values.resize(tmp.nnz);
+    tmp.colInd.resize(tmp.nnz);
+    tmp.rowPtr.resize(tmp.nrow + 1);
+    tmp.Transpose();
+
+    VEC v(v2);
+    INT begin, end;
+    if ( this->values.size()) {
+        for ( INT j = 0; j < tmp.nrow; j++ ) {
+            begin = tmp.rowPtr[j];
+            end = tmp.rowPtr[j + 1];
+            for ( INT k = begin; k < end; k++ ) {
+                v[j] += v1[this->colInd[k]] * tmp.values[k];
+            }
+        }
+    } else {
+        for ( INT j = 0; j < tmp.nrow; j++ ) {
+            begin = tmp.rowPtr[j];
+            end = tmp.rowPtr[j + 1];
+            for ( INT k = begin; k < end; k++ ) {
+                v[j] += v1[this->colInd[k]];
+            }
+        }
+    }
+
+    return v;
+}
+
+/// Return MAT = a * mat1 + b * mat2 // Todo: Check???
 MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2) {
     MAT mat;
 
@@ -751,7 +790,7 @@ MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2) {
     return mat;
 }
 
-//! *this = matl * matr
+/// *this = matl * matr
 MAT Mult(const MAT& matl, const MAT& matr) {
     MAT mat;
 
@@ -839,18 +878,7 @@ MAT Mult(const MAT& matl, const MAT& matr) {
     return mat;
 }
 
-//! *this = *this * mat
-void MAT::MultRight(const MAT& mat) {
-    this->operator=(Mult(*this, mat));
-}
-
-//! *this = mat * *this
-void MAT::MultLeft(const MAT& mat) {
-    MAT tmp = Mult(mat, *this);
-    this->operator=(tmp);
-}
-
-//! form diagonal pointer from colInd and rowPtr
+/// Form diagonal pointer using colInd and rowPtr
 void MAT::FormDiagPtr(std::vector<INT>& diagPtr)
 {
     this->diagPtr.resize(nrow);
@@ -867,7 +895,7 @@ void MAT::FormDiagPtr(std::vector<INT>& diagPtr)
     }
 }
 
-//! make an empty matrix
+/// Empty a matrix
 void MAT::Empty()
 {
     this->nrow = 0;
@@ -877,34 +905,6 @@ void MAT::Empty()
     this->diagPtr.resize(0);
     this->colInd.resize(0);
     this->values.resize(0);
-}
-
-//! zero all the elements
-void MAT::Zero() {
-    this->nnz = this->nrow > this->ncol ? this->ncol : this->nrow;
-    INT *pcol = new INT[this->nnz];
-    INT *prow = new INT[this->nrow + 1];
-
-    for ( INT j = 0; j < this->diagPtr.size(); j++ ) pcol[j] = j;
-
-    for ( INT j = 0; j < this->nrow + 1; j++ ) prow[j] = j;
-
-    std::vector<INT> rowPtrtmp(this->nrow + 1);
-    std::vector<INT> colIndtmp(this->nnz);
-    std::vector<DBL> valuestmp(this->nnz);
-
-    rowPtrtmp.assign(prow, prow + this->nrow);
-    colIndtmp.assign(pcol, pcol + this->nnz);
-    valuestmp.assign(this->nnz, 0);
-
-    this->rowPtr.operator=(rowPtrtmp);
-    this->colInd.operator=(colIndtmp);
-    this->values.operator=(valuestmp);
-
-    delete[] pcol;
-    delete[] prow;
-    pcol = nullptr;
-    prow = nullptr;
 }
 
 /*---------------------------------*/

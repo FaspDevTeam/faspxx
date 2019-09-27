@@ -22,7 +22,7 @@ VEC::VEC(const std::vector<DBL>& vt) {
     this->size = vt.size();
 }
 
-/// Assign a VEC object to a VEC object
+/// Assign a const VEC object to a VEC object
 VEC::VEC(const VEC& v) {
     this->vec.operator=(v.vec);
     this->size = v.size;

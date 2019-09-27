@@ -27,22 +27,22 @@ private:
 
 public:
     /// Default constructor
-    VEC() : vec(0), size(0) {}
+    explicit VEC() : vec(0), size(0) {}
 
     /// Assign the size and the same value to a VEC object
-    VEC(const INT& size, const DBL& value);
+    explicit VEC(const INT& size, const DBL& value);
 
     /// Assign a vector object to a VEC object
-    VEC(const std::vector<DBL>& vt);
+    explicit VEC(const std::vector<DBL>& vt);
 
-    /// Assign a VEC object to a VEC object
+    /// Assign a const VEC object to a VEC object
     VEC(const VEC& v);
 
     /// Assign a DBL array to a VEC object
-    VEC(const INT& size, const DBL *ptr);
+    explicit VEC(const INT& size, const DBL *ptr);
 
     /// Default destructor
-    ~VEC() {}
+    ~VEC() = default;
 
     /// Overload = operator
     VEC& operator=(const VEC& v);
