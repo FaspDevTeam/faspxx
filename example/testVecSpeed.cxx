@@ -122,7 +122,7 @@ int main() {
 
     timer.start();
     cycle.start();
-    for ( k = 0; k < count; k++ ) nvec1.Add(nvec2, 1.0, 1.0);
+    for ( k = 0; k < count; k++ ) nvec1.Add(1.0, 1.0, nvec2);
     std::cout << "new VEC cycles : " << cycle.stop() / count << std::endl;
     std::cout << "new VEC time   : " << timer.stop() / count << " seconds" << std::endl;
 
