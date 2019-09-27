@@ -22,12 +22,12 @@
 class VEC {
 
 private:
-    std::vector<DBL> vec;  ///< DBL vector for storing values of VEC
-    INT size;              ///< Book-keeping size of VEC
+    std::vector<DBL> values;  ///< Actual values of VEC in DBL
+    INT size;                 ///< Book-keeping size of VEC
 
 public:
     /// Default constructor
-    explicit VEC() : vec(0), size(0) {}
+    explicit VEC() : values(0), size(0) {}
 
     /// Assign the size and the same value to a VEC object
     explicit VEC(const INT& size, const DBL& value);

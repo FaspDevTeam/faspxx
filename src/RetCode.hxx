@@ -23,11 +23,11 @@ enum FaspRetCode {
     ERROR_OPEN_FILE        = -10,  //! Failed to open a file
     ERROR_INPUT_FILE       = -11,  //! Wrong input file
     ERROR_INPUT_PAR        = -12,  //! Wrong input argument
-    ERROR_MAT_DATA         = -13,  //! Wrong matrix format
     //---------- VEC or MAT data problems -----------------------------------------//
     ERROR_VEC_SIZE         = -14,  //! Wrong vector size
     ERROR_MAT_SIZE         = -15,  //! Wrong matrix size
     ERROR_NONMATCH_SIZE    = -16,  //! Two sizes do not match
+    ERROR_MAT_DATA         = -17,  //! Wrong matrix format
     ERROR_DIVIDE_ZERO      = -18,  //! Divided by zero!
     ERROR_MAT_ZERODIAG     = -19,  //! MAT has zero diagonal entries
     //---------- Memory or function call problems ---------------------------------//
@@ -57,7 +57,7 @@ enum FaspRetCode {
 };
 
 /// \brief Get error message from FaspRetCode
-const std::string GetRetCode(const FaspRetCode code);
+std::string GetRetCode(const FaspRetCode code);
 
 /// \brief Standard exception capturing class
 class FaspExcep : public std::runtime_error {

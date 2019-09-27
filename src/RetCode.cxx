@@ -13,7 +13,7 @@
 #include "RetCode.hxx"
 
 /// \brief Decode FaspRetCode to a readable error message
-const std::string GetRetCode(const FaspRetCode code) {
+std::string GetRetCode(const FaspRetCode code) {
     switch(code) {
         case SUCCESS:
             return "Finish successfully!";
@@ -21,8 +21,6 @@ const std::string GetRetCode(const FaspRetCode code) {
             return "Failed to open a file!";
         case ERROR_INPUT_FILE:
             return "Wrong input file!";
-        case ERROR_MAT_DATA:
-            return "Wrong matrix format!";
         case ERROR_INPUT_PAR:
             return "Wrong input argument!";
         case ERROR_VEC_SIZE:
@@ -31,6 +29,8 @@ const std::string GetRetCode(const FaspRetCode code) {
             return "Wrong matrix size!";
         case ERROR_NONMATCH_SIZE:
             return "Two sizes do not match!";
+        case ERROR_MAT_DATA:
+            return "Wrong matrix format!";
         case ERROR_DIVIDE_ZERO:
             return "Divided by zero!";
         case ERROR_MAT_ZERODIAG:

@@ -158,7 +158,7 @@ public:
     /// Shift *this += a * I
     void Shift(const DBL a);
 
-    /// Set all the entries to zero
+    /// Set all the entries to zero without changing matrix size
     void Zero();
 
     /// Transpose *this // Todo: Check???

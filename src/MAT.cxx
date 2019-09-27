@@ -43,7 +43,7 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
 
     this->nrow = nrow;
     this->ncol = ncol;
-    this->nnz = nnz;
+    this->nnz  = nnz;
     this->values.resize(0);
     this->colInd.operator=(colInd);
     this->rowPtr.operator=(rowPtr);
@@ -62,7 +62,7 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
 
     this->nrow = nrow;
     this->ncol = ncol;
-    this->nnz = nnz;
+    this->nnz  = nnz;
     this->values = values;
     this->colInd = colInd;
     this->rowPtr = rowPtr;
@@ -80,7 +80,7 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
 
     this->nrow = nrow;
     this->ncol = ncol;
-    this->nnz = nnz;
+    this->nnz  = nnz;
     this->values.resize(0);
     this->colInd.operator=(colInd);
     this->rowPtr.operator=(rowPtr);
@@ -99,7 +99,7 @@ MAT::MAT(const VEC& v)
 
     this->nrow = size;
     this->ncol = size;
-    this->nnz = size;
+    this->nnz  = size;
 
     // Set values from v
     this->values.resize(size);
@@ -134,7 +134,7 @@ MAT::MAT(const std::vector<DBL>& vt)
 
     this->nrow = size;
     this->ncol = size;
-    this->nnz = size;
+    this->nnz  = size;
 
     // Set values from vt
     this->values.resize(size);
@@ -161,7 +161,7 @@ MAT::MAT(const std::vector<DBL>& vt)
 MAT::MAT(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
-    this->nnz = mat.nnz;
+    this->nnz  = mat.nnz;
     this->values.operator=(mat.values);
     this->diagPtr.operator=(mat.diagPtr);
     this->colInd.operator=(mat.colInd);
@@ -172,7 +172,7 @@ MAT::MAT(const MAT& mat) {
 MAT& MAT::operator=(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
-    this->nnz = mat.nnz;
+    this->nnz  = mat.nnz;
     this->values.operator=(mat.values);
     this->colInd.operator=(mat.colInd);
     this->rowPtr.operator=(mat.rowPtr);
@@ -192,7 +192,7 @@ void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
 
     this->nrow = nrow;
     this->ncol = ncol;
-    this->nnz = nnz;
+    this->nnz  = nnz;
     this->values.operator=(values);
     this->rowPtr.operator=(rowPtr);
     this->colInd.operator=(colInd);
@@ -211,7 +211,7 @@ void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
 
     this->nrow = nrow;
     this->ncol = ncol;
-    this->nnz = nnz;
+    this->nnz  = nnz;
     this->rowPtr.operator=(rowPtr);
     this->colInd.operator=(colInd);
     this->values.operator=(values);
@@ -304,57 +304,36 @@ void MAT::CopyTo(MAT& mat) const {
 
 /// Scale *this *= a
 void MAT::Scale(const DBL a) {
-    if ( this->values.size() == 0 ) {
-        this->values.resize(this->nnz);
-        for ( INT j = 0; j < this->nnz; j++ )
-            this->values[j] = a;
-    } else {
-        for ( INT j = 0; j < this->nnz; j++ )
-            this->values[j] = a * this->values[j];
+    try {
+        if ( this->values.empty() ) { // MAT is a sparse structure!!!
+            auto retCode = FaspRetCode::ERROR_MAT_DATA;
+            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+        }
+        for ( INT j = 0; j < this->nnz; j++ ) this->values[j] = a * this->values[j];
+    }
+    catch ( FaspExcep& ex ) {
+        ex.LogExcep();
     }
 }
 
 /// Shift *this += a * I
 void MAT::Shift(const DBL a) {
-    if ( this->values.size() == 0 ) {
-        if ( a == 0 )
-            return;
-        for ( int j = 0; j < this->diagPtr.size(); j++ )
-            this->values[j] = 1.0;
-        for ( int j = 0; j < diagPtr.size(); j++ )
-            this->values[this->diagPtr[j]] = 1 + a;
-    } else {
+    try {
+        if ( this->values.empty() ) { // MAT is a sparse structure!!!
+            auto retCode = FaspRetCode::ERROR_MAT_DATA;
+            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+        }
         for ( INT j = 0; j < this->diagPtr.size(); j++ )
             this->values[this->diagPtr[j]] = a + this->values[this->diagPtr[j]];
     }
+    catch ( FaspExcep& ex ) {
+        ex.LogExcep();
+    }
 }
 
-/// Set all the entries to zero
+/// Set all the entries to zero without changing matrix size
 void MAT::Zero() {
-    this->nnz = this->nrow > this->ncol ? this->ncol : this->nrow;
-    INT *pcol = new INT[this->nnz];
-    INT *prow = new INT[this->nrow + 1];
-
-    for ( INT j = 0; j < this->diagPtr.size(); j++ ) pcol[j] = j;
-
-    for ( INT j = 0; j < this->nrow + 1; j++ ) prow[j] = j;
-
-    std::vector<INT> rowPtrtmp(this->nrow + 1);
-    std::vector<INT> colIndtmp(this->nnz);
-    std::vector<DBL> valuestmp(this->nnz);
-
-    rowPtrtmp.assign(prow, prow + this->nrow);
-    colIndtmp.assign(pcol, pcol + this->nnz);
-    valuestmp.assign(this->nnz, 0);
-
-    this->rowPtr.operator=(rowPtrtmp);
-    this->colInd.operator=(colIndtmp);
-    this->values.operator=(valuestmp);
-
-    delete[] pcol;
-    delete[] prow;
-    pcol = nullptr;
-    prow = nullptr;
+    for ( INT j = 0; j < this->nnz; j++ ) values[j] = 0.0;
 }
 
 /// Transpose *this // Todo: Check???
