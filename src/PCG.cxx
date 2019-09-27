@@ -49,6 +49,7 @@ FaspRetCode CG(const MAT &A, const VEC &b, VEC &x) {
         pk.Add(beta, 1.0, rk);
 
         count++;
+
     }
 
     return FaspRetCode::SUCCESS;
