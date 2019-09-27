@@ -1,5 +1,5 @@
 /*! \file MAT.hxx
- *  \brief Header file for the FASP++ Matrix class
+ *  \brief Matrix class declaration
  *  \author Kailei Zhang
  *  \date Sep/25/2019
  *
@@ -174,10 +174,10 @@ public:
     void Add(const DBL a, const DBL b, const MAT& mat);
 
     /// Return VEC = *this * vec
-    VEC MultVec(const VEC& vec) const;
+    VEC MultVec(const VEC& v) const;
 
-    /// Return VEC = A'*vec1 + vec2 // Todo: Check???
-    VEC MultTransposeAdd(const VEC& vec1, const VEC& vec2) const;
+    /// Return VEC = A'*v1 + v2 // Todo: Check???
+    VEC MultTransposeAdd(const VEC& v1, const VEC& v2) const;
 
     /// Return MAT = a * mat1 + b * mat2 // Todo: Check???
     friend MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2);

@@ -9,13 +9,13 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __FASPXX_HEADER__      /*-- allow multiple inclusions --*/
-#define __FASPXX_HEADER__      /**< indicate faspxx.hxx has been included before */
+#ifndef __FASPXX_HEADER__  /*-- allow multiple inclusions --*/
+#define __FASPXX_HEADER__  /**< indicate faspxx.hxx has been included before */
 
-typedef unsigned int INT;      /**< Index type: Must be non-negative! */
-typedef double       DBL;      /**< Double type */
+typedef unsigned int INT;            ///< Index type: Must be non-negative!
+typedef double       DBL;            ///< Double precision numbers
 
-const DBL   SMALL_TOL = 1e-14; /**< Small positive real for tolerance */
+const DBL      SMALL_TOL = 1e-14;    ///< Small positive real for tolerance
 
 #endif /* end if for __FASPXX_HEADER__ */
 

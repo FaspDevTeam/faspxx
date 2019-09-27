@@ -1,5 +1,5 @@
 /*! \file MAT.cxx
- *  \brief Source file for the FASP++ Matrix class
+ *  \brief Matrix class declaration
  *  \author Kailei Zhang
  *  \date Sep/25/2019
  *

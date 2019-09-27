@@ -1,5 +1,5 @@
-/*! \file vec.cxx
- *  \brief Source file for the FASP++ Vector class
+/*! \file VEC.cxx
+ *  \brief Vector class definition
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights resized.

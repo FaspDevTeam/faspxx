@@ -1,5 +1,5 @@
 /*! \file VEC.hxx
- *  \brief Header file for the FASP++ VEC class
+ *  \brief Vector class declaration
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
