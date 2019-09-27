@@ -165,8 +165,8 @@ void VEC::Abs() {
     for ( INT j = 0; j < this->size; j++ ) this->values[j] = fabs(this->values[j]);
 }
 
-/// *this = a * vec + b * *this
-void VEC::Add(const VEC& v, const DBL& a, const DBL& b) {
+/// *this = a * *this + b * vec
+void VEC::Add(const DBL& a, const DBL& b,const VEC& v) {
     for ( INT j = 0; j < this->size; j++ )
         this->values[j] = a * this->values[j] + b * v.values[j];
 }
