@@ -12,7 +12,7 @@
 #include "MATUtil.hxx"
 #include "RetCode.hxx"
 
-//! Check whether two matrices have same sizes for addition
+/// Check whether two matrices have same sizes for addition
 FaspRetCode CheckMATAddSize(const MAT& mat1, const MAT& mat2)
 {
     try {
@@ -29,7 +29,7 @@ FaspRetCode CheckMATAddSize(const MAT& mat1, const MAT& mat2)
     return FaspRetCode::SUCCESS;
 }
 
-//! Check MAT-MAT multiplication sizes
+/// Check MAT-MAT multiplication sizes
 FaspRetCode CheckMATMultSize(const MAT& mat1, const MAT& mat2)
 {
     try {
@@ -45,7 +45,7 @@ FaspRetCode CheckMATMultSize(const MAT& mat1, const MAT& mat2)
     return FaspRetCode::SUCCESS;
 }
 
-//! Check whether (row,col) is out of bound
+/// Check whether (row,col) is out of bound
 FaspRetCode CheckMATSize(const MAT& mat, const INT& row, const INT& col)
 {
     try {
@@ -61,7 +61,7 @@ FaspRetCode CheckMATSize(const MAT& mat, const INT& row, const INT& col)
     return FaspRetCode::SUCCESS;
 }
 
-//! Check whether (row,:) is out of bound
+/// Check whether (row,:) is out of bound
 FaspRetCode CheckMATRowSize(const MAT& mat, const INT& row)
 {
     try {
@@ -76,7 +76,7 @@ FaspRetCode CheckMATRowSize(const MAT& mat, const INT& row)
     return FaspRetCode::SUCCESS;
 }
 
-//! Check whether (:,col) is out of bound
+/// Check whether (:,col) is out of bound
 FaspRetCode CheckMATColSize(const MAT& mat, const INT& col)
 {
     try {
@@ -91,7 +91,7 @@ FaspRetCode CheckMATColSize(const MAT& mat, const INT& col)
     return FaspRetCode::SUCCESS;
 }
 
-//! Check MAT-VEC multiplication sizes
+/// Check MAT-VEC multiplication sizes
 FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec)
 {
     try {
@@ -106,144 +106,7 @@ FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec)
     return FaspRetCode::SUCCESS;
 }
 
-//! Sort "colInd" of each row in ascending order and rearrange "values" accordingly
-FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
-                       const std::vector<INT>& rowPtr,
-                       std::vector<INT>& colInd, std::vector<DBL>& values)
-{
-    auto retCode = FaspRetCode::SUCCESS;
-    INT l, begin, end, index;
-    DBL data;
-
-    for ( INT j = 0; j < row; j++ ) {
-        begin = rowPtr[j];
-        end = rowPtr[j + 1];
-        if ( end <= begin + 1 ) {
-            continue;
-        }
-        for ( INT k = begin + 1; k < end; k++ ) {
-            index = colInd[k];
-            data = values[k];
-            for ( l = k - 1; l >= begin; l-- ) {
-                if ( index < colInd[l] ) {
-                    colInd[l + 1] = colInd[l];
-                    values[l + 1] = values[l];
-                } else {
-                    break;
-                }
-            }
-            colInd[l + 1] = index;
-            values[l + 1] = data;
-        }
-    }
-
-    try {
-        retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
-        if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
-    }
-    catch ( FaspExcep& ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-
-    return retCode;
-}
-
-//! Check whether the data is good for CSRx
-FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
-                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
-                      const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr)
-{
-    if ( row == 0 || col == 0 || nnz == 0 ) return FaspRetCode::SUCCESS;
-
-    /*
-     * some simple examinations about parameters
-     * to judge whether they are CSRx' parameters
-     */
-    /*----------------  begin  ----------------*/
-    //! basic examinations
-    INT flag=0;
-    INT count = 0;
-    INT begin, end;
-    if ( row != rowPtr.size() - 1 )
-        goto Return;
-
-    if ( row <= 0 || col <= 0 )
-        goto Return;
-
-    if (((row > col) ? col : row) != diagPtr.size())
-        goto Return;
-
-    if ( nnz != colInd.size())
-        goto Return;
-
-    if ( nnz != values.size())
-        goto Return;
-
-    if ( nnz != rowPtr[rowPtr.size() - 1] )
-        goto Return;
-
-    //! simple examinations
-    for ( INT j = 0; j < row; j++ ) {
-        if ( rowPtr[j] >= rowPtr[j + 1] ) {
-            goto Return;
-        }
-    }
-
-    if ( rowPtr[0] < 0 || rowPtr[row] > nnz )
-        goto Return;
-
-    for ( INT j = 0; j < row; j++ ) {
-        begin = rowPtr[j];
-        end = rowPtr[j + 1];
-        if ( begin == end )
-            goto Return;
-
-        if ( end == begin + 1 ) {
-            if ( colInd[begin] != j )
-                goto Return;
-        }
-
-        if ( end > begin + 1 ) {
-            for ( INT k = begin; k < end - 1; k++ ) {
-                if ( colInd[k] >= colInd[k + 1] )
-                    goto Return;
-            }
-            if ( 0 > colInd[begin] )
-                goto Return;
-
-            if ( colInd[end - 1] >= col )
-                goto Return;
-        }
-    }
-
-    //! exam diagPtr and colInd
-    for ( INT j = 0; j < row; j++ ) {
-        begin = rowPtr[j];
-        end = rowPtr[j + 1];
-        for ( INT k = begin; k < end; k++ ) {
-            if ( colInd[k] == j ) {
-                if ( diagPtr[count] != k )
-                    goto Return;
-                else
-                    count++;
-            }
-        }
-    }
-    if ( count != diagPtr.size())
-        goto Return;
-
-    flag=1;
-    if(flag==0){
-        Return:
-        return FaspRetCode::ERROR_INPUT_PAR;
-    }
-
-    return FaspRetCode::SUCCESS;
-}
-
-//! Check whether the data is good for CSR
+/// Check whether the data is good for CSR
 FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
                      const std::vector<INT>& rowPtr)
@@ -256,7 +119,7 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
      * to judge whether they are CSRx' parameters
      */
     /*----------------  begin  ----------------*/
-    //! basic examinations
+    /// basic examinations
     INT flag=0;
     if ( row != rowPtr.size() - 1 )
         goto Return;
@@ -273,7 +136,7 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
     if ( nnz != rowPtr[rowPtr.size() - 1] )
         goto Return;
 
-    //! simple examinations
+    /// simple examinations
     for ( INT j = 0; j < row; j++ ) {
         if ( rowPtr[j] > rowPtr[j + 1] )
             goto Return;
@@ -312,7 +175,100 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
     return FaspRetCode::SUCCESS;
 }
 
-/// \brief Convert MTX data (indices from 0) to CSR data structure
+/// Check whether the data is good for CSRx
+FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
+                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                      const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr)
+{
+    if ( row == 0 || col == 0 || nnz == 0 ) return FaspRetCode::SUCCESS;
+
+    /*
+     * some simple examinations about parameters
+     * to judge whether they are CSRx' parameters
+     */
+    /*----------------  begin  ----------------*/
+    /// basic examinations
+    INT flag=0;
+    INT count = 0;
+    INT begin, end;
+    if ( row != rowPtr.size() - 1 )
+        goto Return;
+
+    if ( row <= 0 || col <= 0 )
+        goto Return;
+
+    if (((row > col) ? col : row) != diagPtr.size())
+        goto Return;
+
+    if ( nnz != colInd.size())
+        goto Return;
+
+    if ( nnz != values.size())
+        goto Return;
+
+    if ( nnz != rowPtr[rowPtr.size() - 1] )
+        goto Return;
+
+    /// simple examinations
+    for ( INT j = 0; j < row; j++ ) {
+        if ( rowPtr[j] >= rowPtr[j + 1] ) {
+            goto Return;
+        }
+    }
+
+    if ( rowPtr[0] < 0 || rowPtr[row] > nnz )
+        goto Return;
+
+    for ( INT j = 0; j < row; j++ ) {
+        begin = rowPtr[j];
+        end = rowPtr[j + 1];
+        if ( begin == end )
+            goto Return;
+
+        if ( end == begin + 1 ) {
+            if ( colInd[begin] != j )
+                goto Return;
+        }
+
+        if ( end > begin + 1 ) {
+            for ( INT k = begin; k < end - 1; k++ ) {
+                if ( colInd[k] >= colInd[k + 1] )
+                    goto Return;
+            }
+            if ( 0 > colInd[begin] )
+                goto Return;
+
+            if ( colInd[end - 1] >= col )
+                goto Return;
+        }
+    }
+
+    /// exam diagPtr and colInd
+    for ( INT j = 0; j < row; j++ ) {
+        begin = rowPtr[j];
+        end = rowPtr[j + 1];
+        for ( INT k = begin; k < end; k++ ) {
+            if ( colInd[k] == j ) {
+                if ( diagPtr[count] != k )
+                    goto Return;
+                else
+                    count++;
+            }
+        }
+    }
+    if ( count != diagPtr.size())
+        goto Return;
+
+    flag=1;
+    if(flag==0){
+        Return:
+        return FaspRetCode::ERROR_INPUT_PAR;
+    }
+
+    return FaspRetCode::SUCCESS;
+}
+
+/// Convert MTX data (indices from 0) to CSR data structure (private)
 static
 FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
                      const std::vector<INT>& rowInd, const std::vector<INT>& colInd,
@@ -363,7 +319,7 @@ FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
     return retCode;
 }
 
-///
+/// Convert a CSR matrix to MAT (private)
 static
 FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
@@ -468,7 +424,7 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
     return retCode;
 }
 
-/// \brief Convert MTX data to MAT data structure
+/// Convert MTX data to MAT
 FaspRetCode MTXtoMAT(const INT& row, const INT& col, const INT& nnz,
                      const std::vector<INT>& rowInd, const std::vector<INT>& colInd,
                      const std::vector<DBL>& values, MAT& mat)
@@ -487,6 +443,50 @@ FaspRetCode MTXtoMAT(const INT& row, const INT& col, const INT& nnz,
 
     // Check whether diagonal is a nonzero position
     CSRtoMAT(row, col, nnz, valuesCSR, colIndCSR, rowPtrCSR, mat);
+
+    return retCode;
+}
+
+/// Sort "colInd" of each row in ascending order and rearrange "values" accordingly
+FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
+                       const std::vector<INT>& rowPtr,
+                       std::vector<INT>& colInd, std::vector<DBL>& values)
+{
+    auto retCode = FaspRetCode::SUCCESS;
+    INT l, begin, end, index;
+    DBL data;
+
+    for ( INT j = 0; j < row; j++ ) {
+        begin = rowPtr[j];
+        end = rowPtr[j + 1];
+        if ( end <= begin + 1 ) {
+            continue;
+        }
+        for ( INT k = begin + 1; k < end; k++ ) {
+            index = colInd[k];
+            data = values[k];
+            for ( l = k - 1; l >= begin; l-- ) {
+                if ( index < colInd[l] ) {
+                    colInd[l + 1] = colInd[l];
+                    values[l + 1] = values[l];
+                } else {
+                    break;
+                }
+            }
+            colInd[l + 1] = index;
+            values[l + 1] = data;
+        }
+    }
+
+    try {
+        retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
+        if ( retCode < 0 )
+            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+    }
+    catch ( FaspExcep& ex ) {
+        ex.LogExcep();
+        return ex.errorCode;
+    }
 
     return retCode;
 }

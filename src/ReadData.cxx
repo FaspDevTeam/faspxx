@@ -1,6 +1,6 @@
 /**\file ReadData.cxx
  *  \brief Reading data from disk files
- *  \author Kailei Zhang
+ *  \author Chensong Zhang, Kailei Zhang
  *  \date Sep/24/2019
  *
  *-----------------------------------------------------------------------------------
@@ -11,14 +11,13 @@
 
 #include <fstream>
 #include "ReadData.hxx"
-#include "MATUtil.hxx"
 
-/// \brief Read a MTX data file
+/// \brief Read a MTX data file and store them (rowInd, colInd, values)
 FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowInd, std::vector<INT>& colInd,
                     std::vector<DBL>& values)
 {
-    std::cout << __FUNCTION__ << " : reading file " << filename << "..." << std::endl;
+    std::cout << __FUNCTION__ << ": reading file " << filename << "..." << std::endl;
     auto retCode = FaspRetCode::SUCCESS;
 
     // Open the file to read

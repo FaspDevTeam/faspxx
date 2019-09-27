@@ -1,5 +1,5 @@
-/*! \file vec.hxx
- *  \brief Header file for the FASP++ Vector class
+/*! \file VEC.hxx
+ *  \brief Header file for the FASP++ VEC class
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -7,8 +7,8 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __vecHEADER__      /*-- allow multiple inclusions --*/
-#define __vecHEADER__      /**< indicate vec.hxx has been included before */
+#ifndef __VEC_HEADER__      /*-- allow multiple inclusions --*/
+#define __VEC_HEADER__      /**< indicate VEC.hxx has been included before */
 
 #include <vector>
 #include "faspxx.hxx"
@@ -22,114 +22,111 @@
 class VEC {
 
 private:
-    //! vec is a column vector of DBL type logically
-    std::vector<DBL> vec;
-
-    //! size of vec
-    INT size;
+    std::vector<DBL> vec;  ///< DBL vector for storing values of VEC
+    INT size;              ///< Book-keeping size of VEC
 
 public:
-    //! default constructed function
+    /// Default constructor
     VEC() : vec(0), size(0) {}
 
-    //! set the size of vec and set the same value on VEC object
+    /// Assign the size and the same value to a VEC object
     VEC(const INT& size, const DBL& value);
 
-    //! assign a vector object to VEC object
+    /// Assign a vector object to a VEC object
     VEC(const std::vector<DBL>& vt);
 
-    //! assign a VEC object to VEC object
+    /// Assign a VEC object to a VEC object
     VEC(const VEC& v);
 
-    //! assign an array to VEC object
+    /// Assign a DBL array to a VEC object
     VEC(const INT& size, const DBL *ptr);
 
-    //! destructor function
+    /// Default destructor
     ~VEC() {}
 
-    //! overload equals operator
+    /// Overload = operator
     VEC& operator=(const VEC& v);
 
-    //! overload [] operator
+    /// Overload [] operator, entries can be modified
     DBL& operator[](const INT& position);
 
-    //! overload [] operator
+    /// Overload [] operator, entries cannot be modified
     const DBL& operator[](const INT& position) const;
 
-    //! overload += operator
+    /// Overload += operator
     VEC& operator+=(const VEC& v);
 
-    //! overload -= operator
+    /// Overload -= operator
     VEC& operator-=(const VEC& v);
 
-    //! set the size of VEC object
+    /// Set the size of VEC object and reserve memory
     void SetSize(const INT& size);
 
-    //! set the size of VEC object and set the same value on VEC object
+    /// Assign the size and the same value to a VEC object
     void SetValues(const INT& size, const DBL& value);
 
-    //! assign vector object to VEC object
-    void SetValues(const std::vector<DBL>&vect);
+    /// Assign a vector object to a VEC object
+    void SetValues(const std::vector<DBL>& vt);
 
-    //! *this = array
+    /// Assign a DBL array to a VEC object, user should allocate memory for array
     void SetValues(const INT& size, const DBL *array);
 
-    //! get the value of (*this)[position]
-    DBL GetValue(const INT& position) const;
+    /// Get the value of (*this)[position]
+    DBL GetValue(const INT& position) const; // Todo: get multiple entries
 
-    //! get array = (*this) of size = min(size, this->GetSize())
+    /// Get array = (*this) of size = min(size, this->GetSize())
     void GetArray(const INT& size, DBL **array) const;
 
-    //! get the size of *this
+    /// Get the size of *this
     INT GetSize() const;
 
-    //! get the capacity of *this
+    /// Get the capacity of *this
     INT GetCapacity() const;
 
-    //! scale (*this)[j] = a * (*this)[j] by a scalar
+    /// Scale (*this)[j] = a * (*this)[j] by a scalar
     void Scale(const DBL& a);
 
-    //! copy *this to vec
-    void CopyTo(VEC& vec) const;
-
-    //! find max(*this)
-    DBL Max() const;
-
-    //! find min(*this)
-    DBL Min() const;
-
-    //! shift (*this)[j] += a by a scalar
-    void Shift(const DBL& a);
-
-    //! compute abs(*this)
-    void Abs();
-
-    //! (*this)[j] = 1 / (*this)[j]
-    void Reciprocal();
-
-    //! find l2-norm of *this
-    DBL Norm2() const;
-
-    //! find infinity norm of *this
-    DBL NormInf() const;
-
-    //! *this = a * vec + b * *this
-    void Add(const VEC& v, const DBL& a, const DBL& b);
-
-    //! *this = a * vec1 + b * vec2
-    void Add(const DBL& a, const VEC& v1, const DBL& b, const VEC& v2);
-
-    //! dot product of *this and vec
-    DBL Dot(const VEC& v) const;
-
-    //! scale (*this)[j] *= v[j] by a vector
+    /// Scale by a vector (*this)[j] *= v[j]
     void PointwiseMult(const VEC& v);
 
-    //! (*this)[j] = (*this)[j] / v[j]
+    /// Compute (*this)[j] = 1 / (*this)[j]
+    void Reciprocal();
+
+    /// Inverse scale by a nonzero vector (*this)[j] = (*this)[j] / v[j]
     void PointwiseDivide(const VEC& v);
+
+    /// Copy *this to v
+    void CopyTo(VEC& v) const;
+
+    /// Shift (*this)[j] += a by a scalar
+    void Shift(const DBL& a);
+
+    /// Compute *this = abs(*this)
+    void Abs();
+
+    /// *this = a * vec + b * *this
+    void Add(const VEC& v, const DBL& a, const DBL& b);
+
+    /// *this = a * vec1 + b * vec2
+    void Add(const DBL& a, const VEC& v1, const DBL& b, const VEC& v2);
+
+    /// Find max(*this)
+    DBL Max() const;
+
+    /// Find min(*this)
+    DBL Min() const;
+
+    /// Compute Euclidean norm of *this
+    DBL Norm2() const;
+
+    /// Compute Infinity norm of *this
+    DBL NormInf() const;
+
+    /// Dot product of *this and vec
+    DBL Dot(const VEC& v) const;
 };
 
-#endif /* end if for __vecHEADER__ */
+#endif /* end if for __VEC_HEADER__ */
 
 /*---------------------------------*/
 /*--        End of File          --*/

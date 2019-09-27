@@ -15,6 +15,8 @@
 typedef unsigned int INT;      /**< Index type: Must be non-negative! */
 typedef double       DBL;      /**< Double type */
 
+const DBL   SMALL_TOL = 1e-14; /**< Small positive real for tolerance */
+
 #endif /* end if for __FASPXX_HEADER__ */
 
 /*---------------------------------*/
