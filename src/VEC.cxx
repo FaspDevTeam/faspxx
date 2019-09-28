@@ -103,7 +103,7 @@ DBL VEC::GetValue(const INT& position) const {
 }
 
 /// Get array = (*this) of size = min(size, this->GetSize())
-// Todo: Why use **array???
+// Todo: Why use **array??? TEST(VEC_Scale, Scale) not Pass!!!
 void VEC::GetArray(const INT& sizeNeed, DBL **array) const {
     if ( sizeNeed == 0 || this->size == 0 ) {
         delete[] *array;

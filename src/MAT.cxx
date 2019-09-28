@@ -199,7 +199,7 @@ void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
     this->diagPtr.operator=(diagPtr);
 }
 
-/// Assign nrow, ncol, nnz, values, rowPtr, colInd to *this
+/// Assign nrow, ncol, nnz, values, rowPtr, colInd to *this. TODO: need this member function? why not just use constructor?
 void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
                     const std::vector<INT>& rowPtr)
@@ -253,8 +253,8 @@ DBL MAT::GetValue(const INT& row, const INT& ncol) const {
 /// Get the whole row-th row in *this into VEC object
 void MAT::GetRow(const INT& row, std::vector<DBL>& v) const {
     const INT begin = this->rowPtr[row], end = this->rowPtr[row + 1];
-    const INT len = end - begin;
-    std::cout << row << "  " << begin << "  " << end << "  " << len << "  " << std::endl;
+    const INT len = end - begin; // TODO: only use 1 time, so do not define?
+    std::cout << row << "  " << begin << "  " << end << "  " << len << "  " << std::endl; // TODO: do not print info, or there will be much info showed on screen
     v.resize(len);
     INT k = 0;
     for ( INT j = begin; j < end; j++ ) v[k++] = this->values[j];

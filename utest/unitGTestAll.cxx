@@ -8,8 +8,10 @@
  */
 
 #include <gtest/gtest.h>
+
 //#include "simple.cxx"
 #include "unitVEC.cxx"
+#include "unitMAT.cxx"
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/
