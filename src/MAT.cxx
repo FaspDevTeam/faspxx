@@ -316,7 +316,7 @@ void MAT::Scale(const DBL a) {
     }
 }
 
-/// Shift *this += a * I
+/// Shift *this += a * I. TODO: maybe rename to DiagScale?
 void MAT::Shift(const DBL a) {
     try {
         if ( this->values.empty() ) { // MAT is a sparse structure!!!
@@ -550,7 +550,7 @@ void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
     this->operator=(tmp2);
 }
 
-/// Return VEC = *this * vec
+/// Return VEC = *this * vec. TODO: maybe not return VEC
 VEC MAT::MultVec(const VEC& v) const {
     VEC w;
     w.SetSize(this->nrow);
