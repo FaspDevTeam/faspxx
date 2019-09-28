@@ -2,7 +2,7 @@
  * a demo file
  */
 
-#include "pcg.hxx"
+#include "PCG.hxx"
 #include "ReadData.hxx"
 #include "MATUtil.hxx"
 #include <fstream>
