@@ -2,7 +2,7 @@
  * a source file for PCG
  */
 
-#include "pcg.hxx"
+#include "PCG.hxx"
 #include "MATUtil.hxx"
 #include "VECUtil.hxx"
 
