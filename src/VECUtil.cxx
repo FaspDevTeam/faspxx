@@ -19,9 +19,9 @@ FaspRetCode CheckVECSize(const VEC& v)
     try {
         if ( v.GetSize() == 0 ) {
             retCode = FaspRetCode::ERROR_VEC_SIZE;
-            throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspExcep &ex ) {
+    } catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -35,9 +35,9 @@ FaspRetCode CheckVECSize(const VEC& v1, const VEC& v2)
     try {
         if ( v1.GetSize() != v2.GetSize()) {
             retCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspExcep &ex ) {
+    } catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -51,9 +51,9 @@ FaspRetCode CheckVECSize(const VEC& v, const INT& position)
     try {
         if ( position >= v.GetSize() || position < 0 ) {
             retCode = FaspRetCode::ERROR_VEC_SIZE;
-            throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspExcep &ex ) {
+    } catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -68,9 +68,9 @@ FaspRetCode CheckVECZero(const VEC& v, const DBL tol)
         try {
             if ( fabs(v[j]) <= tol ) {
                 retCode = FaspRetCode::ERROR_DIVIDE_ZERO;
-                throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
+                throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
             }
-        } catch ( FaspExcep &ex ) {
+        } catch ( FaspRunTime &ex ) {
             ex.LogExcep();
             return ex.errorCode;
         }
