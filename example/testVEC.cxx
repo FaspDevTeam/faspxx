@@ -159,7 +159,7 @@ int main()
      * 452, 0.12354, 8964
      */
     DBL *array;
-    v10.GetArray(3,&array);
+    v10.GetArray(3,array);
     cout << "array : ";
     for ( int j=0; j<3; j++ ) cout << array[j] << "  ";
     cout << endl;

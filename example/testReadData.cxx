@@ -38,9 +38,9 @@ int main()
         retCode = ReadMTX("../data/nos7.mtx", row, col, nnz,
                           rowInd, colInd,values);
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -50,9 +50,9 @@ int main()
     try {
         retCode = MTXtoMAT(row, col, nnz, rowInd, colInd, values, mat);
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -65,11 +65,11 @@ int main()
     try {
         retCode = CheckVECSize(v, 700);
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
         else
             std::cout << "  v[700] = " << v.GetValue(700) << std::endl;
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -78,11 +78,11 @@ int main()
     try {
         retCode = CheckMATVECSize(mat, v);
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
         else
             w = mat.MultVec(v); // size matches, compute w = mat * v
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -91,11 +91,11 @@ int main()
     try {
         retCode = CheckVECSize(w, 700);
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
         else
             std::cout << "  w[700] = " << w.GetValue(700) << std::endl;
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
