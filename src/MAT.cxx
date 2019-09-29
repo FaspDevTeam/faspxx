@@ -25,10 +25,14 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->nrow = nrow;
     this->ncol = ncol;
     this->nnz  = nnz;
-    this->values.operator=(values);
-    this->colInd.operator=(colInd);
-    this->rowPtr.operator=(rowPtr);
-    this->diagPtr.operator=(diagPtr);
+    try{
+        this->values=values;
+        this->colInd=colInd;
+        this->rowPtr=rowPtr;
+        this->diagPtr=diagPtr;
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
 }
 
 /// Assign nrow, ncol, nnz, values, colInd, rowPtr to *this, generate diagPtr
@@ -45,9 +49,13 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->ncol = ncol;
     this->nnz  = nnz;
     this->values.resize(0);
-    this->colInd.operator=(colInd);
-    this->rowPtr.operator=(rowPtr);
-    this->diagPtr.operator=(diagPtr);
+    try{
+        this->colInd=colInd;
+        this->rowPtr=rowPtr;
+        this->diagPtr=diagPtr;
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
 }
 
 /// Assign nrow, ncol, nnz, colInd, rowPtr, diagPtr to *this (sparse structure)
@@ -63,9 +71,15 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->nrow = nrow;
     this->ncol = ncol;
     this->nnz  = nnz;
-    this->values = values;
-    this->colInd = colInd;
-    this->rowPtr = rowPtr;
+
+
+    try{
+        this->values = values;
+        this->colInd = colInd;
+        this->rowPtr = rowPtr;
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
     this->FormDiagPtr(this->diagPtr);
 }
 
@@ -82,8 +96,12 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->ncol = ncol;
     this->nnz  = nnz;
     this->values.resize(0);
-    this->colInd.operator=(colInd);
-    this->rowPtr.operator=(rowPtr);
+    try{
+        this->colInd=colInd;
+        this->rowPtr=rowPtr;
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
     this->FormDiagPtr(this->diagPtr);
 }
 
@@ -101,22 +119,30 @@ MAT::MAT(const VEC& v)
     this->ncol = size;
     this->nnz  = size;
 
+    // Check for adequate memory
+    INT *p;
+    try{
+        this->values.resize(size);
+        p = new INT[size + 1];
+        this->colInd.resize(size);
+        this->rowPtr.resize(size + 1);
+        this->diagPtr.resize(size);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
+
     // Set values from v
-    this->values.resize(size);
     for ( INT j = 0; j < size; j++ ) this->values[j] = v[j];
 
     // Set colInd to {0, 1, ..., size-1}
-    INT *p = new INT[size + 1];
     for ( INT j = 0; j <= size; j++ ) p[j] = j;
-    this->colInd.resize(size);
     this->colInd.assign(p, p + size);
 
     // Set rowPtr to {0, 1, ..., size}
-    this->rowPtr.resize(size + 1);
     this->rowPtr.assign(p, p + size + 1);
 
     // Set diagPtr to {0, 1, ..., size-1}
-    this->diagPtr.resize(size);
+
     this->diagPtr.assign(p, p + size);
 
     delete[] p;
@@ -136,22 +162,29 @@ MAT::MAT(const std::vector<DBL>& vt)
     this->ncol = size;
     this->nnz  = size;
 
+    INT *p;
+
+    try{
+        this->values.resize(size);
+        p = new INT[size + 1];
+        this->colInd.resize(size);
+        this->rowPtr.resize(size + 1);
+        this->diagPtr.resize(size);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
+
     // Set values from vt
-    this->values.resize(size);
     this->values.assign(vt.begin(), vt.begin() + size);
 
     // Set colInd to {0, 1, ..., size-1}
-    INT *p = new INT[size + 1];
     for ( INT j = 0; j <= size; j++ ) p[j] = j;
-    this->colInd.resize(size);
     this->colInd.assign(p, p + size);
 
     // Set rowPtr to {0, 1, ..., size}
-    this->rowPtr.resize(size + 1);
     this->rowPtr.assign(p, p + size + 1);
 
     // Set diagPtr to {0, 1, ..., size-1}
-    this->diagPtr.resize(size);
     this->diagPtr.assign(p, p + size);
 
     delete[] p;
@@ -162,10 +195,15 @@ MAT::MAT(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
     this->nnz  = mat.nnz;
-    this->values.operator=(mat.values);
-    this->diagPtr.operator=(mat.diagPtr);
-    this->colInd.operator=(mat.colInd);
-    this->rowPtr.operator=(mat.rowPtr);
+
+    try{
+        this->values=mat.values;
+        this->diagPtr=mat.diagPtr;
+        this->colInd=mat.colInd;
+        this->rowPtr=mat.rowPtr;
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
 }
 
 /// Overload = operator
@@ -173,10 +211,14 @@ MAT& MAT::operator=(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
     this->nnz  = mat.nnz;
-    this->values.operator=(mat.values);
-    this->colInd.operator=(mat.colInd);
-    this->rowPtr.operator=(mat.rowPtr);
-    this->diagPtr.operator=(mat.diagPtr);
+    try{
+        this->values=mat.values;
+        this->colInd=mat.colInd;
+        this->rowPtr=mat.rowPtr;
+        this->diagPtr=mat.diagPtr;
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
     return *this;
 }
 
@@ -193,17 +235,17 @@ void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
     this->nrow = nrow;
     this->ncol = ncol;
     this->nnz  = nnz;
-    this->values.operator=(values);
-    this->rowPtr.operator=(rowPtr);
-    this->colInd.operator=(colInd);
-    this->diagPtr.operator=(diagPtr);
+    try{
+        this->values=values;
+        this->rowPtr=rowPtr;
+        this->colInd=colInd;
+        this->diagPtr=diagPtr;
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FUNCTION__,__FILE__,__LINE__));
+    }
 }
 
 /// Assign nrow, ncol, nnz, values, rowPtr, colInd to *this.
-/// TODO: need this member function? why not just use constructor?
-/// TODO's anwser : if an object already is defined, and needs to be initialized,
-/// we need this function.
-
 void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
                     const std::vector<INT>& rowPtr)
@@ -216,9 +258,13 @@ void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
     this->nrow = nrow;
     this->ncol = ncol;
     this->nnz  = nnz;
-    this->rowPtr.operator=(rowPtr);
-    this->colInd.operator=(colInd);
-    this->values.operator=(values);
+    try{
+        this->rowPtr=rowPtr;
+        this->colInd=colInd;
+        this->values=values;
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
     this->FormDiagPtr(this->diagPtr);
 }
 
@@ -243,11 +289,10 @@ DBL MAT::GetValue(const INT& row, const INT& ncol) const {
     if ( this->colInd[this->rowPtr[row]] <= ncol ) {
         for ( INT j = this->rowPtr[row]; j < this->rowPtr[row + 1]; j++ ) {
             if ( ncol == this->colInd[j] ) {
-                if ( this->values.size() == 0 ) {
+                if ( this->values.size() == 0 )
                     return 1.0; // It is a sparse structure indicator
-                } else {
-                    return (this->values[j]);
-                }
+                 else
+                    return this->values[j];
             }
         }
     }
@@ -257,10 +302,11 @@ DBL MAT::GetValue(const INT& row, const INT& ncol) const {
 /// Get the whole row-th row in *this into VEC object
 void MAT::GetRow(const INT& row, std::vector<DBL>& v) const {
     const INT begin = this->rowPtr[row], end = this->rowPtr[row + 1];
-    const INT len = end - begin; // TODO: only use 1 time, so do not define?
-    std::cout << row << "  " << begin << "  " << end << "  " << len << "  " << std::endl;
-    // TODO: do not print info, or there will be much info showed on screen
-    v.resize(len);
+    try{
+        v.resize(end-begin);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
     INT k = 0;
     for ( INT j = begin; j < end; j++ ) v[k++] = this->values[j];
 }
@@ -269,7 +315,11 @@ void MAT::GetRow(const INT& row, std::vector<DBL>& v) const {
 void MAT::GetCol(const INT& col, std::vector<DBL>& v) const {
     std::vector<DBL> tmp;
     INT count = 0;
-    tmp.resize(this->nrow);
+    try{
+        tmp.resize(this->nrow);
+    }catch(std::bad_alloc){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
     for ( INT j = 0; j < this->nrow; j++ ) {
         if ( col >= this->colInd[this->rowPtr[j]] ) {
             for ( INT k = this->rowPtr[j]; k < this->rowPtr[j + 1]; k++ ) {
@@ -293,7 +343,11 @@ void MAT::GetCol(const INT& col, std::vector<DBL>& v) const {
 /// Get the whole diagonal entries in *this into VEC object
 void MAT::GetDiag(std::vector<DBL>& v) const {
     INT len = this->nrow > this->ncol ? this->ncol : this->nrow;
-    v.resize(len);
+    try {
+        v.resize(len);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
     if ( this->values.size() != 0 ) {
         for ( INT j = 0; j < len; j++ )
             v[j] = this->values[this->diagPtr[j]];
@@ -312,26 +366,26 @@ void MAT::Scale(const DBL a) {
     try {
         if ( this->values.empty() ) { // MAT is a sparse structure!!!
             auto retCode = FaspRetCode::ERROR_MAT_DATA;
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
         }
         for ( INT j = 0; j < this->nnz; j++ ) this->values[j] = a * this->values[j];
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
     }
 }
 
-/// Shift *this += a * I. TODO: maybe rename to DiagScale?
+/// Shift *this += a * I.
 void MAT::Shift(const DBL a) {
     try {
         if ( this->values.empty() ) { // MAT is a sparse structure!!!
             auto retCode = FaspRetCode::ERROR_MAT_DATA;
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
         }
         for ( INT j = 0; j < this->diagPtr.size(); j++ )
             this->values[this->diagPtr[j]] = a + this->values[this->diagPtr[j]];
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
     }
 }
@@ -353,10 +407,19 @@ void MAT::Transpose() {
     tmp.ncol=this->nrow;
     tmp.nnz=this->nnz;
 
-    tmp.rowPtr.resize(this->ncol+1);
-    tmp.colInd.resize(nnz);
+    try{
+        tmp.rowPtr.resize(this->ncol+1);
+        tmp.colInd.resize(nnz);
+    }catch(std::bad_alloc &ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
+
     if(this->values.size()){
-        tmp.values.resize(nnz);
+        try{
+            tmp.values.resize(nnz);
+        }catch(std::bad_alloc& ex){
+            throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+        }
     }else{
         tmp.values.resize(0);
     }
@@ -433,10 +496,13 @@ MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2) {
     mat.nrow = mat1.nrow;
     mat.ncol = mat1.ncol;
 
-    mat.rowPtr.resize(mat.nrow + 1);
-
-    mat.colInd.resize(mat1.nnz + mat2.nnz);
-    mat.values.resize(mat1.nnz + mat2.nnz);
+    try{
+        mat.rowPtr.resize(mat.nrow + 1);
+        mat.colInd.resize(mat1.nnz + mat2.nnz);
+        mat.values.resize(mat1.nnz + mat2.nnz);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
 
     mat.colInd.assign(mat1.nnz + mat2.nnz, -1);
 
@@ -518,10 +584,19 @@ VEC MAT::MultTransposeAdd(const VEC& v1, const VEC& v2) const {
     tmp.ncol=n;
     tmp.nnz=nnz;
 
-    tmp.rowPtr.resize(m+1);
-    tmp.colInd.resize(nnz);
+    try{
+        tmp.rowPtr.resize(m+1);
+        tmp.colInd.resize(nnz);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
+
     if(this->values.size()){
-        tmp.values.resize(nnz);
+        try{
+            tmp.values.resize(nnz);
+        }catch(std::bad_alloc& ex){
+            throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+        }
     }else{
         tmp.values.resize(0);
     }
@@ -578,7 +653,12 @@ MAT Mult(const MAT& matl, const MAT& matr) {
     MAT mat;
 
     INT l, count;
-    INT *tmp = new INT[matr.ncol];
+    INT *tmp;
+    try{
+        tmp= new INT[matr.ncol];
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
 
     mat.nrow = matl.nrow;
     mat.ncol = matr.ncol;
@@ -664,7 +744,12 @@ MAT Mult(const MAT& matl, const MAT& matr) {
 /// Form diagonal pointer using colInd and rowPtr
 void MAT::FormDiagPtr(std::vector<INT>& diagPtr)
 {
-    this->diagPtr.resize(nrow);
+    try{
+        this->diagPtr.resize(nrow);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
+
     INT begin, end;
     for ( INT j = 0; j < nrow; j++ ) {
         begin = this->rowPtr[j];
