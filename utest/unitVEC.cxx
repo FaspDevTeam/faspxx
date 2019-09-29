@@ -9,8 +9,7 @@
 
 #include <gtest/gtest.h>
 #include <vector>
-#include <cstdlib>
-
+#include <cmath>
 #include "../src/VEC.hxx"
 
 double TOL = 1E-10;
