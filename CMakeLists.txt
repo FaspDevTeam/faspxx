@@ -68,12 +68,8 @@ target_link_libraries(testMAT faspxx)
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
 
-
-# Enable or Disable GoogleTest, default "OFF"(also can be set cmake .. -DGTest=ON)
+# Enable or Disable GoogleTest, default "ON" (disable by "-DGTest=OFF")
 option(GTEST "Enable GoogleTest" ON)
 if ("${GTEST}" STREQUAL ON)
-    message("Enable GoogleTest")
     add_subdirectory(utest)
-else("${GTEST}" STREQUAL OFF)
-    message("Disable GoogleTest")
 endif()

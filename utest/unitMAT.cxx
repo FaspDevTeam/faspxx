@@ -1,7 +1,6 @@
 
 #include <gtest/gtest.h>
 #include <vector>
-
 #include "../src/MAT.hxx"
 #include "../src/VEC.hxx"
 
