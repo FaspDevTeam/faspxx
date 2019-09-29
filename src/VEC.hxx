@@ -75,7 +75,7 @@ public:
     DBL GetValue(const INT& position) const; // Todo: get multiple entries
 
     /// Get array = (*this) of size = min(size, this->GetSize())
-    void GetArray(const INT& size, DBL **array) const;
+    void GetArray(const INT& size, DBL *array) const;
 
     /// Get the size of *this
     INT GetSize() const;
