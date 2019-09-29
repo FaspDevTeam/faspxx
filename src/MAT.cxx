@@ -199,7 +199,11 @@ void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
     this->diagPtr.operator=(diagPtr);
 }
 
-/// Assign nrow, ncol, nnz, values, rowPtr, colInd to *this. TODO: need this member function? why not just use constructor?
+/// Assign nrow, ncol, nnz, values, rowPtr, colInd to *this.
+/// TODO: need this member function? why not just use constructor?
+/// TODO's anwser : if an object already is defined, and needs to be initialized,
+/// we need this function.
+
 void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
                     const std::vector<INT>& rowPtr)
@@ -254,7 +258,8 @@ DBL MAT::GetValue(const INT& row, const INT& ncol) const {
 void MAT::GetRow(const INT& row, std::vector<DBL>& v) const {
     const INT begin = this->rowPtr[row], end = this->rowPtr[row + 1];
     const INT len = end - begin; // TODO: only use 1 time, so do not define?
-    std::cout << row << "  " << begin << "  " << end << "  " << len << "  " << std::endl; // TODO: do not print info, or there will be much info showed on screen
+    std::cout << row << "  " << begin << "  " << end << "  " << len << "  " << std::endl;
+    // TODO: do not print info, or there will be much info showed on screen
     v.resize(len);
     INT k = 0;
     for ( INT j = begin; j < end; j++ ) v[k++] = this->values[j];
@@ -356,7 +361,6 @@ void MAT::Transpose() {
         tmp.values.resize(0);
     }
 
-
     for(INT j=0;j<nnz;j++){
         i=this->colInd[j];
         if(i<m-1)
@@ -394,81 +398,92 @@ void MAT::Transpose() {
     this->operator=(tmp);
 }
 
-/// *this = *this * mat // Todo: Check???
+/// *this = *this * mat
 void MAT::MultRight(const MAT& mat) {
     this->operator=(Mult(*this, mat));
 }
 
-/// *this = mat * *this // Todo: Check???
+/// *this = mat * *this
 void MAT::MultLeft(const MAT& mat) {
     MAT tmp = Mult(mat, *this);
     this->operator=(tmp);
 }
 
-/// *this = a * *this + b * mat
-void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
+/// Return MAT = a * mat1 + b * mat2
+MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2) {
 
     INT i, j, k, l;
     INT count = 0, added, countrow;
-    MAT tmp;
+    MAT mat;
 
-    if ( this->nnz == 0 ) {
-        *this = mat;
-        this->Scale(b);
+    if ( mat1.nnz == 0 ) {
+        mat = mat2;
+        mat.Scale(b);
+
+        return mat;
     }
 
-    if ( mat.nnz == 0 ) {
-        this->Scale(a);
+    if ( mat2.nnz == 0 ) {
+        mat = mat1;
+        mat.Scale(a);
+
+        return mat;
     }
 
-    tmp.nrow = this->nrow;
-    tmp.ncol = this->ncol;
+    mat.nrow = mat1.nrow;
+    mat.ncol = mat1.ncol;
 
-    tmp.rowPtr.resize(tmp.nrow + 1);
+    mat.rowPtr.resize(mat.nrow + 1);
 
-    tmp.colInd.resize(this->nnz + mat.nnz);
-    tmp.values.resize(this->nnz + mat.nnz);
+    mat.colInd.resize(mat1.nnz + mat2.nnz);
+    mat.values.resize(mat1.nnz + mat2.nnz);
 
-    tmp.colInd.assign(this->nnz + mat.nnz, -1);
+    mat.colInd.assign(mat1.nnz + mat2.nnz, -1);
 
-    for ( i = 0; i < this->nrow; i++ ) {
+    for ( i = 0; i < mat1.nrow; i++ ) {
         countrow = 0;
-        for ( j = this->rowPtr[i]; j < this->rowPtr[i + 1]; j++ ) {
-            tmp.values[count] = a * this->values[j];
-            tmp.colInd[count] = this->colInd[j];
-            tmp.rowPtr[i + 1]++;
+        for ( j = mat1.rowPtr[i]; j < mat1.rowPtr[i + 1]; j++ ) {
+            mat.values[count] = a * mat1.values[j];
+            mat.colInd[count] = mat1.colInd[j];
+            mat.rowPtr[i + 1]++;
             count++;
             countrow++;
         }
 
-        for ( k = mat.rowPtr[i]; k < mat.rowPtr[i + 1]; k++ ) {
+        for ( k = mat2.rowPtr[i]; k < mat2.rowPtr[i + 1]; k++ ) {
             added = 0;
 
-            for ( l = tmp.rowPtr[i]; l < tmp.rowPtr[i] + countrow + 1; l++ ) {
-                if ( mat.colInd[k] == tmp.colInd[l] ) {
-                    tmp.values[l] = tmp.values[l] + b * mat.values[k];
+            for ( l = mat.rowPtr[i]; l < mat.rowPtr[i] + countrow + 1; l++ ) {
+                if ( mat2.colInd[k] == mat.colInd[l] ) {
+                    mat.values[l] = mat.values[l] + b * mat2.values[k];
                     added = 1;
                     break;
                 }
             }
             if ( added == 0 ) {
-                tmp.values[count] = b * mat.values[k];
-                tmp.colInd[count] = mat.colInd[k];
-                tmp.rowPtr[i + 1]++;
+                mat.values[count] = b * mat2.values[k];
+                mat.colInd[count] = mat2.colInd[k];
+                mat.rowPtr[i + 1]++;
                 count++;
             }
         }
-        tmp.rowPtr[i + 1] += tmp.rowPtr[i];
+        mat.rowPtr[i + 1] += mat.rowPtr[i];
     }
-    tmp.nnz = count;
-    tmp.colInd.resize(count);
-    tmp.values.resize(count);
+    mat.nnz = count;
+    mat.colInd.resize(count);
+    mat.values.resize(count);
 
-    SortCSRRow(tmp.nrow, tmp.ncol, tmp.nnz, tmp.rowPtr, tmp.colInd, tmp.values);
-    *this=tmp;
+    SortCSRRow(mat.nrow, mat.ncol, mat.nnz, mat.rowPtr, mat.colInd, mat.values);
+
+    return mat;
 }
 
-/// Return VEC = *this * vec. TODO: maybe not return VEC
+/// *this = a * *this + b * mat
+void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
+    *this=::Add(a,*this,b,mat);
+}
+
+/// Return VEC = *this * vec.
 VEC MAT::MultVec(const VEC& v) const {
     VEC w;
     w.SetSize(this->nrow);
@@ -556,75 +571,6 @@ VEC MAT::MultTransposeAdd(const VEC& v1, const VEC& v2) const {
     }
 
     return v;
-}
-
-/// Return MAT = a * mat1 + b * mat2
-MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2) {
-
-    INT i, j, k, l;
-    INT count = 0, added, countrow;
-    MAT mat;
-
-    if ( mat1.nnz == 0 ) {
-        mat = mat2;
-        mat.Scale(b);
-
-        return mat;
-    }
-
-    if ( mat2.nnz == 0 ) {
-        mat = mat1;
-        mat.Scale(a);
-
-        return mat;
-    }
-
-    mat.nrow = mat1.nrow;
-    mat.ncol = mat1.ncol;
-
-    mat.rowPtr.resize(mat.nrow + 1);
-
-    mat.colInd.resize(mat1.nnz + mat2.nnz);
-    mat.values.resize(mat1.nnz + mat2.nnz);
-
-    mat.colInd.assign(mat1.nnz + mat2.nnz, -1);
-
-    for ( i = 0; i < mat1.nrow; i++ ) {
-        countrow = 0;
-        for ( j = mat1.rowPtr[i]; j < mat1.rowPtr[i + 1]; j++ ) {
-            mat.values[count] = a * mat1.values[j];
-            mat.colInd[count] = mat1.colInd[j];
-            mat.rowPtr[i + 1]++;
-            count++;
-            countrow++;
-        }
-
-        for ( k = mat2.rowPtr[i]; k < mat2.rowPtr[i + 1]; k++ ) {
-            added = 0;
-
-            for ( l = mat.rowPtr[i]; l < mat.rowPtr[i] + countrow + 1; l++ ) {
-                if ( mat2.colInd[k] == mat.colInd[l] ) {
-                    mat.values[l] = mat.values[l] + b * mat2.values[k];
-                    added = 1;
-                    break;
-                }
-            }
-            if ( added == 0 ) {
-                mat.values[count] = b * mat2.values[k];
-                mat.colInd[count] = mat2.colInd[k];
-                mat.rowPtr[i + 1]++;
-                count++;
-            }
-        }
-        mat.rowPtr[i + 1] += mat.rowPtr[i];
-    }
-    mat.nnz = count;
-    mat.colInd.resize(count);
-    mat.values.resize(count);
-
-    SortCSRRow(mat.nrow, mat.ncol, mat.nnz, mat.rowPtr, mat.colInd, mat.values);
-
-    return mat;
 }
 
 /// *this = matl * matr
