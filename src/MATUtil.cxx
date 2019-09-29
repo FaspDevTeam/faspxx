@@ -20,9 +20,9 @@ FaspRetCode CheckMATAddSize(const MAT& mat1, const MAT& mat2)
              mat2.GetColSize() != mat2.GetColSize() ||
              mat1.GetRowSize() <= 0 || mat1.GetColSize() <= 0 ) {
             auto errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspExcep &ex ) {
+    } catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -36,9 +36,9 @@ FaspRetCode CheckMATMultSize(const MAT& mat1, const MAT& mat2)
         if ( mat1.GetColSize() != mat2.GetRowSize() ||
              mat1.GetColSize() <= 0 || mat2.GetRowSize() <= 0 ) {
             auto errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspExcep &ex ) {
+    } catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -52,9 +52,9 @@ FaspRetCode CheckMATSize(const MAT& mat, const INT& row, const INT& col)
         if ( row < 0 || row >= mat.GetRowSize() ||
              col < 0 || col >= mat.GetColSize() ) {
             auto errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspExcep &ex ) {
+    } catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -67,9 +67,9 @@ FaspRetCode CheckMATRowSize(const MAT& mat, const INT& row)
     try {
         if ( row < 0 || row >= mat.GetRowSize() ) {
             auto errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspExcep &ex ) {
+    } catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -82,9 +82,9 @@ FaspRetCode CheckMATColSize(const MAT& mat, const INT& col)
     try {
         if ( col < 0 || col >= mat.GetColSize() ) {
             auto errorCode = FaspRetCode::ERROR_MAT_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspExcep &ex ) {
+    } catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -97,9 +97,9 @@ FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec)
     try {
         if ( mat.GetColSize() != vec.GetSize() ) {
             auto errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspExcep(errorCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch ( FaspExcep &ex ) {
+    } catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -278,10 +278,13 @@ FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
 {
     auto retCode = FaspRetCode::SUCCESS;
 
-    // Todo: Check whether this succeeded???
-    valuesCSR.resize(nnz);
-    colIndCSR.resize(nnz);
-    rowPtrCSR.resize(row + 1);
+    try{
+        valuesCSR.resize(nnz);
+        colIndCSR.resize(nnz);
+        rowPtrCSR.resize(row + 1);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
 
     // 1. Count number of non zeros in each row -> rowPtrCSR[row+1]
     rowPtrCSR[0] = 0;
@@ -309,9 +312,9 @@ FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
     try {
         retCode = CheckCSR(row, col, nnz, valuesCSR, colIndCSR, rowPtrCSR);
         if ( retCode < 0 )
-            throw (FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__));
+            throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
     }
-    catch ( FaspExcep &ex ) {
+    catch ( FaspRunTime &ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -347,11 +350,11 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
         try {
             retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
             if ( retCode < 0 )
-                throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+                throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
             else
                 mat.SetValues(row, col, nnz, values, colInd, rowPtr);
         }
-        catch ( FaspExcep& ex ) {
+        catch ( FaspRunTime& ex ) {
             ex.LogExcep();
             return ex.errorCode;
         }
@@ -360,9 +363,18 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
     // Add a spot for each zero diagonal entry
     INT nnzNew = nnz + numZeroDiag, count = 0;
     INT diagLocation, nextEntry, diagZeroAdded = 0;
-    std::vector<INT> colIndNew(nnzNew);
-    std::vector<DBL> valuesNew(nnzNew);
-    std::vector<INT> rowPtrNew(row+1);
+
+    std::vector<INT> colIndNew;
+    std::vector<DBL> valuesNew;
+    std::vector<INT> rowPtrNew;
+
+    try{
+        colIndNew.resize(nnzNew);
+        valuesNew.resize(nnzNew);
+        rowPtrNew.resize(row+1);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
 
     rowPtrNew[0] = 0; // Starting index always 0
 
@@ -412,11 +424,11 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
     try {
         retCode = CheckCSR(row, col, nnzNew, valuesNew, colIndNew, rowPtrNew);
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
         else
             mat.SetValues(row, col, nnzNew, valuesNew, colIndNew, rowPtrNew);
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -481,9 +493,9 @@ FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
     try {
         retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
