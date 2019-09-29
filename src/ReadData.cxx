@@ -25,9 +25,9 @@ FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
     try {
         if ( !infile ) retCode = FaspRetCode::ERROR_OPEN_FILE;
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -37,17 +37,21 @@ FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
     try {
         if ( row <= 0 || col <= 0 || nnz <= 0 ) retCode = FaspRetCode::ERROR_INPUT_FILE;
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
 
     // Reserve memory space for MTX data: (i, j, value)
-    rowInd.resize(nnz);
-    colInd.resize(nnz);
-    values.resize(nnz);
+    try{
+        rowInd.resize(nnz);
+        colInd.resize(nnz);
+        values.resize(nnz);
+    }catch(std::bad_alloc& ex){
+        throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
+    }
     
     // Read data from file and store them in vectors
     INT count = 0, rowValue, colValue;
@@ -63,9 +67,9 @@ FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
     try {
         if ( count != nnz ) retCode = FaspRetCode::ERROR_INPUT_FILE;
         if ( retCode < 0 )
-            throw( FaspExcep(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
     }
-    catch ( FaspExcep& ex ) {
+    catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
