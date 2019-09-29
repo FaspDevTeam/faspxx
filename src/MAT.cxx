@@ -336,66 +336,57 @@ void MAT::Zero() {
     for ( INT j = 0; j < this->nnz; j++ ) values[j] = 0.0;
 }
 
-/// Transpose *this // Todo: Check???
+/// Transpose *this
 void MAT::Transpose() {
+
+    const INT n=this->nrow,m=this->ncol,nnz=this->nnz;
+
+    INT i,j,k,p;
+
     MAT tmp;
-    tmp.nrow = this->ncol;
-    tmp.ncol = this->nrow;
-    tmp.nnz = this->nnz;
+    tmp.nrow=this->ncol;
+    tmp.ncol=this->nrow;
+    tmp.nnz=this->nnz;
 
-    tmp.rowPtr.resize(tmp.nrow + 1);
-    tmp.colInd.resize(tmp.nnz);
-    tmp.values.resize(tmp.nnz);
-    tmp.diagPtr.resize(tmp.nrow > tmp.ncol ? tmp.ncol : tmp.nrow);
-
-    INT begin, end;
-    INT count = 0;
-    tmp.rowPtr[0] = 0;
-
-    if ( this->values.size() != 0 ) {
-        for ( INT j = 0; j < tmp.nrow; j++ ) {
-            for ( INT k = 0; k < this->nrow; k++ ) {
-                begin = this->rowPtr[k];
-                end = this->rowPtr[k + 1];
-                for ( INT l = begin; l < end; l++ ) {
-                    if ( this->colInd[l] == j ) {
-                        tmp.rowPtr[j + 1]++;
-                        tmp.colInd[count] = k;
-                        tmp.values[count] = this->values[l];
-                        count++;
-                        break;
-                    }
-                }
-            }
-        }
-    } else {
-        for ( INT j = 0; j < tmp.nrow; j++ ) {
-            for ( INT k = 0; k < this->nrow; k++ ) {
-                begin = this->rowPtr[k];
-                end = this->rowPtr[k + 1];
-                for ( INT l = begin; l < end; l++ ) {
-                    if ( this->colInd[l] == j ) {
-                        tmp.rowPtr[j + 1]++;
-                        tmp.colInd[count] = k;
-                        count++;
-                        break;
-                    }
-                }
-            }
-        }
+    tmp.rowPtr.resize(this->ncol+1);
+    tmp.colInd.resize(nnz);
+    if(this->values.size()){
+        tmp.values.resize(nnz);
+    }else{
+        tmp.values.resize(0);
     }
 
-    for ( INT j = 0; j < tmp.nrow; j++ )
-        tmp.rowPtr[j + 1] += tmp.rowPtr[j];
 
-    count = 0;
-    for ( INT j = 0; j < tmp.nrow; j++ ) {
-        begin = tmp.rowPtr[j];
-        end = tmp.rowPtr[j + 1];
-        for ( INT k = begin; k < end; k++ ) {
-            if ( tmp.colInd[k] == j ) {
-                tmp.diagPtr[count] = k;
-                count++;
+    for(INT j=0;j<nnz;j++){
+        i=this->colInd[j];
+        if(i<m-1)
+            tmp.rowPtr[i+2]++;
+    }
+
+    for(i=2;i<=m;i++)
+        tmp.rowPtr[i]+=tmp.rowPtr[i-1];
+
+    if(this->values.size()){
+        for(i=0;i<n;i++){
+            INT begin=this->rowPtr[i];
+            INT end=this->rowPtr[i+1];
+            for(p=begin;p<end;p++){
+                j=this->colInd[p]+1;
+                k=tmp.rowPtr[j];
+                tmp.colInd[k]=i;
+                tmp.values[k]=this->values[p];
+                tmp.rowPtr[j]=k+1;
+            }
+        }
+    }else{
+        for(i=0;i<n;i++){
+            INT begin=this->rowPtr[i];
+            INT end=this->rowPtr[i+1];
+            for(p=begin;p<end;p++){
+                j=this->colInd[p]+1;
+                k=tmp.rowPtr[j];
+                tmp.colInd[k]=i;
+                tmp.rowPtr[j]=k+1;
             }
         }
     }
@@ -574,197 +565,137 @@ VEC MAT::MultVec(const VEC& v) const {
     return w;
 }
 
-/// Return VEC = A'*vec1 + vec2 // Todo: Check???
+/// Return VEC = A'*vec1 + vec2
 VEC MAT::MultTransposeAdd(const VEC& v1, const VEC& v2) const {
 
+    const INT n=this->nrow,m=this->ncol,nnz=this->nnz;
+    INT i,j,k,p;
+
     MAT tmp;
-    tmp.nrow = this->ncol;
-    tmp.ncol = this->nrow;
-    tmp.nnz  = this->nnz;
-    tmp.values.resize(tmp.nnz);
-    tmp.colInd.resize(tmp.nnz);
-    tmp.rowPtr.resize(tmp.nrow + 1);
-    tmp.Transpose();
+    tmp.nrow=m;
+    tmp.ncol=n;
+    tmp.nnz=nnz;
+
+    tmp.rowPtr.resize(m+1);
+    tmp.colInd.resize(nnz);
+    if(this->values.size()){
+        tmp.values.resize(nnz);
+    }else{
+        tmp.values.resize(0);
+    }
+
+    for(INT j=0;j<nnz;j++){
+        i=this->colInd[j];
+        if(i<m-1)
+            tmp.rowPtr[i+2]++;
+    }
+
+    for(i=2;i<=m;i++)
+        tmp.rowPtr[i]+=tmp.rowPtr[i-1];
+
+    if(this->values.size()){
+        for(i=0;i<n;i++){
+            INT begin=this->rowPtr[i];
+            INT end=this->rowPtr[i+1];
+            for(p=begin;p<end;p++){
+                j=this->colInd[p]+1;
+                k=tmp.rowPtr[j];
+                tmp.colInd[k]=i;
+                tmp.values[k]=this->values[p];
+                tmp.rowPtr[j]=k+1;
+            }
+        }
+    }else{
+        for(i=0;i<n;i++){
+            INT begin=this->rowPtr[i];
+            INT end=this->rowPtr[i+1];
+            for(p=begin;p<end;p++){
+                j=this->colInd[p]+1;
+                k=tmp.rowPtr[j];
+                tmp.colInd[k]=i;
+                tmp.rowPtr[j]=k+1;
+            }
+        }
+    }
 
     VEC v(v2);
-    INT begin, end;
-    if ( this->values.size()) {
-        for ( INT j = 0; j < tmp.nrow; j++ ) {
-            begin = tmp.rowPtr[j];
-            end = tmp.rowPtr[j + 1];
-            for ( INT k = begin; k < end; k++ ) {
-                v[j] += v1[this->colInd[k]] * tmp.values[k];
-            }
-        }
-    } else {
-        for ( INT j = 0; j < tmp.nrow; j++ ) {
-            begin = tmp.rowPtr[j];
-            end = tmp.rowPtr[j + 1];
-            for ( INT k = begin; k < end; k++ ) {
-                v[j] += v1[this->colInd[k]];
-            }
-        }
+
+    INT begin,end;
+    for(i=0;i<tmp.nrow;i++){
+        begin=tmp.rowPtr[i];
+        end=tmp.rowPtr[i+1];
+        for(j=begin;j<end;j++)
+            v[i]+=v1[tmp.colInd[j]]*tmp.values[j];
     }
 
     return v;
 }
 
-/// Return MAT = a * mat1 + b * mat2 // Todo: Check???
-MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2) {
+/// Return MAT = a * mat1 + b * mat2
+MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2) {
+
+    INT i, j, k, l;
+    INT count = 0, added, countrow;
     MAT mat;
 
     if ( mat1.nnz == 0 ) {
-        mat.nrow = mat2.nrow;
-        mat.ncol = mat2.ncol;
-        mat.nnz = mat2.nnz;
-        mat.rowPtr.operator=(mat2.rowPtr);
-        mat.colInd.operator=(mat2.colInd);
-        mat.diagPtr.operator=(mat2.diagPtr);
-        for ( int j = 0; j < mat2.nnz; j++ )
-            mat.values[j] = b * mat2.values[j];
+        mat = mat2;
+        mat.Scale(b);
 
         return mat;
     }
 
     if ( mat2.nnz == 0 ) {
-        mat.nrow = mat1.nrow;
-        mat.ncol = mat1.ncol;
-        mat.nnz = mat1.nnz;
-        mat.rowPtr.operator=(mat1.rowPtr);
-        mat.colInd.operator=(mat1.colInd);
-        mat.diagPtr.operator=(mat1.diagPtr);
-        for ( int j = 0; j < mat1.nnz; j++ )
-            mat.values[j] = a * mat1.values[j];
+        mat = mat1;
+        mat.Scale(a);
 
         return mat;
     }
 
-    MAT tmp;
-    tmp.nrow = mat1.nrow;
-    tmp.ncol = mat1.ncol;
-    tmp.rowPtr.resize(mat1.nrow + 1);
-    tmp.colInd.resize(mat1.nnz + mat2.nnz);
-    tmp.values.resize(mat1.nnz + mat2.nnz);
-    tmp.diagPtr.resize(mat1.nrow > mat1.ncol ? mat1.ncol : mat1.nrow);
+    mat.nrow = mat1.nrow;
+    mat.ncol = mat1.ncol;
 
-    INT begin1, end1, begin2, end2;
-    INT count;
-
-    count = 0;
-    for ( int j = 0; j < mat1.nrow; j++ ) {
-        begin1 = mat1.rowPtr[j];
-        end1 = mat1.rowPtr[j + 1];
-        begin2 = mat2.rowPtr[j];
-        end2 = mat2.rowPtr[j + 1];
-        if ( mat1.values.size() != 0 && mat2.values.size() != 0 ) {
-            for ( int k = begin1; k < end1; k++ ) {
-                tmp.colInd[count] = mat1.colInd[k];
-                tmp.values[count] = a * mat1.values[k];
-                count++;
-            }
-            for ( int k = begin2; k < end2; k++ ) {
-                tmp.colInd[count] = mat2.colInd[k];
-                tmp.values[count] = b * mat2.values[k];
-                count++;
-            }
-        }
-        if ( mat1.values.size() == 0 && mat2.values.size() == 0 ) {
-            for ( int k = begin1; k < end1; k++ ) {
-                tmp.colInd[count] = mat1.colInd[k];
-                tmp.values[count] = a;
-                count++;
-            }
-            for ( int k = begin2; k < end2; k++ ) {
-                tmp.colInd[count] = mat2.colInd[k];
-                tmp.values[count] = b;
-                count++;
-            }
-        }
-    }
-
-    tmp.rowPtr[0] = 0;
-    for ( int j = 0; j < mat1.nrow; j++ )
-        tmp.rowPtr[j + 1] = mat1.rowPtr[j + 1] + mat2.rowPtr[j + 1];
-
-    INT begin, end;
-
-    SortCSRRow(tmp.nrow, tmp.ncol, tmp.nnz, tmp.rowPtr, tmp.colInd, tmp.values);
-
-    mat.nrow = tmp.nrow;
-    mat.ncol = tmp.ncol;
-    mat.nnz = 0;
     mat.rowPtr.resize(mat.nrow + 1);
-    mat.rowPtr[0] = 0;
 
-    INT mem;
-    for ( INT j = 0; j < mat1.nrow; j++ ) {
-        begin = tmp.rowPtr[j];
-        end = tmp.rowPtr[j + 1];
-        if ( begin == end - 1 ) {
-            mat.nnz++;
-            mat.rowPtr[j + 1] += 1;
-            continue;
-        }
-        for ( INT k = begin; k < end - 1; k++ ) {
-            if ( tmp.colInd[k] < tmp.colInd[k + 1] ) {
-                mat.nnz++;
-                mat.rowPtr[j + 1] += 1;
-                mem = tmp.colInd[k];
-            }
-        }
-        if ( mem < tmp.colInd[end - 1] ) {
-            mat.nnz++;
-            mat.rowPtr[j + 1] += 1;
-        }
-    }
+    mat.colInd.resize(mat1.nnz + mat2.nnz);
+    mat.values.resize(mat1.nnz + mat2.nnz);
 
-    for ( int j = 1; j < mat1.nrow + 1; j++ )
-        mat.rowPtr[j] += mat.rowPtr[j - 1];
+    mat.colInd.assign(mat1.nnz + mat2.nnz, -1);
 
-    mat.colInd.resize(mat.nnz);
-    mat.values.resize(mat.nnz);
-    mat.diagPtr.resize(mat1.nrow > mat1.ncol ? mat1.ncol : mat1.nrow);
-
-    count = 0;
-    for ( INT j = 0; j < tmp.nrow; j++ ) {
-        begin = tmp.rowPtr[j];
-        end = tmp.rowPtr[j + 1];
-        if ( begin == end - 1 ) {
-            mat.colInd[count] = j;
-            mat.values[count] = tmp.values[begin];
+    for ( i = 0; i < mat1.nrow; i++ ) {
+        countrow = 0;
+        for ( j = mat1.rowPtr[i]; j < mat1.rowPtr[i + 1]; j++ ) {
+            mat.values[count] = a * mat1.values[j];
+            mat.colInd[count] = mat1.colInd[j];
+            mat.rowPtr[i + 1]++;
             count++;
-            continue;
-        }
-        for ( INT k = begin; k < end - 1; k++ ) {
-            if ( tmp.colInd[k] < tmp.colInd[k + 1] ) {
-                mat.colInd[count] = tmp.colInd[k];
-                mat.values[count] += tmp.values[k];
-                count++;
-            }
-            if ( tmp.colInd[k] == tmp.colInd[k + 1] ) {
-                mat.colInd[count] = tmp.colInd[k];
-                mat.values[count] += tmp.values[k];
-            }
+            countrow++;
         }
 
-        mat.colInd[count] = tmp.colInd[end - 1];
-        mat.values[count] += tmp.values[end - 1];
-        count++;
-    }
+        for ( k = mat2.rowPtr[i]; k < mat2.rowPtr[i + 1]; k++ ) {
+            added = 0;
 
-    //! compute this->diagPtr
-    count = 0;
-
-    for ( INT j = 0; j < mat.nrow; j++ ) {
-        begin = mat.rowPtr[j];
-        end = mat.rowPtr[j + 1];
-        for ( INT k = begin; k < end; k++ ) {
-            if ( mat.colInd[k] == j ) {
-                mat.diagPtr[count] = k;
+            for ( l = mat.rowPtr[i]; l < mat.rowPtr[i] + countrow + 1; l++ ) {
+                if ( mat2.colInd[k] == mat.colInd[l] ) {
+                    mat.values[l] = mat.values[l] + b * mat2.values[k];
+                    added = 1;
+                    break;
+                }
+            }
+            if ( added == 0 ) {
+                mat.values[count] = b * mat2.values[k];
+                mat.colInd[count] = mat2.colInd[k];
+                mat.rowPtr[i + 1]++;
                 count++;
             }
         }
+        mat.rowPtr[i + 1] += mat.rowPtr[i];
     }
+    mat.nnz = count;
+    mat.colInd.resize(count);
+    mat.values.resize(count);
+
+    SortCSRRow(mat.nrow, mat.ncol, mat.nnz, mat.rowPtr, mat.colInd, mat.values);
 
     return mat;
 }
