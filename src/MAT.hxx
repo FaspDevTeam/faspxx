@@ -171,19 +171,19 @@ public:
     void MultLeft(const MAT& mat);
 
     /// Return MAT = a * mat1 + b * mat2
-    friend MAT& Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2);
+    friend MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2);
 
     /// *this = a * *this + b * mat
     void Add(const DBL a, const DBL b, const MAT& mat);
 
     /// Return VEC = *this * vec
-    VEC& MultVec(const VEC& v) const;
+    VEC MultVec(const VEC& v) const;
 
     /// Return VEC = A'*v1 + v2
-    VEC& MultTransposeAdd(const VEC& v1, const VEC& v2) const;
+    VEC MultTransposeAdd(const VEC& v1, const VEC& v2) const;
 
     /// *this = matl * matr
-    friend MAT& Mult(const MAT& matl, const MAT& matr);
+    friend MAT Mult(const MAT& matl, const MAT& matr);
 
 private:
     /// Form diagonal pointer using colInd and rowPtr

@@ -398,7 +398,7 @@ void MAT::Transpose() {
     this->operator=(tmp);
 }
 
-/// *this = *this * mat // Todo: Check???
+/// *this = *this * mat
 void MAT::MultRight(const MAT& mat) {
     this->operator=(Mult(*this, mat));
 }
@@ -410,7 +410,7 @@ void MAT::MultLeft(const MAT& mat) {
 }
 
 /// Return MAT = a * mat1 + b * mat2
-MAT& Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2) {
+MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2) {
 
     INT i, j, k, l;
     INT count = 0, added, countrow;
@@ -484,7 +484,7 @@ void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
 }
 
 /// Return VEC = *this * vec.
-VEC& MAT::MultVec(const VEC& v) const {
+VEC MAT::MultVec(const VEC& v) const {
     VEC w;
     w.SetSize(this->nrow);
 
@@ -508,7 +508,7 @@ VEC& MAT::MultVec(const VEC& v) const {
 }
 
 /// Return VEC = A'*vec1 + vec2
-VEC& MAT::MultTransposeAdd(const VEC& v1, const VEC& v2) const {
+VEC MAT::MultTransposeAdd(const VEC& v1, const VEC& v2) const {
 
     const INT n=this->nrow,m=this->ncol,nnz=this->nnz;
     INT i,j,k,p;
@@ -574,7 +574,7 @@ VEC& MAT::MultTransposeAdd(const VEC& v1, const VEC& v2) const {
 }
 
 /// *this = matl * matr
-MAT& Mult(const MAT& matl, const MAT& matr) {
+MAT Mult(const MAT& matl, const MAT& matr) {
     MAT mat;
 
     INT l, count;
