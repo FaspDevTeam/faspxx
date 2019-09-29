@@ -8,11 +8,10 @@
  */
 
 #include <gtest/gtest.h>
-#include <iostream>
 #include <vector>
 #include <cstdlib>
 
-#include "vec.hxx"
+#include "../src/VEC.hxx"
 
 double TOL = 1E-10;
 
@@ -106,21 +105,21 @@ TEST(VEC_SetValue, SetValue)
 
 }
 
-TEST(VEC_Get, Get)
+TEST(VEC_Get, GetValue)
 {
     for (int i=0; i<v6.GetSize(); i++)
-        EXPECT_EQ(v6.Get(i), p[i]);
+        EXPECT_EQ(v6.GetValue(i), p[i]);
 }
 
-TEST(VEC_Scale, Scale)
-{
-    double scale = 1.02365;
-    DBL *array;
-    v5.GetArray(v5.GetSize(), &array);
-    v5.Scale(scale);
-    for (int i=0; i<v5.GetSize(); i++)
-        EXPECT_EQ(v5.Get(i), scale*array[i]);
-}
+//TEST(VEC_Scale, Scale)
+//{
+//    double scale = 1.02365;
+//    DBL *array;
+//    v5.GetArray(v5.GetSize(), &array);
+//    v5.Scale(scale);
+//    for (int i=0; i<v5.GetSize(); i++)
+//        EXPECT_EQ(v5.GetValue(i), scale*array[i]);
+//}
 
 TEST(VEC_Copy, Copy)
 {
@@ -174,7 +173,7 @@ TEST(VEC_Reciprocal, Reciprocal)
         v[i] = 1.0 / v[i];
     }
 
-    v.Reciprocal(TOL);
+    v.Reciprocal();
     for (int i=0; i<v.GetSize(); i++) {
         EXPECT_DOUBLE_EQ(v[i], vv[i]);
         EXPECT_NEAR(v[i], vv[i], TOL);
@@ -203,7 +202,7 @@ TEST(VEC_Add, Add)
         v[i] = a*v1[i] + b*v[i];
     }
 
-    v2.Add(v1, b, a);
+    v2.Add(b, a, v1);
     v4.Add(a, v1, b, v3);
     for (int i=0; i<v.GetSize(); i++) {
         EXPECT_EQ(v[i], v2[i]);
@@ -249,7 +248,7 @@ TEST(VEC_PointwiseDivide, PointwiseDivide)
         v3[i] = v1[i] / v2[i];
     }
 
-    v1.PointwiseDivide(v2, TOL);
+    v1.PointwiseDivide(v2);
     for (int i=0; i<v1.GetSize(); i++) {
         EXPECT_EQ(v1[i], v3[i]);
     }

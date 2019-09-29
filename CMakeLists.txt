@@ -27,7 +27,7 @@ find_program(THE_C NAMES $ENV{CC} clang gcc icc)
 set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
 
 # Set default configuration types and flags
-SET(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 
@@ -67,3 +67,13 @@ target_link_libraries(testMAT faspxx)
 # Build ReadData test
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
+
+
+# Enable or Disable GoogleTest, default "OFF"(also can be set cmake .. -DGTest=ON)
+option(GTEST "Enable GoogleTest" ON)
+if ("${GTEST}" STREQUAL ON)
+    message("Enable GoogleTest")
+    add_subdirectory(utest)
+else("${GTEST}" STREQUAL OFF)
+    message("Disable GoogleTest")
+endif()
