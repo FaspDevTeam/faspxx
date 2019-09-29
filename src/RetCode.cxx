@@ -14,7 +14,7 @@
 
 /// \brief Decode FaspRetCode to a readable error message
 std::string GetRetCode(const FaspRetCode code) {
-    switch(code) {
+    switch ( code ) {
         case SUCCESS:
             return "Finish successfully!";
         case ERROR_OPEN_FILE:
@@ -75,11 +75,17 @@ std::string GetRetCode(const FaspRetCode code) {
 }
 
 /// \brief Output log messages to a file or screen by default
-void FaspExcep::LogExcep(std::ostream& stream) const
-{
+void FaspRunTime::LogExcep(std::ostream &stream) const {
     stream << "### ERROR: " << this->what() << std::endl;
     stream << "### ERROR: Check " << this->GetFile() << " in "
            << this->GetFunc() << "( ) at Line " << this->GetLine() << std::endl;
+}
+
+/// \brief Output log messages to a file or screen by default
+void FaspBadAlloc::LogExcep(std::ostream &stream) const {
+    stream << "### ERROR: " << this->what() << std::endl;
+    stream << "### ERROR: Check " << this->GetFile() << " in "
+           << this->GetFunc() << "() at Line " << this->GetLine() << std::endl;
 }
 
 /*---------------------------------*/
