@@ -37,7 +37,7 @@ int main() {
     for(INT j=0;j<4;j++)
         cout<<x[j]<<"  ";
 #endif
-#if 0
+#if 1
     const INT L=200;
 
     INT row=L,col=L,nnz=3*L-2;
@@ -133,7 +133,7 @@ int main() {
     PCG pcg;
     DBL tol=1e-4;
     pcg.SetUp(mat,b,tol,col);
-    pcg.Start(x,col);
+    pcg.Start(x,count);
 
     io.open("/home/kailei/data/x");
     for(INT j=0;j<col;j++)
@@ -147,7 +147,8 @@ int main() {
     }
     cout<<"Tol : "<<Tol<<endl;
 #endif
-#if 1
+
+#if 0
     INT row,col,nnz;
     std::vector<INT> colInd,rowPtr;
     std::vector<DBL> values;
@@ -208,7 +209,6 @@ int main() {
     rk=mat.MultVec(x);
     rk.Add(1.0,-1.0,b);
     std::cout<<"rk.Norm2() : "<<rk.Norm2()<<std::endl;
-
 #endif
     return 0;
 }
