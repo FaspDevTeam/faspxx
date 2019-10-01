@@ -101,7 +101,7 @@ public:
 public:
     // Default constructor
     FaspBadAlloc(const char *file_, const char *func_, const unsigned int line_)
-            : file(file_), func(func_), line(line_) {}
+            :std::bad_alloc(), file(file_), func(func_), line(line_) {}
 
     // Get exception location
     const char *GetFile() const { return file; } //! return thrown file name
