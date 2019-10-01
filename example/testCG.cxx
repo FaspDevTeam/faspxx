@@ -6,7 +6,6 @@
 #include "ReadData.hxx"
 #include "MATUtil.hxx"
 #include <fstream>
-#include <ctime>
 #include <cmath>
 
 using namespace std;
@@ -29,12 +28,16 @@ int main() {
     std::vector<DBL> init(4,0.25);
     VEC x(init);
 
-    CG(mat,b,x);
+    PCG pcg;
+    INT a=4;
+    DBL tol=1e-4;
+    pcg.SetUp(mat,b,tol,a);
+    pcg.Start(x,a);
 
     for(INT j=0;j<4;j++)
         cout<<x[j]<<"  ";
 #endif
-
+#if 0
     const INT L=200;
 
     INT row=L,col=L,nnz=3*L-2;
@@ -93,8 +96,6 @@ int main() {
 
     MAT mat(row,col,nnz,values,colInd,rowPtr,diagPtr);
 
-#define GENERATE 1
-#if GENERATE
     fstream iotmp;
     VEC xtmp(col,0.0);
     iotmp.open("/home/kailei/data/ori_x");
@@ -114,8 +115,6 @@ int main() {
         iotmp<<btmp[j]<<"\n";
     iotmp.close();
 
-#endif
-# if 1
     fstream io;
     VEC b(row,0.0),control(col,0.0);
 
@@ -131,7 +130,10 @@ int main() {
 
     VEC x(col,0.0);
 
-    CG(mat,b,x);
+    PCG pcg;
+    DBL tol=1e-4;
+    pcg.SetUp(mat,b,tol,col);
+    pcg.Start(x,col);
 
     io.open("/home/kailei/data/x");
     for(INT j=0;j<col;j++)
@@ -144,6 +146,69 @@ int main() {
             Tol=fabs(x[j]-control[j]);
     }
     cout<<"Tol : "<<Tol<<endl;
+#endif
+#if 1
+    INT row,col,nnz;
+    std::vector<INT> colInd,rowPtr;
+    std::vector<DBL> values;
+    ///! TODO e05r0500.mtx , error : munmap_chunk() : invalid pointer , can't find
+    ///! out the reasons now.
+    ReadMTX("/home/kailei/Project/faspsolver/data/sherman1.mtx",row, col,
+            nnz,rowPtr,colInd,values);
+
+    MAT mat;
+    try{
+        MTXtoMAT(row,col,nnz,rowPtr,colInd,values,mat);
+    }catch(FaspRunTime &ex){
+        cout<<"bad_alloc"<<endl;
+    }
+
+    fstream io;
+    DBL value;
+    io.open("/home/kailei/data/ori_x");
+    VEC control(row,0.0);
+    srand(unsigned(time(0)));
+    for(INT j=0;j<row;j++){
+        control[j]=rand()/(double)RAND_MAX;
+        io<<control[j]<<"\n";
+    }
+    io.close();
+
+    VEC b=mat.MultVec(control);
+
+    io.open("/home/kailei/data/b");
+    for(INT j=0;j<row;j++)
+        io<<b[j]<<"\n";
+    io.close();
+
+    VEC x(row,0.0);
+    PCG pcg;
+    DBL tol=1e-4;
+    pcg.SetUp(mat,b,tol,row);
+    pcg.Start(x,row);
+
+    io.open("/home/kailei/data/x");
+    for(INT j=0;j<row;j++)
+        io<<x[j]<<"\n";
+    io.close();
+
+    DBL max=0;
+    INT flag=0;
+    for(INT j=0;j<row;j++){
+        if(max<fabs(x[j]-control[j])){
+            max=fabs(x[j]-control[j]);
+            flag=j;
+        }
+    }
+
+    std::cout<<"Max : "<<max<<std::endl;
+    std::cout<<"flag : "<<flag<<std::endl;
+
+    VEC rk;
+    rk=mat.MultVec(x);
+    rk.Add(1.0,-1.0,b);
+    std::cout<<"rk.Norm2() : "<<rk.Norm2()<<std::endl;
+
 #endif
     return 0;
 }
