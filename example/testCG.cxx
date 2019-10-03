@@ -7,10 +7,12 @@
 #include "MATUtil.hxx"
 #include <fstream>
 #include <cmath>
+#include "Timing.hxx"
 
 using namespace std;
 
 int main() {
+    GetWallTime timer;
 
 #if 0
     INT nrow=4,ncol=4;
@@ -37,9 +39,9 @@ int main() {
     for(INT j=0;j<4;j++)
         cout<<x[j]<<"  ";
 #endif
-#if 1
+#if 0
     const INT L=200;
-
+    INT iter;
     INT row=L,col=L,nnz=3*L-2;
     std::vector<INT> rowPtr(row+1);
     rowPtr[0]=0;
@@ -132,8 +134,11 @@ int main() {
 
     PCG pcg;
     DBL tol=1e-4;
-    pcg.SetUp(mat,b,tol,col);
-    pcg.Start(x,count);
+
+    timer.start();
+    pcg.SetUp(mat,b,tol,row);
+    pcg.Start(x,iter);
+    cout<<"PCG Time : "<<timer.stop()<<" seconds"<<endl;
 
     io.open("/home/kailei/data/x");
     for(INT j=0;j<col;j++)
@@ -146,23 +151,20 @@ int main() {
             Tol=fabs(x[j]-control[j]);
     }
     cout<<"Tol : "<<Tol<<endl;
+    cout<<"Iter : "<<iter<<endl;
 #endif
 
-#if 0
+#if 1
     INT row,col,nnz;
     std::vector<INT> colInd,rowPtr;
     std::vector<DBL> values;
     ///! TODO e05r0500.mtx , error : munmap_chunk() : invalid pointer , can't find
     ///! out the reasons now.
-    ReadMTX("/home/kailei/Project/faspsolver/data/sherman1.mtx",row, col,
+    ReadMTX("/home/kailei/Project/faspsolver/data/orsreg_1.mtx",row, col,
             nnz,rowPtr,colInd,values);
 
     MAT mat;
-    try{
-        MTXtoMAT(row,col,nnz,rowPtr,colInd,values,mat);
-    }catch(FaspRunTime &ex){
-        cout<<"bad_alloc"<<endl;
-    }
+    MTXtoMAT(row,col,nnz,rowPtr,colInd,values,mat);
 
     fstream io;
     DBL value;
@@ -185,8 +187,13 @@ int main() {
     VEC x(row,0.0);
     PCG pcg;
     DBL tol=1e-4;
+    INT iter;
+
+    INT sum=0;
+    timer.start();
     pcg.SetUp(mat,b,tol,row);
-    pcg.Start(x,row);
+    pcg.Start(x,iter);
+    cout<<"PCG Time : "<<timer.stop()<<" seconds"<<endl;
 
     io.open("/home/kailei/data/x");
     for(INT j=0;j<row;j++)
@@ -202,8 +209,8 @@ int main() {
         }
     }
 
+    std::cout<<"Iter : "<<iter<<std::endl;
     std::cout<<"Max : "<<max<<std::endl;
-    std::cout<<"flag : "<<flag<<std::endl;
 
     VEC rk;
     rk=mat.MultVec(x);
