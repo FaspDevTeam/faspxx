@@ -165,10 +165,10 @@ public:
     void Transpose();
 
     /// *this = mat * *this
-    void MultRight(const MAT& mat);
+    void MultLeft(const MAT& mat);
 
     /// *this = *this * mat
-    void MultLeft(const MAT& mat);
+    void MultRight(const MAT& mat);
 
     /// Return MAT = a * mat1 + b * mat2
     friend MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2);

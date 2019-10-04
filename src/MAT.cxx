@@ -462,12 +462,12 @@ void MAT::Transpose() {
 }
 
 /// *this = *this * mat
-void MAT::MultRight(const MAT& mat) {
+void MAT::MultLeft(const MAT& mat) {
     this->operator=(Mult(*this, mat));
 }
 
 /// *this = mat * *this
-void MAT::MultLeft(const MAT& mat) {
+void MAT::MultRight(const MAT& mat) {
     MAT tmp = Mult(mat, *this);
     this->operator=(tmp);
 }
