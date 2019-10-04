@@ -29,7 +29,7 @@ FaspRetCode PCG::SetUpPCD(const MAT &P_) {
 
     try {
         this->P = P_;
-        this->pflag = 1;
+        this->pc = 1;
     } catch ( std::bad_alloc &ex ) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
@@ -37,62 +37,189 @@ FaspRetCode PCG::SetUpPCD(const MAT &P_) {
     return FaspRetCode::SUCCESS;
 }
 
-FaspRetCode PCG::Start(VEC &x, INT &iter) {
+FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
 
-    INT count = 0;
-    DBL norm_prev, normk;
-    DBL alpha, beta;
-    VEC rk, pk, tmp;
-
-    try {
-        if ( x.GetSize() != A.GetColSize()) {
-            FaspRetCode retCode = FaspRetCode::ERROR_NONMATCH_SIZE;
-            throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
-        }
-    } catch ( FaspRunTime &ex ) {
+    if ( x.GetSize() != A.GetColSize())
         return FaspRetCode::ERROR_NONMATCH_SIZE;
+
+    const INT MaxStag=20,MaxRestartStep=20;
+    const INT maxdiff=rtol*1e-4;
+    const DBL solinftol=1e-20;
+
+    // local variables
+    INT stag=1,morestep=1,flag=0;
+    DBL absres=1e+20,abstmp=1e+20;
+    DBL relres=1e+20,norm=1e+20,normtmp=1e+20;
+    DBL reldiff,factor,norminf;
+    DBL alpha,beta,tmpa,tmpb;
+
+    iter=0;
+
+    VEC rk,pk,zk,tmp;
+
+    // rk = b - A * x
+    tmp=A.MultVec(x);
+    rk.Add(1.0,b,-1.0,tmp);
+
+    if(pc==1)
+        ApplyPreconditioner();
+    else
+        zk=rk;
+
+    // compute initial residuals
+    switch(type){
+        case STOP_REL_RES:
+            abstmp=rk.Norm2();
+            normtmp=(1e-20>abstmp)?1e-20:abstmp;
+            relres=abstmp/normtmp;
+            break;
+        case STOP_REL_PRECRES:
+            abstmp=sqrt(rk.Dot(zk));
+            normtmp=(1e-20>abstmp)?1e-20:abstmp;
+            relres=abstmp/normtmp;
+            break;
+        case STOP_MOD_REL_RES:
+            abstmp=rk.Norm2();
+            norm=(1e-20>x.Norm2())?1e-20:x.Norm2();
+            relres=abstmp/norm;
+            break;
+        default:
+            std::cout<<"### ERROR: Unknown stopping type! ["<<__FUNCTION__<<"]"<<std::endl;
+            return FaspRetCode ::ERROR_INPUT_PAR;
     }
 
-    //! r_{0} = b - A * x_{0}
-    rk = this->A.MultVec(x);
+    if(relres<rtol || abstmp<1e-3*rtol) return FaspRetCode ::SUCCESS;
 
-    rk.Add(-1.0, 1.0, b);
+    pk=zk;
+    tmpa=zk.Dot(rk);
 
-    if ( pflag == 1 ) {
-        /* z0=M^{-1} * r0 */
-        /* p0=z0 */
-        /* normk=r_{j} * z_{j} */
-    } else {
-        pk = rk;
-        normk = rk.Dot(rk);
-    }
+    while(iter++<maxIt) {
 
-    while ( count < maxIt && rk.Norm2() > rtol ) {
-        if ( pflag == 1 ) {
-            /* alpha = (r_{j},z_{j}) / (Ap_{j},p_{j}) */
-        } else {
-            tmp = A.MultVec(pk);
-            alpha = (normk / tmp.Dot(pk));
-        }
+        tmp = A.MultVec(pk);
+        tmpb = tmp.Dot(pk);
+        if (fabs(tmpb) > 1e-20)
+            alpha = tmpa / tmpb;
+        else
+            return FaspRetCode::ERROR_DIVIDE_ZERO;
 
         x.Add(1.0, alpha, pk);
+        tmp=A.MultVec(pk);
+        rk.Add(1.0,-alpha,pk);
 
-        rk.Add(1.0, -alpha, tmp);
+        switch (type) {
+            case STOP_REL_RES:
+                absres = rk.Norm2();
+                relres = absres / normtmp;
+                break;
+            case STOP_REL_PRECRES:
+                if (this->pc == 1)
+                    ApplyPreconditioner();
+                else
+                    zk = rk;
 
-        if ( pflag == 1 ) {
-            /* z_{j+1} = M^{-1} r_{j+1} */
-            /* beta_{j} = (r_{j+1},z_{j+1}) / (r_{j},z_{j}) */
-            /* p_{j+1} = z_{j+1} + beta_{j} p_{j} */
-        } else {
-            norm_prev = normk;
-            normk = rk.Dot(rk);
-            beta = normk / norm_prev;
-            pk.Add(beta, 1.0, rk);
+                absres = sqrt(fabs(zk.Dot(rk)));
+                relres = absres / normtmp;
+                break;
+            case STOP_MOD_REL_RES:
+                absres = rk.Norm2();
+                relres = absres / norm;
+                break;
         }
 
-        count++;
+        if (absres / abstmp > 0.9) {
+            norminf = x.NormInf();
+            if (norminf <= solinftol) return FaspRetCode::ERROR_SOLVER_SOLSTAG;
+
+            norm = x.Norm2();
+            reldiff = fabs(alpha) * pk.Norm2() / norm;
+
+            if ((stag <= MaxStag) && (reldiff < maxdiff)) {
+
+                tmp = A.MultVec(x);
+                rk.Add(1.0, b, -1.0, tmp);
+
+                switch (type) {
+                    case STOP_REL_RES:
+                        absres = rk.Norm2();
+                        relres = absres / normtmp;
+                        break;
+                    case STOP_REL_PRECRES:
+                        if (pc == 1)
+                            ApplyPreconditioner();
+                        else
+                            zk = rk;
+
+                        absres = sqrt(fabs(zk.Dot(rk)));
+                        relres = absres / normtmp;
+                        break;
+                    case STOP_MOD_REL_RES:
+                        absres = rk.Norm2();
+                        relres = absres / norm;
+                        break;
+                }
+
+                if (relres < rtol)
+                    break;
+                else {
+                    if (stag >= MaxStag) return FaspRetCode::ERROR_SOLVER_STAG;
+
+                    pk.SetValues(pk.GetSize(), 0.0);
+                    ++stag;
+                }
+            }
+        }
+
+        if (relres < rtol) {
+
+            DBL updated_relres = relres;
+            tmp = A.MultVec(x);
+            rk.Add(1.0, b, -1.0, tmp);
+
+            switch (type) {
+                case STOP_REL_RES:
+                    absres = rk.Norm2();
+                    relres = absres / normtmp;
+                    break;
+                case STOP_REL_PRECRES:
+                    if (pc == 1)
+                        ApplyPreconditioner();
+                    else
+                        zk = rk;
+
+                    absres = sqrt(zk.Dot(rk));
+                    relres = absres / normtmp;
+                    break;
+                case STOP_MOD_REL_RES:
+                    absres = rk.Norm2();
+                    relres = absres / norm;
+                    break;
+            }
+
+            if (relres < rtol) break;
+
+            if (morestep >= MaxRestartStep) return FaspRetCode::ERROR_SOLVER_TOLSMALL;
+
+            pk.SetValues(pk.GetSize(), 0.0);
+            ++morestep;
+        }
+
+        abstmp = absres;
+
+        if (type != STOP_REL_PRECRES) {
+            if (pc == 1)
+                ApplyPreconditioner();
+            else
+                zk = rk;
+        }
+
+        tmpb = zk.Dot(rk);
+        beta = tmpb / tmpa;
+        tmpa = tmpb;
+
+        pk.Add(beta,1.0,zk);
     }
-    iter = count;
+
+    if(iter>maxIt) return FaspRetCode ::ERROR_SOLVER_MAXIT;
 
     return FaspRetCode::SUCCESS;
 }
