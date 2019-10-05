@@ -5,6 +5,15 @@
 #include "PCG.hxx"
 #include "VECUtil.hxx"
 
+void PCG::Final(const INT iter,const INT maxit,const DBL relres){
+    if ( iter > maxit )
+        std::cout<<"### WARNING: MaxIt = "<<maxit<<" reached with relative residual "<<relres<<std::endl;
+    else if ( iter >= 0 ) {
+        std::cout<<"Number of iterations = "<<iter<<" with relative residual "<<relres<<std::endl;
+    }
+}
+
+
 FaspRetCode PCG::SetUp(const MAT &A_, const VEC &b_, const DBL &rtol_, const INT
 &maxIt_) {
     if ( A_.GetNNZ() == 0 || b_.GetSize() == 0 || A_.GetRowSize() != b_.GetSize()){
@@ -37,7 +46,7 @@ FaspRetCode PCG::SetUpPCD(const MAT &P_) {
     return FaspRetCode::SUCCESS;
 }
 
-FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
+FaspRetCode PCG::Start(VEC &x, INT &iter,const StopType &type) {
 
     if ( x.GetSize() != A.GetColSize())
         return FaspRetCode::ERROR_NONMATCH_SIZE;
@@ -47,11 +56,12 @@ FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
     const DBL solinftol=1e-20;
 
     // local variables
-    INT stag=1,morestep=1,flag=0;
+    INT stag=1,morestep=1;
     DBL absres=1e+20,abstmp=1e+20;
     DBL relres=1e+20,norm=1e+20,normtmp=1e+20;
-    DBL reldiff,factor,norminf;
+    DBL reldiff,norminf;
     DBL alpha,beta,tmpa,tmpb;
+    FaspRetCode errorCode=FaspRetCode ::SUCCESS;
 
     iter=0;
 
@@ -85,10 +95,11 @@ FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
             break;
         default:
             std::cout<<"### ERROR: Unknown stopping type! ["<<__FUNCTION__<<"]"<<std::endl;
-            return FaspRetCode ::ERROR_INPUT_PAR;
+            errorCode=FaspRetCode ::ERROR_INPUT_PAR;
+            goto FINISHED;
     }
 
-    if(relres<rtol || abstmp<1e-3*rtol) return FaspRetCode ::SUCCESS;
+    if(relres<rtol || abstmp<1e-3*rtol) goto FINISHED;
 
     pk=zk;
     tmpa=zk.Dot(rk);
@@ -97,14 +108,17 @@ FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
 
         tmp = A.MultVec(pk);
         tmpb = tmp.Dot(pk);
-        if (fabs(tmpb) > 1e-20)
+        if (fabs(tmpb) > 1e-40)
             alpha = tmpa / tmpb;
-        else
-            return FaspRetCode::ERROR_DIVIDE_ZERO;
+        else{
+            DIVZERO;
+            errorCode=FaspRetCode ::ERROR_DIVIDE_ZERO;
+            goto FINISHED;
+        }
 
         x.Add(1.0, alpha, pk);
         tmp=A.MultVec(pk);
-        rk.Add(1.0,-alpha,pk);
+        rk.Add(1.0,-alpha,tmp);
 
         switch (type) {
             case STOP_REL_RES:
@@ -128,12 +142,19 @@ FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
 
         if (absres / abstmp > 0.9) {
             norminf = x.NormInf();
-            if (norminf <= solinftol) return FaspRetCode::ERROR_SOLVER_SOLSTAG;
+            if (norminf <= solinftol){
+                ZEROSOL;
+                errorCode=FaspRetCode::ERROR_SOLVER_SOLSTAG;
+                break;
+            }
 
             norm = x.Norm2();
             reldiff = fabs(alpha) * pk.Norm2() / norm;
 
-            if ((stag <= MaxStag) && (reldiff < maxdiff)) {
+            if ((stag <= MaxStag) & (reldiff < maxdiff)) {
+
+                DIFFRES(reldiff,relres);
+                RESTART;
 
                 tmp = A.MultVec(x);
                 rk.Add(1.0, b, -1.0, tmp);
@@ -158,11 +179,15 @@ FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
                         break;
                 }
 
+                REALRES(relres);
                 if (relres < rtol)
                     break;
                 else {
-                    if (stag >= MaxStag) return FaspRetCode::ERROR_SOLVER_STAG;
-
+                    if (stag >= MaxStag){
+                        STAGGED;
+                        errorCode=FaspRetCode::ERROR_SOLVER_STAG;
+                        break;
+                    }
                     pk.SetValues(pk.GetSize(), 0.0);
                     ++stag;
                 }
@@ -170,8 +195,8 @@ FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
         }
 
         if (relres < rtol) {
+            DBL updated_relres=relres;
 
-            DBL updated_relres = relres;
             tmp = A.MultVec(x);
             rk.Add(1.0, b, -1.0, tmp);
 
@@ -186,7 +211,7 @@ FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
                     else
                         zk = rk;
 
-                    absres = sqrt(zk.Dot(rk));
+                    absres = sqrt(fabs(zk.Dot(rk)));
                     relres = absres / normtmp;
                     break;
                 case STOP_MOD_REL_RES:
@@ -197,7 +222,14 @@ FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
 
             if (relres < rtol) break;
 
-            if (morestep >= MaxRestartStep) return FaspRetCode::ERROR_SOLVER_TOLSMALL;
+            COMPRES(updated_relres);
+            REALRES(relres);
+
+            if (morestep >= MaxRestartStep){
+                ZEROTOL;
+                errorCode=FaspRetCode::ERROR_SOLVER_TOLSMALL;
+                break;
+            }
 
             pk.SetValues(pk.GetSize(), 0.0);
             ++morestep;
@@ -219,9 +251,10 @@ FaspRetCode PCG::Start(VEC &x, INT &iter,StopType type) {
         pk.Add(beta,1.0,zk);
     }
 
-    if(iter>maxIt) return FaspRetCode ::ERROR_SOLVER_MAXIT;
+    FINISHED:
+    Final(iter,maxIt,relres);
 
-    return FaspRetCode::SUCCESS;
+    return errorCode;
 }
 
 void PCG::CleanPCD() {
