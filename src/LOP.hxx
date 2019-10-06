@@ -38,7 +38,7 @@ public:
     LOP(const INT& nrow);
 
     /// Assign LOP object to *this
-    LOP(const LOP& mat);
+    LOP(const LOP& lop);
 
     /// Overload = operator
     LOP& operator=(const LOP& lop);
@@ -53,25 +53,25 @@ public:
     INT GetColSize() const;
 
     /// Get (*this)[i][j]
-    DBL GetValue(const INT& row, const INT& col) const;
+     virtual DBL GetValue(const INT& row, const INT& col) const = 0;
 
     /// Get the whole row-th row in *this into VEC object
-    void GetRow(const INT& row, std::vector<DBL>& v) const;
+    virtual void GetRow(const INT& row, std::vector<DBL>& v) const = 0;
 
     /// Get the whole col-th column in *this into VEC object
-    void GetCol(const INT& col, std::vector<DBL>& v) const;
+    virtual void GetCol(const INT& col, std::vector<DBL>& v) const = 0;
 
     /// Get the whole diagonal entries in *this into VEC object
-    void GetDiag(std::vector<DBL>& v) const;
+    virtual void GetDiag(std::vector<DBL>& v) const = 0;
 
     /// Copy *this to lop
-    void CopyTo(LOP& lop) const;
+    virtual void CopyTo(LOP& lop) const;
 
     /// Transpose *this // Todo: Check???
-    void Transpose();
+    virtual void Transpose();
 
     /// Return VEC = *this * v
-    VEC MultVec(const VEC& v) const;
+    virtual VEC MultVec(const VEC& v) const = 0;
 };
 
 #endif /* end if for __LOP_HEADER__ */

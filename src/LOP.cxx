@@ -12,6 +12,54 @@
 #include "faspxx.hxx"
 #include "LOP.hxx"
 
+/// Assign nrow, ncol to *this
+LOP::LOP(const INT &nrow, const INT &ncol) {
+    this->nrow=nrow;
+    this->ncol=ncol;
+}
+
+/// Assign nrow, ncol=nrow to *this
+LOP::LOP(const INT& nrow){
+    this->nrow=nrow;
+    this->ncol=nrow;
+}
+
+/// Assign LOP object to *this
+LOP::LOP(const LOP& lop){
+    this->nrow=lop.nrow;
+    this->ncol=lop.ncol;
+}
+
+/// Overload = operator
+LOP& LOP::operator=(const LOP& lop){
+    this->nrow=lop.nrow;
+    this->ncol=lop.ncol;
+}
+
+/// Get row space dimension
+INT LOP::GetRowSize() const{
+    return this->nrow;
+}
+
+/// Get column space dimension
+INT LOP::GetColSize() const{
+    return this->ncol;
+}
+
+/// Copy *this to lop
+void LOP::CopyTo(LOP& lop) const{
+    lop.nrow=this->nrow;
+    lop.ncol=this->ncol;
+}
+
+/// Transpose *this // Todo: Check???
+void LOP::Transpose(){
+    INT tmp;
+    tmp=this->nrow;
+    this->nrow=this->ncol;
+    this->ncol=tmp;
+}
+
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/
