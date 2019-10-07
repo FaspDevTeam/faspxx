@@ -185,6 +185,9 @@ public:
     /// *this = matl * matr
     friend MAT Mult(const MAT& matl, const MAT& matr);
 
+    /// write CSR format data to the disk
+    friend void WriteCSR(char *filename,MAT mat);
+
 private:
     /// Form diagonal pointer using colInd and rowPtr
     void FormDiagPtr(std::vector<INT>& diagPtr);

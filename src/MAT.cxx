@@ -9,6 +9,7 @@
  *-----------------------------------------------------------------------------------
  */
 
+#include <fstream>
 #include "MAT.hxx"
 #include "MATUtil.hxx"
 
@@ -740,6 +741,26 @@ MAT Mult(const MAT& matl, const MAT& matr) {
 
     return mat;
 }
+
+// write CSR format data to the disk
+void WriteCSR(char *filename,MAT mat)
+{
+    std::ofstream out;
+    out.open(filename);
+
+    out<<mat.nrow<<" "<<mat.ncol<<" "<<mat.nnz<<"\n";
+
+    for(int j=0;j<mat.nrow+1;j++)
+        out<<mat.rowPtr[j]<<"\n";
+    for(int j=0;j<mat.nnz;j++)
+        out<<mat.colInd[j]<<"\n";
+    for(int j=0;j<mat.nnz;j++)
+        out<<mat.values[j]<<"\n";
+
+    out.close();
+}
+
+
 
 /// Form diagonal pointer using colInd and rowPtr
 void MAT::FormDiagPtr(std::vector<INT>& diagPtr)
