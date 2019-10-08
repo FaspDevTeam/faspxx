@@ -30,7 +30,7 @@ public:
     explicit VEC() : values(0), size(0) {}
 
     /// Assign the size and the same value to a VEC object
-    explicit VEC(const INT& size, const DBL& value);
+    explicit VEC(const INT& size, const DBL& value=0.0);
 
     /// Assign a vector object to a VEC object
     explicit VEC(const std::vector<DBL>& vt);
