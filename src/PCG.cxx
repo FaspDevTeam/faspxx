@@ -69,6 +69,7 @@ FaspRetCode PCG::SetUp(PCGInputParam &inParam){
 // Assign lop to *this
 FaspRetCode PCG::SetUpPCD(const LOP &lop) {
     this->lop=lop;
+    this->pcflag=1;
     return FaspRetCode::SUCCESS;
 }
 
@@ -79,7 +80,7 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
     if ( x.GetSize() != A.GetColSize())
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
-    const INT MaxStag=20,MaxRestartStep=20;
+    const INT MaxStag=20;
     const INT maxdiff=1e-4*this->inParam.relTol;// Stagnation tolerance
     const DBL solinftol=1e-20;// Infinity norm tolerance
 
@@ -132,7 +133,7 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
     }
 
     // If initial residual is small, no need to iterate
-    if(relres<inParam.relTol || abstmp<1e-3*inParam.relTol) goto FINISHED;
+    if(relres<inParam.relTol || abstmp<inParam.absTol) goto FINISHED;
 
     // Output iteration information if needed
     PrintInfo(inParam.printLevel,type,outParam.iter,relres,abstmp,0.0);
@@ -283,7 +284,7 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
                 REALRES(relres);
             }
 
-            if (morestep >= MaxRestartStep){
+            if (morestep >= inParam.restart){
                 if(inParam.printLevel>PRINT_MIN) ZEROTOL;
                 errorCode=FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
@@ -327,4 +328,5 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
 void PCG::CleanPCD() {
     LOP lop;
     this->lop = lop;
+    this->pcflag=0;
 }

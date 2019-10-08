@@ -47,10 +47,7 @@ __FILE__<<" , "<<__FUNCTION__<<" , "<<__LINE__<<" ]"<<std::endl;
 enum PRINT{
     PRINT_NONE,
     PRINT_MIN,
-    PRINT_SOME,
     PRINT_MORE,
-    PRINT_MOST,
-    PRINT_ALL
 };
 
 enum StopType {
@@ -65,15 +62,9 @@ struct PCGInputParam{
     DBL absTol;
     INT restart;
     PRINT printLevel;
-    PCGInputParam():maxIter(0),relTol(0),absTol(0),restart(0),printLevel(0){};
+    PCGInputParam():maxIter(20),relTol(1e-3),absTol(1e-5),restart(20),
+        printLevel(PRINT_NONE){};
     PCGInputParam(PCGInputParam& inParam){
-        this->maxIter=inParam.maxIter;
-        this->relTol=inParam.relTol;
-        this->absTol=inParam.absTol;
-        this->restart=inParam.restart;
-        this->printLevel=inParam.printLevel;
-    }
-    PCGInputParam &operator=(PCGInputParam& inParam){
         this->maxIter=inParam.maxIter;
         this->relTol=inParam.relTol;
         this->absTol=inParam.absTol;
@@ -92,11 +83,6 @@ struct PCGOutputParam{
         this->norm2=outParam.norm2;
         this->normInf=outParam.normInf;
     }
-    PCGOutputParam &operator=(PCGOutputParam &outParam){
-        this->iter=outParam.iter;
-        this->norm2=outParam.norm2;
-        this->normInf=outParam.normInf;
-    }
     ~PCGOutputParam(){};
 
 };
@@ -107,7 +93,6 @@ private:
     PCGOutputParam outParam;
     INT pcflag;
     LOP lop;
-    PRINT printLevel;
 
     void ApplyPreconditioner(VEC &rk,VEC &zk,LOP &lop);
 
@@ -117,10 +102,10 @@ private:
     void Final(const INT &iter, const INT &maxit, const DBL &relres);
 
 public:
-    PCG() : inParam(),outParam(),pcflag(0),lop(0,0),printLevel(PRINT_NONE){};
+    PCG() : inParam(),outParam(),pcflag(0),lop(0,0){};
 
     PCG(PCGInputParam &inParam,LOP &lop) :inParam(inParam),outParam(),
-    pcflag(0),lop(0,0),printLevel(PRINT_NONE){};
+    pcflag(0),lop(lop){};
 
     FaspRetCode SetUp(PCGInputParam &inParam);
 
