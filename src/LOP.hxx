@@ -53,16 +53,16 @@ public:
     INT GetColSize() const;
 
     /// Get (*this)[i][j]
-     virtual DBL GetValue(const INT& row, const INT& col) const = 0;
+     virtual DBL GetValue(const INT& row, const INT& col) const;
 
     /// Get the whole row-th row in *this into VEC object
-    virtual void GetRow(const INT& row, std::vector<DBL>& v) const = 0;
+    virtual void GetRow(const INT& row, std::vector<DBL>& v) const;
 
     /// Get the whole col-th column in *this into VEC object
-    virtual void GetCol(const INT& col, std::vector<DBL>& v) const = 0;
+    virtual void GetCol(const INT& col, std::vector<DBL>& v) const;
 
     /// Get the whole diagonal entries in *this into VEC object
-    virtual void GetDiag(std::vector<DBL>& v) const = 0;
+    virtual void GetDiag(std::vector<DBL>& v) const;
 
     /// Copy *this to lop
     virtual void CopyTo(LOP& lop) const;

@@ -46,6 +46,32 @@ INT LOP::GetColSize() const{
     return this->ncol;
 }
 
+/// Get (*this)[i][j]
+DBL LOP::GetValue(const INT& row, const INT& col) const{
+    if(row==col)
+        return 1.0;
+    else
+        return 0.0;
+}
+
+/// Get the whole row-th row in *this into VEC object
+void LOP::GetRow(const INT& row, std::vector<DBL>& v) const{
+    v.resize(1);
+    v[0]=1;
+}
+
+/// Get the whole col-th column in *this into VEC object
+void LOP::GetCol(const INT& col, std::vector<DBL>& v) const{
+    v.resize(1);
+    v[0]=1;
+}
+
+/// Get the whole diagonal entries in *this into VEC object
+void LOP::GetDiag(std::vector<DBL>& v) const{
+    v.resize(this->nrow>this->ncol?this->ncol:this->nrow);
+    v.assign(v.size(),1.0);
+
+}
 /// Copy *this to lop
 void LOP::CopyTo(LOP& lop) const{
     lop.nrow=this->nrow;
