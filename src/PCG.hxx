@@ -44,10 +44,11 @@ __FILE__<<" , "<<__FUNCTION__<<" , "<<__LINE__<<" ]"<<std::endl;
 #define DIFFRES(reldiff, relres) std::cout<<"||u-u'|| = "<<reldiff<< \
 " and the comp. rel. res. = "<<relres<<std::endl;
 
-enum PRINT{
-    PRINT_NONE,
-    PRINT_MIN,
-    PRINT_MORE,
+enum PRINT {
+    PRINT_NONE = 0,
+    PRINT_MIN = 1,
+    PRINT_SOME = 2,
+    PRINT_MORE = 4
 };
 
 enum StopType {
@@ -56,35 +57,41 @@ enum StopType {
     STOP_MOD_REL_RES
 };
 
-struct PCGInputParam{
+struct PCGInputParam {
     INT maxIter;
     DBL relTol;
     DBL absTol;
     INT restart;
     PRINT printLevel;
-    PCGInputParam():maxIter(20),relTol(1e-3),absTol(1e-5),restart(20),
-        printLevel(PRINT_NONE){};
-    PCGInputParam(PCGInputParam& inParam){
-        this->maxIter=inParam.maxIter;
-        this->relTol=inParam.relTol;
-        this->absTol=inParam.absTol;
-        this->restart=inParam.restart;
-        this->printLevel=inParam.printLevel;
+
+    PCGInputParam() : maxIter(20), relTol(1e-4), absTol(1e-7), restart(20),
+                      printLevel(PRINT_NONE) {};
+
+    PCGInputParam(PCGInputParam &inParam) {
+        this->maxIter = inParam.maxIter;
+        this->relTol = inParam.relTol;
+        this->absTol = inParam.absTol;
+        this->restart = inParam.restart;
+        this->printLevel = inParam.printLevel;
     }
-    ~PCGInputParam(){};
+
+    ~PCGInputParam() {};
 };
-struct PCGOutputParam{
+
+struct PCGOutputParam {
     INT iter;
     DBL norm2;
     DBL normInf;
-    PCGOutputParam():iter(0),norm2(0),normInf(0){};
-    PCGOutputParam(PCGOutputParam &outParam){
-        this->iter=outParam.iter;
-        this->norm2=outParam.norm2;
-        this->normInf=outParam.normInf;
-    }
-    ~PCGOutputParam(){};
 
+    PCGOutputParam() : iter(0), norm2(0), normInf(0) {};
+
+    PCGOutputParam(PCGOutputParam &outParam) {
+        this->iter = outParam.iter;
+        this->norm2 = outParam.norm2;
+        this->normInf = outParam.normInf;
+    }
+
+    ~PCGOutputParam() {};
 };
 
 class PCG {
@@ -94,29 +101,29 @@ private:
     INT pcflag;
     LOP lop;
 
-    void ApplyPreconditioner(VEC &rk,VEC &zk,LOP &lop);
+    void ApplyPreconditioner(const VEC &rk, VEC &zk, const LOP &lop);
 
-    void PrintInfo(const PRINT &ptrlvl,const StopType &type,const INT &iter,
-            const DBL &relres,const DBL &absres,const DBL &factor);
+    void PrintInfo(const PRINT &ptrlvl, const StopType &type, const INT &iter,
+                   const DBL &relres, const DBL &absres, const DBL &factor);
 
     void Final(const INT &iter, const INT &maxit, const DBL &relres);
 
 public:
-    PCG() : inParam(),outParam(),pcflag(0),lop(0,0){};
+    PCG() : inParam(), outParam(), pcflag(0), lop(0, 0) {};
 
-    PCG(PCGInputParam &inParam,LOP &lop) :inParam(inParam),outParam(),
-    pcflag(0),lop(lop){};
+    PCG(PCGInputParam &inParam, const LOP &lop) : inParam(inParam), outParam(),
+                                                  pcflag(0), lop(lop) {};
 
-    FaspRetCode SetUp(PCGInputParam &inParam);
+    FaspRetCode SetUp(const PCGInputParam &inParam);
 
     FaspRetCode SetUpPCD(const LOP &lop);
 
-    FaspRetCode Start(MAT &A,VEC &b,VEC &x,const StopType &type,
-            PCGOutputParam &outParam);
+    FaspRetCode Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
+                      PCGOutputParam &outParam);
 
     void CleanPCD();
 
-    ~PCG(){};
+    ~PCG() {};
 };
 
 #endif //SRC_PCG_HXX
