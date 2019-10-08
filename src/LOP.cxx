@@ -60,6 +60,12 @@ void LOP::Transpose(){
     this->ncol=tmp;
 }
 
+/// Return VEC = *this * v
+VEC LOP::MultVec(const VEC& v) const{
+    //suppose *this is a identical mapping
+    return v;
+
+}
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/

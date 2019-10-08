@@ -71,7 +71,7 @@ public:
     virtual void Transpose();
 
     /// Return VEC = *this * v
-    virtual VEC MultVec(const VEC& v) const = 0;
+    virtual VEC MultVec(const VEC& v) const;
 };
 
 #endif /* end if for __LOP_HEADER__ */
