@@ -55,7 +55,6 @@ void PCG::Final(const INT &iter, const INT &maxit, const DBL &relres) {
 
 // Assign maxIter, relTol, absTol, restart, printLevel to *this
 FaspRetCode PCG::SetUp(const PCGInputParam &inParam) {
-    std::cout<<"inParam.relTol : "<<inParam.relTol<<std::endl;
     try {
         if (inParam.restart <= 0 || inParam.absTol <= 0 ||
             inParam.relTol <= 0 || inParam.maxIter <= 0) {
@@ -75,8 +74,6 @@ FaspRetCode PCG::SetUp(const PCGInputParam &inParam) {
     this->inParam.relTol=inParam.relTol;
     this->inParam.maxIter=inParam.maxIter;
     this->inParam.printLevel=inParam.printLevel;
-
-    std::cout<<"this->inParam.relTol : "<<this->inParam.relTol<<std::endl;
 
     return FaspRetCode::SUCCESS;
 }
