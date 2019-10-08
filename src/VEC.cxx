@@ -11,26 +11,26 @@
 #include "VEC.hxx"
 
 /// Assign the size and the same value to a VEC object
-VEC::VEC(const INT& sizeNeed, const DBL& valueNeed) {
+VEC::VEC(const INT &sizeNeed, const DBL &valueNeed) {
     this->values.assign(sizeNeed, valueNeed);
     this->size = sizeNeed;
 }
 
 /// Assign a vector object to a VEC object
-VEC::VEC(const std::vector<DBL>& vt) {
+VEC::VEC(const std::vector<DBL> &vt) {
     this->values.operator=(vt);
     this->size = vt.size();
 }
 
 /// Assign a const VEC object to a VEC object
-VEC::VEC(const VEC& v) {
+VEC::VEC(const VEC &v) {
     this->values.operator=(v.values);
     this->size = v.size;
 }
 
 /// Assign a DBL array to a VEC object
-VEC::VEC(const INT& size, const DBL *ptr) {
-    if ( ptr == nullptr || size == 0 ) {
+VEC::VEC(const INT &size, const DBL *ptr) {
+    if (ptr == nullptr || size == 0) {
         this->values.resize(0);
         this->size = 0;
         return;
@@ -40,55 +40,70 @@ VEC::VEC(const INT& size, const DBL *ptr) {
 }
 
 /// Overload = operator
-VEC& VEC::operator=(const VEC& v) {
+VEC &VEC::operator=(const VEC &v) {
     this->values.operator=(v.values);
     this->size = v.size;
     return *this;
 }
 
 /// Overload [] operator, entries can be modified
-DBL& VEC::operator[](const INT& position) {
+DBL &VEC::operator[](const INT &position) {
     return this->values[position];
 }
 
 /// Overload [] operator, entries cannot be modified
-const DBL& VEC::operator[](const INT& position) const {
+const DBL &VEC::operator[](const INT &position) const {
     return this->values[position];
 }
 
 /// Overload += operator
-VEC& VEC::operator+=(const VEC& v) {
-    for ( INT j = 0; j < this->size; j++ ) this->values[j] += v.values[j];
+VEC &VEC::operator+=(const VEC &v) {
+    INT len = this->size - this->size % 4;
+    for (int j = 0; j < len; j += 4) {
+        this->values[j] += v.values[j];
+        this->values[j + 1] += v.values[j + 1];
+        this->values[j + 2] += v.values[j + 2];
+        this->values[j + 3] += v.values[j + 3];
+    }
+    for (int j = len; j < this->size; j++) this->values[j] += v.values[j];
+
     return *this;
 }
 
 /// Overload -= operator
-VEC& VEC::operator-=(const VEC& v) {
-    for ( INT j = 0; j < this->size; j++ ) this->values[j] -= v.values[j];
+VEC &VEC::operator-=(const VEC &v) {
+    INT len = this->size - this->size % 4;
+    for (int j = 0; j < len; j += 4) {
+        this->values[j] -= v.values[j];
+        this->values[j + 1] -= v.values[j + 1];
+        this->values[j + 2] -= v.values[j + 2];
+        this->values[j + 3] -= v.values[j + 3];
+    }
+    for (int j = len; j < this->size; j++) this->values[j] -= v.values[j];
     return *this;
 }
 
 /// Set the size of VEC object and reserve memory
-void VEC::SetSize(const INT& sizeNeed) {
+void VEC::SetSize(const INT &sizeNeed) {
     this->size = sizeNeed;
     this->values.resize(sizeNeed); // Must set the size of vector as well!!!
 }
 
 /// Assign the size and the same value to a VEC object
-void VEC::SetValues(const INT& sizeNeed, const DBL& valueNeed) {
+void VEC::SetValues(const INT &sizeNeed, const DBL &valueNeed) {
     this->size = sizeNeed;
     this->values.assign(sizeNeed, valueNeed);
 }
 
 /// Assign a vector object to a VEC object
-void VEC::SetValues(const std::vector<DBL>& vt) {
+void VEC::SetValues(const std::vector<DBL> &vt) {
     this->values.operator=(vt);
     this->size = vt.size();
 }
 
 /// Assign a DBL array to a VEC object, user should allocate memory for array
-void VEC::SetValues(const INT& sizeNeed, const DBL *array) {
-    if ( array == nullptr || sizeNeed == 0 ) {
+void VEC::SetValues(const INT &sizeNeed, const DBL *array) {
+    if (array == nullptr || sizeNeed == 0) {
         this->size = 0;
         this->values.resize(0);
         return; // return an empty VEC object!
@@ -98,131 +113,12 @@ void VEC::SetValues(const INT& sizeNeed, const DBL *array) {
 }
 
 /// Get the value of (*this)[position]
-DBL VEC::GetValue(const INT& position) const {
+DBL VEC::GetValue(const INT &position) const {
     return this->values.at(position);
 }
 
 /// Get array = (*this) of size = min(size, this->GetSize())
-void VEC::GetArray(const INT& sizeNeed, DBL *array) const {
-    if ( sizeNeed == 0 || this->size == 0 ) {
-        delete[] array;
-        array = nullptr;
-        return;
-    }
-
-    INT len = sizeNeed > this->size ? this->size : sizeNeed;
-    delete[] array;
-    array=nullptr;
-    array = new DBL[len];
-    for ( INT j = 0; j < len; j++ )
-        array[j] = this->values[j];
-}
-
-/// Get the size of *this
-INT VEC::GetSize() const {
-    return this->size;
-}
-
-/// Get the capacity of *this
-INT VEC::GetCapacity() const {
-    return this->values.capacity();
-}
-
-/// Scale (*this)[j] = a * (*this)[j] by a scalar
-void VEC::Scale(const DBL& a) {
-    for ( INT j = 0; j < this->size; j++ ) this->values[j] *= a;
-}
-
-/// Scale by a vector (*this)[j] *= v[j]
-void VEC::PointwiseMult(const VEC& v) {
-    for ( INT j = 0; j < this->size; j++ ) this->values[j] *= v.values[j];
-}
-
-/// Compute (*this)[j] = 1 / (*this)[j]
-void VEC::Reciprocal() {
-    for ( INT j = 0; j < this->size; j++ ) this->values[j] = 1 / this->values[j];
-}
-
-/// Inverse scale by a nonzero vector (*this)[j] = (*this)[j] / v[j]
-void VEC::PointwiseDivide(const VEC& v) {
-    for ( INT j = 0; j < this->size; j++ ) this->values[j] /= v.values[j];
-}
-
-/// Copy *this to v
-void VEC::CopyTo(VEC& vec) const {
-    vec.values.operator=(this->values);
-    vec.size = this->size;
-}
-
-/// Shift (*this)[j] += a by a scalar
-void VEC::Shift(const DBL& a) {
-    for ( INT j = 0; j < this->size; j++ ) this->values[j] += a;
-}
-
-/// Compute *this = abs(*this)
-void VEC::Abs() {
-    for ( INT j = 0; j < this->size; j++ ) this->values[j] = fabs(this->values[j]);
-}
-
-/// *this = a * *this + b * vec
-void VEC::Add(const DBL& a, const DBL& b, const VEC& v) {
-    for ( INT j = 0; j < this->size; j++ )
-        this->values[j] = a * this->values[j] + b * v.values[j];
-}
-
-/// *this = a * vec1 + b * vec2
-void VEC::Add(const DBL& a, const VEC& v1, const DBL& b, const VEC& v2) {
-    this->size = v1.size;
-    this->values.resize(v1.size);
-    for ( INT j = 0; j < v1.size; j++ ) this->values[j] = a * v1.values[j] + b * v2.values[j];
-}
-
-/// Find max(*this)
-DBL VEC::Max() const {
-    DBL max = this->values[0];
-    for ( INT j = 1; j < this->size; j++ ) {
-        if ( max < this->values[j] ) max = this->values[j];
-    }
-    return max;
-}
-
-/// Find min(*this)
-DBL VEC::Min() const {
-    DBL min = this->values[0];
-    for ( INT j = 1; j < this->size; j++ ) {
-        if ( min > this->values[j] ) min = this->values[j];
-    }
-    return min;
-}
-
-/// Compute Euclidean norm of *this
-DBL VEC::Norm2() const {
-    DBL norm2 = 0.0;
-    for ( INT j = 0; j < this->size; j++ ) norm2 += this->values[j] * this->values[j];
-    return sqrt(norm2);
-}
-
-/// Compute Infinity norm of *this
-DBL VEC::NormInf() const {
-    DBL normInf = fabs(this->values[0]), absValue;
-    for ( INT j = 1; j < this->size; j++ ) {
-        absValue = fabs(this->values[j]);
-        if ( normInf < absValue ) normInf = absValue;
-    }
-    return normInf;
-}
-
-/// Dot product of *this and vec
-DBL VEC::Dot(const VEC& v) const {
-    DBL dot = 0.0;
-    for ( INT j = 0; j < this->size; j++ ) dot += this->values[j] * v.values[j];
-    return dot;
-}
-
-//-----------------------------------------------------------------------------------
-
-/// Get array = (*this) of size = min(size, this->GetSize())
-void VEC::GetArray2(const INT &sizeNeed, DBL *array) const {
+void VEC::GetArray(const INT &sizeNeed, DBL *array) const {
     if (sizeNeed == 0 || this->size == 0) {
         delete[] array;
         array = nullptr;
@@ -245,8 +141,18 @@ void VEC::GetArray2(const INT &sizeNeed, DBL *array) const {
     for (int j = len4; j < len; j++) array[j] = this->values[j];
 }
 
+/// Get the size of *this
+INT VEC::GetSize() const {
+    return this->size;
+}
+
+/// Get the capacity of *this
+INT VEC::GetCapacity() const {
+    return this->values.capacity();
+}
+
 /// Scale (*this)[j] = a * (*this)[j] by a scalar
-void VEC::Scale2(const DBL &a) {
+void VEC::Scale(const DBL &a) {
     int len = this->size - this->size % 4;
 
     for (int j = 0; j < len; j += 4) {
@@ -260,7 +166,7 @@ void VEC::Scale2(const DBL &a) {
 }
 
 /// Scale by a vector (*this)[j] *= v[j]
-void VEC::PointwiseMult2(const VEC &v) {
+void VEC::PointwiseMult(const VEC &v) {
     int len = this->size - this->size % 4;
 
     for (int j = 0; j < len; j += 4) {
@@ -274,7 +180,7 @@ void VEC::PointwiseMult2(const VEC &v) {
 }
 
 /// Compute (*this)[j] = 1 / (*this)[j]
-void VEC::Reciprocal2() {
+void VEC::Reciprocal() {
     int len = this->size - this->size % 4;
 
     for (int j = 0; j < len; j += 4) {
@@ -288,7 +194,7 @@ void VEC::Reciprocal2() {
 }
 
 /// Inverse scale by a nonzero vector (*this)[j] = (*this)[j] / v[j]
-void VEC::PointwiseDivide2(const VEC &v) {
+void VEC::PointwiseDivide(const VEC &v) {
     int len = this->size - this->size % 4;
 
     for (int j = 0; j < len; j += 4) {
@@ -301,8 +207,14 @@ void VEC::PointwiseDivide2(const VEC &v) {
     for (INT j = len; j < this->size; j++) this->values[j] /= v.values[j];
 }
 
+/// Copy *this to v
+void VEC::CopyTo(VEC &vec) const {
+    vec.values.operator=(this->values);
+    vec.size = this->size;
+}
+
 /// Shift (*this)[j] += a by a scalar
-void VEC::Shift2(const DBL &a) {
+void VEC::Shift(const DBL &a) {
     int len = this->size - this->size % 4;
 
     for (int j = 0; j < len; j += 4) {
@@ -316,7 +228,7 @@ void VEC::Shift2(const DBL &a) {
 }
 
 /// Compute *this = abs(*this)
-void VEC::Abs2() {
+void VEC::Abs() {
     int len = this->size - this->size % 4;
 
     for (int j = 0; j < len; j += 4) {
@@ -330,7 +242,7 @@ void VEC::Abs2() {
 }
 
 /// *this = a * *this + b * vec
-void VEC::Add2(const DBL &a, const DBL &b, const VEC &v) {
+void VEC::Add(const DBL &a, const DBL &b, const VEC &v) {
     int len = this->size - this->size % 4;
 
     for (int j = 0; j < len; j += 4) {
@@ -345,7 +257,7 @@ void VEC::Add2(const DBL &a, const DBL &b, const VEC &v) {
 }
 
 /// *this = a * vec1 + b * vec2
-void VEC::Add2(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
+void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
     this->size = v1.size;
     this->values.resize(v1.size);
 
@@ -362,7 +274,7 @@ void VEC::Add2(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
 }
 
 /// Find max(*this)
-DBL VEC::Max2() const {
+DBL VEC::Max() const {
     DBL max1 = this->values[0];
     DBL max2 = this->values[1];
     DBL max3 = this->values[2];
@@ -389,7 +301,7 @@ DBL VEC::Max2() const {
 }
 
 /// Find min(*this)
-DBL VEC::Min2() const {
+DBL VEC::Min() const {
     DBL min1 = this->values[0];
     DBL min2 = this->values[1];
     DBL min3 = this->values[2];
@@ -416,7 +328,7 @@ DBL VEC::Min2() const {
 }
 
 /// Compute Euclidean norm of *this
-DBL VEC::Norm22() const {
+DBL VEC::Norm2() const {
     DBL tmp1 = 0.0;
     DBL tmp2 = 0.0;
     DBL tmp3 = 0.0;
@@ -438,7 +350,7 @@ DBL VEC::Norm22() const {
 }
 
 /// Compute Infinity norm of *this
-DBL VEC::NormInf2() const {
+DBL VEC::NormInf() const {
 
     INT len = this->size - this->size % 4;
     DBL normtmp1 = fabs(this->values[0]);
@@ -470,7 +382,7 @@ DBL VEC::NormInf2() const {
 }
 
 /// Dot product of *this and vec
-DBL VEC::Dot2(const VEC &v) const {
+DBL VEC::Dot(const VEC &v) const {
     DBL dot1 = 0.0, dot2 = 0.0, dot3 = 0.0, dot4 = 0.0;
     INT len = this->size - this->size % 4;
 

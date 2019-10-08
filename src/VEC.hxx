@@ -124,35 +124,6 @@ public:
 
     /// Dot product of *this and vec
     DBL Dot(const VEC& v) const;
-
-    //-------------------------------------------------------------------------------
-    void GetArray2(const INT &sizeNeed, DBL *array) const;
-
-    void Scale2(const DBL &a);
-
-    void PointwiseMult2(const VEC &v);
-
-    void Reciprocal2();
-
-    void PointwiseDivide2(const VEC &v);
-
-    void Shift2(const DBL &a);
-
-    void Abs2();
-
-    void Add2(const DBL &a, const DBL &b, const VEC &v);
-
-    void Add2(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2);
-
-    DBL Max2() const;
-
-    DBL Min2() const;
-
-    DBL Norm22() const;
-
-    DBL NormInf2() const;
-
-    DBL Dot2(const VEC &v) const;
 };
 
 #endif /* end if for __VEC_HEADER__ */
