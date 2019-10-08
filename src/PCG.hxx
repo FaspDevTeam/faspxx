@@ -109,7 +109,7 @@ private:
     LOP lop;
     PRINT printLevel;
 
-    void ApplyPreconditioner() {};
+    void ApplyPreconditioner(VEC &rk,VEC &zk,LOP &lop);
 
     void PrintInfo(const PRINT &ptrlvl,const StopType &type,const INT &iter,
             const DBL &relres,const DBL &absres,const DBL &factor);
@@ -117,10 +117,10 @@ private:
     void Final(const INT &iter, const INT &maxit, const DBL &relres);
 
 public:
-    PCG() : inParam(),outParam(),pcflag(0),lop(0,0),printLevel(0){};
+    PCG() : inParam(),outParam(),pcflag(0),lop(0,0),printLevel(PRINT_NONE){};
 
     PCG(PCGInputParam &inParam,LOP &lop) :inParam(inParam),outParam(),
-    pcflag(0),lop(0,0),printLevel(0){};
+    pcflag(0),lop(0,0),printLevel(PRINT_NONE){};
 
     FaspRetCode SetUp(PCGInputParam &inParam);
 

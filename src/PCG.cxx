@@ -5,6 +5,12 @@
 #include "PCG.hxx"
 #include "VECUtil.hxx"
 
+// Apply preconditioner
+void ApplyPreconditioner(VEC &rk,VEC &zk,LOP &lop){
+    zk=lop.MultVec(rk);
+}
+
+// Print some relevant information
 void PrintInfo(const PRINT &ptrlvl,const StopType &type,const INT &iter,
                const DBL &relres,const DBL &absres,const DBL &factor){
     if(ptrlvl>=PRINT_NONE){
@@ -29,6 +35,7 @@ void PrintInfo(const PRINT &ptrlvl,const StopType &type,const INT &iter,
     }
 }
 
+// Print some information about iteration number and relative residual
 void PCG::Final(const INT &iter,const INT &maxit,const DBL &relres){
     if ( iter > maxit )
         std::cout<<"### WARNING: MaxIt = "<<maxit<<" reached with relative residual "<<relres<<std::endl;
@@ -37,6 +44,7 @@ void PCG::Final(const INT &iter,const INT &maxit,const DBL &relres){
     }
 }
 
+// Assign maxIter, relTol, absTol, restart, printLevel to *this
 FaspRetCode PCG::SetUp(PCGInputParam &inParam){
     try {
         if(inParam.restart>0 || inParam.absTol>0 ||
@@ -58,11 +66,13 @@ FaspRetCode PCG::SetUp(PCGInputParam &inParam){
 
 }
 
+// Assign lop to *this
 FaspRetCode PCG::SetUpPCD(const LOP &lop) {
     this->lop=lop;
     return FaspRetCode::SUCCESS;
 }
 
+// Start PCG
 FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
                   PCGOutputParam &outParam) {
 
@@ -94,7 +104,7 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
     rk.Add(1.0,b,-1.0,tmp);
 
     if(pcflag==1)
-        ApplyPreconditioner(); // Apply preconditioner
+        ApplyPreconditioner(rk,zk,this->lop); // Apply preconditioner
     else
         zk=rk; // No preconditioner
 
@@ -161,7 +171,7 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
             case STOP_REL_PRECRES:
                 // z = B(r)
                 if (this->pcflag == 1)
-                    ApplyPreconditioner(); /* Apply preconditioner */
+                    ApplyPreconditioner(rk,zk,this->lop); /* Apply preconditioner */
                 else
                     zk = rk; /* No preconditioenr */
 
@@ -208,7 +218,7 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
                     case STOP_REL_PRECRES:
                         // z = B(r)
                         if (pcflag == 1)
-                            ApplyPreconditioner(); // Apply preconditioner
+                            ApplyPreconditioner(rk,zk,this->lop); // Apply preconditioner
                         else
                             zk = rk; // No preconditioner
 
@@ -252,7 +262,7 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
                 case STOP_REL_PRECRES:
                     // z = B(r)
                     if (pcflag == 1)
-                        ApplyPreconditioner(); // Apply preconditioner
+                        ApplyPreconditioner(rk,zk,this->lop); // Apply preconditioner
                     else
                         zk = rk; // No preconditioner
 
@@ -290,7 +300,7 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
         // Compute z_k = B(r_k)
         if (type != STOP_REL_PRECRES) {
             if (pcflag == 1)
-                ApplyPreconditioner(); // Apply preconditioner
+                ApplyPreconditioner(rk,zk,this->lop); // Apply preconditioner
             else
                 zk = rk; // No preconditioner
         }
@@ -313,6 +323,7 @@ FaspRetCode PCG::Start(MAT &A,VEC &b,VEC &x,const StopType &type,
     return errorCode;
 }
 
+// Clean preconditioner
 void PCG::CleanPCD() {
     LOP lop;
     this->lop = lop;
