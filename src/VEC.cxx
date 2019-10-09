@@ -265,9 +265,9 @@ void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
 
     for (int j = 0; j < len; j += 4) {
         this->values[j] = a * v1.values[j] + b * v2.values[j];
-        this->values[j] = a * v1.values[j] + b * v2.values[j];
-        this->values[j] = a * v1.values[j] + b * v2.values[j];
-        this->values[j] = a * v1.values[j] + b * v2.values[j];
+        this->values[j] = a * v1.values[j+1] + b * v2.values[j+1];
+        this->values[j] = a * v1.values[j+2] + b * v2.values[j+2];
+        this->values[j] = a * v1.values[j+3] + b * v2.values[j+3];
     }
     for (INT j = len; j < v1.size; j++)
         this->values[j] = a * v1.values[j] + b * v2.values[j];
