@@ -31,7 +31,8 @@ VEC::VEC(const VEC &v) {
 /// Assign a DBL array to a VEC object
 VEC::VEC(const INT &size, const DBL *ptr) {
     if (ptr == nullptr || size == 0) {
-        this->values.resize(0);
+        std::vector<DBL> tmp;
+        this->values=tmp;
         this->size = 0;
         return;
     }
@@ -86,7 +87,7 @@ VEC &VEC::operator-=(const VEC &v) {
 /// Set the size of VEC object and reserve memory
 void VEC::SetSize(const INT &sizeNeed) {
     this->size = sizeNeed;
-    this->values.resize(sizeNeed); // Must set the size of vector as well!!!
+    this->values.reserve(sizeNeed); // Must set the size of vector as well!!!
 }
 
 /// Assign the size and the same value to a VEC object
@@ -105,7 +106,8 @@ void VEC::SetValues(const std::vector<DBL> &vt) {
 void VEC::SetValues(const INT &sizeNeed, const DBL *array) {
     if (array == nullptr || sizeNeed == 0) {
         this->size = 0;
-        this->values.resize(0);
+        std::vector<DBL> tmp;
+        this->values=tmp;
         return; // return an empty VEC object!
     }
     this->values.assign(array, array + sizeNeed);
@@ -259,7 +261,7 @@ void VEC::Add(const DBL &a, const DBL &b, const VEC &v) {
 /// *this = a * vec1 + b * vec2
 void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
     this->size = v1.size;
-    this->values.resize(v1.size);
+    this->values.reserve(v1.size);
 
     int len = this->size - this->size % 4;
 
