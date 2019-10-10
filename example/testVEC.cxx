@@ -152,13 +152,13 @@ int main()
      */
     DBL value;
     value = v10.GetValue(2);
-    cout << "v10.GetValuec() : " << value << endl;
+    cout << "v10.GetValue() : " << value << endl;
 
     /**
      * output :
      * 452, 0.12354, 8964
      */
-    DBL *array;
+    DBL *array=new DBL[3];
     v10.GetArray(3,array);
     cout << "array : ";
     for ( int j=0; j<3; j++ ) cout << array[j] << "  ";
