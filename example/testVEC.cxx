@@ -116,7 +116,7 @@ int main()
      * output :
      * v6.GetSize() : 10
      */
-    v6.SetSize(10);
+    v6.Reserve(10);
     cout << "v6.GetSize() : " << v6.GetSize() << endl;
 
     /**

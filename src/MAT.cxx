@@ -552,15 +552,14 @@ void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
 
 /// Return VEC = *this * vec.
 VEC MAT::MultVec(const VEC& v) const {
-    VEC w;
-    w.SetSize(this->nrow);
+    VEC w(this->ncol);
 
     INT begin, end, i, k;
     if ( this->values.size() == 0 ) {
         for ( i = 0; i < this->nrow; i++ ) {
             begin = this->rowPtr[i];
             end   = this->rowPtr[i+1];
-            for ( k = begin; k < end; k++ ) w[i] += v[this->colInd[k]];
+            for ( w[i] = 0.0, k = begin; k < end; k++ ) w[i] += v[this->colInd[k]];
         }
     } else {
         for ( i = 0; i < this->nrow; i++ ) {

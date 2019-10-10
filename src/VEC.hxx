@@ -22,8 +22,8 @@
 class VEC {
 
 private:
-    std::vector<DBL> values;  ///< Actual values of VEC in DBL
-    INT size;                 ///< Book-keeping size of VEC
+    std::vector<DBL> values;  ///< Actual values of vector in DBL
+    INT size;                 ///< Book-keeping size of VEC: It's NOT values.size!
 
 public:
     /// Default constructor
@@ -60,10 +60,10 @@ public:
     VEC& operator-=(const VEC& v);
 
     /// Set the size of VEC object and reserve memory
-    void SetSize(const INT& size);
+    void Reserve(const INT& size);
 
     /// Assign the size and the same value to a VEC object
-    void SetValues(const INT& size, const DBL& value);
+    void SetValues(const INT& size, const DBL& value = 0.0);
 
     /// Assign a vector object to a VEC object
     void SetValues(const std::vector<DBL>& vt);
@@ -72,7 +72,7 @@ public:
     void SetValues(const INT& size, const DBL *array);
 
     /// Get the value of (*this)[position]
-    DBL GetValue(const INT& position) const; // Todo: get multiple entries
+    DBL GetValue(const INT& position) const; // TODO: get multiple entries
 
     /// Get array = (*this) of size = min(size, this->GetSize())
     void GetArray(const INT& size, DBL *array) const;

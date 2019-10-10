@@ -30,7 +30,7 @@ VEC::VEC(const VEC &v) {
 
 /// Assign a DBL array to a VEC object
 VEC::VEC(const INT &size, const DBL *ptr) {
-    if (ptr == nullptr || size == 0) {
+    if ( ptr == nullptr || size == 0 ) {
         std::vector<DBL> tmp;
         this->values=tmp;
         this->size = 0;
@@ -59,33 +59,34 @@ const DBL &VEC::operator[](const INT &position) const {
 
 /// Overload += operator
 VEC &VEC::operator+=(const VEC &v) {
+    // unroll long for loops
     INT len = this->size - this->size % 4;
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] += v.values[j];
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     += v.values[j];
         this->values[j + 1] += v.values[j + 1];
         this->values[j + 2] += v.values[j + 2];
         this->values[j + 3] += v.values[j + 3];
     }
-    for (int j = len; j < this->size; j++) this->values[j] += v.values[j];
-
+    for ( INT j = len; j < this->size; j++ ) this->values[j] += v.values[j];
     return *this;
 }
 
 /// Overload -= operator
 VEC &VEC::operator-=(const VEC &v) {
+    // unroll long for loops
     INT len = this->size - this->size % 4;
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] -= v.values[j];
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     -= v.values[j];
         this->values[j + 1] -= v.values[j + 1];
         this->values[j + 2] -= v.values[j + 2];
         this->values[j + 3] -= v.values[j + 3];
     }
-    for (int j = len; j < this->size; j++) this->values[j] -= v.values[j];
+    for ( INT j = len; j < this->size; j++ ) this->values[j] -= v.values[j];
     return *this;
 }
 
 /// Set the size of VEC object and reserve memory
-void VEC::SetSize(const INT &sizeNeed) {
+void VEC::Reserve(const INT &sizeNeed) {
     this->size = sizeNeed;
     this->values.reserve(sizeNeed); // Must set the size of vector as well!!!
 }
@@ -104,10 +105,10 @@ void VEC::SetValues(const std::vector<DBL> &vt) {
 
 /// Assign a DBL array to a VEC object, user should allocate memory for array
 void VEC::SetValues(const INT &sizeNeed, const DBL *array) {
-    if (array == nullptr || sizeNeed == 0) {
-        this->size = 0;
+    if ( array == nullptr || sizeNeed == 0 ) {
         std::vector<DBL> tmp;
-        this->values=tmp;
+        this->values = tmp;
+        this->size = 0;
         return; // return an empty VEC object!
     }
     this->values.assign(array, array + sizeNeed);
@@ -121,26 +122,21 @@ DBL VEC::GetValue(const INT &position) const {
 
 /// Get array = (*this) of size = min(size, this->GetSize())
 void VEC::GetArray(const INT &sizeNeed, DBL *array) const {
-    if (sizeNeed == 0 || this->size == 0) {
-        delete[] array;
-        array = nullptr;
-        return;
-    }
+    if ( sizeNeed == 0 || this->size == 0 ) return;
 
     INT len = sizeNeed > this->size ? this->size : sizeNeed;
-    delete[] array;
-    array = nullptr;
-    array = new DBL[len];
+    //if ( array != nullptr ) delete[] array;
+    //array = new DBL[len]; // TODO: Shall we allocate RAM outside?
 
-    int len4 = len - len % 4;
-
-    for (int j = 0; j < len4; j += 4) {
-        array[j] = this->values[j];
+    // unroll long for loops
+    INT len4 = len - len % 4;
+    for ( INT j = 0; j < len4; j += 4 ) {
+        array[j]     = this->values[j];
         array[j + 1] = this->values[j + 1];
         array[j + 2] = this->values[j + 2];
         array[j + 3] = this->values[j + 3];
     }
-    for (int j = len4; j < len; j++) array[j] = this->values[j];
+    for ( INT j = len4; j < len; j++ ) array[j] = this->values[j];
 }
 
 /// Get the size of *this
@@ -155,58 +151,54 @@ INT VEC::GetCapacity() const {
 
 /// Scale (*this)[j] = a * (*this)[j] by a scalar
 void VEC::Scale(const DBL &a) {
-    int len = this->size - this->size % 4;
-
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] *= a;
+    // unroll long for loops
+    INT len = this->size - this->size % 4;
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     *= a;
         this->values[j + 1] *= a;
         this->values[j + 2] *= a;
         this->values[j + 3] *= a;
     }
-
-    for (INT j = len; j < this->size; j++) this->values[j] *= a;
+    for ( INT j = len; j < this->size; j++ ) this->values[j] *= a;
 }
 
 /// Scale by a vector (*this)[j] *= v[j]
 void VEC::PointwiseMult(const VEC &v) {
-    int len = this->size - this->size % 4;
-
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] *= v.values[j];
+    // unroll long for loops
+    INT len = this->size - this->size % 4;
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     *= v.values[j];
         this->values[j + 1] *= v.values[j + 1];
         this->values[j + 2] *= v.values[j + 2];
         this->values[j + 3] *= v.values[j + 3];
     }
-
-    for (INT j = len; j < this->size; j++) this->values[j] *= v.values[j];
+    for ( INT j = len; j < this->size; j++ ) this->values[j] *= v.values[j];
 }
 
 /// Compute (*this)[j] = 1 / (*this)[j]
 void VEC::Reciprocal() {
-    int len = this->size - this->size % 4;
-
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] = 1 / this->values[j];
-        this->values[j + 1] = 1 / this->values[j + 1];
-        this->values[j + 2] = 1 / this->values[j + 2];
-        this->values[j + 3] = 1 / this->values[j + 3];
+    // unroll long for loops
+    INT len = this->size - this->size % 4;
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     = 1.0 / this->values[j];
+        this->values[j + 1] = 1.0 / this->values[j + 1];
+        this->values[j + 2] = 1.0 / this->values[j + 2];
+        this->values[j + 3] = 1.0 / this->values[j + 3];
     }
-
-    for (INT j = len; j < this->size; j++) this->values[j] = 1 / this->values[j];
+    for ( INT j = len; j < this->size; j++ ) this->values[j] = 1 / this->values[j];
 }
 
 /// Inverse scale by a nonzero vector (*this)[j] = (*this)[j] / v[j]
 void VEC::PointwiseDivide(const VEC &v) {
-    int len = this->size - this->size % 4;
-
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] /= v.values[j];
+    // unroll long for loops
+    INT len = this->size - this->size % 4;\
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     /= v.values[j];
         this->values[j + 1] /= v.values[j + 1];
         this->values[j + 2] /= v.values[j + 2];
         this->values[j + 3] /= v.values[j + 3];
     }
-
-    for (INT j = len; j < this->size; j++) this->values[j] /= v.values[j];
+    for ( INT j = len; j < this->size; j++ ) this->values[j] /= v.values[j];
 }
 
 /// Copy *this to v
@@ -217,44 +209,41 @@ void VEC::CopyTo(VEC &vec) const {
 
 /// Shift (*this)[j] += a by a scalar
 void VEC::Shift(const DBL &a) {
-    int len = this->size - this->size % 4;
-
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] += a;
+    // unroll long for loops
+    INT len = this->size - this->size % 4;
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     += a;
         this->values[j + 1] += a;
         this->values[j + 2] += a;
         this->values[j + 3] += a;
     }
-
-    for (INT j = len; j < this->size; j++) this->values[j] += a;
+    for ( INT j = len; j < this->size; j++ ) this->values[j] += a;
 }
 
 /// Compute *this = abs(*this)
 void VEC::Abs() {
-    int len = this->size - this->size % 4;
-
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] = fabs(this->values[j]);
+    // unroll long for loops
+    INT len = this->size - this->size % 4;
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     = fabs(this->values[j]);
         this->values[j + 1] = fabs(this->values[j + 1]);
         this->values[j + 2] = fabs(this->values[j + 2]);
         this->values[j + 3] = fabs(this->values[j + 3]);
     }
-
-    for (INT j = len; j < this->size; j++) this->values[j] = fabs(this->values[j]);
+    for ( INT j = len; j < this->size; j++ ) this->values[j] = fabs(this->values[j]);
 }
 
 /// *this = a * *this + b * vec
 void VEC::Add(const DBL &a, const DBL &b, const VEC &v) {
-    int len = this->size - this->size % 4;
-
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] = a * this->values[j] + b * v.values[j];
+    // unroll long for loops
+    INT len = this->size - this->size % 4;
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     = a * this->values[j]     + b * v.values[j];
         this->values[j + 1] = a * this->values[j + 1] + b * v.values[j + 1];
         this->values[j + 2] = a * this->values[j + 2] + b * v.values[j + 2];
         this->values[j + 3] = a * this->values[j + 3] + b * v.values[j + 3];
     }
-
-    for (INT j = len; j < this->size; j++)
+    for ( INT j = len; j < this->size; j++ )
         this->values[j] = a * this->values[j] + b * v.values[j];
 }
 
@@ -263,15 +252,15 @@ void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
     this->size = v1.size;
     this->values.reserve(v1.size);
 
-    int len = this->size - this->size % 4;
-
-    for (int j = 0; j < len; j += 4) {
-        this->values[j] = a * v1.values[j] + b * v2.values[j];
-        this->values[j] = a * v1.values[j+1] + b * v2.values[j+1];
-        this->values[j] = a * v1.values[j+2] + b * v2.values[j+2];
-        this->values[j] = a * v1.values[j+3] + b * v2.values[j+3];
+    // unroll long for loops
+    INT len = this->size - this->size % 4;
+    for ( INT j = 0; j < len; j += 4 ) {
+        this->values[j]     = a * v1.values[j]     + b * v2.values[j];
+        this->values[j + 1] = a * v1.values[j + 1] + b * v2.values[j + 1];
+        this->values[j + 2] = a * v1.values[j + 2] + b * v2.values[j + 2];
+        this->values[j + 3] = a * v1.values[j + 3] + b * v2.values[j + 3];
     }
-    for (INT j = len; j < v1.size; j++)
+    for ( INT j = len; j < v1.size; j++ )
         this->values[j] = a * v1.values[j] + b * v2.values[j];
 }
 
@@ -282,18 +271,16 @@ DBL VEC::Max() const {
     DBL max3 = this->values[2];
     DBL max4 = this->values[3];
 
-    int len = this->size - this->size % 4;
-
-    for (int j = 4; j < len; j += 4) {
-        if (max1 < this->values[j]) max1 = this->values[j];
-        if (max2 < this->values[j + 1]) max2 = this->values[j + 1];
-        if (max3 < this->values[j + 2]) max3 = this->values[j + 2];
-        if (max4 < this->values[j + 3]) max4 = this->values[j + 3];
+    // unroll long for loops and binary comparison
+    INT len = this->size - this->size % 4;
+    for ( INT j = 4; j < len; j += 4 ) {
+        if ( max1 < this->values[j] )     max1 = this->values[j];
+        if ( max2 < this->values[j + 1] ) max2 = this->values[j + 1];
+        if ( max3 < this->values[j + 2] ) max3 = this->values[j + 2];
+        if ( max4 < this->values[j + 3] ) max4 = this->values[j + 3];
     }
-
-    for (int j = len; j < this->size; j++) {
-        if (max1 < this->values[j])
-            max1 = this->values[j];
+    for ( INT j = len; j < this->size; j++ ) {
+        if ( max1 < this->values[j] ) max1 = this->values[j];
     }
 
     max1 = max1 >= max2 ? max1 : max2;
@@ -309,18 +296,16 @@ DBL VEC::Min() const {
     DBL min3 = this->values[2];
     DBL min4 = this->values[3];
 
-    int len = this->size - this->size % 4;
-
-    for (int j = 4; j < len; j += 4) {
-        if (min1 > this->values[j]) min1 = this->values[j];
-        if (min2 > this->values[j + 1]) min2 = this->values[j + 1];
-        if (min3 > this->values[j + 2]) min3 = this->values[j + 2];
-        if (min4 > this->values[j + 3]) min4 = this->values[j + 3];
+    // unroll long for loops and binary comparison
+    INT len = this->size - this->size % 4;
+    for ( INT j = 4; j < len; j += 4 ) {
+        if ( min1 > this->values[j] )     min1 = this->values[j];
+        if ( min2 > this->values[j + 1] ) min2 = this->values[j + 1];
+        if ( min3 > this->values[j + 2] ) min3 = this->values[j + 2];
+        if ( min4 > this->values[j + 3] ) min4 = this->values[j + 3];
     }
-
-    for (int j = len; j < this->size; j++) {
-        if (min1 > this->values[j])
-            min1 = this->values[j];
+    for ( INT j = len; j < this->size; j++ ) {
+        if ( min1 > this->values[j] ) min1 = this->values[j];
     }
 
     min1 = min1 <= min2 ? min1 : min2;
@@ -336,16 +321,15 @@ DBL VEC::Norm2() const {
     DBL tmp3 = 0.0;
     DBL tmp4 = 0.0;
 
+    // unroll long for loops
     INT len = this->size - this->size % 4;
-
-    for (INT j = 0; j < len; j += 4) {
-        tmp1 += this->values[j] * this->values[j];
+    for ( INT j = 0; j < len; j += 4 ) {
+        tmp1 += this->values[j]     * this->values[j];
         tmp2 += this->values[j + 1] * this->values[j + 1];
         tmp3 += this->values[j + 2] * this->values[j + 2];
         tmp4 += this->values[j + 3] * this->values[j + 3];
     }
-
-    for (INT j = len; j < this->size; j++)
+    for ( INT j = len; j < this->size; j++ )
         tmp1 += this->values[j] * this->values[j];
 
     return sqrt(tmp1 + tmp2 + tmp3 + tmp4);
@@ -353,49 +337,45 @@ DBL VEC::Norm2() const {
 
 /// Compute Infinity norm of *this
 DBL VEC::NormInf() const {
-
-    INT len = this->size - this->size % 4;
-    DBL normtmp1 = fabs(this->values[0]);
-    DBL normtmp2 = fabs(this->values[1]);
-    DBL normtmp3 = fabs(this->values[2]);
-    DBL normtmp4 = fabs(this->values[3]);
+    DBL tmpNorm1 = 0.0, tmpNorm2 = 0.0, tmpNorm3 = 0.0, tmpNorm4 = 0.0;
     DBL tmp1, tmp2, tmp3, tmp4;
 
-    for (INT j = 4; j < len; j += 4) {
+    // unroll long for loops
+    INT len = this->size - this->size % 4;
+    for ( INT j = 0; j < len; j += 4 ) {
         tmp1 = fabs(this->values[j]);
         tmp2 = fabs(this->values[j + 1]);
         tmp3 = fabs(this->values[j + 2]);
         tmp4 = fabs(this->values[j + 3]);
-        if (tmp1 > normtmp1) normtmp1 = tmp1;
-        if (tmp2 > normtmp2) normtmp2 = tmp2;
-        if (tmp3 > normtmp3) normtmp3 = tmp3;
-        if (tmp4 > normtmp4) normtmp4 = tmp4;
+        if ( tmp1 > tmpNorm1 ) tmpNorm1 = tmp1;
+        if ( tmp2 > tmpNorm2 ) tmpNorm2 = tmp2;
+        if ( tmp3 > tmpNorm3 ) tmpNorm3 = tmp3;
+        if ( tmp4 > tmpNorm4 ) tmpNorm4 = tmp4;
     }
-
-    for (INT j = len; j < this->size; j++) {
+    for ( INT j = len; j < this->size; j++ ) {
         tmp1 = fabs(this->values[j]);
-        if (normtmp1 < tmp1) normtmp1 = tmp1;
+        if ( tmpNorm1 < tmp1 ) tmpNorm1 = tmp1;
     }
 
-    normtmp1 = normtmp1 >= normtmp2 ? normtmp1 : normtmp2;
-    normtmp3 = normtmp3 >= normtmp4 ? normtmp3 : normtmp4;
+    tmpNorm1 = tmpNorm1 >= tmpNorm2 ? tmpNorm1 : tmpNorm2;
+    tmpNorm3 = tmpNorm3 >= tmpNorm4 ? tmpNorm3 : tmpNorm4;
 
-    return (normtmp1 > normtmp3 ? normtmp1 : normtmp3);
+    return (tmpNorm1 > tmpNorm3 ? tmpNorm1 : tmpNorm3);
 }
 
 /// Dot product of *this and vec
 DBL VEC::Dot(const VEC &v) const {
     DBL dot1 = 0.0, dot2 = 0.0, dot3 = 0.0, dot4 = 0.0;
-    INT len = this->size - this->size % 4;
 
-    for (int j = 0; j < len; j += 4) {
+    // unroll long for loops
+    INT len = this->size - this->size % 4;
+    for ( INT j = 0; j < len; j += 4 ) {
         dot1 += this->values[j] * v.values[j];
         dot2 += this->values[j + 1] * v.values[j + 1];
         dot3 += this->values[j + 2] * v.values[j + 2];
         dot4 += this->values[j + 3] * v.values[j + 3];
     }
-
-    for (INT j = len; j < this->size; j++) dot1 += this->values[j] * v.values[j];
+    for ( INT j = len; j < this->size; j++ ) dot1 += this->values[j] * v.values[j];
 
     return (dot1 + dot2 + dot3 + dot4);
 }

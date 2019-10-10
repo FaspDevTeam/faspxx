@@ -20,20 +20,21 @@ LOP::LOP(const INT &nrow, const INT &ncol) {
 
 /// Assign nrow, ncol=nrow to *this
 LOP::LOP(const INT& nrow){
-    this->nrow=nrow;
-    this->ncol=nrow;
+    this->nrow = nrow;
+    this->ncol = nrow;
 }
 
 /// Assign LOP object to *this
 LOP::LOP(const LOP& lop){
-    this->nrow=lop.nrow;
-    this->ncol=lop.ncol;
+    this->nrow = lop.nrow;
+    this->ncol = lop.ncol;
 }
 
 /// Overload = operator
 LOP& LOP::operator=(const LOP& lop){
-    this->nrow=lop.nrow;
-    this->ncol=lop.ncol;
+    this->nrow = lop.nrow;
+    this->ncol = lop.ncol;
+    return *this;
 }
 
 /// Get row space dimension
