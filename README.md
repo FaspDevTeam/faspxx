@@ -15,7 +15,9 @@ package; see https://cmake.org on how to use cmake for your own operating system
 The typical command for compiling FASP++ is:
 
   $ mkdir Debug; cd Debug; cmake ..   # configuration using cmake
+  
   $ make                              # make the library as well as examples
+  
   $ make install                      # make the library and install it
 
 This software is free software distributed under the Lesser General Public
