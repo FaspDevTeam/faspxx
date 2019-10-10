@@ -56,17 +56,13 @@ install(TARGETS faspxx
 add_executable(testVecSpeed example/testVecSpeed.cxx)
 target_link_libraries(testVecSpeed faspxx)
 
-# Build VEC class test
-add_executable(testVEC example/testVEC.cxx)
-target_link_libraries(testVEC faspxx)
-
-# Build MAT class test
-add_executable(testMAT example/testMAT.cxx)
-target_link_libraries(testMAT faspxx)
-
 # Build ReadData test
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
+
+# Build PCG class test
+add_executable(testPCG example/testPCG.cxx)
+target_link_libraries(testPCG faspxx)
 
 # Enable or Disable GoogleTest, default "ON" (disable by "-DGTest=OFF")
 option(GTEST "Enable GoogleTest" ON)

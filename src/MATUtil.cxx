@@ -323,7 +323,6 @@ FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
 }
 
 /// Convert a CSR matrix to MAT (private)
-static
 FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
                      const std::vector<INT>& rowPtr, MAT& mat)
@@ -353,8 +352,7 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
                 throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
             else
                 mat.SetValues(row, col, nnz, values, colInd, rowPtr);
-        }
-        catch ( FaspRunTime& ex ) {
+        } catch ( FaspRunTime& ex ) {
             ex.LogExcep();
             return ex.errorCode;
         }
@@ -368,11 +366,11 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
     std::vector<DBL> valuesNew;
     std::vector<INT> rowPtrNew;
 
-    try{
+    try {
         colIndNew.resize(nnzNew);
         valuesNew.resize(nnzNew);
         rowPtrNew.resize(row+1);
-    }catch(std::bad_alloc& ex){
+    } catch(std::bad_alloc& ex) {
         throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
     }
 
@@ -427,8 +425,7 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
             throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
         else
             mat.SetValues(row, col, nnzNew, valuesNew, colIndNew, rowPtrNew);
-    }
-    catch ( FaspRunTime& ex ) {
+    } catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -471,9 +468,7 @@ FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
     for ( INT j = 0; j < row; j++ ) {
         begin = rowPtr[j];
         end = rowPtr[j + 1];
-        if ( end <= begin + 1 ) {
-            continue;
-        }
+        if ( end <= begin + 1 ) continue;
         for ( INT k = begin + 1; k < end; k++ ) {
             index = colInd[k];
             data = values[k];
@@ -494,8 +489,7 @@ FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
         retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
         if ( retCode < 0 )
             throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-    }
-    catch ( FaspRunTime& ex ) {
+    } catch ( FaspRunTime& ex ) {
         ex.LogExcep();
         return ex.errorCode;
     }

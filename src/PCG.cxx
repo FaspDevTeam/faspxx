@@ -114,7 +114,9 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
 
     // rk = b - A * x
     tmp = A.MultVec(x);
-    rk.Add(1.0, b, -1.0, tmp);
+    rk = b;
+    rk -= tmp;
+    // rk.Add(1.0, b, -1.0, tmp);
 
     if (pcflag == 1)
         ApplyPreconditioner(rk, zk, this->lop); // Apply preconditioner

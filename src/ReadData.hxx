@@ -1,4 +1,4 @@
-/**\file ReadData.hxx
+/** \file ReadData.hxx
  *  \brief Reading data from disk files
  *  \author Kailei Zhang
  *  \date Sep/24/2019
@@ -17,6 +17,10 @@
 
 FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowInd, std::vector<INT>& colInd,
+                    std::vector<DBL>& values);
+
+FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
+                    std::vector<INT>& rowPtr, std::vector<INT>& colInd,
                     std::vector<DBL>& values);
 
 #endif // __READ_FILE_HXX__
