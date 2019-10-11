@@ -102,6 +102,7 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
     DBL relres = 1e+20, norm = 1e+20, normtmp = 1e+20;
     DBL reldiff, norminf, factor;
     DBL alpha, beta, tmpa, tmpb;
+    DBL max=0;
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Output some info for debuging
@@ -110,13 +111,14 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
 
     outParam.iter = 0;
 
-    VEC rk, pk, zk, tmp;
+    INT len=b.GetSize();
+    VEC rk(len), pk(len), zk(len), tmp(len) , tmp2(len);
 
     // rk = b - A * x
-    tmp = A.MultVec(x);
+    A.MultVec(x,tmp);
     rk = b;
     rk -= tmp;
-    // rk.Add(1.0, b, -1.0, tmp);
+    //rk.Add(1.0, b, -1.0, tmp);
 
     if (pcflag == 1)
         ApplyPreconditioner(rk, zk, this->lop); // Apply preconditioner
@@ -156,11 +158,12 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
     pk = zk;
     tmpa = zk.Dot(rk);
 
+
     // Main PCG loop
     while (outParam.iter++ < inParam.maxIter) {
 
         // tmp = A * pk
-        tmp = A.MultVec(pk);
+        A.MultVec(pk,tmp);
 
         // alpha_k = (z_{k-1},r_{k-1})/(A*p_{k-1},p_{k-1})
         tmpb = tmp.Dot(pk);
@@ -175,7 +178,7 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
         x.Add(1.0, alpha, pk);
 
         // r_k = r_{k-1} - alpha_k*A*p_{k-1}
-        tmp = A.MultVec(pk);
+        //A.MultVec(pk,tmp);
         rk.Add(1.0, -alpha, tmp);
 
         // Compute norm of residual
@@ -229,7 +232,7 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
                     RESTART;
                 }
 
-                tmp = A.MultVec(x);
+                A.MultVec(x,tmp);
                 rk.Add(1.0, b, -1.0, tmp);
 
                 switch (type) {
@@ -275,7 +278,8 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
             DBL updated_relres = relres;
 
             // Compute true residual r = b - Ax and update residual
-            tmp = A.MultVec(x);
+            A.MultVec(x,tmp);
+
             rk.Add(1.0, b, -1.0, tmp);
 
             // Compute residual norms
