@@ -70,7 +70,6 @@ MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
     this->ncol = ncol;
     this->nnz = nnz;
 
-
     try {
         this->values = values;
         this->colInd = colInd;
@@ -128,7 +127,7 @@ MAT::MAT(const VEC &v) {
     }
 
     // Set values from v
-    for (INT j = 0; j < size; j++) this->values[j] = v[j];
+    for (INT j = 0; j < size; j++) this->values[j] = v.values[j];
 
     // Set colInd to {0, 1, ..., size-1}
     for (INT j = 0; j <= size; j++) p[j] = j;
@@ -552,14 +551,15 @@ void MAT::MultVec(const VEC &v, VEC &w) const {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
             end = this->rowPtr[i + 1];
-            for (w[i] = 0.0, k = begin; k < end; k++) w[i] += v[this->colInd[k]];
+            for (w.values[i] = 0.0, k = begin; k < end; k++)
+                w.values[i] += v.values[this->colInd[k]];
         }
     } else {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
             end = this->rowPtr[i + 1];
-            for (w[i] = 0.0, k = begin; k < end; k++)
-                w[i] += this->values[k] * v[this->colInd[k]];
+            for (w.values[i] = 0.0, k = begin; k < end; k++)
+                w.values[i] += this->values[k] * v.values[this->colInd[k]];
         }
     }
 
@@ -574,14 +574,14 @@ void MAT::MultAdd(const VEC &b, const VEC &x, VEC &r) const {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
             end = this->rowPtr[i + 1];
-            for (k = begin; k < end; k++) r[i] -= x[this->colInd[k]];
+            for (k = begin; k < end; k++) r.values[i] -= x.values[this->colInd[k]];
         }
     } else {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
             end = this->rowPtr[i + 1];
             for (k = begin; k < end; k++)
-                r[i] -= this->values[k] * x[this->colInd[k]];
+                r.values[i] -= this->values[k] * x.values[this->colInd[k]];
         }
     }
 }
@@ -655,7 +655,7 @@ VEC MAT::MultTransposeAdd(const VEC &v1, const VEC &v2) const {
         begin = tmp.rowPtr[i];
         end = tmp.rowPtr[i + 1];
         for (j = begin; j < end; j++)
-            v[i] += v1[tmp.colInd[j]] * tmp.values[j];
+            v.values[i] += v1.values[tmp.colInd[j]] * tmp.values[j];
     }
 
     return v;
