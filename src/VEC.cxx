@@ -233,7 +233,7 @@ void VEC::Abs() {
 
 /// *this = a * *this + b * vec
 void VEC::Add(const DBL &a, const DBL &b, const VEC &v) {
-#if 0
+#if 1
     // unroll long for loops
     INT len = this->size - this->size % 4;
     switch((a==1.0)+2*(b==1.0)){
@@ -281,6 +281,7 @@ void VEC::Add(const DBL &a, const DBL &b, const VEC &v) {
             break;
     }
 #endif
+#if 0
     switch((a==1.0)+2*(b==1.0)){
         case 0:
             for(INT j=0;j<this->size;j++)
@@ -297,13 +298,14 @@ void VEC::Add(const DBL &a, const DBL &b, const VEC &v) {
         default:
             break;
     }
+#endif
 }
 
 /// *this = a * vec1 + b * vec2
 void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
     this->size = v1.size;
     this->values.assign(v1.size,0);
-#if 0
+#if 1
     // unroll long for loops
     INT len = this->size - this->size % 4;
     switch((a==1)+2*(b==1)){
@@ -351,6 +353,7 @@ void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
             break;
     }
 #endif
+#if 0
     switch((a==1.0)+2*(b==1.0)){
         case 0:
             for(INT j=0;j<this->size;j++)
@@ -367,6 +370,7 @@ void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
         default:
             break;
     }
+#endif
 }
 
 /// Find max(*this)
