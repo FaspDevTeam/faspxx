@@ -239,43 +239,43 @@ void VEC::Add(const DBL &a, const DBL &b, const VEC &v) {
     switch((a==1.0)+2*(b==1.0)){
         case 0:
             for (INT j = 0; j < len; j += 4) {
-                this->values[j] += a*this->values[j]+ b*v.values[j];
-                this->values[j + 1] += a*this->values[j+1]+ b*v.values[j + 1];
-                this->values[j + 2] += a*this->values[j+2]+ b*v.values[j + 2];
-                this->values[j + 3] += a*this->values[j+3]+ b*v.values[j + 3];
+                this->values[j]   = a * this->values[j]   + b * v.values[j];
+                this->values[j+1] = a * this->values[j+1] + b * v.values[j+1];
+                this->values[j+2] = a * this->values[j+2] + b * v.values[j+2];
+                this->values[j+3] = a * this->values[j+3] + b * v.values[j+3];
             }
             for (INT j = len; j < this->size; j++)
-                this->values[j] += a*this->values[j] + b*v.values[j];
+                this->values[j]   = a * this->values[j]   + b * v.values[j];
             break;
         case 1:
             for (INT j = 0; j < len; j += 4) {
-                this->values[j] +=  b*v.values[j];
-                this->values[j + 1] += b*v.values[j + 1];
-                this->values[j + 2] += b*v.values[j + 2];
-                this->values[j + 3] +=  b*v.values[j + 3];
+                this->values[j]   += b * v.values[j];
+                this->values[j+1] += b * v.values[j+1];
+                this->values[j+2] += b * v.values[j+2];
+                this->values[j+3] += b * v.values[j+3];
             }
             for (INT j = len; j < this->size; j++)
-                this->values[j] +=  b*v.values[j];
+                this->values[j]   += b * v.values[j];
             break;
         case 2:
             for (INT j = 0; j < len; j += 4) {
-                this->values[j] = a*this->values[j]+ v.values[j];
-                this->values[j + 1] = a*this->values[j+1]+ v.values[j + 1];
-                this->values[j + 2] = a*this->values[j+2]+ v.values[j + 2];
-                this->values[j + 3] = a*this->values[j+3]+ v.values[j + 3];
+                this->values[j]   = a * this->values[j]   + v.values[j];
+                this->values[j+1] = a * this->values[j+1] + v.values[j+1];
+                this->values[j+2] = a * this->values[j+2] + v.values[j+2];
+                this->values[j+3] = a * this->values[j+3] + v.values[j+3];
             }
             for (INT j = len; j < this->size; j++)
-                this->values[j] = a*this->values[j] + v.values[j];
+                this->values[j]   = a * this->values[j]   + v.values[j];
             break;
         case 3:
             for (INT j = 0; j < len; j += 4) {
-                this->values[j] +=  v.values[j];
-                this->values[j + 1] += v.values[j + 1];
-                this->values[j + 2] += v.values[j + 2];
-                this->values[j + 3] += v.values[j + 3];
+                this->values[j]   += v.values[j];
+                this->values[j+1] += v.values[j+1];
+                this->values[j+2] += v.values[j+2];
+                this->values[j+3] += v.values[j+3];
             }
             for (INT j = len; j < this->size; j++)
-                this->values[j] += v.values[j];
+                this->values[j]   += v.values[j];
             break;
         default:
             break;

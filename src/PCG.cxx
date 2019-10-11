@@ -102,27 +102,26 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
     DBL relres = 1e+20, norm = 1e+20, normtmp = 1e+20;
     DBL reldiff, norminf, factor;
     DBL alpha, beta, tmpa, tmpb;
-    DBL max=0;
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Output some info for debuging
     if (inParam.printLevel > PRINT_NONE)
         std::cout << "\nCalling PCG solver (CSR) ...\n";
 
-    outParam.iter = 0;
-
-    INT len=b.GetSize();
+    const INT maxIter = inParam.maxIter;
+    const INT len = b.GetSize();
     VEC rk(len), pk(len), zk(len), tmp(len) , tmp2(len);
+
+    INT iter = 0;
 
     // rk = b - A * x
     A.MultVec(x,tmp);
     rk = b;
     rk -= tmp;
-    //rk.Add(1.0, b, -1.0, tmp);
 
-    if (pcflag == 1)
+    /*if (pcflag == 1)
         ApplyPreconditioner(rk, zk, this->lop); // Apply preconditioner
-    else
+    else*/
         zk = rk; // No preconditioner
 
     // Compute initial residuals
@@ -153,14 +152,13 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
     if (relres < inParam.relTol || abstmp < inParam.absTol) goto FINISHED;
 
     // Output iteration information if needed
-    PrintInfo(inParam.printLevel, type, outParam.iter, relres, abstmp, 0.0);
+    PrintInfo(inParam.printLevel, type, iter, relres, abstmp, 0.0);
 
     pk = zk;
     tmpa = zk.Dot(rk);
 
-
     // Main PCG loop
-    while (outParam.iter++ < inParam.maxIter) {
+    while ( iter++ < maxIter ) {
 
         // tmp = A * pk
         A.MultVec(pk,tmp);
@@ -178,7 +176,6 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
         x.Add(1.0, alpha, pk);
 
         // r_k = r_{k-1} - alpha_k*A*p_{k-1}
-        //A.MultVec(pk,tmp);
         rk.Add(1.0, -alpha, tmp);
 
         // Compute norm of residual
@@ -207,9 +204,9 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
         factor = absres / abstmp;
 
         // Output iteration information if needed
-        PrintInfo(inParam.printLevel, type, outParam.iter, relres, abstmp, factor);
+        PrintInfo(inParam.printLevel, type, iter, relres, abstmp, factor);
 
-        if (factor > 0.9) { // Only check when converge slowly
+        if (factor > 1.9) { // Only check when converge slowly
 
             // Check I : if solution is close to zero, return ERROR_SOLVER_SOLSTAG
             norminf = x.NormInf();
@@ -346,10 +343,10 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
 
     FINISHED:// Finish iterative method
     if (inParam.printLevel > PRINT_NONE)
-        Final(outParam.iter, inParam.maxIter, relres);
+        Final(iter, inParam.maxIter, relres);
 
-    outParam.normInf = rk.NormInf();
-    outParam.norm2 = rk.Norm2();
+    //outParam.normInf = rk.NormInf();
+    //outParam.norm2 = rk.Norm2();
 
     return errorCode;
 }
