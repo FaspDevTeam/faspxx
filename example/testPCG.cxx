@@ -9,12 +9,17 @@
 #include "LOP.hxx"
 #include "MATUtil.hxx"
 #include "PCG.hxx"
+#include "Param.hxx"
 
 int main()
 {
     GetWallTime timer;
 
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
+
+    // TODO: use this param later
+    IterParam param;
+    param.Print();
 
     // Read a CSR matrix from file
     INT row, col, nnz;
@@ -75,9 +80,9 @@ int main()
     pcg.SetUp(iparam);
     pcg.SetUpPCD(lop);
 
-    timer.start();
+    timer.Start();
     pcg.Start(mat, b,x,STOP_REL_RES,oparam);
-    std::cout << "FASPXX time : " << timer.stop() << std::endl;
+    std::cout << "FASPXX time : " << timer.Stop() << std::endl;
 
     return 0;
 }

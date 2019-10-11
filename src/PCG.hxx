@@ -1,16 +1,23 @@
-/**
- * a header file for PCG
+/*! \file PCG.hxx
+ *  \brief PCG class declaration
+ *  \author Chensong Zhang, Kailei Zhang
+ *  \date Oct/11/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
-#ifndef SRC_PCG_HXX
-#define SRC_PCG_HXX
+#ifndef __PCG_HEADER__      /*-- allow multiple inclusions --*/
+#define __PCG_HEADER__      /**< indicate PCG.hxx has been included before */
 
 #include <cfloat>
+#include <cmath>
 #include "MAT.hxx"
 #include "LOP.hxx"
-#include <cmath>
 
-/*---------------------------------------------------------------------------------*/
+// TODO: Remove these macros later!
 
 //! Warning for solution close to zero
 #define ZEROSOL std::cout<<"### WARNING: Iteration stopped -- solution almost "<< \
@@ -126,4 +133,8 @@ public:
     ~PCG() {};
 };
 
-#endif //SRC_PCG_HXX
+#endif /* end if for __PCG_HEADER__ */
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

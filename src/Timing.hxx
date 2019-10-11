@@ -30,10 +30,10 @@ private:
 public:
 
     //! Start the timer
-    __inline__ void start ( ) {timeStamp = std::chrono::system_clock::now();}
+    __inline__ void Start ( ) {timeStamp = std::chrono::system_clock::now();}
 
     //! Stop the timer and return duration from start() in seconds
-    __inline__ double stop ( ) const {
+    __inline__ double Stop ( ) const {
         std::chrono::duration<double> elapsedTime = std::chrono::system_clock::now() - timeStamp;
         return elapsedTime.count();
     }
@@ -74,10 +74,10 @@ private:
 public:
 
     //! Start the cycle count clock
-    __inline__ void start ( ) {cycleClock = startRDTSC();}
+    __inline__ void Start ( ) {cycleClock = startRDTSC();}
 
     //! Stop the cycle count clock and return number of cycles from start()
-    __inline__ unsigned long long stop ( ) const {return stopRDTSCP() - cycleClock;}
+    __inline__ unsigned long long Stop ( ) const {return stopRDTSCP() - cycleClock;}
 
 };
 
