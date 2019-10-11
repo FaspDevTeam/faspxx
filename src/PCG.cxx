@@ -81,7 +81,7 @@ FaspRetCode PCG::SetUp(const PCGInputParam &inParam) {
 // Assign lop to *this
 FaspRetCode PCG::SetUpPCD(const LOP &lop) {
     this->lop = lop;
-    this->pcflag = 1;
+    this->pcflag = 0;
     return FaspRetCode::SUCCESS;
 }
 
@@ -90,7 +90,7 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
                        PCGOutputParam &outParam) {
 
     if (x.GetSize() != A.GetColSize())
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
+        return FaspRetCode::ERROR_NONMATCH_SIZE; // TODO: Check in Setup
 
     const INT MaxStag = 20;
     const INT maxdiff = 1e-4 * this->inParam.relTol;// Stagnation tolerance

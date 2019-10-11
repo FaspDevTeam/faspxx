@@ -74,14 +74,14 @@ std::string GetRetCode(const FaspRetCode code) {
     }
 }
 
-/// \brief Output log messages to a file or screen by default
+/// \brief Log exception messages in a file or to the screen
 void FaspRunTime::LogExcep(std::ostream &stream) const {
     stream << "### ERROR: " << this->what() << std::endl;
     stream << "### ERROR: Check " << this->GetFile() << " in "
            << this->GetFunc() << "( ) at Line " << this->GetLine() << std::endl;
 }
 
-/// \brief Output log messages to a file or screen by default
+/// \brief Log allocation error messages in a file or to the screen
 void FaspBadAlloc::LogExcep(std::ostream &stream) const {
     stream << "### ERROR: " << this->what() << std::endl;
     stream << "### ERROR: Check " << this->GetFile() << " in "
