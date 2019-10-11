@@ -26,6 +26,8 @@ private:
     INT size;                 ///< Book-keeping size of VEC: It's NOT values.size!
 
 public:
+    friend class MAT;
+
     /// Default constructor
     explicit VEC() : values(0), size(0) {}
 
