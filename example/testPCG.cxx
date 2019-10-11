@@ -28,7 +28,9 @@ int main()
     std::vector<DBL> values; // matrix nnz
 
     try {
-        retCode = ReadCSR("../data/fdm_10X10.csr", row, col, nnz,
+        //retCode = ReadCSR("../data/fdm_10X10.csr", row, col, nnz,
+        //                  rowPtr, colInd, values);
+        retCode = ReadCSR("../data/fdm_1023X1023.csr", row, col, nnz,
                           rowPtr, colInd, values);
         if ( retCode < 0 )
             throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
