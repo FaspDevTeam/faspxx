@@ -474,11 +474,10 @@ void MAT::MultRight(const MAT& mat) {
 }
 
 /// Return MAT = a * mat1 + b * mat2
-MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2) {
+MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2,MAT &mat) {
 
     INT i, j, k, l;
     INT count = 0, added, countrow;
-    MAT mat;
 
     if ( mat1.nnz == 0 ) {
         mat = mat2;
@@ -547,12 +546,13 @@ MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2) {
 
 /// *this = a * *this + b * mat
 void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
-    *this=::Add(a,*this,b,mat);
+    MAT tmp;
+    ::Add(a,*this,b,mat,tmp);
+    this->operator=(tmp);
 }
 
 /// Return VEC = *this * vec.
-VEC MAT::MultVec(const VEC& v) const {
-    VEC w(this->ncol);
+void MAT::MultVec(const VEC& v,VEC& w) const {
 
     INT begin, end, i, k;
     if ( this->values.size() == 0 ) {
@@ -570,7 +570,6 @@ VEC MAT::MultVec(const VEC& v) const {
         }
     }
 
-    return w;
 }
 
 /// Return VEC = A'*vec1 + vec2

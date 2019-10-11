@@ -171,13 +171,14 @@ public:
     void MultRight(const MAT& mat);
 
     /// Return MAT = a * mat1 + b * mat2
-    friend MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2);
+    friend MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2,
+            MAT &mat);
 
     /// *this = a * *this + b * mat
     void Add(const DBL a, const DBL b, const MAT& mat);
 
     /// Return VEC = *this * vec
-    VEC MultVec(const VEC& v) const;
+    void MultVec(const VEC& v,VEC& w) const;
 
     /// Return VEC = A'*v1 + v2
     VEC MultTransposeAdd(const VEC& v1, const VEC& v2) const;
