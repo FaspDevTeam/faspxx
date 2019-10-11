@@ -80,7 +80,7 @@ int main()
         if ( retCode < 0 )
             throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
         else
-            w = mat.MultVec(v); // size matches, compute w = mat * v
+            mat.MultVec(v, w); // size matches, compute w = mat * v
     }
     catch ( FaspRunTime& ex ) {
         ex.LogExcep();
