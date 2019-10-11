@@ -233,6 +233,7 @@ void VEC::Abs() {
 
 /// *this = a * *this + b * vec
 void VEC::Add(const DBL &a, const DBL &b, const VEC &v) {
+#if 0
     // unroll long for loops
     INT len = this->size - this->size % 4;
     switch((a==1.0)+2*(b==1.0)){
@@ -279,13 +280,30 @@ void VEC::Add(const DBL &a, const DBL &b, const VEC &v) {
         default:
             break;
     }
+#endif
+    switch((a==1.0)+2*(b==1.0)){
+        case 0:
+            for(INT j=0;j<this->size;j++)
+                this->values[j]=a*this->values[j]+b*v.values[j];
+        case 1:
+            for(INT j=0;j<this->size;j++)
+                this->values[j]+=b*v.values[j];
+        case 2:
+            for(INT j=0;j<this->size;j++)
+                this->values[j]=a*this->values[j]+v.values[j];
+        case 3:
+            for(INT j=0;j<this->size;j++)
+                this->values[j]+=v.values[j];
+        default:
+            break;
+    }
 }
 
 /// *this = a * vec1 + b * vec2
 void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
     this->size = v1.size;
     this->values.assign(v1.size,0);
-
+#if 0
     // unroll long for loops
     INT len = this->size - this->size % 4;
     switch((a==1)+2*(b==1)){
@@ -331,7 +349,23 @@ void VEC::Add(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
             break;
         default:
             break;
-
+    }
+#endif
+    switch((a==1.0)+2*(b==1.0)){
+        case 0:
+            for(INT j=0;j<this->size;j++)
+                this->values[j]=a*v1.values[j]+b*v2.values[j];
+        case 1:
+            for(INT j=0;j<this->size;j++)
+                this->values[j]+=v1.values[j]+b*v2.values[j];
+        case 2:
+            for(INT j=0;j<this->size;j++)
+                this->values[j]=a*v1.values[j]+v2.values[j];
+        case 3:
+            for(INT j=0;j<this->size;j++)
+                this->values[j]=v1.values[j]+v2.values[j];
+        default:
+            break;
     }
 }
 
