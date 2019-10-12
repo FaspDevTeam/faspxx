@@ -88,9 +88,9 @@ void LOP::Transpose(){
 }
 
 /// Return VEC = *this * v
-VEC LOP::MultVec(const VEC& v) const{
+void LOP::Apply(const VEC& v,VEC &vt) const{
     //suppose *this is a identical mapping
-    return v;
+    vt=v;
 
 }
 /*---------------------------------*/
