@@ -19,8 +19,7 @@ void PCG::SetUpPCD(const LOP &lop) {
 }
 
 // Start PCG
-FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
-        IterParam &param) {
+FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x,IterParam &param) {
 
     const INT MaxStag = 20;
     const INT maxdiff = 1e-4 * param.relTol;// Stagnation tolerance
@@ -47,39 +46,20 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
     rk -= tmp;
 
     if (pcflag == 1)
-        ApplyPreconditioner(rk, zk, this->lop); // Apply preconditioner
+        this->lop.Apply(rk,zk); // Apply preconditioner
     else
-    zk = rk; // No preconditioner
+        zk = rk; // No preconditioner
 
     // Compute initial residuals
-    switch (type) {
-        case STOP_REL_RES:
-            abstmp = rk.Norm2();
-            normtmp = (1e-20 > abstmp) ? 1e-20 : abstmp;
-            relres = abstmp / normtmp;
-            break;
-        case STOP_REL_PRECRES:
-            abstmp = sqrt(rk.Dot(zk));
-            normtmp = (1e-20 > abstmp) ? 1e-20 : abstmp;
-            relres = abstmp / normtmp;
-            break;
-        case STOP_MOD_REL_RES:
-            abstmp = rk.Norm2();
-            norm = (1e-20 > x.Norm2()) ? 1e-20 : x.Norm2();
-            relres = abstmp / norm;
-            break;
-        default:
-            std::cout << "### ERROR: Unknown stopping type! [" << __FUNCTION__ << "]"
-                      << std::endl;
-            errorCode = FaspRetCode::ERROR_INPUT_PAR;
-            goto FINISHED;
-    }
+    abstmp = sqrt(rk.Dot(zk));
+    normtmp = (1e-20 > abstmp) ? 1e-20 : abstmp;
+    relres = abstmp / normtmp;
 
     // If initial residual is small, no need to iterate
     if (relres < param.relTol || abstmp < param.absTol) goto FINISHED;
 
     // Output iteration information if needed
-    PrintInfo(param.outLvl, type, param.numIter, relres, abstmp, 0.0);
+    PrintInfo(param.outLvl, param.numIter, relres, abstmp, 0.0);
 
     pk = zk;
     tmpa = zk.Dot(rk);
@@ -105,32 +85,21 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
         rk.Add(1.0, -alpha, tmp);
 
         // Compute norm of residual
-        switch (type) {
-            case STOP_REL_RES:
-                absres = rk.Norm2();
-                relres = absres / normtmp;
-                break;
-            case STOP_REL_PRECRES:
-                // z = B(r)
-                if (this->pcflag == 1)
-                    ApplyPreconditioner(rk, zk,
-                                        this->lop); /* Apply preconditioner */
-                else
-                    zk = rk; /* No preconditioenr */
 
-                absres = sqrt(fabs(zk.Dot(rk)));
-                relres = absres / normtmp;
-                break;
-            case STOP_MOD_REL_RES:
-                absres = rk.Norm2();
-                relres = absres / norm;
-                break;
-        }
+        // z = B(r)
+        if (this->pcflag == 1)
+            lop.Apply(rk, zk); /* Apply preconditioner */
+        else
+            zk = rk; /* No preconditioenr */
+
+        absres = sqrt(fabs(zk.Dot(rk)));
+        relres = absres / normtmp;
+
         // compute reduction factor of residual ||r||
         factor = absres / abstmp;
 
         // Output iteration information if needed
-        PrintInfo(param.outLvl, type, param.numIter, relres, abstmp, factor);
+        PrintInfo(param.outLvl, param.numIter, relres, abstmp, factor);
 
         if (factor > 0.9) { // Only check when converge slowly
 
@@ -158,27 +127,14 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
                 A.MultVec(x, tmp);
                 rk.Add(1.0, b, -1.0, tmp);
 
-                switch (type) {
-                    case STOP_REL_RES:
-                        absres = rk.Norm2();
-                        relres = absres / normtmp;
-                        break;
-                    case STOP_REL_PRECRES:
-                        // z = B(r)
-                        if (pcflag == 1)
-                            ApplyPreconditioner(rk, zk,
-                                                this->lop); // Apply preconditioner
-                        else
-                            zk = rk; // No preconditioner
+                // z = B(r)
+                if (pcflag == 1)
+                    lop.Apply(rk, zk); // Apply preconditioner
+                else
+                    zk = rk; // No preconditioner
 
-                        absres = sqrt(fabs(zk.Dot(rk)));
-                        relres = absres / normtmp;
-                        break;
-                    case STOP_MOD_REL_RES:
-                        absres = rk.Norm2();
-                        relres = absres / norm;
-                        break;
-                }
+                absres = sqrt(fabs(zk.Dot(rk)));
+                relres = absres / normtmp;
 
                 if (param.outLvl >= _PRINT_MORE) RealRes(relres);
 
@@ -206,27 +162,15 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
             rk.Add(1.0, b, -1.0, tmp);
 
             // Compute residual norms
-            switch (type) {
-                case STOP_REL_RES:
-                    absres = rk.Norm2();
-                    relres = absres / normtmp;
-                    break;
-                case STOP_REL_PRECRES:
-                    // z = B(r)
-                    if (pcflag == 1)
-                        ApplyPreconditioner(rk, zk,
-                                            this->lop); // Apply preconditioner
-                    else
-                        zk = rk; // No preconditioner
 
-                    absres = sqrt(fabs(zk.Dot(rk)));
-                    relres = absres / normtmp;
-                    break;
-                case STOP_MOD_REL_RES:
-                    absres = rk.Norm2();
-                    relres = absres / norm;
-                    break;
-            }
+            // z = B(r)
+            if (pcflag == 1)
+                lop.Apply(rk, zk); // Apply preconditioner
+            else
+                zk = rk; // No preconditioner
+
+            absres = sqrt(fabs(zk.Dot(rk)));
+            relres = absres / normtmp;
 
             // Check convergence
             if (relres < param.relTol) break;
@@ -251,12 +195,10 @@ FaspRetCode PCG::Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
         abstmp = absres;
 
         // Compute z_k = B(r_k)
-        if (type != STOP_REL_PRECRES) {
-            if (pcflag == 1)
-                ApplyPreconditioner(rk, zk, this->lop); // Apply preconditioner
-            else
-                zk = rk; // No preconditioner
-        }
+        if (pcflag == 1)
+            lop.Apply(rk,zk); // Apply preconditioner
+        else
+            zk = rk; // No preconditioner
 
         // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
         tmpb = zk.Dot(rk);
@@ -285,38 +227,17 @@ void PCG::CleanPCD() {
     this->pcflag = 0;
 }
 
-// Apply preconditioner
-void PCG::ApplyPreconditioner(const VEC &rk, VEC &zk, const LOP &lop) {
-    zk = lop.MultVec(rk);
-}
-
 // Print some relevant information
-void PCG::PrintInfo(const PRTLVL &prtlvl, const StopType &type, const INT &iter,
-                    const DBL &relres, const DBL &absres, const DBL &factor) {
+void PCG::PrintInfo(const PRTLVL &prtlvl, const INT &iter,const DBL &relres,
+        const DBL &absres, const DBL &factor) {
     if (prtlvl >= _PRINT_SOME) {
         if (iter > 0) {
             std::cout << iter << " | " << relres << " | " << absres << " | "
                       << factor << std::endl;
         } else {
-            std::cout
-                    << "-------------------------------------------------\n";
-            switch (type) {
-                case STOP_REL_RES:
-                    std::cout
-                            << "It Num |  ||r||/||b||  |  ||r||  |  Conv. Factor\n";
-                    break;
-                case STOP_REL_PRECRES:
-                    std::cout
-                            << "It Num |  ||r||_B/||b||_B |  ||r||_B  |  "
-                               "Conv. Factor\n";
-                    break;
-                case STOP_MOD_REL_RES:
-                    std::cout
-                            << "It Num |  ||r||/||x||  |  ||r||  |  Conv. Factor\n";
-                    break;
-            }
-            std::cout
-                    << "-------------------------------------------------\n";
+            std::cout<< "------------------------------------------------\n";
+            std::cout<< "It Num |  ||r||/||b||  |  ||r||  |  Conv. Factor\n";
+            std::cout<< "------------------------------------------------\n";
             std::cout << iter << " | " << relres << " | " << absres << std::endl;
         } // end if iter
     }

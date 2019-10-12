@@ -17,21 +17,13 @@
 #include "LOP.hxx"
 #include "Param.hxx"
 
-enum StopType {
-    STOP_REL_RES,
-    STOP_REL_PRECRES,
-    STOP_MOD_REL_RES
-};
-
 class PCG {
 private:
     INT pcflag;
     LOP lop;
 
-    void ApplyPreconditioner(const VEC &rk, VEC &zk, const LOP &lop);
-
-    void PrintInfo(const PRTLVL &prtlvl, const StopType &type, const INT &iter,
-                   const DBL &relres, const DBL &absres, const DBL &factor);
+    void PrintInfo(const PRTLVL &prtlvl,  const INT &iter,const DBL &relres,
+            const DBL &absres, const DBL &factor);
 
     void Final(const INT &iter, const INT &maxit, const DBL &relres);
 
@@ -44,8 +36,7 @@ public:
 
     void SetUpPCD(const LOP &lop);
 
-    FaspRetCode Start(const MAT &A, const VEC &b, VEC &x, const StopType &type,
-            IterParam &param);
+    FaspRetCode Start(const MAT &A, const VEC &b, VEC &x,IterParam &param);
 
     void CleanPCD();
 
