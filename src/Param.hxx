@@ -16,6 +16,7 @@
 
 enum PRTLVL {
     _PRINT_NONE = 0,
+    _PRINT_MIN  = 1,
     _PRINT_SOME = 2,
     _PRINT_MORE = 4
 };
@@ -36,6 +37,8 @@ private:
     DBL    normInf;   ///< Infimum norm of residual
 
 public:
+    friend class PCG;
+
     IterParam() : outLvl(_PRINT_NONE),
                   maxIter(100),
                   relTol(1e-6),
