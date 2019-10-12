@@ -19,11 +19,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Default C++ compiler look-up order
-find_program(THE_CXX NAMES $ENV{CXX} clang++ g++ icc)
+find_program(THE_CXX NAMES $ENV{CXX} g++ icc clang++)
 set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
 
 # Default C compiler look-up order
-find_program(THE_C NAMES $ENV{CC} clang gcc icc)
+find_program(THE_C NAMES $ENV{CC} gcc icc clang)
 set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
 
 # Set default configuration types and flags
@@ -36,7 +36,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 #-----------------------------#
 
 # Name of the project
-project(faspxx)
+project(faspxx CXX C)
 
 # Add include directory
 include_directories(${PROJECT_SOURCE_DIR}/src/)
