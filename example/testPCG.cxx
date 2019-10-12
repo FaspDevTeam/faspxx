@@ -67,7 +67,7 @@ int main()
 
     param.SetAbsTol(1e-8);
     param.SetMaxIter(200);
-    param.SetOutLvl(_PRINT_SOME);
+    param.SetOutLvl(_PRINT_NONE);
     param.SetRelTol(1e-5);
     param.SetRestart(20);
     param.Print();
@@ -79,12 +79,10 @@ int main()
     pcg.SetUpPCD(lop);
 
     timer.Start();
-    pcg.Start(mat, b,x,STOP_REL_RES,param);
+    pcg.Solve(mat, b,x,param);
     std::cout << "FASPXX time : " << timer.Stop() << std::endl;
-
-    std::cout<<param.GetNorm2()<<std::endl;
-    std::cout<<param.GetNormInf()<<std::endl;
-    std::cout<<param.GetNumIter()<<std::endl;
+    pcg.CleanPCD();
+    pcg.Clean();
 
     return 0;
 }
