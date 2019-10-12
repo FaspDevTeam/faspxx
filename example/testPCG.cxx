@@ -2,7 +2,6 @@
  * a test file
  */
 
-#include <fstream>
 #include <iostream>
 #include "Timing.hxx"
 #include "ReadData.hxx"
@@ -17,10 +16,6 @@ int main()
 
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
 
-    // TODO: use this param later
-    IterParam param;
-    param.Print();
-
     // Read a CSR matrix from file
     INT row, col, nnz;
     std::vector<INT> rowPtr; // row pointer
@@ -30,7 +25,7 @@ int main()
     try {
         //retCode = ReadCSR("../data/fdm_10X10.csr", row, col, nnz,
         //                  rowPtr, colInd, values);
-        retCode = ReadCSR("../data/fdm_1023X1023.csr", row, col, nnz,
+        retCode = ReadCSR("/home/kailei/Data/fdm_1023X1023.csr", row, col, nnz,
                           rowPtr, colInd, values);
         if ( retCode < 0 )
             throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
@@ -68,23 +63,28 @@ int main()
 
     VEC b(row, 0.0), x(col, 1.0);
 
-    PCGInputParam iparam;
-    PCGOutputParam oparam;
-    iparam.maxIter=200;
-    iparam.printLevel=PRINT_MORE;
-    iparam.absTol=1e-8;
-    iparam.relTol=1e-5;
-    iparam.restart=20;
+    IterParam param;
+
+    param.SetAbsTol(1e-8);
+    param.SetMaxIter(200);
+    param.SetOutLvl(_PRINT_SOME);
+    param.SetRelTol(1e-5);
+    param.SetRestart(20);
+    param.Print();
 
     LOP lop(row,col);
 
     PCG pcg;
-    pcg.SetUp(iparam);
+    pcg.SetUp(mat,b,x,param);
     pcg.SetUpPCD(lop);
 
     timer.Start();
-    pcg.Start(mat, b,x,STOP_REL_RES,oparam);
+    pcg.Start(mat, b,x,STOP_REL_RES,param);
     std::cout << "FASPXX time : " << timer.Stop() << std::endl;
+
+    std::cout<<param.GetNorm2()<<std::endl;
+    std::cout<<param.GetNormInf()<<std::endl;
+    std::cout<<param.GetNumIter()<<std::endl;
 
     return 0;
 }
