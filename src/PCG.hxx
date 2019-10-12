@@ -21,25 +21,43 @@ class PCG {
 private:
     INT pcflag;
     LOP lop;
+    VEC rk;
+    VEC pk;
+    VEC zk;
+    VEC tmp;
 
+    /// Print out iteration information for iterative solvers
     void PrintInfo(const PRTLVL &prtlvl,  const INT &iter,const DBL &relres,
             const DBL &absres, const DBL &factor);
 
+    /// Print out final status of an iterative method
     void Final(const INT &iter, const INT &maxit, const DBL &relres);
 
 public:
-    PCG() : pcflag(0), lop(0, 0) {};
+    /// constructor by default
+    PCG() : pcflag(0), lop(0, 0),rk(0),pk(0),zk(0),
+        tmp(0){};
 
-    PCG(IterParam &param, const LOP &lop) : pcflag(0), lop(lop) {};
+    /// assign LOP object to this->lop
+    PCG(LOP lop) : pcflag(1), lop(lop),rk(0),pk(0),
+        zk(0),tmp(0) {};
 
+    /// check and allocate memory
     FaspRetCode SetUp(const MAT &A,const VEC &b,VEC &x,const IterParam &param);
 
+    /// build preconditioner operator
     void SetUpPCD(const LOP &lop);
 
-    FaspRetCode Start(const MAT &A, const VEC &b, VEC &x,IterParam &param);
+    /// solve by PCG
+    FaspRetCode Solve(const MAT &A, const VEC &b, VEC &x,IterParam &param);
 
+    /// clean preconfitioner operator
     void CleanPCD();
 
+    /// Release temporary memory
+    void Clean();
+
+    /// destructor
     ~PCG() {};
 };
 
