@@ -67,20 +67,20 @@ int main()
 
     param.SetAbsTol(1e-8);
     param.SetMaxIter(200);
-    param.SetOutLvl(_PRINT_NONE);
+    param.SetOutLvl(PRINT_NONE);
     param.SetRelTol(1e-5);
     param.SetRestart(20);
-    param.Print();
+    //param.Print();
 
     LOP lop(row,col);
 
     PCG pcg;
-    pcg.SetUp(mat,b,x,param);
-    pcg.SetUpPCD(lop);
+    pcg.Setup(mat,b,x,param);
+    pcg.SetupPCD(lop);
 
     timer.Start();
     pcg.Solve(mat, b,x,param);
-    std::cout << "FASPXX time : " << timer.Stop() << std::endl;
+    std::cout << "FASPXX time : " << timer.Stop() << "s" << std::endl;
     pcg.CleanPCD();
     pcg.Clean();
 

@@ -15,10 +15,11 @@
 #include "faspxx.hxx"
 
 enum PRTLVL {
-    _PRINT_NONE = 0,
-    _PRINT_MIN  = 1,
-    _PRINT_SOME = 2,
-    _PRINT_MORE = 4
+    PRINT_NONE = 0,
+    PRINT_MIN  = 2,
+    PRINT_SOME = 4,
+    PRINT_MORE = 6,
+    PRINT_MAX  = 8,
 };
 
 class IterParam {
@@ -39,7 +40,7 @@ private:
 public:
     friend class PCG;
 
-    IterParam() : outLvl(_PRINT_NONE),
+    IterParam() : outLvl(PRINT_NONE),
                   maxIter(100),
                   relTol(1e-6),
                   absTol(1e-10),

@@ -27,29 +27,29 @@ private:
     VEC tmp;
 
     /// Print out iteration information for iterative solvers
-    void PrintInfo(const PRTLVL &prtlvl,  const INT &iter,const DBL &relres,
-            const DBL &absres, const DBL &factor);
+    void PrintInfo(const PRTLVL& prtlvl,  const INT& iter, const DBL& relres,
+                   const DBL& absres, const DBL& factor);
 
     /// Print out final status of an iterative method
-    void Final(const INT &iter, const INT &maxit, const DBL &relres);
+    void Final(const INT& iter, const INT& maxit, const DBL& relres);
 
 public:
     /// constructor by default
-    PCG() : pcflag(0), lop(0, 0),rk(0),pk(0),zk(0),
-        tmp(0){};
+    PCG() : pcflag(0), lop(0, 0), rk(0), pk(0),
+            zk(0), tmp(0){};
 
     /// assign LOP object to this->lop
-    PCG(LOP lop) : pcflag(1), lop(lop),rk(0),pk(0),
-        zk(0),tmp(0) {};
+    PCG(LOP lop) : pcflag(1), lop(lop), rk(0), pk(0),
+                   zk(0), tmp(0) {};
 
     /// check and allocate memory
-    FaspRetCode SetUp(const MAT &A,const VEC &b,VEC &x,const IterParam &param);
+    FaspRetCode Setup(const MAT& A,const VEC& b,VEC& x,const IterParam& param);
 
     /// build preconditioner operator
-    void SetUpPCD(const LOP &lop);
+    void SetupPCD(const LOP& lop);
 
     /// solve by PCG
-    FaspRetCode Solve(const MAT &A, const VEC &b, VEC &x,IterParam &param);
+    FaspRetCode Solve(const MAT& A, const VEC& b, VEC& x,IterParam& param);
 
     /// clean preconfitioner operator
     void CleanPCD();
