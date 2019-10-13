@@ -196,7 +196,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
     }// End of main PCG loop
 
     FINISHED:// Finish iterative method
-    if (param.outLvl > _PRINT_NONE)
+    if (param.outLvl > PRINT_NONE)
         Final(param.numIter, param.maxIter, relres);
 
     param.normInf = rk.NormInf();
@@ -210,7 +210,6 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
 void PCG::CleanPCD() {
     LOP lop;
     this->lop = lop;
-    this->pcflag = 0;
 }
 
 /// Release temporary memory
