@@ -106,6 +106,10 @@ public:
     /// Compute *this = abs(*this)
     void Abs();
 
+    void AXPY(const DBL& a, const VEC& x);
+
+    void XPAY(const DBL& a, const VEC& x);
+
     /// *this = a * *this + b * *vec
     void Add(const DBL& a, const DBL& b, const VEC& v);
 
@@ -124,7 +128,7 @@ public:
     /// Compute Infinity norm of *this
     DBL NormInf() const;
 
-    /// Dot product of *this and vec
+    /// Dot product of with v
     DBL Dot(const VEC& v) const;
 };
 

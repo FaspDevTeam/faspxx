@@ -14,9 +14,9 @@
 #include "MATUtil.hxx"
 
 /// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
-MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
-         const std::vector<DBL> &values, const std::vector<INT> &colInd,
-         const std::vector<INT> &rowPtr, const std::vector<INT> &diagPtr) {
+MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+         const std::vector<DBL>& values, const std::vector<INT>& colInd,
+         const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -30,15 +30,15 @@ MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
         this->colInd = colInd;
         this->rowPtr = rowPtr;
         this->diagPtr = diagPtr;
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 }
 
 /// Assign nrow, ncol, nnz, values, colInd, rowPtr to *this, generate diagPtr
-MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
-         const std::vector<INT> &colInd, const std::vector<INT> &rowPtr,
-         const std::vector<INT> &diagPtr) {
+MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
+         const std::vector<INT>& diagPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -52,15 +52,15 @@ MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
         this->colInd = colInd;
         this->rowPtr = rowPtr;
         this->diagPtr = diagPtr;
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 }
 
 /// Assign nrow, ncol, nnz, colInd, rowPtr, diagPtr to *this (sparse structure)
-MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
-         const std::vector<DBL> &values, const std::vector<INT> &colInd,
-         const std::vector<INT> &rowPtr) {
+MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+         const std::vector<DBL>& values, const std::vector<INT>& colInd,
+         const std::vector<INT>& rowPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -74,15 +74,15 @@ MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
         this->values = values;
         this->colInd = colInd;
         this->rowPtr = rowPtr;
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
     this->FormDiagPtr(this->diagPtr);
 }
 
 /// Assign nrow, ncol, nnz, colInd, rowPtr to *this (sparse structure), generate diagPtr
-MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
-         const std::vector<INT> &colInd, const std::vector<INT> &rowPtr) {
+MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -95,14 +95,14 @@ MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
     try {
         this->colInd = colInd;
         this->rowPtr = rowPtr;
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
     this->FormDiagPtr(this->diagPtr);
 }
 
 /// Assign diagonal values to *this from a VEC
-MAT::MAT(const VEC &v) {
+MAT::MAT(const VEC& v) {
     INT size = v.GetSize();
 
     if (size == 0) {
@@ -122,7 +122,7 @@ MAT::MAT(const VEC &v) {
         this->colInd.resize(size);
         this->rowPtr.resize(size + 1);
         this->diagPtr.resize(size);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
@@ -144,7 +144,7 @@ MAT::MAT(const VEC &v) {
 }
 
 /// Assign diagonal values to *this from a vector
-MAT::MAT(const std::vector<DBL> &vt) {
+MAT::MAT(const std::vector<DBL>& vt) {
     const INT size = vt.size();
 
     if (size == 0) {
@@ -154,7 +154,7 @@ MAT::MAT(const std::vector<DBL> &vt) {
 
     this->nrow = size;
     this->ncol = size;
-    this->nnz = size;
+    this->nnz  = size;
 
     INT *p;
 
@@ -164,7 +164,7 @@ MAT::MAT(const std::vector<DBL> &vt) {
         this->colInd.resize(size);
         this->rowPtr.resize(size + 1);
         this->diagPtr.resize(size);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
@@ -185,7 +185,7 @@ MAT::MAT(const std::vector<DBL> &vt) {
 }
 
 /// Assign MAT object to *this
-MAT::MAT(const MAT &mat) {
+MAT::MAT(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
     this->nnz = mat.nnz;
@@ -195,13 +195,13 @@ MAT::MAT(const MAT &mat) {
         this->diagPtr = mat.diagPtr;
         this->colInd = mat.colInd;
         this->rowPtr = mat.rowPtr;
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 }
 
 /// Overload = operator
-MAT &MAT::operator=(const MAT &mat) {
+MAT& MAT::operator=(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
     this->nnz = mat.nnz;
@@ -210,17 +210,16 @@ MAT &MAT::operator=(const MAT &mat) {
         this->colInd = mat.colInd;
         this->rowPtr = mat.rowPtr;
         this->diagPtr = mat.diagPtr;
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
     return *this;
 }
 
 /// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
-void MAT::SetValues(const INT &nrow, const INT &ncol, const INT &nnz,
-                    const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                    const std::vector<INT> &rowPtr,
-                    const std::vector<INT> &diagPtr) {
+void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                    const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -234,15 +233,15 @@ void MAT::SetValues(const INT &nrow, const INT &ncol, const INT &nnz,
         this->rowPtr = rowPtr;
         this->colInd = colInd;
         this->diagPtr = diagPtr;
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FUNCTION__, __FILE__, __LINE__));
     }
 }
 
 /// Assign nrow, ncol, nnz, values, rowPtr, colInd to *this.
-void MAT::SetValues(const INT &nrow, const INT &ncol, const INT &nnz,
-                    const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                    const std::vector<INT> &rowPtr) {
+void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                    const std::vector<INT>& rowPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -255,7 +254,7 @@ void MAT::SetValues(const INT &nrow, const INT &ncol, const INT &nnz,
         this->rowPtr = rowPtr;
         this->colInd = colInd;
         this->values = values;
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
     this->FormDiagPtr(this->diagPtr);
@@ -278,7 +277,7 @@ INT MAT::GetNNZ() const {
 
 /// Get (*this)[i][j]
 //! Note: If *this is a sparse structure, it will return 1.0 for nonzero entries
-DBL MAT::GetValue(const INT &row, const INT &ncol) const {
+DBL MAT::GetValue(const INT& row, const INT& ncol) const {
     if (this->colInd[this->rowPtr[row]] <= ncol) {
         for (INT j = this->rowPtr[row]; j < this->rowPtr[row + 1]; j++) {
             if (ncol == this->colInd[j]) {
@@ -293,11 +292,11 @@ DBL MAT::GetValue(const INT &row, const INT &ncol) const {
 }
 
 /// Get the whole row-th row in *this into VEC object
-void MAT::GetRow(const INT &row, std::vector<DBL> &v) const {
+void MAT::GetRow(const INT& row, std::vector<DBL>& v) const {
     const INT begin = this->rowPtr[row], end = this->rowPtr[row + 1];
     try {
         v.resize(end - begin);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
     INT k = 0;
@@ -305,7 +304,7 @@ void MAT::GetRow(const INT &row, std::vector<DBL> &v) const {
 }
 
 /// Get the whole col-th column in *this into VEC object
-void MAT::GetCol(const INT &col, std::vector<DBL> &v) const {
+void MAT::GetCol(const INT& col, std::vector<DBL>& v) const {
     std::vector<DBL> tmp;
     INT count = 0;
     try {
@@ -335,11 +334,11 @@ void MAT::GetCol(const INT &col, std::vector<DBL> &v) const {
 }
 
 /// Get the whole diagonal entries in *this into VEC object
-void MAT::GetDiag(std::vector<DBL> &v) const {
+void MAT::GetDiag(std::vector<DBL>& v) const {
     INT len = this->nrow > this->ncol ? this->ncol : this->nrow;
     try {
         v.resize(len);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
     if (this->values.size() != 0) {
@@ -351,7 +350,7 @@ void MAT::GetDiag(std::vector<DBL> &v) const {
 }
 
 /// Copy *this to mat
-void MAT::CopyTo(MAT &mat) const {
+void MAT::CopyTo(MAT& mat) const {
     mat.operator=(*this);
 }
 
@@ -364,7 +363,7 @@ void MAT::Scale(const DBL a) {
         }
         for (INT j = 0; j < this->nnz; j++) this->values[j] = a * this->values[j];
     }
-    catch (FaspRunTime &ex) {
+    catch (FaspRunTime& ex) {
         ex.LogExcep();
     }
 }
@@ -379,7 +378,7 @@ void MAT::Shift(const DBL a) {
         for (INT j = 0; j < this->diagPtr.size(); j++)
             this->values[this->diagPtr[j]] = a + this->values[this->diagPtr[j]];
     }
-    catch (FaspRunTime &ex) {
+    catch (FaspRunTime& ex) {
         ex.LogExcep();
     }
 }
@@ -404,14 +403,14 @@ void MAT::Transpose() {
     try {
         tmp.rowPtr.resize(this->ncol + 1);
         tmp.colInd.resize(nnz);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
     if (this->values.size()) {
         try {
             tmp.values.resize(nnz);
-        } catch (std::bad_alloc &ex) {
+        } catch (std::bad_alloc& ex) {
             throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
         }
     } else {
@@ -456,18 +455,18 @@ void MAT::Transpose() {
 }
 
 /// *this = *this * mat
-void MAT::MultLeft(const MAT &mat) {
+void MAT::MultLeft(const MAT& mat) {
     this->operator=(Mult(*this, mat));
 }
 
 /// *this = mat * *this
-void MAT::MultRight(const MAT &mat) {
+void MAT::MultRight(const MAT& mat) {
     MAT tmp = Mult(mat, *this);
     this->operator=(tmp);
 }
 
 /// Return MAT = a * mat1 + b * mat2
-MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2, MAT &mat) {
+MAT Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2, MAT& mat) {
 
     INT i, j, k, l;
     INT count = 0, added, countrow;
@@ -493,7 +492,7 @@ MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2, MAT &mat) {
         mat.rowPtr.resize(mat.nrow + 1);
         mat.colInd.resize(mat1.nnz + mat2.nnz);
         mat.values.resize(mat1.nnz + mat2.nnz);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
@@ -538,54 +537,114 @@ MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2, MAT &mat) {
 }
 
 /// *this = a * *this + b * mat
-void MAT::Add(const DBL a, const DBL b, const MAT &mat) {
+void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
     MAT tmp;
     ::Add(a, *this, b, mat, tmp);
     this->operator=(tmp);
 }
 
 /// Return VEC = *this * vec.
-void MAT::MultVec(const VEC &v, VEC &w) const {
+void MAT::MultVec(const VEC& v, VEC& w) const {
 
     INT begin, end, i, k;
-    if (this->values.size() == 0) {
+
+    if (this->values.size() > 0) { // Regular sparse matrix
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
-            end = this->rowPtr[i + 1];
+            end   = this->rowPtr[i + 1];
             switch (end - begin) {
                 case 1:
-                    w.values[i] = 0;
-                    w.values[i] += v.values[this->colInd[begin]];
+                    w.values[i]  = this->values[begin]
+                                 * v.values[this->colInd[begin]];
                     break;
                 case 2:
-                    w.values[i] = 0;
-                    w.values[i] += v.values[this->colInd[begin]];
+                    w.values[i]  = this->values[begin]
+                                 * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1]
+                                 * v.values[this->colInd[begin + 1]];
+                    break;
+                case 3:
+                    w.values[i]  = this->values[begin]
+                                 * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1]
+                                 * v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2]
+                                 * v.values[this->colInd[begin + 2]];
+                    break;
+                case 4:
+                    w.values[i]  = this->values[begin]
+                                 * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1]
+                                 * v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2]
+                                 * v.values[this->colInd[begin + 2]];
+                    w.values[i] += this->values[begin + 3]
+                                 * v.values[this->colInd[begin + 3]];
+                    break;
+                case 5:
+                    w.values[i]  = this->values[begin]
+                                 * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1]
+                                 * v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2]
+                                 * v.values[this->colInd[begin + 2]];
+                    w.values[i] += this->values[begin + 3]
+                                 * v.values[this->colInd[begin + 3]];
+                    w.values[i] += this->values[begin + 4]
+                                 * v.values[this->colInd[begin + 4]];
+                    break;
+                case 6:
+                    w.values[i]  = this->values[begin]
+                                 * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1]
+                                 * v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2]
+                                 * v.values[this->colInd[begin + 2]];
+                    w.values[i] += this->values[begin + 3]
+                                 * v.values[this->colInd[begin + 3]];
+                    w.values[i] += this->values[begin + 4]
+                                 * v.values[this->colInd[begin + 4]];
+                    w.values[i] += this->values[begin + 5]
+                                 * v.values[this->colInd[begin + 5]];
+                    break;
+                default:
+                    for (w.values[i] = 0.0, k = begin; k < end; k++)
+                        w.values[i] += this->values[k] * v.values[this->colInd[k]];
+            }
+        }
+    }
+    else { // Only sparse structure
+        for (i = 0; i < this->nrow; i++) {
+            begin = this->rowPtr[i];
+            end   = this->rowPtr[i + 1];
+            switch (end - begin) {
+                case 1:
+                    w.values[i]  = v.values[this->colInd[begin]];
+                    break;
+                case 2:
+                    w.values[i]  = v.values[this->colInd[begin]];
                     w.values[i] += v.values[this->colInd[begin + 1]];
                     break;
                 case 3:
-                    w.values[i] = 0;
-                    w.values[i] += v.values[this->colInd[begin]];
+                    w.values[i]  = v.values[this->colInd[begin]];
                     w.values[i] += v.values[this->colInd[begin + 1]];
                     w.values[i] += v.values[this->colInd[begin + 2]];
                     break;
                 case 4:
-                    w.values[i] = 0;
-                    w.values[i] += v.values[this->colInd[begin]];
+                    w.values[i]  = v.values[this->colInd[begin]];
                     w.values[i] += v.values[this->colInd[begin + 1]];
                     w.values[i] += v.values[this->colInd[begin + 2]];
                     w.values[i] += v.values[this->colInd[begin + 3]];
                     break;
                 case 5:
-                    w.values[i] = 0;
-                    w.values[i] += v.values[this->colInd[begin]];
+                    w.values[i]  = v.values[this->colInd[begin]];
                     w.values[i] += v.values[this->colInd[begin + 1]];
                     w.values[i] += v.values[this->colInd[begin + 2]];
                     w.values[i] += v.values[this->colInd[begin + 3]];
                     w.values[i] += v.values[this->colInd[begin + 4]];
                     break;
                 case 6:
-                    w.values[i] = 0;
-                    w.values[i] += v.values[this->colInd[begin]];
+                    w.values[i]  = v.values[this->colInd[begin]];
                     w.values[i] += v.values[this->colInd[begin + 1]];
                     w.values[i] += v.values[this->colInd[begin + 2]];
                     w.values[i] += v.values[this->colInd[begin + 3]];
@@ -595,99 +654,26 @@ void MAT::MultVec(const VEC &v, VEC &w) const {
                 default:
                     for (w.values[i] = 0.0, k = begin; k < end; k++)
                         w.values[i] += v.values[this->colInd[k]];
-                    break;
             }
         }
-    } else {
-        for (i = 0; i < this->nrow; i++) {
-            begin = this->rowPtr[i];
-            end = this->rowPtr[i + 1];
-            switch (end - begin) {
-                case 1:
-                    w.values[i] = 0;
-                    w.values[i] += this->values[begin] *
-                                   v.values[this->colInd[begin]];
-                    break;
-                case 2:
-                    w.values[i] = 0;
-                    w.values[i] +=
-                            this->values[begin] * v.values[this->colInd[begin]];
-                    w.values[i] += this->values[begin + 1] *
-                                   v.values[this->colInd[begin + 1]];
-                    break;
-                case 3:
-                    w.values[i] = 0;
-                    w.values[i] +=
-                            this->values[begin] * v.values[this->colInd[begin]];
-                    w.values[i] += this->values[begin + 1] *
-                                   v.values[this->colInd[begin + 1]];
-                    w.values[i] += this->values[begin + 2] *
-                                   v.values[this->colInd[begin + 2]];
-                    break;
-                case 4:
-                    w.values[i] = 0;
-                    w.values[i] +=
-                            this->values[begin] * v.values[this->colInd[begin]];
-                    w.values[i] += this->values[begin + 1] *
-                                   v.values[this->colInd[begin + 1]];
-                    w.values[i] += this->values[begin + 2] *
-                                   v.values[this->colInd[begin + 2]];
-                    w.values[i] += this->values[begin + 3] *
-                                   v.values[this->colInd[begin + 3]];
-                    break;
-                case 5:
-                    w.values[i] = 0;
-                    w.values[i] +=
-                            this->values[begin] * v.values[this->colInd[begin]];
-                    w.values[i] += this->values[begin + 1] *
-                                   v.values[this->colInd[begin + 1]];
-                    w.values[i] += this->values[begin + 2] *
-                                   v.values[this->colInd[begin + 2]];
-                    w.values[i] += this->values[begin + 3] *
-                                   v.values[this->colInd[begin + 3]];
-                    w.values[i] += this->values[begin + 4] *
-                                   v.values[this->colInd[begin + 4]];
-                    break;
-                case 6:
-                    w.values[i] = 0;
-                    w.values[i] +=
-                            this->values[begin] * v.values[this->colInd[begin]];
-                    w.values[i] += this->values[begin + 1] *
-                                   v.values[this->colInd[begin + 1]];
-                    w.values[i] += this->values[begin + 2] *
-                                   v.values[this->colInd[begin + 2]];
-                    w.values[i] += this->values[begin + 3] *
-                                   v.values[this->colInd[begin + 3]];
-                    w.values[i] += this->values[begin + 4] *
-                                   v.values[this->colInd[begin + 4]];
-                    w.values[i] += this->values[begin + 5] *
-                                   v.values[this->colInd[begin + 5]];
-                    break;
-                default:
-                    for (w.values[i] = 0.0, k = begin; k < end; k++)
-                        w.values[i] += this->values[k] * v.values[this->colInd[k]];
-                    break;
-            }
-        }
-    }
-
+    } // end if values.size > 0
 }
 
-/// r = b - A * x
-void MAT::MinusMult(const VEC &b, const VEC &x, VEC &r) const {
-
-    r = b;
+/// r = y - A * x: y minus A times x
+void MAT::YMAX(const VEC& y, const VEC& x, VEC& r) const {
     INT begin, end, i, k;
     if (this->values.size() == 0) {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
             end = this->rowPtr[i + 1];
+            r.values[i] = y.values[i];
             for (k = begin; k < end; k++) r.values[i] -= x.values[this->colInd[k]];
         }
     } else {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
             end = this->rowPtr[i + 1];
+            r.values[i] = y.values[i];
             for (k = begin; k < end; k++)
                 r.values[i] -= this->values[k] * x.values[this->colInd[k]];
         }
@@ -695,7 +681,7 @@ void MAT::MinusMult(const VEC &b, const VEC &x, VEC &r) const {
 }
 
 /// Return VEC = A'*vec1 + vec2
-VEC MAT::MultTransposeAdd(const VEC &v1, const VEC &v2) const {
+VEC MAT::MultTransposeAdd(const VEC& v1, const VEC& v2) const {
 
     const INT n = this->nrow, m = this->ncol, nnz = this->nnz;
     INT i, j, k, p;
@@ -708,14 +694,14 @@ VEC MAT::MultTransposeAdd(const VEC &v1, const VEC &v2) const {
     try {
         tmp.rowPtr.resize(m + 1);
         tmp.colInd.resize(nnz);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
     if (this->values.size()) {
         try {
             tmp.values.resize(nnz);
-        } catch (std::bad_alloc &ex) {
+        } catch (std::bad_alloc& ex) {
             throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
         }
     } else {
@@ -770,14 +756,14 @@ VEC MAT::MultTransposeAdd(const VEC &v1, const VEC &v2) const {
 }
 
 /// *this = matl * matr
-MAT Mult(const MAT &matl, const MAT &matr) {
+MAT Mult(const MAT& matl, const MAT& matr) {
     MAT mat;
 
     INT l, count;
     INT *tmp;
     try {
         tmp = new INT[matr.ncol];
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
@@ -879,12 +865,11 @@ void WriteCSR(char *filename, MAT mat) {
     out.close();
 }
 
-
 /// Form diagonal pointer using colInd and rowPtr
-void MAT::FormDiagPtr(std::vector<INT> &diagPtr) {
+void MAT::FormDiagPtr(std::vector<INT>& diagPtr) {
     try {
         this->diagPtr.resize(nrow);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 

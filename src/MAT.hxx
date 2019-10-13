@@ -180,8 +180,8 @@ public:
     /// Return VEC = *this * vec
     void MultVec(const VEC &v, VEC &w) const;
 
-    ///
-    void MinusMult(const VEC &b, const VEC &x, VEC &r) const;
+    /// r = y - A * x: y minus A times x
+    void YMAX(const VEC &y, const VEC &x, VEC &r) const;
 
     /// Return VEC = A'*v1 + v2
     VEC MultTransposeAdd(const VEC &v1, const VEC &v2) const;

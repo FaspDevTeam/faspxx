@@ -23,19 +23,19 @@ private:
     VEC rk;
     VEC pk;
     VEC zk;
-    VEC tmp;
+    VEC ax;
 
     /// Print out iteration information for iterative solvers
     void PrintInfo(const PRTLVL& prtlvl,  const INT& iter, const DBL& relres,
                    const DBL& absres, const DBL& factor);
 
     /// Print out final status of an iterative method
-    void Final(const INT& iter, const INT& maxit, const DBL& relres);
+    void PrintFinal(const INT& iter, const INT& maxit, const DBL& relres);
 
 public:
     /// constructor by default
     PCG() : lop(0, 0), rk(0), pk(0),
-            zk(0), tmp(0){};
+            zk(0), ax(0){};
 
     /// check and allocate memory
     FaspRetCode Setup(const MAT& A,const VEC& b,VEC& x,const IterParam& param);
