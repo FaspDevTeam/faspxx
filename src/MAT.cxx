@@ -546,31 +546,12 @@ void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
 /// Return VEC = *this * vec.
 void MAT::MultVec(const VEC& v, VEC& w) const {
 
-    INT begin, end, i, k;
+    INT begin, i, k;
 
-    if (this->values.size() > 0) { // Regular sparse matrix
-        for (i = 0; i < this->nrow; i++) {
+    if ( this->values.size() > 0 ) { // Regular sparse matrix
+        for ( i = 0; i < this->nrow; i++ ) {
             begin = this->rowPtr[i];
-            end   = this->rowPtr[i + 1];
-            switch (end - begin) {
-                case 1:
-                    w.values[i]  = this->values[begin]
-                                 * v.values[this->colInd[begin]];
-                    break;
-                case 2:
-                    w.values[i]  = this->values[begin]
-                                 * v.values[this->colInd[begin]];
-                    w.values[i] += this->values[begin + 1]
-                                 * v.values[this->colInd[begin + 1]];
-                    break;
-                case 3:
-                    w.values[i]  = this->values[begin]
-                                 * v.values[this->colInd[begin]];
-                    w.values[i] += this->values[begin + 1]
-                                 * v.values[this->colInd[begin + 1]];
-                    w.values[i] += this->values[begin + 2]
-                                 * v.values[this->colInd[begin + 2]];
-                    break;
+            switch ( this->rowPtr[i+1] - begin ) {
                 case 4:
                     w.values[i]  = this->values[begin]
                                  * v.values[this->colInd[begin]];
@@ -608,28 +589,16 @@ void MAT::MultVec(const VEC& v, VEC& w) const {
                                  * v.values[this->colInd[begin + 5]];
                     break;
                 default:
-                    for (w.values[i] = 0.0, k = begin; k < end; k++)
+                    w.values[i] = this->values[begin] * v.values[this->colInd[begin]];
+                    for ( k = begin+1; k < this->rowPtr[i+1]; k++ )
                         w.values[i] += this->values[k] * v.values[this->colInd[k]];
             }
         }
     }
     else { // Only sparse structure
-        for (i = 0; i < this->nrow; i++) {
+        for ( i = 0; i < this->nrow; i++ ) {
             begin = this->rowPtr[i];
-            end   = this->rowPtr[i + 1];
-            switch (end - begin) {
-                case 1:
-                    w.values[i]  = v.values[this->colInd[begin]];
-                    break;
-                case 2:
-                    w.values[i]  = v.values[this->colInd[begin]];
-                    w.values[i] += v.values[this->colInd[begin + 1]];
-                    break;
-                case 3:
-                    w.values[i]  = v.values[this->colInd[begin]];
-                    w.values[i] += v.values[this->colInd[begin + 1]];
-                    w.values[i] += v.values[this->colInd[begin + 2]];
-                    break;
+            switch ( this->rowPtr[i+1] - begin ) {
                 case 4:
                     w.values[i]  = v.values[this->colInd[begin]];
                     w.values[i] += v.values[this->colInd[begin + 1]];
@@ -652,30 +621,32 @@ void MAT::MultVec(const VEC& v, VEC& w) const {
                     w.values[i] += v.values[this->colInd[begin + 5]];
                     break;
                 default:
-                    for (w.values[i] = 0.0, k = begin; k < end; k++)
+                    w.values[i] = v.values[this->colInd[begin]];
+                    for ( k = begin+1; k < this->rowPtr[i+1]; k++ )
                         w.values[i] += v.values[this->colInd[k]];
             }
         }
     } // end if values.size > 0
+
 }
 
 /// r = y - A * x: y minus A times x
 void MAT::YMAX(const VEC& y, const VEC& x, VEC& r) const {
-    INT begin, end, i, k;
-    if (this->values.size() == 0) {
+    INT begin, i, k;
+    if ( this->values.size() > 0 ) {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
-            end = this->rowPtr[i + 1];
-            r.values[i] = y.values[i];
-            for (k = begin; k < end; k++) r.values[i] -= x.values[this->colInd[k]];
+            r.values[i] = y.values[i]
+                          - this->values[begin] * x.values[this->colInd[begin]];
+            for (k = begin+1; k < this->rowPtr[i+1]; k++)
+                r.values[i] -= this->values[k] * x.values[this->colInd[k]];
         }
     } else {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
-            end = this->rowPtr[i + 1];
-            r.values[i] = y.values[i];
-            for (k = begin; k < end; k++)
-                r.values[i] -= this->values[k] * x.values[this->colInd[k]];
+            r.values[i] = y.values[i] - x.values[this->colInd[begin]];
+            for (k = begin+1; k < this->rowPtr[i+1]; k++)
+                r.values[i] -= x.values[this->colInd[k]];
         }
     }
 }

@@ -237,26 +237,28 @@ void VEC::Abs() {
 void VEC::AXPY(const DBL& a, const VEC& x) {
     // unroll long for loops
     const INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
+    INT j;
+    for ( j = 0; j < len; j += 4 ) {
         this->values[j]   += a * x.values[j];
         this->values[j+1] += a * x.values[j+1];
         this->values[j+2] += a * x.values[j+2];
         this->values[j+3] += a * x.values[j+3];
     }
-    for (INT j = len; j < this->size; j++) this->values[j] += a * x.values[j];
+    for ( j = len; j < this->size; j++ ) this->values[j] += a * x.values[j];
 }
 
 /// y = x + a * y
 void VEC::XPAY(const DBL& a, const VEC& x) {
     // unroll long for loops
     const INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
+    INT j;
+    for ( j = 0; j < len; j += 4 ) {
         this->values[j]   = a * this->values[j]   + x.values[j];
         this->values[j+1] = a * this->values[j+1] + x.values[j+1];
         this->values[j+2] = a * this->values[j+2] + x.values[j+2];
         this->values[j+3] = a * this->values[j+3] + x.values[j+3];
     }
-    for (INT j = len; j < this->size; j++)
+    for ( j = len; j < this->size; j++ )
         this->values[j]   = a * this->values[j]   + x.values[j];
 }
 
@@ -455,31 +457,36 @@ DBL VEC::Min() const {
 /// Compute Euclidean norm of *this
 DBL VEC::Norm2() const {
     // unroll long for loops
-    DBL tmp1 = 0.0, tmp2 = 0.0, tmp3 = 0.0, tmp4 = 0.0;
     const INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
+    DBL tmp1 = 0.0, tmp2 = 0.0, tmp3 = 0.0, tmp4 = 0.0;
+    INT j;
+
+    for ( j = 0; j < len; j += 4 ) {
         tmp1 += std::pow(this->values[j],   2);
         tmp2 += std::pow(this->values[j+1], 2);
         tmp3 += std::pow(this->values[j+2], 2);
         tmp4 += std::pow(this->values[j+3], 2);
     }
-    for (INT j = len; j < this->size; j++) tmp1 += std::pow(this->values[j], 2);
+    for ( j = len; j < this->size; j++ ) tmp1 += std::pow(this->values[j], 2);
+    
     return sqrt(tmp1 + tmp2 + tmp3 + tmp4);
 }
 
 /// Compute Infinity norm of *this
 DBL VEC::NormInf() const {
     // unroll long for loops
+    const INT len = this->size - this->size % 4;
     DBL tmpNorm1 = 0.0, tmpNorm2 = 0.0, tmpNorm3 = 0.0, tmpNorm4 = 0.0;
     DBL tmp1, tmp2, tmp3, tmp4;
-    const INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
+    INT j;
+
+    for ( j = 0; j < len; j += 4 ) {
         tmp1 = fabs(this->values[j]);     if (tmp1 > tmpNorm1) tmpNorm1 = tmp1;
         tmp2 = fabs(this->values[j + 1]); if (tmp2 > tmpNorm2) tmpNorm2 = tmp2;
         tmp3 = fabs(this->values[j + 2]); if (tmp3 > tmpNorm3) tmpNorm3 = tmp3;
         tmp4 = fabs(this->values[j + 3]); if (tmp4 > tmpNorm4) tmpNorm4 = tmp4;
     }
-    for (INT j = len; j < this->size; j++) {
+    for ( j = len; j < this->size; j++ ) {
         tmp1 = fabs(this->values[j]);
         if (tmp1 > tmpNorm1) tmpNorm1 = tmp1;
     }

@@ -43,27 +43,27 @@ void PCG::SetupPCD(const LOP& lop) {
 
 /// Solve by PCG
 FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
+
     const INT MaxStag = 20;
     const INT maxdiff = 1e-4 * param.relTol; // Stagnation tolerance
     const DBL solinftol = 1e-20; // Infinity norm tolerance
-    const INT len=b.GetSize();
+    const INT len = b.GetSize();
 
     // Local variables
-    INT stag = 1, morestep = 1;
+    FaspRetCode errorCode = FaspRetCode::SUCCESS;
+    INT stagStep = 1, moreStep = 1;
     DBL resAbs = 1e+20, tmpAbs = 1e+20;
-    DBL resRel = 1e+20, norm = 1e+20, denAbs = 1e+20;
+    DBL resRel = 1e+20, denAbs = 1e+20;
     DBL reldiff, norminf, factor;
     DBL alpha, beta, tmpa, tmpb;
 
-    FaspRetCode errorCode = FaspRetCode::SUCCESS;
-
     // Output info for debuging
-    if (param.outLvl > PRINT_NONE) std::cout << "\nCalling PCG solver (CSR) ...\n";
+    if (param.outLvl > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n";
 
-    // Compute rk = b - A * x
+    // Compute r_k = b - A * x
     A.YMAX(b, x, this->rk);
 
-    // Apply preconditioner
+    // Apply preconditioner z_k = B(r_k)
     this->lop.Apply(this->rk, this->zk);
 
     // Compute initial residual
@@ -85,12 +85,11 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
 
         param.numIter++;
 
-        // ax = A * pk
+        // ax = A * p_k
         A.MultVec(this->pk, this->ax);
 
         // alpha_k = (z_{k-1},r_{k-1})/(A*p_{k-1},p_{k-1})
         tmpb = this->ax.Dot(this->pk);
-        
         if (fabs(tmpb) > 1e-40) alpha = tmpa / tmpb;
         else {
             DivZero(); // Possible breakdown
@@ -98,80 +97,74 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
             goto FINISHED;
         }
 
-        // u_k = u_{k-1} + alpha_k*p_{k-1}
-        x.AXPY(alpha, this->pk);
-        
         // r_k = r_{k-1} - alpha_k*A*p_{k-1}
         this->rk.AXPY(-alpha, this->ax);
 
+        // x_k = x_{k-1} + alpha_k*p_{k-1}
+        x.AXPY(alpha, this->pk);
+        
         // Compute norm of residual
         resAbs = this->rk.Norm2();
         resRel = resAbs / denAbs;
         factor = resAbs / tmpAbs;
 
         // Output iteration information if needed
-        PrintInfo(param.outLvl,param.numIter, resRel, tmpAbs, factor);
+        PrintInfo(param.outLvl, param.numIter, resRel, tmpAbs, factor);
 
-        if (factor > 0.9) { // Only check when converge slowly
+        if ( factor > 0.9 ) { // Only check when converge slowly
             // Check I : if solution is close to zero, return ERROR_SOLVER_SOLSTAG
             norminf = x.NormInf();
-            if (norminf <= solinftol) {
-                if (param.outLvl > PRINT_MIN) ZeroSol();
+            if ( norminf <= solinftol ) {
+                if ( param.outLvl > PRINT_MIN ) ZeroSol();
                 errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                 break;
             }
 
-            // Check II: if stagnated, try to restart
-            norm = x.Norm2();
-            // Compute relative difference
-            reldiff = fabs(alpha) * this->pk.Norm2() / norm;
-
-            if ((stag <= MaxStag)&  (reldiff < maxdiff)) {
-                if (param.outLvl >= PRINT_MORE) {
+            // Check II: if relative difference stagnated, try to restart
+            reldiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
+            if ( (stagStep <= MaxStag) && (reldiff < maxdiff) ) {
+                if ( param.outLvl >= PRINT_MORE ) {
                     DiffRes(reldiff, resRel);
                     Restart();
                 }
 
-                A.YMAX(b,x,this->rk);
+                A.YMAX(b, x, this->rk);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
+                if ( param.outLvl >= PRINT_MORE ) RealRes(resRel);
 
-                if (param.outLvl >= PRINT_MORE) RealRes(resRel);
-
-                if (resRel < param.relTol)
-                    break;
+                if ( resRel < param.relTol ) break;
                 else {
-                    if (stag >= MaxStag) {
+                    if ( stagStep >= MaxStag ) {
                         if (param.outLvl > PRINT_MIN) Stagged();
                         errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                         break;
                     }
                     this->pk.SetValues(len, 0.0);
-                    ++stag;
+                    ++stagStep;
                 }
             } // End of stagnation check!
         }// End of check I and II
 
         // Check III: prevent false convergence
-        if (resRel < param.relTol) {
-            DBL updated_resRel = resRel;
-
+        if ( resRel < param.relTol ) {
             // Compute true residual r = b - Ax and update residual
             A.YMAX(b, x, this->rk);
 
             // Compute residual norms
+            DBL updated_resRel = resRel;
             resAbs = rk.Norm2();
             resRel = resAbs / denAbs;
 
             // Check convergence
-            if (resRel < param.relTol) break;
+            if ( resRel < param.relTol ) break;
 
-            if (param.outLvl >= PRINT_MORE) {
+            if ( param.outLvl >= PRINT_MORE ) {
                 Compres(updated_resRel);
                 RealRes(resRel);
             }
 
-            if (morestep >= param.restart) {
+            if ( moreStep >= param.restart ) {
                 if (param.outLvl > PRINT_MIN) ZeroTol();
                 errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
@@ -179,13 +172,13 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
 
             // Prepare for restarting method
             this->pk.SetValues(len, 0.0);
-            ++morestep;
+            ++moreStep;
         } // End of safe-guard check!
 
         // Save residual for next iteration
         tmpAbs = resAbs;
 
-        // Compute z_k = B(r_k)
+        // Apply preconditioner z_k = B(r_k)
         this->lop.Apply(this->rk, this->zk);
 
         // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
@@ -199,8 +192,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
     } // End of main PCG loop
 
 FINISHED: // Finish iterative method
-    if (param.outLvl > PRINT_NONE)
-        PrintFinal(param.numIter, param.maxIter, resRel);
+    if (param.outLvl > PRINT_NONE) PrintFinal(param.numIter, param.maxIter, resRel);
 
     // Compute final residual norms
     //param.normInf = rk.NormInf();

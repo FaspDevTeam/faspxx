@@ -49,7 +49,7 @@ INT LOP::GetColSize() const{
 
 /// Get (*this)[i][j]
 DBL LOP::GetValue(const INT& row, const INT& col) const{
-    if(row==col)
+    if (row==col)
         return 1.0;
     else
         return 0.0;
@@ -88,11 +88,11 @@ void LOP::Transpose(){
 }
 
 /// Return VEC = *this * v
-void LOP::Apply(const VEC& v,VEC &vt) const{
+void LOP::Apply(const VEC& v, VEC &vt) const{
     //suppose *this is a identical mapping
-    vt=v;
-
+    vt = v;
 }
+
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/
