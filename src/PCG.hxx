@@ -19,7 +19,6 @@
 
 class PCG {
 private:
-    INT pcflag;
     LOP lop;
     VEC rk;
     VEC pk;
@@ -35,12 +34,8 @@ private:
 
 public:
     /// constructor by default
-    PCG() : pcflag(0), lop(0, 0), rk(0), pk(0),
+    PCG() : lop(0, 0), rk(0), pk(0),
             zk(0), tmp(0){};
-
-    /// assign LOP object to this->lop
-    PCG(LOP lop) : pcflag(1), lop(lop), rk(0), pk(0),
-                   zk(0), tmp(0) {};
 
     /// check and allocate memory
     FaspRetCode Setup(const MAT& A,const VEC& b,VEC& x,const IterParam& param);

@@ -313,6 +313,7 @@ void MAT::GetCol(const INT &col, std::vector<DBL> &v) const {
     } catch (std::bad_alloc) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
+
     for (INT j = 0; j < this->nrow; j++) {
         if (col >= this->colInd[this->rowPtr[j]]) {
             for (INT k = this->rowPtr[j]; k < this->rowPtr[j + 1]; k++) {
@@ -551,24 +552,152 @@ void MAT::MultVec(const VEC &v, VEC &w) const {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
             end = this->rowPtr[i + 1];
-            for (w.values[i] = 0.0, k = begin; k < end; k++)
-                w.values[i] += v.values[this->colInd[k]];
+            switch (end - begin) {
+                case 1:
+                    w.values[i] = 0;
+                    w.values[i] += this->values[begin] *
+                                   v.values[this->colInd[begin]];
+                    break;
+                case 2:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    break;
+                case 3:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2] *
+                                   v.values[this->colInd[begin + 2]];
+                    break;
+                case 4:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2] *
+                                   v.values[this->colInd[begin + 2]];
+                    w.values[i] += this->values[begin + 3] *
+                                   v.values[this->colInd[begin + 3]];
+                    break;
+                case 5:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2] *
+                                   v.values[this->colInd[begin + 2]];
+                    w.values[i] += this->values[begin + 3] *
+                                   v.values[this->colInd[begin + 3]];
+                    w.values[i] += this->values[begin + 4] *
+                                   v.values[this->colInd[begin + 4]];
+                    break;
+                case 6:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2] *
+                                   v.values[this->colInd[begin + 2]];
+                    w.values[i] += this->values[begin + 3] *
+                                   v.values[this->colInd[begin + 3]];
+                    w.values[i] += this->values[begin + 4] *
+                                   v.values[this->colInd[begin + 4]];
+                    w.values[i] += this->values[begin + 5] *
+                                   v.values[this->colInd[begin + 5]];
+                    break;
+                default:
+                    for (w.values[i] = 0.0, k = begin; k < end; k++)
+                        w.values[i] += this->values[k] * v.values[this->colInd[k]];
+                    break;
+            }
         }
     } else {
         for (i = 0; i < this->nrow; i++) {
             begin = this->rowPtr[i];
             end = this->rowPtr[i + 1];
-            for (w.values[i] = 0.0, k = begin; k < end; k++)
-                w.values[i] += this->values[k] * v.values[this->colInd[k]];
+            switch (end - begin) {
+                case 1:
+                    w.values[i] = 0;
+                    w.values[i] += this->values[begin] *
+                                   v.values[this->colInd[begin]];
+                    break;
+                case 2:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    break;
+                case 3:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2] *
+                                   v.values[this->colInd[begin + 2]];
+                    break;
+                case 4:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2] *
+                                   v.values[this->colInd[begin + 2]];
+                    w.values[i] += this->values[begin + 3] *
+                                   v.values[this->colInd[begin + 3]];
+                    break;
+                case 5:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2] *
+                                   v.values[this->colInd[begin + 2]];
+                    w.values[i] += this->values[begin + 3] *
+                                   v.values[this->colInd[begin + 3]];
+                    w.values[i] += this->values[begin + 4] *
+                                   v.values[this->colInd[begin + 4]];
+                    break;
+                case 6:
+                    w.values[i] = 0;
+                    w.values[i] +=
+                            this->values[begin] * v.values[this->colInd[begin]];
+                    w.values[i] += this->values[begin + 1] *
+                                   v.values[this->colInd[begin + 1]];
+                    w.values[i] += this->values[begin + 2] *
+                                   v.values[this->colInd[begin + 2]];
+                    w.values[i] += this->values[begin + 3] *
+                                   v.values[this->colInd[begin + 3]];
+                    w.values[i] += this->values[begin + 4] *
+                                   v.values[this->colInd[begin + 4]];
+                    w.values[i] += this->values[begin + 5] *
+                                   v.values[this->colInd[begin + 5]];
+                    break;
+                default:
+                    for (w.values[i] = 0.0, k = begin; k < end; k++)
+                        w.values[i] += this->values[k] * v.values[this->colInd[k]];
+                    break;
+            }
         }
     }
 
 }
 
 /// r = b - A * x
-void MAT::MultAdd(const VEC &b, const VEC &x, VEC &r) const {
+void MAT::MinusMult(const VEC &b, const VEC &x, VEC &r) const {
 
-    r=b;
+    r = b;
     INT begin, end, i, k;
     if (this->values.size() == 0) {
         for (i = 0; i < this->nrow; i++) {

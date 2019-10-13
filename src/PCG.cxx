@@ -22,13 +22,16 @@ FaspRetCode PCG::Setup(const MAT& A, const VEC& b, VEC& x, const IterParam& para
         return FaspRetCode ::ERROR_ALLOC_MEM;
     }
 
+    /// identical preconditioner operator by default
+    LOP lop(len,len);
+    this->lop=lop;
+
     return FaspRetCode::SUCCESS;
 }
 
 // Assign lop to *this
 void PCG::SetupPCD(const LOP& lop) {
     this->lop = lop;
-    this->pcflag = 1;
 }
 
 /// Solve by PCG
@@ -51,15 +54,13 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
         std::cout << "\nCalling PCG solver (CSR) ...\n";
 
     // rk = b - A * x
-    A.MultVec(x,this->tmp);
-    this->rk=b;
-    this->rk-=this->tmp;
-    // this->rk.Add(1.0, b, -1.0, this->tmp);
+    //A.MultVec(x,this->tmp);
+    //this->rk=b;
+    //this->rk-=this->tmp;
+    //this->rk.Add(1.0, b, -1.0, this->tmp);
+    A.MinusMult(b,x,this->rk);
 
-    if (this->pcflag == 1)
-        this->lop.Apply(this->rk, this->zk); // Apply preconditioner
-    else
-        this->zk = this->rk; // No preconditioner
+    this->lop.Apply(this->rk, this->zk);
 
     // Compute initial residual
     abstmp = this->rk.Norm2();
@@ -124,8 +125,9 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
                     Restart();
                 }
 
-                A.MultVec(x,this->tmp);
-                this->rk.Add(1.0, b, -1.0, this->tmp);
+                // A.MultVec(x,this->tmp);
+                // this->rk.Add(1.0, b, -1.0, this->tmp);
+                A.MinusMult(b,x,this->rk);
 
                 absres = this->rk.Norm2();
                 relres = absres / normtmp;
@@ -151,8 +153,9 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
             DBL updated_relres = relres;
 
             // Compute true residual r = b - Ax and update residual
-            A.MultVec(x,this->tmp);
-            this->rk.Add(1.0, b, -1.0, this->tmp);
+            // A.MultVec(x,this->tmp);
+            // this->rk.Add(1.0, b, -1.0, this->tmp);
+            A.MinusMult(b,x,this->rk);
 
             // Compute residual norms
             absres = rk.Norm2();
@@ -181,10 +184,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
         abstmp = absres;
 
         // Compute z_k = B(r_k)
-        if (this->pcflag == 1)
-            this->lop.Apply(this->rk, this->zk); // Apply preconditioner
-        else
-            this->zk = this->rk; // No preconditioner
+        this->lop.Apply(this->rk, this->zk);
 
         // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
         tmpb = this->zk.Dot(this->rk);
@@ -196,7 +196,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
     }// End of main PCG loop
 
     FINISHED:// Finish iterative method
-    if (param.outLvl > PRINT_NONE)
+    if (param.outLvl > _PRINT_NONE)
         Final(param.numIter, param.maxIter, relres);
 
     param.normInf = rk.NormInf();
