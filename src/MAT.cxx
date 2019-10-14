@@ -589,12 +589,26 @@ void MAT::MultVec(const VEC& v, VEC& w) const {
                                  * v.values[this->colInd[begin + 5]];
                     break;
                 default:
-                    w.values[i] = this->values[begin] * v.values[this->colInd[begin]];
-                    for ( k = begin+1; k < this->rowPtr[i+1]; k++ )
+                    INT total=this->rowPtr[i+1]-(begin+1);
+                    INT len=total-total%4;
+                    w.values[i] = this->values[begin] *
+                            v.values[this->colInd[begin]];
+                    for ( k = begin+1; k < this->rowPtr[i+1]; k+=4 ){
                         w.values[i] += this->values[k] * v.values[this->colInd[k]];
+                        w.values[i] += this->values[k+1] *
+                                v.values[this->colInd[k+1]];
+                        w.values[i] += this->values[k+2] *
+                                v.values[this->colInd[k+2]];
+                        w.values[i] += this->values[k+3] *
+                                v.values[this->colInd[k+3]];
+                    }
+                    for(k=len;k<total;k++){
+                        w.values[i] += this->values[k] * v.values[this->colInd[k]];
+                    }
+                    break;
             }
         }
-    }
+    } // end if this->values.size() > 0
     else { // Only sparse structure
         for ( i = 0; i < this->nrow; i++ ) {
             begin = this->rowPtr[i];
@@ -621,12 +635,22 @@ void MAT::MultVec(const VEC& v, VEC& w) const {
                     w.values[i] += v.values[this->colInd[begin + 5]];
                     break;
                 default:
+                    INT total=this->rowPtr[i+1]-(begin+1);
+                    INT len=total-total%4;
                     w.values[i] = v.values[this->colInd[begin]];
-                    for ( k = begin+1; k < this->rowPtr[i+1]; k++ )
+                    for ( k = begin+1; k < this->rowPtr[i+1]; k+=4 ){
                         w.values[i] += v.values[this->colInd[k]];
+                        w.values[i] += v.values[this->colInd[k+1]];
+                        w.values[i] += v.values[this->colInd[k+2]];
+                        w.values[i] += v.values[this->colInd[k+3]];
+                    }
+                    for(k=len;k<total;k++){
+                        w.values[i] += v.values[this->colInd[k]];
+                    }
+                    break;
             }
         }
-    } // end if values.size > 0
+    } // end if values.size == 0
 
 }
 
