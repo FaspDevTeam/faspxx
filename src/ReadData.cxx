@@ -58,7 +58,7 @@ FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
          rowInd[count] = rowValue - 1; // MTX indices start from 1, we use 0
          colInd[count] = colValue - 1; // MTX indices start from 1, we use 0
          values[count] = value;
-         count++;
+         ++count;
     }
 
     // Check whether file provides enough data
@@ -75,6 +75,7 @@ FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
 }
 
 /// \brief Read a CSR data file and store them in (rowPtr, colInd, values)
+// Todo: Check reading file ok or not!
 FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowPtr, std::vector<INT>& colInd,
                     std::vector<DBL>& values)
@@ -113,22 +114,12 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
     }
 
     // Read data from file and store them in rowPtr
-    try {
-        for ( count = 0; count <= row; count++ ) infile >> rowPtr[count];
-        // Check whether file provides enough data
-        if ( count != row+1 ) retCode = FaspRetCode::ERROR_INPUT_FILE;
-        if ( retCode < 0 )
-            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-    } catch ( FaspRunTime& ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
+    for ( count = 0; count <= row; ++count ) infile >> rowPtr[count];
 
     // Calculate problem size and number of nonzeros
-    col = row;
-    nnz = rowPtr[row] - rowPtr[0]; // rowPtr[0] could be 0 or 1
-
     try {
+        col = row;
+        nnz = rowPtr[row] - rowPtr[0]; // rowPtr[0] could be 0 or 1
         colInd.resize(nnz);
         values.resize(nnz);
     } catch ( std::bad_alloc& ex ) {
@@ -136,33 +127,15 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
     }
 
     // Read data from file and store them in colInd
-    try {
-        for ( count = 0; count < nnz; count++ ) infile >> colInd[count];
-        // Check whether file provides enough data
-        if ( count != nnz ) retCode = FaspRetCode::ERROR_INPUT_FILE;
-        if ( retCode < 0 )
-            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-    } catch ( FaspRunTime& ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
+    for ( count = 0; count < nnz; ++count ) infile >> colInd[count];
 
     // Read data from file and store them in values
-    try {
-        for ( count = 0; count < nnz; count++ ) infile >> values[count];
-        // Check whether file provides enough data
-        if ( count != nnz ) retCode = FaspRetCode::ERROR_INPUT_FILE;
-        if ( retCode < 0 )
-            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-    } catch ( FaspRunTime& ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
+    for ( count = 0; count < nnz; ++count ) infile >> values[count];
 
     // Shift indices: Some Fortran-style data has indices from 1
     if ( rowPtr[0] != 0 ) {
-        for ( count = 0; count <  nnz; count++ ) colInd[count]--;
-        for ( count = 0; count <= row; count++ ) rowPtr[count]--;
+        for ( count = 0; count <  nnz; ++count ) colInd[count]--;
+        for ( count = 0; count <= row; ++count ) rowPtr[count]--;
     }
 
     return retCode;

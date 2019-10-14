@@ -17,7 +17,7 @@ typedef unsigned long long uint64; //!< Unsigned long long int
 #include <chrono>    // For high-resolution CPU time
 
 /*! \class GetWallTime
- *  \brief Get elapsed wall-time in seconds
+ *  \brief Get elapsed wall-time in millisecond
  *
  *  Read the current wall-time and return duration from start() to stop().
  */
@@ -34,8 +34,8 @@ public:
 
     //! Stop the timer and return duration from start() in seconds
     __inline__ double Stop ( ) const {
-        std::chrono::duration<double> elapsedTime = std::chrono::system_clock::now() - timeStamp;
-        return elapsedTime.count();
+        auto elapsedTime = std::chrono::system_clock::now() - timeStamp;
+        return std::chrono::duration <double, std::milli> (elapsedTime).count();
     }
 
 };

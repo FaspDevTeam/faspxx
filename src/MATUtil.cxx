@@ -107,18 +107,13 @@ FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec)
 }
 
 /// Check whether the data is good for CSR
+// Todo: Need to change about .size(). It is not size any more.
 FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
                      const std::vector<INT>& rowPtr)
 {
-    if ( row == 0 || col == 0 || nnz == 0 )
-        return FaspRetCode ::SUCCESS;
+    if ( row == 0 || col == 0 || nnz == 0 ) return FaspRetCode ::SUCCESS;
 
-    /*
-     * some simple examinations about parameters
-     * to judge whether they are CSRx' parameters
-     */
-    /*----------------  begin  ----------------*/
     /// basic examinations
     INT flag=0;
     if ( row != rowPtr.size() - 1 )
@@ -136,7 +131,6 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
     if ( nnz != rowPtr[rowPtr.size() - 1] )
         goto Return;
 
-    /// simple examinations
     for ( INT j = 0; j < row; j++ ) {
         if ( rowPtr[j] > rowPtr[j + 1] )
             goto Return;
@@ -347,6 +341,7 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
     if ( numZeroDiag == 0 ) {
         // Set values for MAT matrix
         try {
+            // Todo: Not working with reserve
             retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
             if ( retCode < 0 )
                 throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
@@ -485,6 +480,7 @@ FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
         }
     }
 
+    // Todo: This does not work any more if we reserve instead of resize
     try {
         retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
         if ( retCode < 0 )

@@ -44,7 +44,7 @@ public:
                   maxIter(100),
                   relTol(1e-6),
                   absTol(1e-10),
-                  restart(25),
+                  restart(20),
                   numIter(0),
                   norm2(1.0),
                   normInf(1.0)

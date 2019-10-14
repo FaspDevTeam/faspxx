@@ -195,15 +195,16 @@ TEST(VEC_Norm2, Norm2)
 TEST(VEC_Add, Add)
 {
     VEC v=v7;
-    VEC v1(v), v2(v), v3(v), v4;
-    DBL a = 1.0;
-    DBL b = 3.14159;
-    for (INT i=0; i<v.GetSize(); i++) {
-        v[i] = a*v1[i] + b*v[i];
-    }
+    VEC v1(v), v2(v), v3(v), v4(v.GetSize());
+    const DBL a = 1.0;
+    const DBL b = 3.14159;
+
+    for (INT i=0; i<v.GetSize(); i++) v[i] = a*v1[i] + b*v[i];
 
     v2.Add(a, b, v1);
+
     v4.Add(a, v1, b, v3);
+
     for (INT i=0; i<v.GetSize(); i++) {
         EXPECT_EQ(v[i], v2[i]);
         EXPECT_NE(v[i], v2[i]+TOL);

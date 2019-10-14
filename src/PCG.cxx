@@ -44,20 +44,19 @@ void PCG::SetupPCD(const LOP& lop) {
 /// Solve by PCG
 FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
 
-    const INT MaxStag = 20;
-    const INT maxdiff = 1e-4 * param.relTol; // Stagnation tolerance
-    const DBL solinftol = 1e-20; // Infinity norm tolerance
+    const unsigned MaxStag = 20;
     const INT len = b.GetSize();
+    const DBL maxdiff = 1e-4 * param.relTol; // Stagnation tolerance
+    const DBL solinftol = 1e-20; // Infinity norm tolerance
 
     // Local variables
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
-    INT stagStep = 1, moreStep = 1;
+    unsigned stagStep = 1, moreStep = 1;
     DBL resAbs = 1e+20, tmpAbs = 1e+20;
     DBL resRel = 1e+20, denAbs = 1e+20;
-    DBL reldiff, norminf, factor;
-    DBL alpha, beta, tmpa, tmpb;
+    DBL factor, alpha, beta, tmpa, tmpb;
 
-    // Output info for debuging
+    // Output iterative method info
     if (param.outLvl > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n";
 
     // Compute r_k = b - A * x
@@ -74,16 +73,15 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
     // If initial residual is already small, no need to iterate
     if (resRel < param.relTol || tmpAbs < param.absTol) goto FINISHED;
 
-    // Output iteration information if needed
+    // Prepare for the main loop
     PrintInfo(param.outLvl, param.numIter, resRel, tmpAbs, 0.0);
-
     this->pk = this->zk;
     tmpa = this->zk.Dot(this->rk);
 
     // Main PCG loop
     while ( param.numIter < param.maxIter ) {
 
-        param.numIter++;
+        ++param.numIter; // iteration count
 
         // ax = A * p_k
         A.MultVec(this->pk, this->ax);
@@ -97,12 +95,12 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
             goto FINISHED;
         }
 
+        // x_k = x_{k-1} + alpha_k*p_{k-1}
+        x.AXPY(alpha, this->pk);
+
         // r_k = r_{k-1} - alpha_k*A*p_{k-1}
         this->rk.AXPY(-alpha, this->ax);
 
-        // x_k = x_{k-1} + alpha_k*p_{k-1}
-        x.AXPY(alpha, this->pk);
-        
         // Compute norm of residual
         resAbs = this->rk.Norm2();
         resRel = resAbs / denAbs;
@@ -112,18 +110,18 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
         PrintInfo(param.outLvl, param.numIter, resRel, tmpAbs, factor);
 
         if ( factor > 0.9 ) { // Only check when converge slowly
-            // Check I : if solution is close to zero, return ERROR_SOLVER_SOLSTAG
-            norminf = x.NormInf();
-            if ( norminf <= solinftol ) {
+            // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
+            DBL norminf = x.NormInf();
+            if ( norminf < solinftol ) {
                 if ( param.outLvl > PRINT_MIN ) ZeroSol();
                 errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                 break;
             }
 
             // Check II: if relative difference stagnated, try to restart
-            reldiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
+            DBL reldiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
             if ( (stagStep <= MaxStag) && (reldiff < maxdiff) ) {
-                if ( param.outLvl >= PRINT_MORE ) {
+                if ( param.outLvl > PRINT_SOME ) {
                     DiffRes(reldiff, resRel);
                     Restart();
                 }
@@ -131,7 +129,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
                 A.YMAX(b, x, this->rk);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
-                if ( param.outLvl >= PRINT_MORE ) RealRes(resRel);
+                if ( param.outLvl > PRINT_SOME ) RealRes(resRel);
 
                 if ( resRel < param.relTol ) break;
                 else {
@@ -144,7 +142,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
                     ++stagStep;
                 }
             } // End of stagnation check!
-        }// End of check I and II
+        } // End of check I and II
 
         // Check III: prevent false convergence
         if ( resRel < param.relTol ) {

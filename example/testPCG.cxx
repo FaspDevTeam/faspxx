@@ -20,12 +20,15 @@
 int main()
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
+    GetWallTime timer;
 
     // Read a CSR matrix from file
     INT row, col, nnz;
     std::vector<INT> rowPtr; // row pointer
     std::vector<INT> colInd; // col index
     std::vector<DBL> values; // matrix nnz
+
+    timer.Start();
 
     try {
         retCode = ReadCSR("../data/fdm_1023X1023.csr", row, col, nnz,
@@ -68,6 +71,8 @@ int main()
               << ", ncol = " << mat.GetColSize()
               << ", nnz = "  << mat.GetNNZ() << std::endl;
 
+    std::cout << "Reading Ax=b costs " << timer.Stop() << "ms" << std::endl;
+
     // Setup parameters
     IterParam param;
     param.SetOutLvl(PRINT_NONE);
@@ -84,11 +89,10 @@ int main()
     LOP lop(row, col);
     pcg.SetupPCD(lop);
 
-    // Test PCG speed
-    GetWallTime timer;
+    // PCG solve
     timer.Start();
     retCode = pcg.Solve(mat, b,x,param);
-    std::cout << "FASPXX PCG solution time : " << timer.Stop() << "s" << std::endl;
+    std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     // Clean up
     pcg.CleanPCD();

@@ -61,28 +61,30 @@ const DBL& VEC::operator[](const INT& position) const {
 /// Overload += operator
 VEC& VEC::operator+=(const VEC& v) {
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
-        this->values[j] += v.values[j];
-        this->values[j + 1] += v.values[j + 1];
-        this->values[j + 2] += v.values[j + 2];
-        this->values[j + 3] += v.values[j + 3];
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i]     += v.values[i];
+        this->values[i + 1] += v.values[i + 1];
+        this->values[i + 2] += v.values[i + 2];
+        this->values[i + 3] += v.values[i + 3];
     }
-    for (INT j = len; j < this->size; j++) this->values[j] += v.values[j];
+    for ( i = len; i < this->size; ++i ) this->values[i] += v.values[i];
     return *this;
 }
 
 /// Overload -= operator
 VEC& VEC::operator-=(const VEC& v) {
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
-        this->values[j] -= v.values[j];
-        this->values[j + 1] -= v.values[j + 1];
-        this->values[j + 2] -= v.values[j + 2];
-        this->values[j + 3] -= v.values[j + 3];
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i] -= v.values[i];
+        this->values[i + 1] -= v.values[i + 1];
+        this->values[i + 2] -= v.values[i + 2];
+        this->values[i + 3] -= v.values[i + 3];
     }
-    for (INT j = len; j < this->size; j++) this->values[j] -= v.values[j];
+    for ( i = len; i < this->size; ++i ) this->values[i] -= v.values[i];
     return *this;
 }
 
@@ -126,17 +128,17 @@ void VEC::GetArray(const INT& sizeNeed, DBL *array) const {
         return;
     }
 
-    INT len = sizeNeed > this->size ? this->size : sizeNeed;
-
     // unroll long for loops
-    INT len4 = len - len % 4;
-    for (INT j = 0; j < len4; j += 4) {
-        array[j] = this->values[j];
-        array[j + 1] = this->values[j + 1];
-        array[j + 2] = this->values[j + 2];
-        array[j + 3] = this->values[j + 3];
+    INT i;
+    const INT len  = sizeNeed > this->size ? this->size : sizeNeed;
+    const INT len4 = len - len % 4;
+    for ( i = 0; i < len4; i += 4 ) {
+        array[i]     = this->values[i];
+        array[i + 1] = this->values[i + 1];
+        array[i + 2] = this->values[i + 2];
+        array[i + 3] = this->values[i + 3];
     }
-    for (INT j = len4; j < len; j++) array[j] = this->values[j];
+    for ( i = len4; i < len; ++i ) array[i] = this->values[i];
 }
 
 /// Get the size of *this
@@ -149,56 +151,60 @@ INT VEC::GetCapacity() const {
     return this->values.capacity();
 }
 
-/// Scale (*this)[j] = a * (*this)[j] by a scalar
+/// Scale (*this)[i] = a * (*this)[i] by a scalar
 void VEC::Scale(const DBL& a) {
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
-        this->values[j] *= a;
-        this->values[j + 1] *= a;
-        this->values[j + 2] *= a;
-        this->values[j + 3] *= a;
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i]     *= a;
+        this->values[i + 1] *= a;
+        this->values[i + 2] *= a;
+        this->values[i + 3] *= a;
     }
-    for (INT j = len; j < this->size; j++) this->values[j] *= a;
+    for ( i = len; i < this->size; ++i ) this->values[i] *= a;
 }
 
-/// Scale by a vector (*this)[j] *= v[j]
+/// Scale by a vector (*this)[i] *= v[i]
 void VEC::PointwiseMult(const VEC& v) {
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
-        this->values[j] *= v.values[j];
-        this->values[j + 1] *= v.values[j + 1];
-        this->values[j + 2] *= v.values[j + 2];
-        this->values[j + 3] *= v.values[j + 3];
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i]     *= v.values[i];
+        this->values[i + 1] *= v.values[i + 1];
+        this->values[i + 2] *= v.values[i + 2];
+        this->values[i + 3] *= v.values[i + 3];
     }
-    for (INT j = len; j < this->size; j++) this->values[j] *= v.values[j];
+    for ( i = len; i < this->size; ++i ) this->values[i] *= v.values[i];
 }
 
-/// Compute (*this)[j] = 1 / (*this)[j]
+/// Compute (*this)[i] = 1 / (*this)[i]
 void VEC::Reciprocal() {
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
-        this->values[j] = 1.0 / this->values[j];
-        this->values[j + 1] = 1.0 / this->values[j + 1];
-        this->values[j + 2] = 1.0 / this->values[j + 2];
-        this->values[j + 3] = 1.0 / this->values[j + 3];
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i]     = 1.0 / this->values[i];
+        this->values[i + 1] = 1.0 / this->values[i + 1];
+        this->values[i + 2] = 1.0 / this->values[i + 2];
+        this->values[i + 3] = 1.0 / this->values[i + 3];
     }
-    for (INT j = len; j < this->size; j++) this->values[j] = 1 / this->values[j];
+    for ( i = len; i < this->size; ++i ) this->values[i] = 1 / this->values[i];
 }
 
-/// Inverse scale by a nonzero vector (*this)[j] = (*this)[j] / v[j]
+/// Inverse scale by a nonzero vector (*this)[i] = (*this)[i] / v[i]
 void VEC::PointwiseDivide(const VEC& v) {
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
-        this->values[j] /= v.values[j];
-        this->values[j + 1] /= v.values[j + 1];
-        this->values[j + 2] /= v.values[j + 2];
-        this->values[j + 3] /= v.values[j + 3];
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i]     /= v.values[i];
+        this->values[i + 1] /= v.values[i + 1];
+        this->values[i + 2] /= v.values[i + 2];
+        this->values[i + 3] /= v.values[i + 3];
     }
-    for (INT j = len; j < this->size; j++) this->values[j] /= v.values[j];
+    for ( i = len; i < this->size; ++i ) this->values[i] /= v.values[i];
 }
 
 /// Copy *this to v
@@ -207,287 +213,243 @@ void VEC::CopyTo(VEC& vec) const {
     vec.size = this->size;
 }
 
-/// Shift (*this)[j] += a by a scalar
+/// Shift (*this)[i] += a by a scalar
 void VEC::Shift(const DBL& a) {
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
-        this->values[j] += a;
-        this->values[j + 1] += a;
-        this->values[j + 2] += a;
-        this->values[j + 3] += a;
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i]     += a;
+        this->values[i + 1] += a;
+        this->values[i + 2] += a;
+        this->values[i + 3] += a;
     }
-    for (INT j = len; j < this->size; j++) this->values[j] += a;
+    for ( i = len; i < this->size; ++i ) this->values[i] += a;
 }
 
 /// Compute *this = abs(*this)
 void VEC::Abs() {
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
-        this->values[j] = fabs(this->values[j]);
-        this->values[j + 1] = fabs(this->values[j + 1]);
-        this->values[j + 2] = fabs(this->values[j + 2]);
-        this->values[j + 3] = fabs(this->values[j + 3]);
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i] = fabs(this->values[i]);
+        this->values[i + 1] = fabs(this->values[i + 1]);
+        this->values[i + 2] = fabs(this->values[i + 2]);
+        this->values[i + 3] = fabs(this->values[i + 3]);
     }
-    for (INT j = len; j < this->size; j++) this->values[j] = fabs(this->values[j]);
+    for ( i = len; i < this->size; ++i ) this->values[i] = fabs(this->values[i]);
 }
 
 /// y = y + a * x
 void VEC::AXPY(const DBL& a, const VEC& x) {
     // unroll long for loops
+    INT i;
     const INT len = this->size - this->size % 4;
-    INT j;
-    for ( j = 0; j < len; j += 4 ) {
-        this->values[j]   += a * x.values[j];
-        this->values[j+1] += a * x.values[j+1];
-        this->values[j+2] += a * x.values[j+2];
-        this->values[j+3] += a * x.values[j+3];
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i]   += a * x.values[i];
+        this->values[i+1] += a * x.values[i+1];
+        this->values[i+2] += a * x.values[i+2];
+        this->values[i+3] += a * x.values[i+3];
     }
-    for ( j = len; j < this->size; j++ ) this->values[j] += a * x.values[j];
+    for ( i = len; i < this->size; ++i ) this->values[i] += a * x.values[i];
 }
 
 /// y = x + a * y
 void VEC::XPAY(const DBL& a, const VEC& x) {
     // unroll long for loops
+    INT i;
     const INT len = this->size - this->size % 4;
-    INT j;
-    for ( j = 0; j < len; j += 4 ) {
-        this->values[j]   = a * this->values[j]   + x.values[j];
-        this->values[j+1] = a * this->values[j+1] + x.values[j+1];
-        this->values[j+2] = a * this->values[j+2] + x.values[j+2];
-        this->values[j+3] = a * this->values[j+3] + x.values[j+3];
+    for ( i = 0; i < len; i += 4 ) {
+        this->values[i]   = a * this->values[i]   + x.values[i];
+        this->values[i+1] = a * this->values[i+1] + x.values[i+1];
+        this->values[i+2] = a * this->values[i+2] + x.values[i+2];
+        this->values[i+3] = a * this->values[i+3] + x.values[i+3];
     }
-    for ( j = len; j < this->size; j++ )
-        this->values[j]   = a * this->values[j]   + x.values[j];
+    for ( i = len; i < this->size; ++i )
+        this->values[i]   = a * this->values[i]   + x.values[i];
 }
 
 /// *this = a * *this + b * vec
 void VEC::Add(const DBL& a, const DBL& b, const VEC& v) {
-#if 1
+
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    switch((a==1.0)+2*(b==1.0)){
+    INT i;
+    const INT len = this->size - this->size % 4;
+    switch( (a==1.0)+2*(b==1.0) ) {
         case 0:
-            for (INT j = 0; j < len; j += 4) {
-                this->values[j]   = a * this->values[j]   + b * v.values[j];
-                this->values[j+1] = a * this->values[j+1] + b * v.values[j+1];
-                this->values[j+2] = a * this->values[j+2] + b * v.values[j+2];
-                this->values[j+3] = a * this->values[j+3] + b * v.values[j+3];
+            for ( i = 0; i < len; i += 4 ) {
+                this->values[i]   = a * this->values[i]   + b * v.values[i];
+                this->values[i+1] = a * this->values[i+1] + b * v.values[i+1];
+                this->values[i+2] = a * this->values[i+2] + b * v.values[i+2];
+                this->values[i+3] = a * this->values[i+3] + b * v.values[i+3];
             }
-            for (INT j = len; j < this->size; j++)
-                this->values[j]   = a * this->values[j]   + b * v.values[j];
+            for ( i = len; i < this->size; ++i )
+                this->values[i]   = a * this->values[i]   + b * v.values[i];
             break;
         case 1:
-            for (INT j = 0; j < len; j += 4) {
-                this->values[j]   += b * v.values[j];
-                this->values[j+1] += b * v.values[j+1];
-                this->values[j+2] += b * v.values[j+2];
-                this->values[j+3] += b * v.values[j+3];
+            for ( i = 0; i < len; i += 4 ) {
+                this->values[i]   += b * v.values[i];
+                this->values[i+1] += b * v.values[i+1];
+                this->values[i+2] += b * v.values[i+2];
+                this->values[i+3] += b * v.values[i+3];
             }
-            for (INT j = len; j < this->size; j++)
-                this->values[j]   += b * v.values[j];
+            for ( i = len; i < this->size; ++i )
+                this->values[i]   += b * v.values[i];
             break;
         case 2:
-            for (INT j = 0; j < len; j += 4) {
-                this->values[j]   = a * this->values[j]   + v.values[j];
-                this->values[j+1] = a * this->values[j+1] + v.values[j+1];
-                this->values[j+2] = a * this->values[j+2] + v.values[j+2];
-                this->values[j+3] = a * this->values[j+3] + v.values[j+3];
+            for ( i = 0; i < len; i += 4 ) {
+                this->values[i]   = a * this->values[i]   + v.values[i];
+                this->values[i+1] = a * this->values[i+1] + v.values[i+1];
+                this->values[i+2] = a * this->values[i+2] + v.values[i+2];
+                this->values[i+3] = a * this->values[i+3] + v.values[i+3];
             }
-            for (INT j = len; j < this->size; j++)
-                this->values[j]   = a * this->values[j]   + v.values[j];
+            for ( i = len; i < this->size; ++i )
+                this->values[i]   = a * this->values[i]   + v.values[i];
             break;
         case 3:
-            for (INT j = 0; j < len; j += 4) {
-                this->values[j]   += v.values[j];
-                this->values[j+1] += v.values[j+1];
-                this->values[j+2] += v.values[j+2];
-                this->values[j+3] += v.values[j+3];
+            for ( i = 0; i < len; i += 4 ) {
+                this->values[i]   += v.values[i];
+                this->values[i+1] += v.values[i+1];
+                this->values[i+2] += v.values[i+2];
+                this->values[i+3] += v.values[i+3];
             }
-            for (INT j = len; j < this->size; j++)
-                this->values[j]   += v.values[j];
-            break;
-        default:
-            break;
+            for ( i = len; i < this->size; ++i )
+                this->values[i]   += v.values[i];
     }
-#endif
-#if 0
-    switch((a==1.0)+2*(b==1.0)){
-        case 0:
-            for(INT j=0;j<this->size;j++)
-                this->values[j]=a*this->values[j]+b*v.values[j];
-        case 1:
-            for(INT j=0;j<this->size;j++)
-                this->values[j]+=b*v.values[j];
-        case 2:
-            for(INT j=0;j<this->size;j++)
-                this->values[j]=a*this->values[j]+v.values[j];
-        case 3:
-            for(INT j=0;j<this->size;j++)
-                this->values[j]+=v.values[j];
-        default:
-            break;
-    }
-#endif
+
 }
 
 /// *this = a * vec1 + b * vec2
 void VEC::Add(const DBL& a, const VEC& v1, const DBL& b, const VEC& v2) {
+
     this->size = v1.size;
-    this->values.assign(v1.size,0);
-#if 1
+
     // unroll long for loops
-    INT len = this->size - this->size % 4;
-    switch((a==1)+2*(b==1)){
+    INT i;
+    const INT len = this->size - this->size % 4;
+    switch( (a==1)+2*(b==1) ) {
         case 0:
-            for(INT j=0;j<len;j++){
-                this->values[j]=a*v1.values[j]+b*v2.values[j];
-                this->values[j+1]=a*v1.values[j+1]+b*v2.values[j+1];
-                this->values[j+2]=a*v1.values[j+2]+b*v2.values[j+2];
-                this->values[j+3]=a*v1.values[j+3]+b*v2.values[j+3];
+            for ( i = 0; i < len; i += 4 ) {
+                this->values[i]   = a*v1.values[i]   + b*v2.values[i];
+                this->values[i+1] = a*v1.values[i+1] + b*v2.values[i+1];
+                this->values[i+2] = a*v1.values[i+2] + b*v2.values[i+2];
+                this->values[i+3] = a*v1.values[i+3] + b*v2.values[i+3];
             }
-            for(int j=len;j<this->size;j++)
-                this->values[j]=a*v1.values[j]+b*v2.values[j];
+            for ( i = len; i < this->size; ++i )
+                this->values[i]   = a*v1.values[i]   + b*v2.values[i];
             break;
         case 1:
-            for(INT j=0;j<len;j++){
-                this->values[j]=v1.values[j]+b*v2.values[j];
-                this->values[j+1]=v1.values[j+1]+b*v2.values[j+1];
-                this->values[j+2]=v1.values[j+2]+b*v2.values[j+2];
-                this->values[j+3]=v1.values[j+3]+b*v2.values[j+3];
+            for ( i = 0; i < len; i += 4 ) {
+                this->values[i]   = v1.values[i]   + b*v2.values[i];
+                this->values[i+1] = v1.values[i+1] + b*v2.values[i+1];
+                this->values[i+2] = v1.values[i+2] + b*v2.values[i+2];
+                this->values[i+3] = v1.values[i+3] + b*v2.values[i+3];
             }
-            for(int j=len;j<this->size;j++)
-                this->values[j]=v1.values[j]+b*v2.values[j];
+            for ( i = len; i < this->size; ++i )
+                this->values[i]   = v1.values[i]   + b*v2.values[i];
+
             break;
         case 2:
-            for(INT j=0;j<len;j++){
-                this->values[j]=a*v1.values[j]+v2.values[j];
-                this->values[j+1]=a*v1.values[j+1]+v2.values[j+1];
-                this->values[j+2]=a*v1.values[j+2]+v2.values[j+2];
-                this->values[j+3]=a*v1.values[j+3]+v2.values[j+3];
+            for ( i = 0; i < len; i += 4 ) {
+                this->values[i]   = a*v1.values[i]   + v2.values[i];
+                this->values[i+1] = a*v1.values[i+1] + v2.values[i+1];
+                this->values[i+2] = a*v1.values[i+2] + v2.values[i+2];
+                this->values[i+3] = a*v1.values[i+3] + v2.values[i+3];
             }
-            for(int j=len;j<this->size;j++)
-                this->values[j]=a*v1.values[j]+v2.values[j];
+            for ( i = len; i < this->size; ++i )
+                this->values[i]   = a*v1.values[i]   + v2.values[i];
             break;
         case 3:
-            for(INT j=0;j<len;j++){
-                this->values[j]=v1.values[j]+v2.values[j];
-                this->values[j+1]=v1.values[j+1]+v2.values[j+1];
-                this->values[j+2]=v1.values[j+2]+v2.values[j+2];
-                this->values[j+3]=v1.values[j+3]+v2.values[j+3];
+            for ( i = 0; i < len; i += 4 ) {
+                this->values[i]   = v1.values[i]   + v2.values[i];
+                this->values[i+1] = v1.values[i+1] + v2.values[i+1];
+                this->values[i+2] = v1.values[i+2] + v2.values[i+2];
+                this->values[i+3] = v1.values[i+3] + v2.values[i+3];
             }
-            for(int j=len;j<this->size;j++)
-                this->values[j]=v1.values[j]+v2.values[j];
-            break;
-        default:
+            for ( i = len; i < this->size; ++i )
+                this->values[i]   = v1.values[i]   + v2.values[i];
             break;
     }
-#endif
-#if 0
-    switch((a==1.0)+2*(b==1.0)){
-        case 0:
-            for(INT j=0;j<this->size;j++)
-                this->values[j]=a*v1.values[j]+b*v2.values[j];
-        case 1:
-            for(INT j=0;j<this->size;j++)
-                this->values[j]+=v1.values[j]+b*v2.values[j];
-        case 2:
-            for(INT j=0;j<this->size;j++)
-                this->values[j]=a*v1.values[j]+v2.values[j];
-        case 3:
-            for(INT j=0;j<this->size;j++)
-                this->values[j]=v1.values[j]+v2.values[j];
-        default:
-            break;
-    }
-#endif
+
 }
 
 /// Find max(*this)
 DBL VEC::Max() const {
-    DBL max1 = this->values[0];
-    DBL max2 = this->values[1];
-    DBL max3 = this->values[2];
-    DBL max4 = this->values[3];
+    DBL max1 = this->values[0], max2 = this->values[1];
+    DBL max3 = this->values[2], max4 = this->values[3];
 
     // unroll long for loops and binary comparison
-    INT len = this->size - this->size % 4;
-    for (INT j = 4; j < len; j += 4) {
-        if (max1 < this->values[j]) max1 = this->values[j];
-        if (max2 < this->values[j + 1]) max2 = this->values[j + 1];
-        if (max3 < this->values[j + 2]) max3 = this->values[j + 2];
-        if (max4 < this->values[j + 3]) max4 = this->values[j + 3];
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 4; i < len; i += 4 ) {
+        if (max1 < this->values[i])     max1 = this->values[i];
+        if (max2 < this->values[i + 1]) max2 = this->values[i + 1];
+        if (max3 < this->values[i + 2]) max3 = this->values[i + 2];
+        if (max4 < this->values[i + 3]) max4 = this->values[i + 3];
     }
-    for (INT j = len; j < this->size; j++) {
-        if (max1 < this->values[j]) max1 = this->values[j];
-    }
+    for ( i = len; i < this->size; ++i )
+        if (max1 < this->values[i])     max1 = this->values[i];
 
     max1 = max1 >= max2 ? max1 : max2;
     max3 = max3 >= max4 ? max3 : max4;
-
     return max1 >= max3 ? max1 : max3;
 }
 
 /// Find min(*this)
 DBL VEC::Min() const {
-    DBL min1 = this->values[0];
-    DBL min2 = this->values[1];
-    DBL min3 = this->values[2];
-    DBL min4 = this->values[3];
+    DBL min1 = this->values[0], min2 = this->values[1];
+    DBL min3 = this->values[2], min4 = this->values[3];
 
     // unroll long for loops and binary comparison
-    INT len = this->size - this->size % 4;
-    for (INT j = 4; j < len; j += 4) {
-        if (min1 > this->values[j]) min1 = this->values[j];
-        if (min2 > this->values[j + 1]) min2 = this->values[j + 1];
-        if (min3 > this->values[j + 2]) min3 = this->values[j + 2];
-        if (min4 > this->values[j + 3]) min4 = this->values[j + 3];
+    INT i;
+    const INT len = this->size - this->size % 4;
+    for ( i = 4; i < len; i += 4 ) {
+        if (min1 > this->values[i])     min1 = this->values[i];
+        if (min2 > this->values[i + 1]) min2 = this->values[i + 1];
+        if (min3 > this->values[i + 2]) min3 = this->values[i + 2];
+        if (min4 > this->values[i + 3]) min4 = this->values[i + 3];
     }
-    for (INT j = len; j < this->size; j++) {
-        if (min1 > this->values[j]) min1 = this->values[j];
-    }
+    for ( i = len; i < this->size; ++i )
+        if (min1 > this->values[i])     min1 = this->values[i];
 
     min1 = min1 <= min2 ? min1 : min2;
     min3 = min3 <= min4 ? min3 : min4;
-
     return min1 <= min3 ? min1 : min3;
 }
 
 /// Compute Euclidean norm of *this
 DBL VEC::Norm2() const {
     // unroll long for loops
-    const INT len = this->size - this->size % 4;
+    INT i;
     DBL tmp1 = 0.0, tmp2 = 0.0, tmp3 = 0.0, tmp4 = 0.0;
-    INT j;
-
-    for ( j = 0; j < len; j += 4 ) {
-        tmp1 += std::pow(this->values[j],   2);
-        tmp2 += std::pow(this->values[j+1], 2);
-        tmp3 += std::pow(this->values[j+2], 2);
-        tmp4 += std::pow(this->values[j+3], 2);
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        tmp1 += std::pow(this->values[i],   2);
+        tmp2 += std::pow(this->values[i+1], 2);
+        tmp3 += std::pow(this->values[i+2], 2);
+        tmp4 += std::pow(this->values[i+3], 2);
     }
-    for ( j = len; j < this->size; j++ ) tmp1 += std::pow(this->values[j], 2);
-    
+    for ( i = len; i < this->size; ++i ) tmp1 += std::pow(this->values[i], 2);
+
     return sqrt(tmp1 + tmp2 + tmp3 + tmp4);
 }
 
 /// Compute Infinity norm of *this
 DBL VEC::NormInf() const {
     // unroll long for loops
-    const INT len = this->size - this->size % 4;
+    INT i;
     DBL tmpNorm1 = 0.0, tmpNorm2 = 0.0, tmpNorm3 = 0.0, tmpNorm4 = 0.0;
     DBL tmp1, tmp2, tmp3, tmp4;
-    INT j;
-
-    for ( j = 0; j < len; j += 4 ) {
-        tmp1 = fabs(this->values[j]);     if (tmp1 > tmpNorm1) tmpNorm1 = tmp1;
-        tmp2 = fabs(this->values[j + 1]); if (tmp2 > tmpNorm2) tmpNorm2 = tmp2;
-        tmp3 = fabs(this->values[j + 2]); if (tmp3 > tmpNorm3) tmpNorm3 = tmp3;
-        tmp4 = fabs(this->values[j + 3]); if (tmp4 > tmpNorm4) tmpNorm4 = tmp4;
+    const INT len = this->size - this->size % 4;
+    for ( i = 0; i < len; i += 4 ) {
+        tmp1 = fabs(this->values[i]);     if (tmp1 > tmpNorm1) tmpNorm1 = tmp1;
+        tmp2 = fabs(this->values[i + 1]); if (tmp2 > tmpNorm2) tmpNorm2 = tmp2;
+        tmp3 = fabs(this->values[i + 2]); if (tmp3 > tmpNorm3) tmpNorm3 = tmp3;
+        tmp4 = fabs(this->values[i + 3]); if (tmp4 > tmpNorm4) tmpNorm4 = tmp4;
     }
-    for ( j = len; j < this->size; j++ ) {
-        tmp1 = fabs(this->values[j]);
+    for ( i = len; i < this->size; ++i ) {
+        tmp1 = fabs(this->values[i]);
         if (tmp1 > tmpNorm1) tmpNorm1 = tmp1;
     }
 
@@ -499,15 +461,16 @@ DBL VEC::NormInf() const {
 /// Dot product of with v
 DBL VEC::Dot(const VEC& v) const {
     // unroll long for loops
+    INT i;
     DBL dot1 = 0.0, dot2 = 0.0, dot3 = 0.0, dot4 = 0.0;
     const INT len = this->size - this->size % 4;
-    for (INT j = 0; j < len; j += 4) {
-        dot1 += this->values[j]     * v.values[j];
-        dot2 += this->values[j + 1] * v.values[j + 1];
-        dot3 += this->values[j + 2] * v.values[j + 2];
-        dot4 += this->values[j + 3] * v.values[j + 3];
+    for ( i = 0; i < len; i += 4 ) {
+        dot1 += this->values[i]     * v.values[i];
+        dot2 += this->values[i + 1] * v.values[i + 1];
+        dot3 += this->values[i + 2] * v.values[i + 2];
+        dot4 += this->values[i + 3] * v.values[i + 3];
     }
-    for (INT j = len; j < this->size; j++) dot1 += this->values[j] * v.values[j];
+    for ( i = len; i < this->size; ++i ) dot1 += this->values[i] * v.values[i];
     return (dot1 + dot2 + dot3 + dot4);
 }
 
