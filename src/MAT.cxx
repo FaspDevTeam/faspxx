@@ -551,39 +551,39 @@ void MAT::MultVec(const VEC& v, VEC& w) const {
             switch ( this->rowPtr[i+1] - begin ) {
                 case 4:
                     w.values[i]  = this->values[begin]
-                                 * v.values[this->colInd[begin]];
+                                   * v.values[this->colInd[begin]];
                     w.values[i] += this->values[begin + 1]
-                                 * v.values[this->colInd[begin + 1]];
+                                   * v.values[this->colInd[begin + 1]];
                     w.values[i] += this->values[begin + 2]
-                                 * v.values[this->colInd[begin + 2]];
+                                   * v.values[this->colInd[begin + 2]];
                     w.values[i] += this->values[begin + 3]
-                                 * v.values[this->colInd[begin + 3]];
+                                   * v.values[this->colInd[begin + 3]];
                     break;
                 case 5:
                     w.values[i]  = this->values[begin]
-                                 * v.values[this->colInd[begin]];
+                                   * v.values[this->colInd[begin]];
                     w.values[i] += this->values[begin + 1]
-                                 * v.values[this->colInd[begin + 1]];
+                                   * v.values[this->colInd[begin + 1]];
                     w.values[i] += this->values[begin + 2]
-                                 * v.values[this->colInd[begin + 2]];
+                                   * v.values[this->colInd[begin + 2]];
                     w.values[i] += this->values[begin + 3]
-                                 * v.values[this->colInd[begin + 3]];
+                                   * v.values[this->colInd[begin + 3]];
                     w.values[i] += this->values[begin + 4]
-                                 * v.values[this->colInd[begin + 4]];
+                                   * v.values[this->colInd[begin + 4]];
                     break;
                 case 6:
                     w.values[i]  = this->values[begin]
-                                 * v.values[this->colInd[begin]];
+                                   * v.values[this->colInd[begin]];
                     w.values[i] += this->values[begin + 1]
-                                 * v.values[this->colInd[begin + 1]];
+                                   * v.values[this->colInd[begin + 1]];
                     w.values[i] += this->values[begin + 2]
-                                 * v.values[this->colInd[begin + 2]];
+                                   * v.values[this->colInd[begin + 2]];
                     w.values[i] += this->values[begin + 3]
-                                 * v.values[this->colInd[begin + 3]];
+                                   * v.values[this->colInd[begin + 3]];
                     w.values[i] += this->values[begin + 4]
-                                 * v.values[this->colInd[begin + 4]];
+                                   * v.values[this->colInd[begin + 4]];
                     w.values[i] += this->values[begin + 5]
-                                 * v.values[this->colInd[begin + 5]];
+                                   * v.values[this->colInd[begin + 5]];
                     break;
                 default:
                     w.values[i] = this->values[begin] * v.values[this->colInd[begin]];
