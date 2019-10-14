@@ -50,7 +50,7 @@ int main() {
     auto *ptr1 = new double[LENGTH];
     auto *ptr2 = new double[LENGTH];
     std::cout << "pointer cycles : " << cycle.Stop() << std::endl;
-    std::cout << "pointer time   : " << timer.Stop() << " seconds" << std::endl;
+    std::cout << "pointer time   : " << timer.Stop() << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
@@ -61,7 +61,7 @@ int main() {
     vec1.reserve(LENGTH);
     vec2.reserve(LENGTH);
     std::cout << "vector cycles  : " << cycle.Stop() << std::endl;
-    std::cout << "vector time    : " << timer.Stop() << " seconds" << std::endl;
+    std::cout << "vector time    : " << timer.Stop() << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
@@ -69,7 +69,7 @@ int main() {
     nvec1.Reserve(LENGTH);
     nvec2.Reserve(LENGTH);
     std::cout << "new VEC cycles : " << cycle.Stop() << std::endl;
-    std::cout << "new VEC time   : " << timer.Stop() << " seconds" << std::endl;
+    std::cout << "new VEC time   : " << timer.Stop() << "ms" << std::endl;
 
     /*------------------------------------------------------------*/
     std::cout << "\n------ assignment ------" << std::endl;
@@ -81,7 +81,7 @@ int main() {
         memcpy(ptr2, test2, LENGTH * sizeof(double));
     }
     std::cout << "pointer cycles : " << cycle.Stop() / count << std::endl;
-    std::cout << "pointer time   : " << timer.Stop() / count << " seconds" << std::endl;
+    std::cout << "pointer time   : " << timer.Stop() / count << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
@@ -90,7 +90,7 @@ int main() {
         vec2.assign(test2, test2 + LENGTH);
     }
     std::cout << "vector cycles  : " << cycle.Stop() / count << std::endl;
-    std::cout << "vector time    : " << timer.Stop() / count << " seconds" << std::endl;
+    std::cout << "vector time    : " << timer.Stop() / count << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
@@ -99,7 +99,7 @@ int main() {
         nvec2.SetValues(LENGTH, test2);
     }
     std::cout << "new VEC cycles : " << cycle.Stop() / count << std::endl;
-    std::cout << "new VEC time   : " << timer.Stop() / count << " seconds" << std::endl;
+    std::cout << "new VEC time   : " << timer.Stop() / count << "ms" << std::endl;
 
     /*------------------------------------------------------------*/
     std::cout << "\n------ addition ------" << std::endl;
@@ -110,7 +110,7 @@ int main() {
         for ( j = 0; j < LENGTH; j++ ) ptr1[j] += ptr2[j];
     }
     std::cout << "pointer cycles : " << cycle.Stop() / count << std::endl;
-    std::cout << "pointer time   : " << timer.Stop() / count << " seconds" << std::endl;
+    std::cout << "pointer time   : " << timer.Stop() / count << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
@@ -118,13 +118,13 @@ int main() {
         for ( j = 0; j < LENGTH; j++ ) vec1[j] += vec2[j];
     }
     std::cout << "vector cycles  : " << cycle.Stop() / count << std::endl;
-    std::cout << "vector time    : " << timer.Stop() / count << " seconds" << std::endl;
+    std::cout << "vector time    : " << timer.Stop() / count << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
     for ( k = 0; k < count; k++ ) nvec1.Add(1.0, 1.0, nvec2);
     std::cout << "new VEC cycles : " << cycle.Stop() / count << std::endl;
-    std::cout << "new VEC time   : " << timer.Stop() / count << " seconds" << std::endl;
+    std::cout << "new VEC time   : " << timer.Stop() / count << "ms" << std::endl;
 
     /*------------------------------------------------------------*/
     std::cout << "\n------ dot product ------" << std::endl;
@@ -136,7 +136,7 @@ int main() {
     }
     std::cout << "pointer dot    : " << sum << std::endl;
     std::cout << "pointer cycles : " << cycle.Stop() / count << std::endl;
-    std::cout << "pointer time   : " << timer.Stop() / count << " seconds" << std::endl;
+    std::cout << "pointer time   : " << timer.Stop() / count << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
@@ -145,7 +145,7 @@ int main() {
     }
     std::cout << "vector dot     : " << sum << std::endl;
     std::cout << "vector cycles  : " << cycle.Stop() / count << std::endl;
-    std::cout << "vector time    : " << timer.Stop() / count << " seconds" << std::endl;
+    std::cout << "vector time    : " << timer.Stop() / count << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
@@ -156,7 +156,7 @@ int main() {
     }
     std::cout << "new VEC dot    : " << sum << std::endl;
     std::cout << "new VEC cycles : " << cycle.Stop() / count << std::endl;
-    std::cout << "new VEC time   : " << timer.Stop() / count << " seconds" << std::endl;
+    std::cout << "new VEC time   : " << timer.Stop() / count << "ms" << std::endl;
 
     delete[] ptr1;
     delete[] ptr2;

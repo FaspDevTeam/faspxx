@@ -60,7 +60,7 @@ int main()
               << ", ncol = " << mat.GetColSize() << std::endl;
 
     // Make a test VEC = (1.0, 1.0, ..., 1.0)'
-    VEC v(col, 1.0), w;
+    VEC v(col, 1.0), w(col);
     // Check a specific entry of VEC
     try {
         retCode = CheckVECSize(v, 700);
