@@ -11,7 +11,7 @@
 FaspRetCode ReadCSRAll(const char *filename, INT &row, INT &col, INT &nnz,
                        std::vector<INT> &rowPtr, std::vector<INT> &colInd,
                        std::vector<DBL> &values) {
-#if 0
+#if 1
     std::ifstream in(filename);
     in.seekg(0, std::ios::end);
     long long int length = in.tellg();
@@ -26,7 +26,6 @@ FaspRetCode ReadCSRAll(const char *filename, INT &row, INT &col, INT &nnz,
     in.read(buffer, length);
     in.close();
 #endif
-
 
     char *decimal = new char[16];
     INT count = 0;
@@ -108,6 +107,9 @@ FaspRetCode ReadCSRAll(const char *filename, INT &row, INT &col, INT &nnz,
         for (count = 0; count < nnz; ++count) colInd[count]--;
         for (count = 0; count <= row; ++count) rowPtr[count]--;
     }
+
+    delete[] buffer;
+    delete[] decimal;
 
     return FaspRetCode ::SUCCESS;
 }
