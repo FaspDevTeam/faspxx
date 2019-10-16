@@ -64,6 +64,9 @@ public:
     /// Set the size of VEC object and reserve memory
     void Reserve(const INT& size);
 
+    /// Shrink *this 's memory to this->size
+    void ShrinkToSize();
+
     /// Assign the size and the same value to a VEC object
     void SetValues(const INT& size, const DBL& value = 0.0);
 
@@ -74,10 +77,11 @@ public:
     void SetValues(const INT& size, const DBL *array);
 
     /// Get the value of (*this)[position]
-    DBL GetValue(const INT& position) const; // TODO: get multiple entries
+    DBL GetValue(const INT& position) const;
 
-    /// Get array = (*this) of size = min(size, this->GetSize())
-    void GetArray(const INT& size, DBL *array) const;
+    /// Get "array" = the set of { this->values[indexPtr[j] mod this->size ] } and
+    // "size" is the size of "indexPtr" and "array"
+    void GetValues(const INT &size , const INT *indexPtr, DBL *array) const;
 
     /// Get the size of *this
     INT GetSize() const;
@@ -106,15 +110,17 @@ public:
     /// Compute *this = abs(*this)
     void Abs();
 
+    /// y = y + a * x
     void AXPY(const DBL& a, const VEC& x);
 
+    /// y = x + a * y
     void XPAY(const DBL& a, const VEC& x);
 
-    /// *this = a * *this + b * *vec
-    void Add(const DBL& a, const DBL& b, const VEC& v);
+    /// *this = a * *this + b * v
+    void AXPBY(const DBL& a, const DBL& b, const VEC& v);
 
-    /// *this = a * vec1 + b * vec2
-    void Add(const DBL& a, const VEC& v1, const DBL& b, const VEC& v2);
+    /// *this = a * v1 + b * v2
+    void WAXPBY(const DBL& a, const VEC& v1, const DBL& b, const VEC& v2);
 
     /// Find max(*this)
     DBL Max() const;

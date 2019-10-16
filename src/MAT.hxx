@@ -137,15 +137,6 @@ public:
     /// Get number of nonzeros
     INT GetNNZ() const;
 
-    /// Get (*this)[i][j]
-    DBL GetValue(const INT &row, const INT &col) const;
-
-    /// Get the whole row-th row in *this into VEC object
-    void GetRow(const INT &row, std::vector<DBL> &v) const;
-
-    /// Get the whole col-th column in *this into VEC object
-    void GetCol(const INT &col, std::vector<DBL> &v) const;
-
     /// Get the whole diagonal entries in *this into VEC object
     void GetDiag(std::vector<DBL> &v) const;
 
@@ -164,15 +155,9 @@ public:
     /// Transpose *this
     void Transpose();
 
-    /// *this = mat * *this
-    void MultLeft(const MAT &mat);
-
-    /// *this = *this * mat
-    void MultRight(const MAT &mat);
-
-    /// Return MAT = a * mat1 + b * mat2
-    friend MAT Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2,
-                   MAT &mat);
+    /// mat = a * mat1 + b * mat2
+    friend void Add(const DBL a, const MAT &mat1, const DBL b, const MAT
+    &mat2, MAT &mat);
 
     /// *this = a * *this + b * mat
     void Add(const DBL a, const DBL b, const MAT &mat);
@@ -183,25 +168,54 @@ public:
     /// r = y - A * x: y minus A times x
     void YMAX(const VEC &y, const VEC &x, VEC &r) const;
 
-    /// Return VEC = A'*v1 + v2
-    VEC MultTransposeAdd(const VEC &v1, const VEC &v2) const;
-
-    /// *this = matl * matr
-    friend MAT Mult(const MAT &matl, const MAT &matr);
+    /// v= A'*v1 + v2
+    void MultTransposeAdd(const VEC &v1, const VEC &v2, VEC &v) const;
 
     /// write CSR format data to the disk
     friend void WriteCSR(char *filename, MAT mat);
 
+    /// write MTX format data to the disk
+    friend void WriteMTX(char *filename, MAT mat);
+
 private:
     /// Form diagonal pointer using colInd and rowPtr
-    void FormDiagPtr(std::vector<INT> &diagPtr);
+    void FormDiagPtr();
 
     /// Empty a matrix
     void Empty();
-};
-
-#endif /* end if for __MAT_HEADER__ */
 
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/
+
+public:
+
+    /*
+     * because of conflicts between "static" and "const",
+     * GetValue, GetRow and GetCol aren't marked "static".
+     */
+    /// Get (*this)[i][j]
+    DBL GetValue(const INT &row, const INT &col) const;
+
+    /// Get the whole row-th row in *this into VEC object
+    void GetRow(const INT &row, std::vector<DBL> &v) const;
+
+    /// Get the whole col-th column in *this into VEC object
+    void GetCol(const INT &col, std::vector<DBL> &v) const;
+
+    /*
+     * because of conflicts between "friend" and "static",
+     * "Mult" isn't marked "static".
+     */
+    /// mat = matl * matr
+    friend void Mult(const MAT &matl, const MAT &matr, MAT &mat);
+
+    /// *this = mat * *this
+    static void MultLeft(const MAT &mat);
+
+    /// *this = *this * mat
+    static void MultRight(const MAT &mat);
+
+};
+
+#endif /* end if for __MAT_HEADER__ */
