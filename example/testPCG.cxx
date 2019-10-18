@@ -17,7 +17,7 @@
 #include "PCG.hxx"
 #include "LOP.hxx"
 
-int main()
+int main(int argc,char *args[])
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     GetWallTime timer;
@@ -29,9 +29,13 @@ int main()
     std::vector<DBL> values; // matrix nnz
 
     timer.Start();
+    
+    if(argc<2){
+	std::cout<<"No data file entered!"<<std::endl;
+    }
 
     try {
-        retCode = ReadCSR("../data/fdm_1023X1023.csr", row, col, nnz,
+        retCode = ReadCSR(args[1], row, col, nnz,
                           rowPtr, colInd, values);
         if ( retCode < 0 )
             throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
