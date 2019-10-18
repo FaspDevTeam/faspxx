@@ -122,7 +122,7 @@ int main() {
 
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) nvec1.Add(1.0, 1.0, nvec2);
+    for ( k = 0; k < count; k++ ) nvec1.AXPBY(1.0, 1.0, nvec2);
     std::cout << "new VEC cycles : " << cycle.Stop() / count << std::endl;
     std::cout << "new VEC time   : " << timer.Stop() / count << "ms" << std::endl;
 
