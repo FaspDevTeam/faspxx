@@ -670,7 +670,7 @@ void MAT::Empty() {
 /*--        End of File          --*/
 /*---------------------------------*/
 
-/*
+
 /// Get (*this)[i][j]
 //! Note: If *this is a sparse structure, it will return 1.0 for nonzero entries
 DBL MAT::GetValue(const INT &row, const INT &ncol) const {
@@ -819,4 +819,3 @@ void MAT::MultRight(const MAT &mat) {
 
     Mult(mat, tmp, *this);
 }
-*/

@@ -211,10 +211,10 @@ public:
     friend void Mult(const MAT &matl, const MAT &matr, MAT &mat);
 
     /// *this = mat * *this
-    static void MultLeft(const MAT &mat);
+    void MultLeft(const MAT &mat);
 
     /// *this = *this * mat
-    static void MultRight(const MAT &mat);
+    void MultRight(const MAT &mat);
 
 };
 
