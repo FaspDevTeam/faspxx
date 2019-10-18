@@ -11,73 +11,43 @@
 
 #include <iostream>
 #include "Timing.hxx"
-#include "ReadData.hxx"
-#include "MATUtil.hxx"
 #include "Param.hxx"
 #include "PCG.hxx"
 #include "LOP.hxx"
+#include "ReadCommand.hxx"
 
 int main(int argc,char *args[])
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     GetWallTime timer;
+    MAT mat;
+    VEC b,x;
+    INT row,col,nnz;
 
-    // Read a CSR matrix from file
-    INT row, col, nnz;
-    std::vector<INT> rowPtr; // row pointer
-    std::vector<INT> colInd; // col index
-    std::vector<DBL> values; // matrix nnz
+    std::cout<<"argc : "<<argc<<std::endl;
+    for(int j=0;j<argc;j++)
+        std::cout<<"args["<<j<<"] : "<<args[j]<<std::endl;
 
     timer.Start();
-    
-    if ( argc < 2 ) {
-	    std::cout << "### ERROR: No data file entered!" << std::endl;
-        std::cout << "### Usage: ./testPCG MatrixDataFile" << std::endl;
-        return FaspRetCode::ERROR_INPUT_FILE;
-    }
+    /// read matrix, rhs and inital solution
+    if((retCode=ReadCommad(argc,args,mat,b,x))<0)
+        return retCode;
 
-    try {
-        retCode = ReadCSR(args[1], row, col, nnz,
-                          rowPtr, colInd, values);
-        if ( retCode < 0 )
-            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-    }
-    catch ( FaspRunTime& ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-
-    // Sort each row in ascending order
-    try {
-        retCode = SortCSRRow(row, col, nnz, rowPtr, colInd, values);
-        if ( retCode < 0 )
-            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-    }
-    catch ( FaspRunTime& ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-
-    // Convert a MTX matrix to MAT
-    MAT mat;
-    try {
-        retCode = CSRtoMAT(row, col, nnz, values, colInd, rowPtr, mat);
-        if ( retCode < 0 )
-            throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-    }
-    catch ( FaspRunTime& ex ) {
-        ex.LogExcep();
-        return ex.errorCode;
-    }
-
-    VEC b(row, 0.0), x(col, 1.0);
+    std::cout<<"Reading Ax = b costs "<<timer.Stop()<<"ms"<<std::endl;
+    /*
+     * because of short of rhs data and initial solution data,
+     * so set 'b' and 'x' as follows:
+     */
+    row=mat.GetRowSize();
+    col=mat.GetColSize();
+    nnz=mat.GetNNZ();
+    b.SetValues(row,0.0);
+    x.SetValues(col,1.0);
 
     // Print problem size information
-    std::cout << "  nrow = " << mat.GetRowSize()
-              << ", ncol = " << mat.GetColSize()
-              << ", nnz = "  << mat.GetNNZ() << std::endl;
-
-    std::cout << "Reading Ax=b costs " << timer.Stop() << "ms" << std::endl;
+    std::cout << "  nrow = " << row
+              << ", ncol = " << col
+              << ", nnz = "  << nnz << std::endl;
 
     // Setup parameters
     IterParam param;
