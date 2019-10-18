@@ -273,9 +273,9 @@ FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
     auto retCode = FaspRetCode::SUCCESS;
 
     try{
-        valuesCSR.resize(nnz);
-        colIndCSR.resize(nnz);
-        rowPtrCSR.resize(row + 1);
+        valuesCSR.assign(nnz,0);
+        colIndCSR.assign(nnz,0);
+        rowPtrCSR.assign(row + 1,0);
     }catch(std::bad_alloc& ex){
         throw(FaspBadAlloc(__FILE__,__FUNCTION__,__LINE__));
     }
