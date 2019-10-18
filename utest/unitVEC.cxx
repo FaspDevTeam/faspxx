@@ -109,8 +109,11 @@ TEST(VEC_Get, GetValue)
 TEST(VEC_Scale, Scale)
 {
     DBL scale = 2.365;
-    DBL *array = new DBL[v5.GetSize()];;
-    v5.GetArray(v5.GetSize(), array);
+    INT *indexPtr=new INT[v5.GetSize()];
+    for(int j=0;j<v5.GetSize();j++)
+	    indexPtr[j]=j;
+    DBL *array = new DBL[v5.GetSize()];
+    v5.GetValues(v5.GetSize(),indexPtr, array);
 
     v5.Scale(scale);
     std::cout << v5.GetSize() << std::endl;
@@ -201,9 +204,9 @@ TEST(VEC_Add, Add)
 
     for (INT i=0; i<v.GetSize(); i++) v[i] = a*v1[i] + b*v[i];
 
-    v2.Add(a, b, v1);
+    v2.AXPBY(a, b, v1);
 
-    v4.Add(a, v1, b, v3);
+    v4.WAXPBY(a, v1, b, v3);
 
     for (INT i=0; i<v.GetSize(); i++) {
         EXPECT_EQ(v[i], v2[i]);
