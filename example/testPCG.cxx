@@ -30,8 +30,10 @@ int main(int argc,char *args[])
 
     timer.Start();
     
-    if(argc<2){
-	std::cout<<"No data file entered!"<<std::endl;
+    if ( argc < 2 ) {
+	    std::cout << "### ERROR: No data file entered!" << std::endl;
+        std::cout << "### Usage: ./testPCG MatrixDataFile" << std::endl;
+        return FaspRetCode::ERROR_INPUT_FILE;
     }
 
     try {
