@@ -91,7 +91,6 @@ FaspRetCode CSRToMAT(char *filename, MAT &mat) {
         return ex.errorCode;
     }
 
-    cout<<"first "<<retCode<<endl;
     // Sort each row in ascending order
     try {
         retCode = SortCSRRow(row, col, nnz, rowPtr, colInd, values);
@@ -102,7 +101,7 @@ FaspRetCode CSRToMAT(char *filename, MAT &mat) {
         ex.LogExcep();
         return ex.errorCode;
     }
-    cout<<"second "<<retCode<<endl;
+
     // Convert a MTX matrix to MAT
     try {
         retCode = CSRtoMAT(row, col, nnz, values, colInd, rowPtr, mat);
@@ -114,7 +113,6 @@ FaspRetCode CSRToMAT(char *filename, MAT &mat) {
         return ex.errorCode;
     }
 
-    cout<<"third "<<retCode<<endl;
     return retCode;
 }
 
@@ -123,6 +121,9 @@ FaspRetCode ReadCommad(unsigned int argc, char *args[], MAT &mat, VEC &rhs, VEC
     FaspRetCode retCode = FaspRetCode::SUCCESS;
     switch (argc) {
         case 1:
+            std::cout<<" ### ERROR: No data file entered!"<<std::endl;
+            std::cout<<" ### Usage: ./*.exe MatrixDataFile"<<std::endl;
+            retCode=FaspRetCode ::ERROR_INPUT_PAR;
             return retCode;
         case 2:
             retCode = CSRToMAT(args[1], mat);
