@@ -14,9 +14,9 @@ FaspRetCode ReadRhs(char *filename,VEC &rhs);
 /// convert CSR format to CSRx matrix
 FaspRetCode CSRToMAT(char *filename,MAT &mat);
 
-/// read command parameters to achieve cofficient matrix, right hand item,
-/// initial solution.
-FaspRetCode ReadCommad(unsigned int argc, char *args[], MAT &mat, VEC &rhs, VEC
+/// read command line parameters to achieve coefficient matrix, right hand side, and
+/// initial solution
+FaspRetCode ReadCommand(unsigned int argc, char *args[], MAT &mat, VEC &rhs, VEC
     &initGuess);
 
 #endif //SRC_READCOMMAND_HXX

@@ -24,25 +24,20 @@ int main(int argc,char *args[])
     VEC b,x;
     INT row,col,nnz;
 
-    std::cout<<"argc : "<<argc<<std::endl;
-    for(int j=0;j<argc;j++)
-        std::cout<<"args["<<j<<"] : "<<args[j]<<std::endl;
-
     timer.Start();
     /// read matrix, rhs and inital solution
-    if((retCode=ReadCommad(argc,args,mat,b,x))<0)
-        return retCode;
+    if ( (retCode=ReadCommand(argc,args,mat,b,x)) < 0 ) return retCode;
 
     std::cout<<"Reading Ax = b costs "<<timer.Stop()<<"ms"<<std::endl;
     /*
      * because of short of rhs data and initial solution data,
      * so set 'b' and 'x' as follows:
      */
-    row=mat.GetRowSize();
-    col=mat.GetColSize();
-    nnz=mat.GetNNZ();
-    b.SetValues(row,0.0);
-    x.SetValues(col,1.0);
+    row = mat.GetRowSize();
+    col = mat.GetColSize();
+    nnz = mat.GetNNZ();
+    b.SetValues(row,0.0); // Todo: if user does not give b, set it to be 0
+    x.SetValues(col,1.0); // Todo: if user does not give x, set it to be 1
 
     // Print problem size information
     std::cout << "  nrow = " << row

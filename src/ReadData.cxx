@@ -17,7 +17,7 @@ FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowInd, std::vector<INT>& colInd,
                     std::vector<DBL>& values)
 {
-#if 0
+#if 0 // Todo: Remove later
     std::cout << __FUNCTION__ << ": reading file " << filename << "..." << std::endl;
     auto retCode = FaspRetCode::SUCCESS;
 
@@ -75,11 +75,13 @@ FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
     return retCode;
 #endif
     std::ifstream in(filename);
-    FaspRetCode retCode=FaspRetCode ::SUCCESS;
+    FaspRetCode retCode = FaspRetCode ::SUCCESS;
+
     if (!in.is_open()) {
         retCode = FaspRetCode::ERROR_OPEN_FILE;
         return retCode;
     }
+
     in.seekg(0, std::ios::end);
     long long int length = in.tellg();
     in.seekg(0, std::ios::beg);
@@ -177,7 +179,7 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowPtr, std::vector<INT>& colInd,
                     std::vector<DBL>& values)
 {
-#if 0
+#if 0 // Todo: Remove later
     std::cout << __FUNCTION__ << ": reading file " << filename << "..." << std::endl;
     auto retCode = FaspRetCode::SUCCESS;
     INT count;
@@ -238,31 +240,35 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
 
     return retCode;
 #endif
-    std::ifstream in(filename);
     FaspRetCode retCode=FaspRetCode ::SUCCESS;
+
+    // Open the file to read
+    std::ifstream in(filename);
     if ( !in.is_open() ){
         retCode = FaspRetCode::ERROR_OPEN_FILE;
         return retCode;
     }
 
+    // Read the file in to a buffer
     in.seekg(0, std::ios::end);
     long long int length = in.tellg();
     in.seekg(0, std::ios::beg);
-    char *buffer,*decimal;
+    char *buffer, *decimal;
     try {
         buffer = new char[length];
-        decimal = new char[16];
-    } catch (std::bad_alloc &ex) {
+        decimal = new char[128]; // Note: Careful with very long data
+    } catch ( std::bad_alloc &ex ) {
         in.close();
-        retCode=FaspRetCode ::ERROR_ALLOC_MEM;
+        retCode = FaspRetCode::ERROR_ALLOC_MEM;
         return retCode;
     }
     in.read(buffer, length);
     in.close();
 
+    // Read number of rows
     INT count = 0;
     long long int position = 0;
-    while (1) {
+    while ( true ) {
         if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
             count++;
@@ -275,26 +281,26 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
     }
 
     row = atoi(decimal);
-
-    if(row<=0){
+    if ( row <= 0 ) {
         retCode = FaspRetCode::ERROR_INPUT_PAR;
         delete[] buffer;
         delete[] decimal;
         return retCode;
     }
-
     col = row;
-    long long int locate = 0;
-    count = 0;
-    try{
+
+    // Read row pointers
+    try {
         rowPtr.resize(row + 1);
-    }catch(std::bad_alloc &ex){
-        retCode=FaspRetCode ::ERROR_ALLOC_MEM;
+    } catch( std::bad_alloc &ex ) {
+        retCode = FaspRetCode ::ERROR_ALLOC_MEM;
         return retCode;
     }
 
-    while (1) {
-        if (buffer[position] != '\n') {
+    INT locate = 0;
+    count = 0;
+    while ( true ) {
+        if ( buffer[position] != '\n' ) {
             decimal[count] = buffer[position];
             count++;
             position++;
@@ -304,24 +310,24 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
             count = 0;
             rowPtr[locate] = atoi(decimal);
             locate++;
-            if (locate == row + 1)
-                break;
+            if ( locate == row + 1 ) break;
         }
     }
 
-    nnz = rowPtr[row] - rowPtr[0];
-
-    try{
+    // Reserve memory for colInd and values
+    try {
+        nnz = rowPtr[row] - rowPtr[0];
         colInd.resize(nnz);
         values.resize(nnz);
-    }catch(std::bad_alloc &ex){
-        retCode=FaspRetCode ::ERROR_ALLOC_MEM;
+    } catch( std::bad_alloc &ex ) {
+        retCode = FaspRetCode ::ERROR_ALLOC_MEM;
         return retCode;
     }
 
+    // Read column indices
     locate = 0;
-    while (1) {
-        if (buffer[position] != '\n') {
+    while ( true ) {
+        if ( buffer[position] != '\n' ) {
             decimal[count] = buffer[position];
             count++;
             position++;
@@ -329,16 +335,16 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
             position++;
             decimal[count] = '\0';
             count = 0;
-            colInd[locate] = atof(decimal);
+            colInd[locate] = atoi(decimal);
             locate++;
-            if (locate == nnz)
-                break;
+            if ( locate == nnz ) break;
         }
     }
 
+    // Read values
     locate = 0;
-    while (1) {
-        if (buffer[position] != '\n' && buffer[position] != EOF) {
+    while ( true ) {
+        if ( buffer[position] != '\n' && buffer[position] != EOF ) {
             decimal[count] = buffer[position];
             count++;
             position++;
@@ -348,14 +354,14 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
             count = 0;
             values[locate] = atof(decimal);
             locate++;
-            if (locate == nnz)
-                break;
+            if ( locate == nnz ) break; // Todo: Give error if final locate is not nnz
         }
     }
 
-    if (rowPtr[0] != 0) {
-        for (count = 0; count < nnz; ++count) colInd[count]--;
+    // If the indices start from 1, we shift them to start from 0
+    if ( rowPtr[0] == 1 ) {
         for (count = 0; count <= row; ++count) rowPtr[count]--;
+        for (count = 0; count <  nnz; ++count) colInd[count]--;
     }
 
     delete[] buffer;

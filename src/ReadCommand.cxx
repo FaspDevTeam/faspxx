@@ -7,16 +7,16 @@
 #include "MATUtil.hxx"
 #include <fstream>
 
-using namespace std;
+//using namespace std;
 
-/// read rhs or inital solution
-FaspRetCode ReadRhs(char *filename, VEC &rhs) {
+/// read rhs or initial solution
+static FaspRetCode ReadRHS(char *filename, VEC &rhs) {
     FaspRetCode retCode;
-    char *buffer, decimal[16];
+    char *buffer, decimal[128];
     long long int length, position;
     INT count, locate, len;
 
-    std::ifstream in(filename);
+    std::ifstream in(filename); 
     if (in.is_open()) {
         retCode = FaspRetCode::ERROR_OPEN_FILE;
         return retCode;
@@ -72,6 +72,7 @@ FaspRetCode ReadRhs(char *filename, VEC &rhs) {
     delete[] buffer;
 }
 
+// Todo: This is already define somewhere else
 /// convert CSR format to CSRx matrix
 FaspRetCode CSRToMAT(char *filename, MAT &mat) {
     // Read a CSR matrix from file
@@ -116,35 +117,31 @@ FaspRetCode CSRToMAT(char *filename, MAT &mat) {
     return retCode;
 }
 
-FaspRetCode ReadCommad(unsigned int argc, char *args[], MAT &mat, VEC &rhs, VEC
-&initGuess) {
+FaspRetCode ReadCommand(unsigned int argc, char *args[],
+                        MAT& mat, VEC& rhs, VEC& initGuess) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
+
     switch (argc) {
-        case 1:
-            std::cout<<" ### ERROR: No data file entered!"<<std::endl;
-            std::cout<<" ### Usage: ./*.exe MatrixDataFile"<<std::endl;
-            retCode=FaspRetCode ::ERROR_INPUT_PAR;
-            return retCode;
         case 2:
             retCode = CSRToMAT(args[1], mat);
-            return retCode;
+            break;
         case 3:
             retCode = CSRToMAT(args[1], mat);
-            if (retCode < 0)
-                return retCode;
-            retCode = ReadRhs(args[2], rhs);
-            return retCode;
+            if (retCode < 0) break;
+            retCode = ReadRHS(args[2], rhs);
+            break;
         case 4:
             retCode = CSRToMAT(args[1], mat);
-            if (retCode < 0)
-                return retCode;
-            retCode = ReadRhs(args[2], rhs);
-            if (retCode < 0)
-                return retCode;
-            retCode = ReadRhs(args[3], initGuess);
-            return retCode;
+            if (retCode < 0) break;
+            retCode = ReadRHS(args[2], rhs);
+            if (retCode < 0) break;
+            retCode = ReadRHS(args[3], initGuess);
+            break;
         default:
+            std::cout << "### ERROR: No data file specified!" << std::endl;
             retCode = FaspRetCode::ERROR_INPUT_PAR;
-            return retCode;
+            break;
     }
+
+    return retCode;
 }
