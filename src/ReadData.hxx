@@ -15,13 +15,13 @@
 #include "faspxx.hxx"
 #include "MAT.hxx"
 
-FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
-                    std::vector<INT>& rowInd, std::vector<INT>& colInd,
-                    std::vector<DBL>& values);
+FaspRetCode ReadMTX(const char *filename, INT &row, INT &col, INT &nnz,
+                    std::vector<INT> &rowInd, std::vector<INT> &colInd,
+                    std::vector<DBL> &values);
 
-FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
-                    std::vector<INT>& rowPtr, std::vector<INT>& colInd,
-                    std::vector<DBL>& values);
+FaspRetCode ReadCSR(const char *filename, INT &row, INT &col, INT &nnz,
+                    std::vector<INT> &rowPtr, std::vector<INT> &colInd,
+                    std::vector<DBL> &values);
 
 #endif // __READ_DATA_HXX__
 
