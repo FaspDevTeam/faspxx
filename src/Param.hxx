@@ -14,6 +14,7 @@
 
 #include "faspxx.hxx"
 #include <cstring>
+#include <iostream>
 
 enum PRTLVL {
     PRINT_NONE = 0,
