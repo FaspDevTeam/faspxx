@@ -46,7 +46,7 @@ int main(int argc,char *args[])
 
     // Setup parameters
     IterParam param;
-    param.SetOutLvl(PRINT_NONE);
+    param.SetOutLvl(PRINT_MIN);
     param.SetRelTol(1e-5);
     param.SetAbsTol(1e-8);
     param.SetMaxIter(200);

@@ -26,11 +26,12 @@ private:
     VEC ax;
 
     /// Print out iteration information for iterative solvers
-    void PrintInfo(const PRTLVL& prtlvl,  const INT& iter, const DBL& relres,
+    void PrintInfo(const PRTLVL& prtlvl, const INT& iter, const DBL& relres,
                    const DBL& absres, const DBL& factor);
 
     /// Print out final status of an iterative method
-    void PrintFinal(const INT& iter, const INT& maxit, const DBL& relres);
+    void PrintFinal(const PRTLVL& prtlvl, const INT& iter, const INT& maxit,
+                    const DBL& relres);
 
 public:
     /// constructor by default

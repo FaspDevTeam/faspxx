@@ -72,7 +72,8 @@ public:
 
     // Print parameters
     void Print() const {
-        std::cout << "Parameters for iterative method:   " << std::endl
+        std::cout << std::endl
+                  << "Parameters for iterative method:   " << std::endl
                   << "-----------------------------------" << std::endl
                   << "  Output level:         " << outLvl  << std::endl
                   << "  Max num of iteration: " << maxIter << std::endl

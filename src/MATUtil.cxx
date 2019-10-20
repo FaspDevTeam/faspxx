@@ -114,29 +114,32 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
 {
     if ( row == 0 || col == 0 || nnz == 0 ) return FaspRetCode ::SUCCESS;
 
-    /// basic examinations
     if ( row != rowPtr.size() - 1 ) {
-        std::cout << "1" << std::endl;
+        std::cout << "### ERROR: row= "  << row
+                  << ", but rowPtr.size= " << rowPtr.size() << std::endl;
         goto WRONG_CSR;
     }
 
     if ( row <= 0 || col <= 0 ) {
-        std::cout << "2" << std::endl;
+        std::cout << "### ERROR: row= "  << row << ", col= " << col << std::endl;
         goto WRONG_CSR;
     }
 
-    if ( nnz != colInd.size()) {
-        std::cout << "3" << std::endl;
+    if ( nnz != colInd.size() ) {
+        std::cout << "### ERROR: nnz= "  << nnz
+                  << ", but colInd.size= " << colInd.size() << std::endl;
         goto WRONG_CSR;
     }
 
     if ( nnz != values.size()) {
-        std::cout << "4" << std::endl;
+        std::cout << "### ERROR: nnz= "  << nnz
+                  << ", but values.size= " << values.size() << std::endl;
         goto WRONG_CSR;
     }
 
-    if ( nnz != rowPtr[rowPtr.size() - 1] ) {
-        std::cout << "5" << std::endl;
+    if ( nnz != rowPtr[row] - rowPtr[0] ) {
+        std::cout << "### ERROR: nnz= "  << nnz << ", rowPtr[last]-rowPtr[first]= "
+                  << rowPtr[row] - rowPtr[0] << std::endl;
         goto WRONG_CSR;
     }
 
@@ -149,11 +152,6 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
         }
     }
 
-    if ( rowPtr[0] < 0 || rowPtr[row] - rowPtr[0] > nnz ) {
-        std::cout << "7" << std::endl;
-        goto WRONG_CSR;
-    }
-
     INT begin, end;
     for ( INT j = 0; j < row; j++ ) {
         begin = rowPtr[j];
@@ -161,19 +159,10 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
 
         if ( begin == end ) continue;
 
-        if ( end == begin + 1 ) {
-            if ( 0 > colInd[begin] || colInd[begin] >= col ) {
-                std::cout << "8" << std::endl;
+        for ( INT k = begin; k < end; k++ ) {
+            if ( 0 > colInd[k] || colInd[k] >= col ) {
+                std::cout << "### ERROR: Wrong column indices" << std::endl;
                 goto WRONG_CSR;
-            }
-        }
-
-        if ( end > begin + 1 ) {
-            for ( INT k = begin; k < end; k++ ) {
-                if ( 0 > colInd[k] || colInd[k] >= col ) {
-                    std::cout << "9" << std::endl;
-                    goto WRONG_CSR;
-                }
             }
         }
     }
