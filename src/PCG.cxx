@@ -190,11 +190,11 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
     } // End of main PCG loop
 
 FINISHED: // Finish iterative method
-    if (param.outLvl > PRINT_NONE) PrintFinal(param.numIter, param.maxIter, resRel);
+    PrintFinal(param.outLvl, param.numIter, param.maxIter, resRel);
 
     // Compute final residual norms
-    //param.normInf = rk.NormInf();
-    //param.norm2 = rk.Norm2();
+    param.normInf = rk.NormInf();
+    param.norm2 = rk.Norm2();
 
     return errorCode;
 }
@@ -215,9 +215,9 @@ void PCG::Clean() {
 }
 
 /// Print out iteration information for iterative solvers
-void PCG::PrintInfo(const PRTLVL& prtlvl, const INT& iter,const DBL& resRel,
+void PCG::PrintInfo(const PRTLVL& outLvl, const INT& iter, const DBL& resRel,
                     const DBL& resAbs, const DBL& factor) {
-    if ( prtlvl >= PRINT_SOME ) {
+    if ( outLvl > PRINT_SOME || (outLvl > PRINT_NONE && iter%20 == 0) ) {
         if (iter == 0) {
             std::cout<< "--------------------------------------------------\n";
             std::cout<< "It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
@@ -234,13 +234,15 @@ void PCG::PrintInfo(const PRTLVL& prtlvl, const INT& iter,const DBL& resRel,
 }
 
 /// Print out final status of an iterative method
-void PCG::PrintFinal(const INT& iter, const INT& maxit, const DBL& resRel) {
-    if (iter > maxit)
-        std::cout << "### WARNING: MaxIt = " << maxit
-                  << " reached with relative residual " << resRel << std::endl;
-    else if (iter >= 0) {
-        std::cout << "Number of iterations = " << iter << " with relative residual "
-                  << resRel << std::endl;
+void PCG::PrintFinal(const PRTLVL& outLvl, const INT& iter, const INT& maxit, const DBL& resRel) {
+    if ( outLvl > PRINT_NONE ) {
+        if ( iter > maxit )
+            std::cout << "### WARNING: MaxIt = " << maxit
+                      << " reached with relative residual " << resRel << std::endl;
+        else if ( iter >= 0 ) {
+            std::cout << "Number of iterations = " << iter << " with relative residual "
+                      << resRel << std::endl;
+        }
     }
 }
 

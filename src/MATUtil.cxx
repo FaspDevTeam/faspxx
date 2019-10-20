@@ -114,59 +114,63 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
 {
     if ( row == 0 || col == 0 || nnz == 0 ) return FaspRetCode ::SUCCESS;
 
-    /// basic examinations
-    INT flag=0;
-    if ( row != rowPtr.size() - 1 )
-        goto Return;
-
-    if ( row <= 0 || col <= 0 )
-        goto Return;
-
-    if ( nnz != colInd.size())
-        goto Return;
-
-    if ( nnz != values.size())
-        goto Return;
-
-    if ( nnz != rowPtr[rowPtr.size() - 1] )
-        goto Return;
-
-    for ( INT j = 0; j < row; j++ ) {
-        if ( rowPtr[j] > rowPtr[j + 1] )
-            goto Return;
+    if ( row != rowPtr.size() - 1 ) {
+        std::cout << "### ERROR: row= "  << row
+                  << ", but rowPtr.size= " << rowPtr.size() << std::endl;
+        goto WRONG_CSR;
     }
 
-    if ( rowPtr[0] < 0 || rowPtr[row] > nnz )
-        goto Return;
+    if ( row <= 0 || col <= 0 ) {
+        std::cout << "### ERROR: row= "  << row << ", col= " << col << std::endl;
+        goto WRONG_CSR;
+    }
+
+    if ( nnz != colInd.size() ) {
+        std::cout << "### ERROR: nnz= "  << nnz
+                  << ", but colInd.size= " << colInd.size() << std::endl;
+        goto WRONG_CSR;
+    }
+
+    if ( nnz != values.size()) {
+        std::cout << "### ERROR: nnz= "  << nnz
+                  << ", but values.size= " << values.size() << std::endl;
+        goto WRONG_CSR;
+    }
+
+    if ( nnz != rowPtr[row] - rowPtr[0] ) {
+        std::cout << "### ERROR: nnz= "  << nnz << ", rowPtr[last]-rowPtr[first]= "
+                  << rowPtr[row] - rowPtr[0] << std::endl;
+        goto WRONG_CSR;
+    }
+
+    for ( INT j = 0; j < row; j++ ) {
+        if ( rowPtr[j] > rowPtr[j + 1] ) {
+            std::cout << "### ERROR: Problem in " << j << "-th row, "
+                      << "starting row pointer = " << rowPtr[j]
+                      << ", ending row pointer = " << rowPtr[j+1] << std::endl;
+            goto WRONG_CSR;
+        }
+    }
 
     INT begin, end;
     for ( INT j = 0; j < row; j++ ) {
         begin = rowPtr[j];
         end = rowPtr[j + 1];
-        if ( begin == end )
-            continue;
 
-        if ( end == begin + 1 ) {
-            if ( 0 > colInd[begin] || colInd[begin] >= col )
-                goto Return;
-        }
+        if ( begin == end ) continue;
 
-        if ( end > begin + 1 ) {
-            for ( INT k = begin; k < end; k++ ) {
-                if ( 0 > colInd[k] || colInd[k] >= col ) {
-                    goto Return;
-                }
+        for ( INT k = begin; k < end; k++ ) {
+            if ( 0 > colInd[k] || colInd[k] >= col ) {
+                std::cout << "### ERROR: Wrong column indices" << std::endl;
+                goto WRONG_CSR;
             }
         }
     }
 
-    flag=1;
-    if(flag==0){
-        Return:
-        return FaspRetCode ::ERROR_MAT_DATA;
-    }
-
     return FaspRetCode::SUCCESS;
+
+    WRONG_CSR:
+    return FaspRetCode::ERROR_MAT_DATA;
 }
 
 /// Check whether the data is good for CSRx
@@ -480,7 +484,6 @@ FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
         }
     }
 
-    // Todo: This does not work any more if we reserve instead of resize
     try {
         retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
         if ( retCode < 0 )
