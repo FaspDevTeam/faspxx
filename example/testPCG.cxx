@@ -15,6 +15,7 @@
 #include "PCG.hxx"
 #include "LOP.hxx"
 #include "ReadCommand.hxx"
+#include "ReadData.hxx"
 
 int main(int argc,char *args[])
 {
@@ -24,20 +25,32 @@ int main(int argc,char *args[])
     VEC b,x;
     INT row,col,nnz;
 
-    timer.Start();
-    /// read matrix, rhs and inital solution
-    if ( (retCode=ReadCommand(argc,args,mat,b,x)) < 0 ) return retCode;
+    InitParam init;
 
-    std::cout<<"Reading Ax = b costs "<<timer.Stop()<<"ms"<<std::endl;
-    /*
-     * because of short of rhs data and initial solution data,
-     * so set 'b' and 'x' as follows:
-     */
+    ReadParam(argc,args,init);
+
+    if((retCode=ReadMat(init.data.GetMatName(),mat))<0){
+        std::cout<<"### ERROR : Error in input matrix file"<<std::endl;
+        return retCode;
+    }
+
     row = mat.GetRowSize();
     col = mat.GetColSize();
     nnz = mat.GetNNZ();
-    b.SetValues(row,0.0); // Todo: if user does not give b, set it to be 0
-    x.SetValues(col,1.0); // Todo: if user does not give x, set it to be 1
+
+    timer.Start();
+    /// read matrix, rhs and inital solution
+    if(init.data.GetRhsName()!= nullptr)
+        ReadVEC(init.data.GetRhsName(),b);
+    else
+        b.SetValues(row,0.0);
+
+    if(init.data.GetLhsName()!= nullptr)
+        ReadVEC(init.data.GetLhsName(),x);
+    else
+        x.SetValues(col,1.0);
+
+    std::cout<<"Reading Ax = b costs "<<timer.Stop()<<"ms"<<std::endl;
 
     // Print problem size information
     std::cout << "  nrow = " << row
