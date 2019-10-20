@@ -90,7 +90,7 @@ FaspRetCode ReadMTX(const char *filename, INT &row, INT &col, INT &nnz,
     INT tmp = 0;
     while (1) {
         if (buffer[position] != ' ' && buffer[position] != '\n' &&
-            buffer[position] != EOF) {
+            buffer[position] != '\0') {
             decimal[count] = buffer[position];
             count++;
             position++;
@@ -98,6 +98,8 @@ FaspRetCode ReadMTX(const char *filename, INT &row, INT &col, INT &nnz,
             position++;
             if (buffer[position] == ' ') // prevent multiple consecutive spaces
                 continue;
+            if (buffer[position] == '\0')
+                break;
             decimal[count] = '\0'; // mark the end of 'dicimal' string
             count = 0;
             tmp++;
@@ -114,8 +116,6 @@ FaspRetCode ReadMTX(const char *filename, INT &row, INT &col, INT &nnz,
                     break;
             }
         }
-        if (buffer[position - 1] == EOF)
-            break;
     }
 
     if (locate != nnz) retCode = FaspRetCode::ERROR_INPUT_FILE;
@@ -232,19 +232,19 @@ FaspRetCode ReadCSR(const char *filename, INT &row, INT &col, INT &nnz,
     // Read values
     locate = 0;
     while (true) {
-        if (buffer[position] != '\n' && buffer[position] != EOF) {
+        if (buffer[position] != '\n' && buffer[position] != '\0') {
             decimal[count] = buffer[position];
             count++;
             position++;
         } else {
+            if (buffer[position] == '\0')
+                break;
             position++;
             decimal[count] = '\0';
             count = 0;
             values[locate] = atof(decimal);
             locate++;
         }
-        if (buffer[position - 1] == EOF)
-            break;
     }
     if (locate != nnz) retCode = FaspRetCode::ERROR_INPUT_FILE;
 
