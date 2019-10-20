@@ -25,7 +25,7 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowPtr, std::vector<INT>& colInd,
                     std::vector<DBL>& values);
 
-FaspRetCode ReadCSRToMAT(char *filename, MAT& mat);
+FaspRetCode ReadMat(char *filename, MAT& mat);
 
 #endif // __READ_DATA_HXX__
 

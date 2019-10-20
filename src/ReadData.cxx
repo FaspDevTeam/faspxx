@@ -12,6 +12,7 @@
 #include <fstream>
 #include "ReadData.hxx"
 #include "MATUtil.hxx"
+#include <cstring>
 
 /// \bridf Read a VEC data file
 FaspRetCode ReadVEC(char *filename, VEC& rhs) {
@@ -335,6 +336,96 @@ FaspRetCode ReadCSR(const char *filename, INT& row, INT& col, INT& nnz,
     return retCode;
 }
 
+FaspRetCode ReadMat(char *filename, MAT& mat){
+    char type[4];
+    INT flag;
+    INT len=strlen(filename);
+    FaspRetCode retCode;
+
+    if(len<=4){
+        retCode=FaspRetCode ::ERROR_INPUT_FILE;
+        return retCode;
+    }
+
+    type[0]=filename[len-3];
+    type[1]=filename[len-2];
+    type[2]=filename[len-1];
+    type[3]='\0';
+
+    if(strcmp(type,"csr")==0)
+        flag=1;
+    else if(strcmp(type,"mtx")==0)
+        flag=2;
+    else
+        flag=0;
+
+    INT row,col,nnz;
+    std::vector<INT> rowPtr,colInd,rowInd;
+    std::vector<DBL> values;
+
+    switch(flag){
+        case 0:
+            retCode=FaspRetCode ::ERROR_INPUT_FILE;
+            break;
+        case 1:
+            try {
+                retCode = ReadCSR(filename,row, col, nnz,
+                        rowPtr, colInd, values);
+                if ( retCode < 0 )
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            }
+            catch ( FaspRunTime& ex ) {
+                ex.LogExcep();
+                break;
+            }
+
+            // Sort each row in ascending order
+            try {
+                retCode = SortCSRRow(row, col, nnz, rowPtr, colInd, values);
+                if ( retCode < 0 )
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            }
+            catch ( FaspRunTime& ex ) {
+                ex.LogExcep();
+                break;
+            }
+
+            // Convert a MTX matrix to MAT
+            try {
+                retCode = CSRtoMAT(row, col, nnz, values, colInd, rowPtr, mat);
+                if ( retCode < 0 )
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            }
+            catch ( FaspRunTime& ex ) {
+                ex.LogExcep();
+                break;
+            }
+        case 2:
+            try {
+                retCode = ReadMTX(filename,row, col, nnz,rowPtr,
+                        colInd, values);
+                if ( retCode < 0 )
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            }
+            catch ( FaspRunTime& ex ) {
+                ex.LogExcep();
+                break;
+            }
+
+            // Sort each row in ascending order
+            try {
+                retCode = MTXtoMAT(row, col, nnz, rowInd, colInd, values,mat);
+                if ( retCode < 0 )
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+            }
+            catch ( FaspRunTime& ex ) {
+                ex.LogExcep();
+                break;
+            }
+    }
+
+    return retCode;
+}
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/
