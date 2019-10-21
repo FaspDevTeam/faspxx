@@ -105,6 +105,7 @@ FaspRetCode ReadMTX(const char *filename, INT& row, INT& col, INT& nnz,
 
     char decimal[128];
     char *buffer, *next;
+
     // reserve dynamic memory space for storing the whole file
     try { // catch bad allocation if it happens
         buffer = new char[length];
@@ -186,7 +187,6 @@ FaspRetCode ReadMTX(const char *filename, INT& row, INT& col, INT& nnz,
                     break;
             }
         }
-        if (buffer[position - 1] == EOF) break;
     }
 
     if ( locate != nnz-1 ) retCode = FaspRetCode::ERROR_INPUT_FILE;
@@ -320,8 +320,6 @@ FaspRetCode ReadCSR(const char *filename, INT& row, INT& col, INT& nnz,
             values[locate] = std::strtod(decimal, &next);;
             locate++;
         }
-        if (buffer[position - 1] == EOF)
-            break;
     }
     if (locate != nnz) retCode = FaspRetCode::ERROR_INPUT_FILE;
 
@@ -389,7 +387,6 @@ FaspRetCode ReadMat(char *filename, MAT& mat){
                 ex.LogExcep();
                 break;
             }
-
             // Convert a MTX matrix to MAT
             try {
                 retCode = CSRtoMAT(row, col, nnz, values, colInd, rowPtr, mat);
@@ -400,9 +397,10 @@ FaspRetCode ReadMat(char *filename, MAT& mat){
                 ex.LogExcep();
                 break;
             }
+            break;
         case 2:
             try {
-                retCode = ReadMTX(filename,row, col, nnz,rowPtr,
+                retCode = ReadMTX(filename,row, col, nnz,rowInd,
                         colInd, values);
                 if ( retCode < 0 )
                     throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
@@ -422,6 +420,7 @@ FaspRetCode ReadMat(char *filename, MAT& mat){
                 ex.LogExcep();
                 break;
             }
+            break;
     }
 
     return retCode;
