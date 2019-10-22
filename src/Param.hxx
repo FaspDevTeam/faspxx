@@ -15,6 +15,7 @@
 #include "faspxx.hxx"
 #include <cstring>
 #include <iostream>
+#include <ostream>
 
 enum PRTLVL {
     PRINT_NONE = 0,
@@ -78,16 +79,16 @@ public:
     __inline__ DBL GetNormInf() const { return normInf; };
 
     // Print parameters
-    void Print() const {
-        std::cout << std::endl
-                  << "Parameters for iterative method:   " << std::endl
-                  << "-----------------------------------" << std::endl
-                  << "  Output level:         " << outLvl << std::endl
-                  << "  Max num of iteration: " << maxIter << std::endl
-                  << "  Relative tolerance:   " << relTol << std::endl
-                  << "  Absolute tolerance:   " << absTol << std::endl
-                  << "  Restart number:       " << restart << std::endl
-                  << "-----------------------------------" << std::endl;
+    // TODO:给Print()加一个默认参数就可以将输出重定向到任何流,比如文件; 用\n替换std::endl可以避免重复刷新缓冲流
+    void Print(std::ostream &out = std::cout) const {
+            out << "\nParameters for iterative method:   \n"
+                << "-----------------------------------\n"
+                << "  Output level:         " << outLvl  << '\n'
+                << "  Max num of iteration: " << maxIter << '\n'
+                << "  Relative tolerance:   " << relTol  << '\n'
+                << "  Absolute tolerance:   " << absTol  << '\n'
+                << "  Restart number:       " << restart << '\n'
+                << "-----------------------------------\n";
     };
 
     ~IterParam() {};
