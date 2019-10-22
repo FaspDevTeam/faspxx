@@ -17,20 +17,23 @@
 #include "ReadCommand.hxx"
 #include "ReadData.hxx"
 
-int main(int argc,char *args[])
-{
+int main(int argc, char *args[]) {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     GetWallTime timer;
     MAT mat;
-    VEC b,x;
-    INT row,col,nnz;
+    VEC b, x;
+    INT row, col, nnz;
 
     InitParam init;
 
-    ReadParam(argc,args,init);
+    if (FaspRetCode::SUCCESS != ReadParam(argc, args, init))
+        return 0;
 
-    if((retCode=ReadMat(init.data.GetMatName(),mat))<0){
-        std::cout<<"### ERROR : Error in input matrix file"<<std::endl;
+    init.data.Print();
+    init.param.Print();
+
+    if ((retCode = ReadMat(init.data.GetMatName(), mat)) < 0) {
+        std::cout << "### ERROR : Error in input matrix file" << std::endl;
         return retCode;
     }
 
@@ -40,22 +43,22 @@ int main(int argc,char *args[])
 
     timer.Start();
     /// read matrix, rhs and inital solution
-    if(init.data.GetRhsName()!= nullptr)
-        ReadVEC(init.data.GetRhsName(),b);
+    if (init.data.GetRhsName() != nullptr)
+        ReadVEC(init.data.GetRhsName(), b);
     else
-        b.SetValues(row,0.0);
+        b.SetValues(row, 0.0);
 
-    if(init.data.GetLhsName()!= nullptr)
-        ReadVEC(init.data.GetLhsName(),x);
+    if (init.data.GetLhsName() != nullptr)
+        ReadVEC(init.data.GetLhsName(), x);
     else
-        x.SetValues(col,1.0);
+        x.SetValues(col, 1.0);
 
-    std::cout<<"Reading Ax = b costs "<<timer.Stop()<<"ms"<<std::endl;
+    std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
     // Print problem size information
     std::cout << "  nrow = " << row
               << ", ncol = " << col
-              << ", nnz = "  << nnz << std::endl;
+              << ", nnz = " << nnz << std::endl;
 
     // Setup parameters
     IterParam param;
@@ -75,7 +78,7 @@ int main(int argc,char *args[])
 
     // PCG solve
     timer.Start();
-    retCode = pcg.Solve(mat, b,x,param);
+    retCode = pcg.Solve(mat, b, x, param);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     // Clean up
