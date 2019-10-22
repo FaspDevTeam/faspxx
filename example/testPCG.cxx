@@ -26,8 +26,8 @@ int main(int argc, char *args[]) {
 
     InitParam init;
 
-    if (FaspRetCode::SUCCESS != ReadParam(argc, args, init))
-        return 0;
+    if ((retCode = ReadParam(argc, args, init))<0)
+        return retCode;
 
     init.data.Print();
     init.param.Print();
