@@ -2,44 +2,36 @@
  * a source file about reading command parameters
  */
 
-#include <fstream>
 #include <cstring>
 #include "Param.hxx"
-/*
-FaspRetCode ReadCommand(unsigned int argc, char *args[],
-                        MAT &mat, VEC &rhs, VEC &initGuess) {
-    FaspRetCode retCode = FaspRetCode::SUCCESS;
+#include "RetCode.hxx"
 
-    switch (argc) {
-        case 2: // only read matrix
-            retCode = ReadCSRToMAT(args[1], mat);
-            break;
-        case 3: // read matrix and right hand item
-            retCode = ReadCSRToMAT(args[1], mat);
-            if (retCode < 0) break;
-            retCode = ReadVEC(args[2], rhs);
-            break;
-        case 4: // read matrix, right hand item and initial solution
-            retCode = ReadCSRToMAT(args[1], mat);
-            if (retCode < 0) break;
-            retCode = ReadVEC(args[2], rhs);
-            if (retCode < 0) break;
-            retCode = ReadVEC(args[3], initGuess);
-            break;
-        default: // if no data file is specified, trigger error mechanism
-            std::cout << "### ERROR: No data file specified!" << std::endl;
-            retCode = FaspRetCode::ERROR_INPUT_PAR;
-            break;
-    }
-
-    return retCode;
+// print help information
+void Help(){
+    std::cout<<"The format of the incoming data file and parameters    "<<std::endl
+             <<"is as follow and the matrix data file is necessary!    "<<std::endl
+             <<"ex1 : ./*.exe -mat matrix_data_file (*.csr or *.mtx)   "<<std::endl
+             <<"ex2 : ./*.exe -mat matrix_data_file -rhs rhs_data_file "<<std::endl
+             <<"ex3 : ./*.exe -mat matrix_data_file -lhs lhs_data_file "<<std::endl
+             <<"ex4 : ./*.exe -mat matrix_data_file -rhs rhs_data_file "<<std::endl
+             <<"              -lhs lhs_data_file                       "<<std::endl
+             <<"ex5 : ./*.exe -mat matrix_data_file -outLvl PRINT_NONE "<<std::endl
+             <<"              -maxIter 100 -relTol 10e-6 -absTol 10e-10"<<std::endl
+             <<"              -restart 20                              "<<std::endl;
+    std::cout<<"Parameters after '-outLvl' may be 'PRINT_NONE',        "<<std::endl
+             <<"'PRINT_MIN','PRINT_SOME','PRINT_MORE' or 'PRINT_MAX'.  "<<std::endl
+             <<"'maxIter' is the maximum number of iterations.         "<<std::endl
+             <<"'relTol' is the relative tolerance for iterations.     "<<std::endl
+             <<"'absTol' is the absolute tolerance for iterations.     "<<std::endl
+             <<"'restart' is how many steps restart after iterations.  "<<std::endl;
 }
-*/
 
 // convert command line choices to integer
 INT StringToInt(char *ch){
     INT flag=0;
-    if(strcmp(ch,"-mat")==0)
+    if(strcmp(ch,"-help")==0)
+        flag=0;
+    else if(strcmp(ch,"-mat")==0)
         flag=1;
     else if(strcmp(ch,"-rhs")==0)
         flag=2;
@@ -56,15 +48,18 @@ INT StringToInt(char *ch){
     else if(strcmp(ch,"-restart")==0)
         flag=8;
     else
-        flag=0;
+        flag=-1;
 
     return flag;
 }
 
 // read parameters from command lines
-void ReadParam(int argc,char *args[],InitParam &init){
+FaspRetCode ReadParam(int argc,char *args[],InitParam &init){
+    FaspRetCode retCode=FaspRetCode ::SUCCESS;
     for(int j=1;j<argc-1;j++){
         switch(StringToInt(args[j])){
+            case 0:
+                Help();
             case 1:
                 if(args[j+1][0]!='-' && args[j+1]!= nullptr)
                     init.data.SetMatName(args[j+1]);
@@ -108,7 +103,12 @@ void ReadParam(int argc,char *args[],InitParam &init){
                     init.param.SetRestart(atoi(args[j+1]));
                 break;
             default:
+                std::cout<<"### ERROR : Missing file operand      "<<std::endl;
+                std::cout<<"Try ./*.exe -help for more information"<<std::endl;
+                retCode=FaspRetCode ::ERROR_INPUT_PAR;
                 break;
         }
     }
+
+    return retCode;
 }
