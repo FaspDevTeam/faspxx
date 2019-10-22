@@ -72,21 +72,32 @@ INT StringToInt(char *ch) {
 // read parameters from command lines
 FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
+    if(argc==1){
+        std::cout << "### ERROR : Missing file operands      " << std::endl;
+        std::cout << "Try ./*.exe -help for more information" << std::endl;
+        retCode = FaspRetCode::ERROR_INPUT_PAR;
+    }
+
     for (int j = 1; j < argc - 1; j++) {
         switch (StringToInt(args[j])) {
             case 0:
                 Help();
+                retCode = FaspRetCode::ERROR_INPUT_PAR;
+                break;
             case 1:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetMatName(args[j + 1]);
+                j+=2;
                 break;
             case 2:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetRhsName(args[j + 1]);
+                j+=2;
                 break;
             case 3:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetLhsName(args[j + 1]);
+                j+=2;
                 break;
             case 4:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr) {
@@ -101,28 +112,33 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
                     if (args[j + 1] == "PRINT_MAX")
                         init.param.SetOutLvl(PRINT_MAX);
                 }
+                j+=2;
                 break;
             case 5:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetMaxIter(atoi(args[j + 1]));
+                j+=2;
                 break;
             case 6:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetRelTol(atof(args[j + 1]));
+                j+=2;
                 break;
             case 7:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetAbsTol(atof(args[j + 1]));
+                j+=2;
                 break;
             case 8:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetRestart(atoi(args[j + 1]));
+                j+=2;
                 break;
             default:
-                std::cout << "### ERROR : Missing file operand      " << std::endl;
+                std::cout << "### ERROR : Missing file operands      " << std::endl;
                 std::cout << "Try ./*.exe -help for more information" << std::endl;
                 retCode = FaspRetCode::ERROR_INPUT_PAR;
-                break;
+                return retCode;
         }
     }
 

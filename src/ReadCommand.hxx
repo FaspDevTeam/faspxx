@@ -13,7 +13,7 @@
 void Help();
 
 // convert command line choices to integer
-INT StringToInt(char *ch)
+INT StringToInt(char *ch);
 
 // read parameters from command lines
 FaspRetCode ReadParam(int argc, char *args[], InitParam &init);
