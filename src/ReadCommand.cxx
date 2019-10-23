@@ -78,7 +78,7 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
         retCode = FaspRetCode::ERROR_INPUT_PAR;
     }
 
-    for (int j = 1; j < argc - 1; j++) {
+    for (int j = 1; j <= argc - 1; j++) {
         switch (StringToInt(args[j])) {
             case 0:
                 Help();
