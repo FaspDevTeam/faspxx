@@ -53,7 +53,8 @@
  *  rowPtr = { 0, 3, 4, 6 },
  *  diagPtr = { 0, 3, 5 }.
  */
-class MAT :public LOP{
+class MAT : public LOP
+{
 
 private:
 
