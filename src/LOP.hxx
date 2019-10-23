@@ -21,7 +21,7 @@
  */
 class LOP {
 
-private:
+protected:
 
     INT nrow;   ///< number of rows
     INT ncol;   ///< number of columns
@@ -50,6 +50,13 @@ public:
     /// Default destructor
     ~LOP() = default;
 
+
+public:
+    //fff如果用户只给一个算子的作用方式,那么下面的大多数member function都不应该有,
+    // 比如GetRow(),GetCol(),因为我们没法得到这些值,或者得到它们的代价比较高.
+    // 而这些member function应该只存在于MAT之类的比较具体的LOP子类.
+    // 还有一种方式是在这个LOP里面也定义这些member function, 但是都把它们定义成virtual(不能是pure virtual),类似下面的Transpose()
+
     /// Get row space dimension
     INT GetRowSize() const;
 
@@ -72,11 +79,24 @@ public:
     virtual void CopyTo(LOP& lop) const;
 
     /// Transpose *this // Todo: Check???
-    virtual void Transpose();
+    virtual void Transpose()
+    { throw "Not supported!"; } //fff我们应该定义一个抛出异常或者debug信息的函数,比如fasp_error(),来替换这里的throw
 
-    /// Return VEC = *this * v
-    virtual void Apply(const VEC& v,VEC &vt) const;
+    /// Return VEC = *this * v fff名字是用Apply好还是Mult
+    virtual void Apply(const VEC& v,VEC &vt) const = 0; //fff:把它变成纯虚函数,整个LOP都是一个抽象类,不能定义对象
 };
+
+
+// Identity linear operator
+class IdentityLOP: public LOP
+{
+public:
+    explicit IdentityLOP(INT n): LOP(n, n) {}
+
+    virtual void Apply(const VEC& x,VEC& y) const { y = x; }
+};
+
+
 
 #endif /* end if for __LOP_HEADER__ */
 

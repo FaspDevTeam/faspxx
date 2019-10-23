@@ -84,19 +84,19 @@ void LOP::CopyTo(LOP& lop) const{
     lop.ncol=this->ncol;
 }
 
-/// Transpose *this // Todo: Check???
-void LOP::Transpose(){
-    INT tmp;
-    tmp=this->nrow;
-    this->nrow=this->ncol;
-    this->ncol=tmp;
-}
+///// Transpose *this // Todo: Check???
+//void LOP::Transpose(){
+//    INT tmp;
+//    tmp=this->nrow;
+//    this->nrow=this->ncol;
+//    this->ncol=tmp;
+//}
 
-/// Return VEC = *this * v
-void LOP::Apply(const VEC& v, VEC &vt) const{
-    //suppose *this is a identical mapping
-    vt = v;
-}
+///// Return VEC = *this * v
+//void LOP::Apply(const VEC& v, VEC &vt) const{
+//    //suppose *this is a identical mapping
+//    vt = v;
+//}
 
 /*---------------------------------*/
 /*--        End of File          --*/
