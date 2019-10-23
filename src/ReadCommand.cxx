@@ -87,17 +87,17 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
             case 1:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetMatName(args[j + 1]);
-                j+=2;
+                j+=1;
                 break;
             case 2:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetRhsName(args[j + 1]);
-                j+=2;
+                j+=1;
                 break;
             case 3:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetLhsName(args[j + 1]);
-                j+=2;
+                j+=1;
                 break;
             case 4:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr) {
@@ -112,27 +112,27 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
                     if (args[j + 1] == "PRINT_MAX")
                         init.param.SetOutLvl(PRINT_MAX);
                 }
-                j+=2;
+                j+=1;
                 break;
             case 5:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetMaxIter(atoi(args[j + 1]));
-                j+=2;
+                j+=1;
                 break;
             case 6:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetRelTol(atof(args[j + 1]));
-                j+=2;
+                j+=1;
                 break;
             case 7:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetAbsTol(atof(args[j + 1]));
-                j+=2;
+                j+=1;
                 break;
             case 8:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetRestart(atoi(args[j + 1]));
-                j+=2;
+                j+=1;
                 break;
             default:
                 std::cout << "### ERROR : Missing file operands      " << std::endl;
