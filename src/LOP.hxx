@@ -21,7 +21,7 @@
  */
 class LOP {
 
-private:
+protected:
 
     INT nrow;   ///< number of rows
     INT ncol;   ///< number of columns
@@ -70,9 +70,21 @@ public:
     /// Transpose *this // Todo: Check???
     virtual void Transpose();
 
-    /// Return VEC = *this * v
-    virtual void Apply(const VEC& v,VEC &vt) const;
+    /// Return VEC = *this * v fff名字是用Apply好还是Mult
+    virtual void Apply(const VEC& v,VEC &vt) const = 0; //fff:把它变成纯虚函数,整个LOP都是一个抽象类,不能定义对象
 };
+
+
+// Identity linear operator
+class IdentityLOP: public LOP
+{
+public:
+    explicit IdentityLOP(INT n): LOP(n, n) {}
+
+    virtual void Apply(const VEC& x,VEC& y) const { y = x; }
+};
+
+
 
 #endif /* end if for __LOP_HEADER__ */
 

@@ -87,10 +87,10 @@ void LOP::Transpose(){
     this->ncol=tmp;
 }
 
-/// Return VEC = *this * v
-void LOP::Apply(const VEC& v, VEC &vt) const{
-    //suppose *this is a identical mapping
-    vt = v;
+///// Return VEC = *this * v
+//void LOP::Apply(const VEC& v, VEC &vt) const{
+//    //suppose *this is a identical mapping
+//    vt = v;
 }
 
 /*---------------------------------*/
