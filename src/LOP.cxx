@@ -12,6 +12,11 @@
 #include "faspxx.hxx"
 #include "LOP.hxx"
 
+void LOP::SetSize(INT nrow,INT ncol){
+    this->nrow=nrow;
+    this->ncol=ncol;
+}
+
 /// Assign nrow, ncol to *this
 LOP::LOP(const INT &nrow, const INT &ncol) {
     this->nrow=nrow;

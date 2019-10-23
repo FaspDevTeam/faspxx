@@ -26,6 +26,10 @@ private:
     INT nrow;   ///< number of rows
     INT ncol;   ///< number of columns
 
+protected:
+    /// Set *this 's nrow and ncol
+    virtual void SetSize(INT nrow,INT ncol);
+
 public:
 
     /// Default constructor
@@ -53,7 +57,7 @@ public:
     INT GetColSize() const;
 
     /// Get (*this)[i][j]
-     virtual DBL GetValue(const INT& row, const INT& col) const;
+    virtual DBL GetValue(const INT& row, const INT& col) const;
 
     /// Get the whole row-th row in *this into VEC object
     virtual void GetRow(const INT& row, std::vector<DBL>& v) const;

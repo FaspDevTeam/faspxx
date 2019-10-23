@@ -15,6 +15,7 @@
 #include <vector>
 #include "faspxx.hxx"
 #include "VEC.hxx"
+#include "LOP.hxx"
 
 /*! \class MAT
  *  \brief Basic double matrix class in the CSRx data structure
@@ -52,12 +53,10 @@
  *  rowPtr = { 0, 3, 4, 6 },
  *  diagPtr = { 0, 3, 5 }.
  */
-class MAT {
+class MAT :public LOP{
 
 private:
 
-    INT nrow;   ///< number of rows
-    INT ncol;   ///< number of columns
     INT nnz;    ///< number of nonzeros
 
     /// nonzero entries of the matrix, compressed row by row
@@ -81,8 +80,7 @@ public:
     //-----------------------------------------------------------------------//
 
     /// Default constructor
-    MAT() : nrow(0), ncol(0), nnz(0),
-            values(0), colInd(0), rowPtr(0), diagPtr(0) {};
+    MAT() : nnz(0), values(0), colInd(0), rowPtr(0), diagPtr(0) {};
 
     /// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
     MAT(const INT &nrow, const INT &ncol, const INT &nnz,
@@ -127,12 +125,6 @@ public:
     void SetValues(const INT &nrow, const INT &ncol, const INT &nnz,
                    const std::vector<DBL> &values, const std::vector<INT> &colInd,
                    const std::vector<INT> &rowPtr);
-
-    /// Get row size
-    INT GetRowSize() const;
-
-    /// Get column size
-    INT GetColSize() const;
 
     /// Get number of nonzeros
     INT GetNNZ() const;
