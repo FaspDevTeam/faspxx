@@ -73,8 +73,8 @@ int main(int argc, char *args[]) {
     pcg.Setup(mat, b, x, param);
 
     // Setup preconditioner
-    LOP lop(row, col);
-    pcg.SetupPCD(lop);
+    IdentityLOP lop(row);
+    pcg.SetupPCD(&lop);
 
     // PCG solve
     timer.Start();
@@ -82,7 +82,7 @@ int main(int argc, char *args[]) {
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     // Clean up
-    pcg.CleanPCD();
+//    pcg.CleanPCD();
     pcg.Clean();
 
     return retCode;

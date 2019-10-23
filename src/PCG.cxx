@@ -30,14 +30,14 @@ FaspRetCode PCG::Setup(const MAT& A, const VEC& b, VEC& x, const IterParam& para
     }
 
     /// identical preconditioner operator by default
-    LOP lop(len,len);
-    this->lop=lop;
+    IdentityLOP lop(len);
+    this->lop = &lop;
 
     return FaspRetCode::SUCCESS;
 }
 
 // Assign lop to *this
-void PCG::SetupPCD(const LOP& lop) {
+void PCG::SetupPCD(const LOP* lop) { //fffSetupPCD是否改成SetPC好一些.另外,由于LOP是个抽象类,这里的参数不能是LOP类型,得权衡一下:估计最好不要将LOP声明成抽象类,因为一般设置PCD的时候传入的就应该是一个抽象的LOP,但是可以定义抽象类的指针
     this->lop = lop;
 }
 
@@ -63,7 +63,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
     A.YMAX(b, x, this->rk);
 
     // Apply preconditioner z_k = B(r_k)
-    this->lop.Apply(this->rk, this->zk);
+    this->lop->Apply(this->rk, this->zk);
 
     // Compute initial residual
     tmpAbs = this->rk.Norm2();
@@ -177,7 +177,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
         tmpAbs = resAbs;
 
         // Apply preconditioner z_k = B(r_k)
-        this->lop.Apply(this->rk, this->zk);
+        this->lop->Apply(this->rk, this->zk);
 
         // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
         tmpb = this->zk.Dot(this->rk);
@@ -199,11 +199,11 @@ FINISHED: // Finish iterative method
     return errorCode;
 }
 
-/// Clean up preconditioner
-void PCG::CleanPCD() {
-    LOP lop;
-    this->lop = lop;
-}
+///// Clean up preconditioner
+//void PCG::CleanPCD() {
+//    IdentityLOP lop;
+//    this->lop = lop; //fff CleanPCD()的意思是?
+//}
 
 /// Release temporary memory
 void PCG::Clean() {

@@ -36,7 +36,7 @@ LOP::LOP(const LOP& lop){
 }
 
 /// Overload = operator
-LOP& LOP::operator=(const LOP& lop){
+const LOP& LOP::operator=(const LOP& lop){
     this->nrow = lop.nrow;
     this->ncol = lop.ncol;
     return *this;
