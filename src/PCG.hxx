@@ -19,7 +19,7 @@
 
 class PCG {
 private:
-    LOP lop;
+    const LOP* lop; //fff这些私有变量是否定义成指针或者引用较好
     VEC rk;
     VEC pk;
     VEC zk;
@@ -35,14 +35,14 @@ private:
 
 public:
     /// constructor by default
-    PCG() : lop(0, 0), rk(0), pk(0),
-            zk(0), ax(0){};
+    PCG() : rk(0), pk(0),
+            zk(0), ax(0) { lop = new IdentityLOP(rk.GetSize()); }
 
     /// check and allocate memory
     FaspRetCode Setup(const MAT& A,const VEC& b,VEC& x,const IterParam& param);
 
     /// build preconditioner operator
-    void SetupPCD(const LOP& lop);
+    void SetupPCD(const LOP* lop);
 
     /// solve by PCG
     FaspRetCode Solve(const MAT& A, const VEC& b, VEC& x,IterParam& param);
@@ -54,7 +54,7 @@ public:
     void Clean();
 
     /// destructor
-    ~PCG() {};
+    ~PCG() { delete lop; }; //fff这种方式不太好:这里只真的默认的 new IdentityLOP()
 };
 
 //! Warning for solution close to zero

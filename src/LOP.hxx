@@ -41,7 +41,7 @@ public:
     LOP(const LOP& lop);
 
     /// Overload = operator
-    LOP& operator=(const LOP& lop);
+    const LOP& operator= (const LOP& lop);
 
     /// Default destructor
     ~LOP() = default;
