@@ -89,7 +89,7 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
             case 0:
                 Help();
                 retCode = FaspRetCode::ERROR_INPUT_PAR;
-                break;
+                return retCode;
             case 1:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetMatName(args[j + 1]);
