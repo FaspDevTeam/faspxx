@@ -53,11 +53,12 @@
  *  rowPtr = { 0, 3, 4, 6 },
  *  diagPtr = { 0, 3, 5 }.
  */
-class MAT : public LOP
-{
+class MAT : public LOP {
 
 private:
 
+//    INT nrow;   ///< number of rows
+//    INT ncol;   ///< number of columns
     INT nnz;    ///< number of nonzeros
 
     /// nonzero entries of the matrix, compressed row by row
@@ -81,7 +82,11 @@ public:
     //-----------------------------------------------------------------------//
 
     /// Default constructor
-    MAT() : nnz(0), values(0), colInd(0), rowPtr(0), diagPtr(0) {};
+    MAT() : nnz(0),
+            values(0), colInd(0), rowPtr(0), diagPtr(0) {
+        nrow=0;
+        ncol=0;
+    };
 
     /// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
     MAT(const INT &nrow, const INT &ncol, const INT &nnz,
@@ -116,6 +121,16 @@ public:
 
     /// Default destructor
     ~MAT() = default;
+
+#if 0
+    /// Get row space dimension
+    INT GetRowSize() const;
+
+    /// Get column space dimension
+    INT GetColSize() const;
+
+#endif
+
 
     /// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
     void SetValues(const INT &nrow, const INT &ncol, const INT &nnz,
@@ -156,7 +171,7 @@ public:
     void Add(const DBL a, const DBL b, const MAT &mat);
 
     /// Return VEC = *this * vec
-    void MultVec(const VEC &v, VEC &w) const;
+    void Apply(const VEC &v, VEC &w) const;
 
     /// r = y - A * x: y minus A times x
     void YMAX(const VEC &y, const VEC &x, VEC &r) const;
