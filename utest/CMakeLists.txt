@@ -66,7 +66,7 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 # TODO: simplify below variable TEST_SRC
 set(TEST_SRC ../src/MATUtil.cxx ../src/VECUtil.cxx ../src/RetCode.cxx
-        ../src/VEC.cxx ../src/MAT.cxx)
+        ../src/VEC.cxx ../src/MAT.cxx ../src/LOP.cxx)
 
 add_executable(testAll unitGTestAll.cxx "${TEST_SRC}")
 target_link_libraries(testAll "${GTEST_LIBRARIES}" pthread)
