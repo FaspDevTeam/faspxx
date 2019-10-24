@@ -390,7 +390,8 @@ int main() {
      * 1.88714  9.09658  8.1954  3.6895
      */
     VEC v(4, 0.314);
-    VEC w = m1.MultVec(v);
+    VEC w(4)
+    m1.Apply(v，w);
     cout << "MultVec : " << endl;
     for ( int j = 0; j < v.GetSize(); j++ ) cout << v[j] << "  ";
     cout << endl;
@@ -419,7 +420,8 @@ int main() {
      */
     MAT m12;
     m1.CopyTo(m12);
-    VEC v3 = m12.MultTransposeAdd(v, w);
+    VEC v3(4);
+    m12.MultTransposeAdd(v, w,v3);
     cout << "MultTransposeAdd : " << endl;
     for ( int j = 0; j < 4; j++ ) {
         cout << v3[j] << "  ";
@@ -455,7 +457,7 @@ int main() {
     MAT m14(m1);
     MAT m15;
     cout << "Add 2 : " << endl;
-    m15.operator=(Add(1.23, m1, 9.87, m13));
+    Add(1.23, m1, 9.87, m13,m15);
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
             cout << m15.GetValue(j, k) << "  ";
@@ -482,7 +484,7 @@ int main() {
      * 126.11  34.44  81.98  84.04
      */
     MAT m16;
-    m16 = Mult(m1, m13);
+    Mult(m1, m13,m16);
     cout << "Left : " << endl;
     for ( int j = 0; j < 4; j++ ) {
         for ( int k = 0; k < 4; k++ ) {
