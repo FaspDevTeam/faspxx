@@ -127,7 +127,7 @@ TEST(MAT_GetValue, GetValue)
 TEST(MAT_MultVec, MultVec)
 {
     VEC r(vec2.GetSize());
-    mat1.MultVec(vec2, r);
+    mat1.Apply(vec2, r);
     for ( INT i=0; i<r.GetSize(); i++ ) {
         EXPECT_DOUBLE_EQ(r[i], vec3[i]);
     }
