@@ -17,6 +17,21 @@
 #include "ReadCommand.hxx"
 #include "ReadData.hxx"
 
+class Jacobi:public LOP{
+private:
+    VEC diag;
+public:
+    Jacobi(const std::vector<double> &diag){
+        this->diag.SetValues(diag);
+        this->nrow=diag.size();
+        this->ncol=diag.size();
+    }
+    void Apply(const VEC &x,VEC &y) const{
+        y=x;
+        y.PointwiseDivide(diag);
+    }
+};
+
 int main(int argc, char *args[]) {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     GetWallTime timer;
@@ -60,6 +75,7 @@ int main(int argc, char *args[]) {
               << ", ncol = " << col
               << ", nnz = " << nnz << std::endl;
 
+/*
     // Setup parameters
     IterParam param;
     param.SetOutLvl(PRINT_MIN);
@@ -67,18 +83,24 @@ int main(int argc, char *args[]) {
     param.SetAbsTol(1e-8);
     param.SetMaxIter(200);
     param.Print();
-
+*/
     // Setup PCG class
     PCG pcg;
-    pcg.Setup(mat, b, x, param);
+    pcg.Setup(mat, b, x, init.param);
 
     // Setup preconditioner
+#if 0
     IdentityLOP lop(row);
-    pcg.SetupPCD(lop);
-
+    pcg.SetupPCD(&lop);
+#else
+    std::vector<double> vt;
+    mat.GetDiag(vt);
+    Jacobi jac(vt);
+    pcg.SetupPCD(&jac);
+#endif
     // PCG solve
     timer.Start();
-    retCode = pcg.Solve(mat, b, x, param);
+    retCode = pcg.Solve(mat, b, x, init.param);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     // Clean up
