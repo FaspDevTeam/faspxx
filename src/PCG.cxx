@@ -31,14 +31,16 @@ FaspRetCode PCG::Setup(const MAT& A, const VEC& b, VEC& x, const IterParam& para
 
     /// identical preconditioner operator by default
     IdentityLOP lop(len);
-    this->lop=lop;
+    IdentityLOP *tmp=&lop;
+
+    this->lop=(LOP*)tmp;
 
     return FaspRetCode::SUCCESS;
 }
 
 // Assign lop to *this
-void PCG::SetupPCD(IdentityLOP &lop) {
-    this->lop = lop;
+void PCG::SetupPCD(void *lop) {
+    this->lop = (LOP*)lop;
 }
 
 /// Solve by PCG
@@ -63,7 +65,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
     A.YMAX(b, x, this->rk);
 
     // Apply preconditioner z_k = B(r_k)
-    this->lop.Apply(this->rk, this->zk);
+    this->lop->Apply(this->rk, this->zk);
 
     // Compute initial residual
     tmpAbs = this->rk.Norm2();
@@ -177,7 +179,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
         tmpAbs = resAbs;
 
         // Apply preconditioner z_k = B(r_k)
-        this->lop.Apply(this->rk, this->zk);
+        this->lop->Apply(this->rk, this->zk);
 
         // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
         tmpb = this->zk.Dot(this->rk);
@@ -201,8 +203,8 @@ FINISHED: // Finish iterative method
 
 /// Clean up preconditioner
 void PCG::CleanPCD() {
-    IdentityLOP lop(0);
-    this->lop = lop;
+    //delete this->lop;
+    this->lop = nullptr;
 }
 
 /// Release temporary memory
