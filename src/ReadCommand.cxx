@@ -15,19 +15,19 @@
 
 // print help information
 static void Help() {
-    std::cout << "Command line input options include: "  << std::endl
-              << "  -mat:      matrix data file (not optional)" << std::endl
-              << "  -rhs:      right-hand side data file "      << std::endl
-              << "  -lhs:      initial solution data file "     << std::endl
-              << "  -maxIter:  maximum number of iterations  "  << std::endl
-              << "  -relTol:   relative tolerance for iterations " << std::endl
-              << "  -absTol:   absolute tolerance for iterations " << std::endl
-              << "  -restart:  restart number " << std::endl
-              << "  -outLvl:   output level (0--10)" << std::endl
-              << "Sample usages of command-line options: " << std::endl
-              << "  ./executable -mat MatrixDataFile " << std::endl
-              << "  ./executable -mat MatrixDataFile -rhs RHSDataFile " << std::endl
-              << "  ./executable -mat MatrixDataFile -maxIter 100 -relTol 10e-6" << std::endl;
+    std::cout << "Command line options include: \n"
+              << "  -mat:     matrix data file (not optional)\n"
+              << "  -rhs:     right-hand side data file\n"
+              << "  -lhs:     initial solution data file\n"
+              << "  -maxIter: maximum number of iterations\n"
+              << "  -relTol:  relative tolerance for iterations\n"
+              << "  -absTol:  absolute tolerance for iterations\n"
+              << "  -restart: restart number\n"
+              << "  -outLvl:  output level (0--10)\n\n"
+              << "Sample usages of command-line options: \n"
+              << "  ./executable -mat MatrixDataFile \n"
+              << "  ./executable -mat MatrixDataFile -rhs RHSDataFile \n"
+              << "  ./executable -mat MatrixDataFile -maxIter 50 -relTol 10e-8\n";
 }
 
 // convert command line choices to integer

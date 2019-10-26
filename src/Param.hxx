@@ -81,7 +81,7 @@ public:
     // Print parameters
     // TODO:给Print()加一个默认参数就可以将输出重定向到任何流,比如文件; 用\n替换std::endl可以避免重复刷新缓冲流
     void Print(std::ostream &out = std::cout) const {
-            out << "\nParameters for iterative method:   \n"
+            out << "\nParameters for iterative method: \n"
                 << "-----------------------------------\n"
                 << "  Output level:         " << outLvl  << '\n'
                 << "  Max num of iteration: " << maxIter << '\n'
@@ -94,8 +94,8 @@ public:
     ~IterParam() {};
 };
 
-// matrix name, rhs name and lhs name
-class MatRhslhs {
+// Matrix name, rhs name and lhs name
+class MatRhsLhs {
 private:
     char *matName;
     char *rhsName;
@@ -103,10 +103,10 @@ private:
 
 public:
     // default construtor
-    MatRhslhs() : matName(nullptr), rhsName(nullptr), lhsName(nullptr) {};
+    MatRhsLhs() : matName(nullptr), rhsName(nullptr), lhsName(nullptr) {};
 
     // constructor
-    MatRhslhs(const char *_matName, const char *_rhsName, const char *_lhsName) {
+    MatRhsLhs(const char *_matName, const char *_rhsName, const char *_lhsName) {
         matName = new char[strlen(_matName)];
         memcpy(matName, _matName, strlen(_matName));
         rhsName = new char[strlen(_rhsName)];
@@ -116,7 +116,7 @@ public:
     }
 
     // destructor
-    ~MatRhslhs() {
+    ~MatRhsLhs() {
         if (matName != nullptr)
             delete[] matName;
         if (rhsName != nullptr)
@@ -147,29 +147,30 @@ public:
     char *GetRhsName() const { return rhsName; }  // Get rhs 's name
     char *GetLhsName() const { return lhsName; }  // Get lhs 's name
 
-    void Print() const {
-        std::cout << std::endl
-                  << "Parameters for specified data  :   " << std::endl
-                  << "-----------------------------------" << std::endl;
-        if(matName!= nullptr)
-            std::cout<<"Matrix Data : "<<matName<<std::endl;
+    void Print(std::ostream &out = std::cout) const {
+        std::cout << "\nCommand line input: \n"
+                  << "-----------------------------------\n";
+        if ( matName != nullptr )
+            std::cout << "Matrix data file: " << matName << std::endl;
         else
-            std::cout<<"No matrix data is specified!"<<std::endl;
-        if(rhsName!= nullptr)
-            std::cout<<"Rhs Data : "<<rhsName<<std::endl;
+            std::cout << "### ERROR: No matrix data specified!\n";
+
+        if ( rhsName != nullptr )
+            std::cout << "RHS Data: " << rhsName << std::endl;
         else
-            std::cout<<"No rhs data is specified!"<<std::endl;
-        if(lhsName!= nullptr)
-            std::cout<<"Lhs Data : "<<lhsName<<std::endl;
+            std::cout << "### WARNING: No RHS data specified!\n";
+
+        if ( lhsName != nullptr )
+            std::cout << "Initial guess: " << lhsName << std::endl;
         else
-            std::cout<<"No lhs data is specified!"<<std::endl;
-        std::cout<< "-----------------------------------" << std::endl;
+            std::cout << "### WARNING: No initial guess specified!\n";
+        std::cout << "-----------------------------------\n";
     };
 };
 
-// initial paramters
+// Initialize parameters
 struct InitParam {
-    MatRhslhs data;
+    MatRhsLhs data;
     IterParam param;
 };
 
