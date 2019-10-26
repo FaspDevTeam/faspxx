@@ -75,7 +75,7 @@ int main(int argc, char *args[]) {
     pcg.Setup(mat, b, x, init.param);
 
     // Setup preconditioner
-#if 0
+#if 1
     IdentityLOP lop(row);
     pcg.SetupPCD(&lop);
 #else

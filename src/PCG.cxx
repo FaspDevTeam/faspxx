@@ -30,14 +30,14 @@ FaspRetCode PCG::Setup(const MAT &A, const VEC &b, VEC &x, const IterParam &para
     }
 
     /// identical preconditioner operator by default
-    LOP lop(len, len);
-    this->lop = lop;
+    if (lop == NULL)
+        lop = new IdentityLOP(len); //fff这样不太好,容易忘记delete这个lop. 可以强制传入 pc
 
     return FaspRetCode::SUCCESS;
 }
 
 // Assign lop to *this
-void PCG::SetupPCD(LOP lop) {
+void PCG::SetupPCD(const LOP* lop) {
     this->lop = lop;
 }
 
@@ -63,7 +63,7 @@ FaspRetCode PCG::Solve(const MAT &A, const VEC &b, VEC &x, IterParam &param) {
     A.YMAX(b, x, this->rk);
 
     // Apply preconditioner z_k = B(r_k)
-    this->lop.Apply(this->rk, this->zk);
+    this->lop->Apply(this->rk, this->zk);
 
     // Compute initial residual
     tmpAbs = this->rk.Norm2();
@@ -177,7 +177,7 @@ FaspRetCode PCG::Solve(const MAT &A, const VEC &b, VEC &x, IterParam &param) {
         tmpAbs = resAbs;
 
         // Apply preconditioner z_k = B(r_k)
-        this->lop.Apply(this->rk, this->zk);
+        this->lop->Apply(this->rk, this->zk);
 
         // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
         tmpb = this->zk.Dot(this->rk);
@@ -199,9 +199,9 @@ FaspRetCode PCG::Solve(const MAT &A, const VEC &b, VEC &x, IterParam &param) {
     return errorCode;
 }
 
-/// Clean up preconditioner
+/// Clean up preconditioner. fff应该不需要这个:pc由外面换进来,应该由外面清理它的内存
 void PCG::CleanPCD() {
-    LOP lop;
+    LOP* lop;
     this->lop = lop;
 }
 

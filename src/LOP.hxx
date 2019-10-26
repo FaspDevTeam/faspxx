@@ -54,9 +54,9 @@ public:
 
     /// Return VEC = *this * v
     //virtual void
-    //Apply(const VEC &x, VEC &y) const = 0; //fff:把它变成纯虚函数,整个LOP都是一个抽象类,不能定义对象
+//    virtual void Apply(const VEC &x, VEC &y) const = 0; //fff:把它变成纯虚函数,整个LOP都是一个抽象类,不能定义对象
     /// temporary modification
-    virtual void Apply(const VEC &x,VEC &y){ y=x; }
+    virtual void Apply(const VEC &x,VEC &y) const {throw "Not supported!"; };
 };
 
 
