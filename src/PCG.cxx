@@ -14,37 +14,35 @@
 #include "PCG.hxx"
 
 // Assign param to this->param
-FaspRetCode PCG::Setup(const MAT& A, const VEC& b, VEC& x, const IterParam& param) {
+FaspRetCode PCG::Setup(const MAT &A, const VEC &b, VEC &x, const IterParam &param) {
     if (x.GetSize() != A.GetColSize() || b.GetSize() != A.GetRowSize() ||
         A.GetRowSize() != A.GetColSize())
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
-    INT len=b.GetSize();
-    try{
-        zk.SetValues(len,0.0);
-        pk.SetValues(len,0.0);
-        rk.SetValues(len,0.0);
-        ax.SetValues(len,0.0);
-    }catch(std::bad_alloc& ex){
-        return FaspRetCode ::ERROR_ALLOC_MEM;
+    INT len = b.GetSize();
+    try {
+        zk.SetValues(len, 0.0);
+        pk.SetValues(len, 0.0);
+        rk.SetValues(len, 0.0);
+        ax.SetValues(len, 0.0);
+    } catch (std::bad_alloc &ex) {
+        return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
     /// identical preconditioner operator by default
-    IdentityLOP lop(len);
-    IdentityLOP *tmp=&lop;
-
-    this->lop=(LOP*)tmp;
+    LOP lop(len, len);
+    this->lop = lop;
 
     return FaspRetCode::SUCCESS;
 }
 
 // Assign lop to *this
-void PCG::SetupPCD(void *lop) {
-    this->lop = (LOP*)lop;
+void PCG::SetupPCD(LOP lop) {
+    this->lop = lop;
 }
 
 /// Solve by PCG
-FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
+FaspRetCode PCG::Solve(const MAT &A, const VEC &b, VEC &x, IterParam &param) {
 
     const unsigned MaxStag = 20;
     const INT len = b.GetSize();
@@ -65,7 +63,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
     A.YMAX(b, x, this->rk);
 
     // Apply preconditioner z_k = B(r_k)
-    this->lop->Apply(this->rk, this->zk);
+    this->lop.Apply(this->rk, this->zk);
 
     // Compute initial residual
     tmpAbs = this->rk.Norm2();
@@ -81,7 +79,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
     tmpa = this->zk.Dot(this->rk);
 
     // Main PCG loop
-    while ( param.numIter < param.maxIter ) {
+    while (param.numIter < param.maxIter) {
 
         ++param.numIter; // iteration count
 
@@ -111,19 +109,19 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
         // Output iteration information if needed
         PrintInfo(param.outLvl, param.numIter, resRel, tmpAbs, factor);
 
-        if ( factor > 0.9 ) { // Only check when converge slowly
+        if (factor > 0.9) { // Only check when converge slowly
             // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
             DBL norminf = x.NormInf();
-            if ( norminf < solinftol ) {
-                if ( param.outLvl > PRINT_MIN ) ZeroSol();
+            if (norminf < solinftol) {
+                if (param.outLvl > PRINT_MIN) ZeroSol();
                 errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                 break;
             }
 
             // Check II: if relative difference stagnated, try to restart
             DBL reldiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
-            if ( (stagStep <= MaxStag) && (reldiff < maxdiff) ) {
-                if ( param.outLvl > PRINT_SOME ) {
+            if ((stagStep <= MaxStag) && (reldiff < maxdiff)) {
+                if (param.outLvl > PRINT_SOME) {
                     DiffRes(reldiff, resRel);
                     Restart();
                 }
@@ -131,11 +129,11 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
                 A.YMAX(b, x, this->rk);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
-                if ( param.outLvl > PRINT_SOME ) RealRes(resRel);
+                if (param.outLvl > PRINT_SOME) RealRes(resRel);
 
-                if ( resRel < param.relTol ) break;
+                if (resRel < param.relTol) break;
                 else {
-                    if ( stagStep >= MaxStag ) {
+                    if (stagStep >= MaxStag) {
                         if (param.outLvl > PRINT_MIN) Stagged();
                         errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                         break;
@@ -147,7 +145,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
         } // End of check I and II
 
         // Check III: prevent false convergence
-        if ( resRel < param.relTol ) {
+        if (resRel < param.relTol) {
             // Compute true residual r = b - Ax and update residual
             A.YMAX(b, x, this->rk);
 
@@ -157,14 +155,14 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
             resRel = resAbs / denAbs;
 
             // Check convergence
-            if ( resRel < param.relTol ) break;
+            if (resRel < param.relTol) break;
 
-            if ( param.outLvl >= PRINT_MORE ) {
+            if (param.outLvl >= PRINT_MORE) {
                 Compres(updated_resRel);
                 RealRes(resRel);
             }
 
-            if ( moreStep >= param.restart ) {
+            if (moreStep >= param.restart) {
                 if (param.outLvl > PRINT_MIN) ZeroTol();
                 errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
@@ -179,7 +177,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
         tmpAbs = resAbs;
 
         // Apply preconditioner z_k = B(r_k)
-        this->lop->Apply(this->rk, this->zk);
+        this->lop.Apply(this->rk, this->zk);
 
         // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
         tmpb = this->zk.Dot(this->rk);
@@ -191,7 +189,7 @@ FaspRetCode PCG::Solve(const MAT& A, const VEC& b, VEC& x, IterParam& param) {
 
     } // End of main PCG loop
 
-FINISHED: // Finish iterative method
+    FINISHED: // Finish iterative method
     PrintFinal(param.outLvl, param.numIter, param.maxIter, resRel);
 
     // Compute final residual norms
@@ -203,46 +201,48 @@ FINISHED: // Finish iterative method
 
 /// Clean up preconditioner
 void PCG::CleanPCD() {
-    //delete this->lop;
-    this->lop = nullptr;
+    LOP lop;
+    this->lop = lop;
 }
 
 /// Release temporary memory
 void PCG::Clean() {
     VEC zero;
-    this->pk=zero;
-    this->rk=zero;
-    this->zk=zero;
-    this->ax=zero;
+    this->pk = zero;
+    this->rk = zero;
+    this->zk = zero;
+    this->ax = zero;
 }
 
 /// Print out iteration information for iterative solvers
-void PCG::PrintInfo(const PRTLVL& outLvl, const INT& iter, const DBL& resRel,
-                    const DBL& resAbs, const DBL& factor) {
-    if ( outLvl > PRINT_SOME || (outLvl > PRINT_NONE && iter%20 == 0) ) {
+void PCG::PrintInfo(const PRTLVL &outLvl, const INT &iter, const DBL &resRel,
+                    const DBL &resAbs, const DBL &factor) {
+    if (outLvl > PRINT_SOME || (outLvl > PRINT_NONE && iter % 20 == 0)) {
         if (iter == 0) {
-            std::cout<< "--------------------------------------------------\n";
-            std::cout<< "It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
-            std::cout<< "--------------------------------------------------\n";
+            std::cout << "--------------------------------------------------\n";
+            std::cout << "It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
+            std::cout << "--------------------------------------------------\n";
         } // end if iter
         std::cout.precision(4);
         std::setiosflags(std::ios::scientific);
         std::cout << std::setw(6) << iter << " | "
                   << std::scientific << std::setw(11) << resRel << " | "
-                  << std::setw(11) <<  resAbs << " | "
+                  << std::setw(11) << resAbs << " | "
                   << std::fixed << std::setprecision(5) << factor
                   << std::endl;
     }
 }
 
 /// Print out final status of an iterative method
-void PCG::PrintFinal(const PRTLVL& outLvl, const INT& iter, const INT& maxit, const DBL& resRel) {
-    if ( outLvl > PRINT_NONE ) {
-        if ( iter > maxit )
+void PCG::PrintFinal(const PRTLVL &outLvl, const INT &iter, const INT &maxit,
+                     const DBL &resRel) {
+    if (outLvl > PRINT_NONE) {
+        if (iter > maxit)
             std::cout << "### WARNING: MaxIt = " << maxit
                       << " reached with relative residual " << resRel << std::endl;
-        else if ( iter >= 0 ) {
-            std::cout << "Number of iterations = " << iter << " with relative residual "
+        else if (iter >= 0) {
+            std::cout << "Number of iterations = " << iter
+                      << " with relative residual "
                       << resRel << std::endl;
         }
     }
