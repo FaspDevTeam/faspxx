@@ -68,6 +68,7 @@ public:
     IdentityLOP &operator=(const IdentityLOP &lop) {
         this->nrow = lop.nrow;
         this->ncol = lop.ncol;
+        return *this;
     }
 
     virtual void Apply(const VEC &x, VEC &y) const { y = x; }

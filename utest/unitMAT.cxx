@@ -56,17 +56,21 @@ const VEC vec3(4, p1); // mat1 * vec2 == vec3
 
 TEST(MAT_SIZE, SIZE)
 {
-    EXPECT_EQ(mat0.GetRowSize(), 0);
-    EXPECT_EQ(mat0.GetColSize(), 0);
-    EXPECT_EQ(mat0.GetNNZ(), 0);
+    INT zero, four, ten;
+    zero = 0;
+    four = 4;
+    ten = 10;
+    EXPECT_EQ(mat0.GetRowSize(), zero);
+    EXPECT_EQ(mat0.GetColSize(), zero);
+    EXPECT_EQ(mat0.GetNNZ(), zero);
 
-    EXPECT_EQ(mat1.GetRowSize(), 4);
-    EXPECT_EQ(mat1.GetColSize(), 4);
-    EXPECT_EQ(mat1.GetNNZ(), 10);
+    EXPECT_EQ(mat1.GetRowSize(), four);
+    EXPECT_EQ(mat1.GetColSize(), four);
+    EXPECT_EQ(mat1.GetNNZ(), ten);
 
-    EXPECT_EQ(mat2.GetRowSize(), 4);
-    EXPECT_EQ(mat2.GetColSize(), 4);
-    EXPECT_EQ(mat2.GetNNZ(), 10);
+    EXPECT_EQ(mat2.GetRowSize(), four);
+    EXPECT_EQ(mat2.GetColSize(), four);
+    EXPECT_EQ(mat2.GetNNZ(), ten);
 }
 
 TEST(MAT_constructor, constructor)

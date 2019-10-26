@@ -42,10 +42,13 @@ VEC v7(100, q);
 
 TEST(VEC_size, Size)
 {
-    EXPECT_EQ(v0.GetSize(), 0);
-    EXPECT_EQ(v1.GetSize(), 4);
-    EXPECT_EQ(v5.GetSize(), 4);
-    EXPECT_EQ(v6.GetSize(), 4);
+    INT zero, four;
+    zero = 0;
+    four = 4;
+    EXPECT_EQ(v0.GetSize(), zero);
+    EXPECT_EQ(v1.GetSize(), four);
+    EXPECT_EQ(v5.GetSize(), four);
+    EXPECT_EQ(v6.GetSize(), four);
 }
 
 TEST(VEC_copy_constructor, CopyConstructor)
@@ -110,7 +113,7 @@ TEST(VEC_Scale, Scale)
 {
     DBL scale = 2.365;
     INT *indexPtr=new INT[v5.GetSize()];
-    for(int j=0;j<v5.GetSize();j++)
+    for(size_t j=0;j<v5.GetSize();j++)
 	    indexPtr[j]=j;
     DBL *array = new DBL[v5.GetSize()];
     v5.GetValues(v5.GetSize(),indexPtr, array);

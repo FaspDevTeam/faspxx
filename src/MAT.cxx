@@ -617,9 +617,9 @@ void WriteCSR(char *filename, MAT mat) {
     out.open(filename);
 
     out << mat.nrow << " " << mat.ncol << " " << mat.nnz << "\n";
-    for (int j = 0; j < mat.nrow + 1; ++j) out << mat.rowPtr[j] << "\n";
-    for (int j = 0; j < mat.nnz; ++j) out << mat.colInd[j] << "\n";
-    for (int j = 0; j < mat.nnz; ++j) out << mat.values[j] << "\n";
+    for (INT j = 0; j < mat.nrow + 1; ++j) out << mat.rowPtr[j] << "\n";
+    for (INT j = 0; j < mat.nnz; ++j) out << mat.colInd[j] << "\n";
+    for (INT j = 0; j < mat.nnz; ++j) out << mat.values[j] << "\n";
 
     out.close();
 }
