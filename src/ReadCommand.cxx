@@ -1,50 +1,38 @@
-/**
- * a source file about reading command parameters
+/*! \file ReadCommand.cxx
+ *  \brief Read command line input parameters
+ *  \author Kailei Zhang, Chensong Zhang
+ *  \date Oct/26/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
 #include <cstring>
-#include "Param.hxx"
 #include "RetCode.hxx"
+#include "Param.hxx"
 
 // print help information
-void Help() {
-    std::cout << "The format of the incoming data file and parameters    "
-              << std::endl
-              << "is as follow and the matrix data file is necessary!    "
-              << std::endl
-              << "ex1 : ./*.exe -mat matrix_data_file (*.csr or *.mtx)   "
-              << std::endl
-              << "ex2 : ./*.exe -mat matrix_data_file -rhs rhs_data_file "
-              << std::endl
-              << "ex3 : ./*.exe -mat matrix_data_file -lhs lhs_data_file "
-              << std::endl
-              << "ex4 : ./*.exe -mat matrix_data_file -rhs rhs_data_file "
-              << std::endl
-              << "              -lhs lhs_data_file                       "
-              << std::endl
-              << "ex5 : ./*.exe -mat matrix_data_file -outLvl PRINT_NONE "
-              << std::endl
-              << "              -maxIter 100 -relTol 10e-6 -absTol 10e-10"
-              << std::endl
-              << "              -restart 20                              "
-              << std::endl;
-    std::cout << "Parameters after '-outLvl' may be 'PRINT_NONE',        "
-              << std::endl
-              << "'PRINT_MIN','PRINT_SOME','PRINT_MORE' or 'PRINT_MAX'.  "
-              << std::endl
-              << "'maxIter' is the maximum number of iterations.         "
-              << std::endl
-              << "'relTol' is the relative tolerance for iterations.     "
-              << std::endl
-              << "'absTol' is the absolute tolerance for iterations.     "
-              << std::endl
-              << "'restart' is how many steps restart after iterations.  "
-              << std::endl;
+static void Help() {
+    std::cout << "Command line input options include: "  << std::endl
+              << "  -mat:      matrix data file (not optional)" << std::endl
+              << "  -rhs:      right-hand side data file "      << std::endl
+              << "  -lhs:      initial solution data file "     << std::endl
+              << "  -maxIter:  maximum number of iterations  "  << std::endl
+              << "  -relTol:   relative tolerance for iterations " << std::endl
+              << "  -absTol:   absolute tolerance for iterations " << std::endl
+              << "  -restart:  restart number " << std::endl
+              << "  -outLvl:   output level (0--10)" << std::endl
+              << "Sample usages of command-line options: " << std::endl
+              << "  ./executable -mat MatrixDataFile " << std::endl
+              << "  ./executable -mat MatrixDataFile -rhs RHSDataFile " << std::endl
+              << "  ./executable -mat MatrixDataFile -maxIter 100 -relTol 10e-6" << std::endl;
 }
 
 // convert command line choices to integer
-INT StringToInt(char *ch) {
-    INT flag = 0;
+static int StringToInt(char *ch) {
+    int flag = -1;
     if (strcmp(ch, "-help") == 0)
         flag = 0;
     else if (strcmp(ch, "-mat") == 0)
@@ -63,28 +51,28 @@ INT StringToInt(char *ch) {
         flag = 7;
     else if (strcmp(ch, "-restart") == 0)
         flag = 8;
-    else
-        flag = -1;
 
     return flag;
 }
 
 // read parameters from command lines
 FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
+
     FaspRetCode retCode = FaspRetCode::SUCCESS;
-    INT flag = 0;
-    INT mark = 0;
-    if (argc == 1) {
-        std::cout << "### ERROR : Missing file operands      " << std::endl;
-        std::cout << "Try ./*.exe -help for more information" << std::endl;
+
+    // At least provide matrix data file to start
+    if ( argc == 1 ) {
+        std::cout << "### ERROR: Missing file operands" << std::endl;
+        std::cout << "Try './executable -help' for more information" << std::endl;
         retCode = FaspRetCode::ERROR_INPUT_PAR;
         return retCode;
     }
 
-    for (int j = 1; j <= argc - 1; j++) {
-        flag = StringToInt(args[j]);
-        if (flag == 1)
-            mark = 1;
+    bool NoInput = true; // marker for minimum input
+
+    for ( int j = 1; j <= argc - 1; j++ ) {
+        int flag = StringToInt(args[j]);
+        if ( flag == 1 ) NoInput = false;
         switch (flag) {
             case 0:
                 Help();
@@ -93,17 +81,17 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
             case 1:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetMatName(args[j + 1]);
-                j += 1;
+                ++j;
                 break;
             case 2:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetRhsName(args[j + 1]);
-                j += 1;
+                ++j;
                 break;
             case 3:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.data.SetLhsName(args[j + 1]);
-                j += 1;
+                ++j;
                 break;
             case 4:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr) {
@@ -118,39 +106,44 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
                     if (args[j + 1] == "PRINT_MAX")
                         init.param.SetOutLvl(PRINT_MAX);
                 }
-                j += 1;
+                ++j;
                 break;
             case 5:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetMaxIter(atoi(args[j + 1]));
-                j += 1;
+                ++j;
                 break;
             case 6:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetRelTol(atof(args[j + 1]));
-                j += 1;
+                ++j;
                 break;
             case 7:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetAbsTol(atof(args[j + 1]));
-                j += 1;
+                ++j;
                 break;
             case 8:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr)
                     init.param.SetRestart(atoi(args[j + 1]));
-                j += 1;
+                ++j;
                 break;
             default:
-                std::cout << "### ERROR : bad file operands      " << std::endl;
-                std::cout << "Try ./*.exe -help for more information" << std::endl;
+                std::cout << "### ERROR: bad file operands!          " << std::endl;
+                std::cout << "Try ./*.exe -help for more information." << std::endl;
                 retCode = FaspRetCode::ERROR_INPUT_PAR;
                 return retCode;
         }
     }
-    if (mark != 1) {
-        std::cout << "### ERROR : Missing matrix data file " << std::endl;
+
+    if ( NoInput ) {
+        std::cout << "### ERROR: Missing matrix data file " << std::endl;
         retCode = FaspRetCode::ERROR_INPUT_PAR;
     }
 
     return retCode;
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

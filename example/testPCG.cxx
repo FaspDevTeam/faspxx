@@ -17,17 +17,18 @@
 #include "ReadCommand.hxx"
 #include "ReadData.hxx"
 
-class Jacobi:public LOP{
+// Define a simple scaling preconditioner (Jacobi)
+class Scaling:public LOP{
 private:
     VEC diag;
 public:
-    Jacobi(const std::vector<double> &diag){
+    Scaling(const std::vector<double>& diag) {
         this->diag.SetValues(diag);
-        this->nrow=diag.size();
-        this->ncol=diag.size();
+        this->nrow = diag.size();
+        this->ncol = diag.size();
     }
-    void Apply(const VEC &x,VEC &y) const{
-        y=x;
+    void Apply(const VEC& x, VEC& y) const {
+        y = x;
         y.PointwiseDivide(diag);
     }
 };
@@ -35,55 +36,40 @@ public:
 int main(int argc, char *args[]) {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     GetWallTime timer;
-    MAT mat;
-    VEC b, x;
-    INT row, col, nnz;
+    timer.Start();
 
+    // Get command line options
     InitParam init;
-
-    if ((retCode = ReadParam(argc, args, init))<0)
-        return retCode;
-
+    if ( (retCode = ReadParam(argc, args, init)) < 0 ) return retCode;
     init.data.Print();
     init.param.Print();
 
-    if ((retCode = ReadMat(init.data.GetMatName(), mat)) < 0) {
-        std::cout << "### ERROR : Error in input matrix file" << std::endl;
-        return retCode;
-    }
+    // Read matrix data file
+    MAT mat;
+    if ( (retCode = ReadMat(init.data.GetMatName(), mat)) < 0 ) return retCode;
+    INT row = mat.GetRowSize();
+    INT col = mat.GetColSize();
+    INT nnz = mat.GetNNZ();
 
-    row = mat.GetRowSize();
-    col = mat.GetColSize();
-    nnz = mat.GetNNZ();
-
-    timer.Start();
-    /// read matrix, rhs and inital solution
+    // Read or generate right-hand side
+    VEC b, x;
     if (init.data.GetRhsName() != nullptr)
         ReadVEC(init.data.GetRhsName(), b);
     else
         b.SetValues(row, 0.0);
 
+    // Read or generate initial guess
     if (init.data.GetLhsName() != nullptr)
         ReadVEC(init.data.GetLhsName(), x);
     else
         x.SetValues(col, 1.0);
 
-    std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
-
     // Print problem size information
     std::cout << "  nrow = " << row
               << ", ncol = " << col
               << ", nnz = " << nnz << std::endl;
+    std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
-/*
-    // Setup parameters
-    IterParam param;
-    param.SetOutLvl(PRINT_MIN);
-    param.SetRelTol(1e-5);
-    param.SetAbsTol(1e-8);
-    param.SetMaxIter(200);
-    param.Print();
-*/
     // Setup PCG class
     PCG pcg;
     pcg.Setup(mat, b, x, init.param);
@@ -95,15 +81,16 @@ int main(int argc, char *args[]) {
 #else
     std::vector<double> vt;
     mat.GetDiag(vt);
-    Jacobi jac(vt);
+    Scaling jac(vt);
     pcg.SetupPCD(jac);
 #endif
+
     // PCG solve
     timer.Start();
     retCode = pcg.Solve(mat, b, x, init.param);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
-    // Clean up
+    // Clean up preconditioner and solver data
     pcg.CleanPCD();
     pcg.Clean();
 
