@@ -14,9 +14,9 @@
 #include "PCG.hxx"
 
 // Assign param to this->param
-FaspRetCode PCG::Setup(const MAT &A, const VEC &b, VEC &x, const IterParam &param) {
-    if (x.GetSize() != A.GetColSize() || b.GetSize() != A.GetRowSize() ||
-        A.GetRowSize() != A.GetColSize())
+FaspRetCode PCG::Setup(const LOP *A, const VEC &b, VEC &x, const IterParam &param) {
+    if (x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize() ||
+        A->GetRowSize() != A->GetColSize())
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     INT len = b.GetSize();
@@ -30,7 +30,7 @@ FaspRetCode PCG::Setup(const MAT &A, const VEC &b, VEC &x, const IterParam &para
     }
 
     /// identical preconditioner operator by default
-    if (lop == NULL)
+    if (lop == nullptr)
         lop = new IdentityLOP(len); //fff这样不太好,容易忘记delete这个lop. 可以强制传入 pc
 
     return FaspRetCode::SUCCESS;
@@ -42,7 +42,7 @@ void PCG::SetupPCD(const LOP* lop) {
 }
 
 /// Solve by PCG
-FaspRetCode PCG::Solve(const MAT &A, const VEC &b, VEC &x, IterParam &param) {
+FaspRetCode PCG::Solve(const LOP *A, const VEC &b, VEC &x, IterParam &param) {
 
     const unsigned MaxStag = 20;
     const INT len = b.GetSize();
@@ -60,7 +60,9 @@ FaspRetCode PCG::Solve(const MAT &A, const VEC &b, VEC &x, IterParam &param) {
     if (param.outLvl > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n";
 
     // Compute r_k = b - A * x
-    A.YMAX(b, x, this->rk);
+    // A.YMAX(b, x, this->rk);
+    A->Apply(x,this->rk);
+    this->rk.XPAY(-1.0,b);
 
     // Apply preconditioner z_k = B(r_k)
     this->lop->Apply(this->rk, this->zk);
@@ -84,7 +86,7 @@ FaspRetCode PCG::Solve(const MAT &A, const VEC &b, VEC &x, IterParam &param) {
         ++param.numIter; // iteration count
 
         // ax = A * p_k
-        A.Apply(this->pk, this->ax);
+        A->Apply(this->pk, this->ax);
 
         // alpha_k = (z_{k-1},r_{k-1})/(A*p_{k-1},p_{k-1})
         tmpb = this->ax.Dot(this->pk);
@@ -126,7 +128,9 @@ FaspRetCode PCG::Solve(const MAT &A, const VEC &b, VEC &x, IterParam &param) {
                     Restart();
                 }
 
-                A.YMAX(b, x, this->rk);
+                //A.YMAX(b, x, this->rk);
+                A->Apply(x,this->rk);
+                this->rk.XPAY(-1.0,b);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
                 if (param.outLvl > PRINT_SOME) RealRes(resRel);
@@ -147,7 +151,9 @@ FaspRetCode PCG::Solve(const MAT &A, const VEC &b, VEC &x, IterParam &param) {
         // Check III: prevent false convergence
         if (resRel < param.relTol) {
             // Compute true residual r = b - Ax and update residual
-            A.YMAX(b, x, this->rk);
+            //A->YMAX(b, x, this->rk);
+            A->Apply(x,this->rk);
+            this->rk.XPAY(-1.0,b);
 
             // Compute residual norms
             DBL updated_resRel = resRel;

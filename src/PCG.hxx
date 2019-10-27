@@ -35,17 +35,17 @@ private:
 
 public:
     /// constructor by default
-    PCG() : lop(NULL), rk(0), pk(0),
+    PCG() : lop(nullptr), rk(0), pk(0),
             zk(0), ax(0){};
 
     /// check and allocate memory
-    FaspRetCode Setup(const MAT &A,const VEC& b,VEC& x,const IterParam& param);
+    FaspRetCode Setup(const LOP *A,const VEC& b,VEC& x,const IterParam& param);
 
     /// build preconditioner operator
     void SetupPCD(const LOP* lop);
 
     /// solve by PCG
-    FaspRetCode Solve(const MAT &A, const VEC& b, VEC& x,IterParam& param);
+    FaspRetCode Solve(const LOP *A, const VEC& b, VEC& x,IterParam& param);
 
     /// clean preconditioner operator
     void CleanPCD();
