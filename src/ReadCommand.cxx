@@ -41,11 +41,8 @@ static int StringToInt(char *ch) {
         flag = 2;
     else if (strcmp(ch, "-lhs") == 0)
         flag = 3;
-    else if (strcmp(ch, "-outLvl") == 0){
+    else if (strcmp(ch, "-outLvl") == 0)
         flag = 4;
-        std::cout<<"-outLvl : "<<std::endl;
-    }
-
     else if (strcmp(ch, "-maxIter") == 0)
         flag = 5;
     else if (strcmp(ch, "-relTol") == 0)
@@ -74,8 +71,6 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
     bool NoInput = true; // marker for minimum input
 
     for ( int j = 1; j <= argc - 1; j++ ) {
-        std::cout<<"args[j] : "<<args[j]<<std::endl;
-        std::cout<<"args[j+1] : "<<args[j+1]<<std::endl;
         int flag = StringToInt(args[j]);
         if ( flag == 1 ) NoInput = false;
         switch (flag) {
@@ -100,7 +95,6 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
                 break;
             case 4:
                 if (args[j + 1][0] != '-' && args[j + 1] != nullptr) {
-                    std::cout<<"PRINT : "<<args[j+1]<<std::endl;
                     if (strcmp(args[j + 1],"PRINT_NONE")==0)
                         init.param.SetOutLvl(PRINT_NONE);
                     if (strcmp(args[j + 1],"PRINT_MIN")==0)
