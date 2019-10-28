@@ -148,7 +148,7 @@ public:
     char *GetLhsName() const { return lhsName; }  // Get lhs 's name
 
     void Print(std::ostream &out = std::cout) const {
-        std::cout << "\nCommand line input: \n"
+        std::cout << "\nTest data used: \n"
                   << "-----------------------------------\n";
         if ( matName != nullptr )
             std::cout << "Matrix data file: " << matName << std::endl;
