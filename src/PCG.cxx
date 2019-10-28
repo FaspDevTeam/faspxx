@@ -60,9 +60,9 @@ FaspRetCode PCG::Solve(const LOP *A, const VEC& b, VEC& x, IterParam& param) {
     if (param.outLvl > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n";
 
     // Compute r_k = b - A * x
-    A->YMAX(b, x, this->rk);
-    //A->Apply(x,this->rk);
-    //this->rk.XPAY(-1.0,b);
+    //A->YMAX(b, x, this->rk);
+    A->Apply(x,this->rk);
+    this->rk.XPAY(-1.0,b);
 
     // Apply preconditioner z_k = B(r_k)
     this->lop->Apply(this->rk, this->zk);
@@ -128,9 +128,9 @@ FaspRetCode PCG::Solve(const LOP *A, const VEC& b, VEC& x, IterParam& param) {
                     Restart();
                 }
 
-                A->YMAX(b, x, this->rk);
-                //A->Apply(x,this->rk);
-                //this->rk.XPAY(-1.0,b);
+                //A->YMAX(b, x, this->rk);
+                A->Apply(x,this->rk);
+                this->rk.XPAY(-1.0,b);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
                 if (param.outLvl > PRINT_SOME) RealRes(resRel);
@@ -151,9 +151,9 @@ FaspRetCode PCG::Solve(const LOP *A, const VEC& b, VEC& x, IterParam& param) {
         // Check III: prevent false convergence
         if (resRel < param.relTol) {
             // Compute true residual r = b - Ax and update residual
-            A->YMAX(b, x, this->rk);
-            //A->Apply(x,this->rk);
-            //this->rk.XPAY(-1.0,b);
+            //A->YMAX(b, x, this->rk);
+            A->Apply(x,this->rk);
+            this->rk.XPAY(-1.0,b);
 
             // Compute residual norms
             DBL updated_resRel = resRel;
