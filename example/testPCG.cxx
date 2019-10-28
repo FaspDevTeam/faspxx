@@ -18,6 +18,7 @@
 #include "ReadData.hxx"
 
 // Define a simple scaling preconditioner (Jacobi)
+// Todo: Move preconditioners to separate files
 class Scaling:public LOP{
 private:
     VEC diag;
@@ -41,8 +42,9 @@ int main(int argc, char *args[]) {
     // Get command line options
     InitParam init;
     if ( (retCode = ReadParam(argc, args, init)) < 0 ) return retCode;
+
+    // Print data files used by PCG
     init.data.Print();
-    init.param.Print();
 
     // Read matrix data file
     MAT mat;
@@ -70,6 +72,9 @@ int main(int argc, char *args[]) {
               << ", nnz = " << nnz << std::endl;
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
+    // Print parameters used by PCG
+    init.param.Print();
+
     // Setup PCG class
     PCG pcg;
     pcg.Setup(&mat, b, x, init.param);
@@ -78,7 +83,7 @@ int main(int argc, char *args[]) {
 #if 1
     IdentityLOP lop(row);
     pcg.SetupPCD(&lop);
-#else
+#else // Todo: Add choices for preconditioner
     std::vector<double> vt;
     mat.GetDiag(vt);
     Scaling jac(vt);
