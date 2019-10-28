@@ -13,25 +13,25 @@
 #include "VEC.hxx"
 
 /// Assign the size and the same value to a VEC object
-VEC::VEC(const INT &sizeNeed, const DBL &valueNeed) {
+VEC::VEC(const INT& sizeNeed, const DBL& valueNeed) {
     this->values.assign(sizeNeed, valueNeed);
     this->size = sizeNeed;
 }
 
 /// Assign a vector object to a VEC object
-VEC::VEC(const std::vector<DBL> &vt) {
+VEC::VEC(const std::vector<DBL>& vt) {
     this->values = vt;
     this->size = vt.size();
 }
 
 /// Assign a const VEC object to a VEC object
-VEC::VEC(const VEC &v) {
+VEC::VEC(const VEC& v) {
     this->values = v.values;
     this->size = v.size;
 }
 
 /// Assign a DBL array to a VEC object
-VEC::VEC(const INT &size, const DBL *ptr) {
+VEC::VEC(const INT& size, const DBL *ptr) {
     if (ptr == nullptr || size == 0) {
         this->size = 0;
         return;
@@ -41,24 +41,24 @@ VEC::VEC(const INT &size, const DBL *ptr) {
 }
 
 /// Overload = operator
-VEC &VEC::operator=(const VEC &v) {
+VEC &VEC::operator=(const VEC& v) {
     this->values = v.values;
     this->size = v.size;
     return *this;
 }
 
 /// Overload [] operator, entries can be modified
-DBL &VEC::operator[](const INT &position) {
+DBL &VEC::operator[](const INT& position) {
     return this->values[position];
 }
 
 /// Overload [] operator, entries cannot be modified
-const DBL &VEC::operator[](const INT &position) const {
+const DBL &VEC::operator[](const INT& position) const {
     return this->values[position];
 }
 
 /// Overload += operator
-VEC &VEC::operator+=(const VEC &v) {
+VEC &VEC::operator+=(const VEC& v) {
     // unroll long for loops
     INT i;
     const INT len = this->size - this->size % 4;
@@ -73,7 +73,7 @@ VEC &VEC::operator+=(const VEC &v) {
 }
 
 /// Overload -= operator
-VEC &VEC::operator-=(const VEC &v) {
+VEC &VEC::operator-=(const VEC& v) {
     // unroll long for loops
     INT i;
     const INT len = this->size - this->size % 4;
@@ -88,7 +88,7 @@ VEC &VEC::operator-=(const VEC &v) {
 }
 
 /// Set the size of VEC object and reserve memory
-void VEC::Reserve(const INT &sizeNeed) {
+void VEC::Reserve(const INT& sizeNeed) {
     this->values.reserve(sizeNeed);
 }
 
@@ -98,19 +98,19 @@ void VEC::ShrinkToSize() {
 }
 
 /// Assign the size and the same value to a VEC object
-void VEC::SetValues(const INT &sizeNeed, const DBL &valueNeed) {
+void VEC::SetValues(const INT& sizeNeed, const DBL& valueNeed) {
     this->size = sizeNeed;
     this->values.assign(sizeNeed, valueNeed);
 }
 
 /// Assign a vector object to a VEC object
-void VEC::SetValues(const std::vector<DBL> &vt) {
+void VEC::SetValues(const std::vector<DBL>& vt) {
     this->values = vt;
     this->size = vt.size();
 }
 
 /// Assign a DBL array to a VEC object, user should allocate memory for array
-void VEC::SetValues(const INT &sizeNeed, const DBL *array) {
+void VEC::SetValues(const INT& sizeNeed, const DBL *array) {
     if (array == nullptr || sizeNeed == 0) {
         this->values.resize(0);
         this->size = 0;
@@ -121,13 +121,13 @@ void VEC::SetValues(const INT &sizeNeed, const DBL *array) {
 }
 
 /// Get the value of (*this)[position]
-DBL VEC::GetValue(const INT &position) const {
+DBL VEC::GetValue(const INT& position) const {
     return this->values.at(position);
 }
 
 /// Get array = the set of { this->values[indexPtr[j]] mod this->size } and size is
 /// the size of indexPtr and parameter array
-void VEC::GetValues(const INT &size, const INT *indexPtr, DBL *array) const {
+void VEC::GetValues(const INT& size, const INT *indexPtr, DBL *array) const {
     if (size == 0 || this->size == 0) {
         array = nullptr;
         return;
@@ -146,7 +146,7 @@ INT VEC::GetCapacity() const {
 }
 
 /// Scale (*this)[i] = a * (*this)[i] by a scalar
-void VEC::Scale(const DBL &a) {
+void VEC::Scale(const DBL& a) {
     // unroll long for loops
     INT i;
     const INT len = this->size - this->size % 4;
@@ -160,7 +160,7 @@ void VEC::Scale(const DBL &a) {
 }
 
 /// Scale by a vector (*this)[i] *= v[i]
-void VEC::PointwiseMult(const VEC &v) {
+void VEC::PointwiseMult(const VEC& v) {
     // unroll long for loops
     INT i;
     const INT len = this->size - this->size % 4;
@@ -188,7 +188,7 @@ void VEC::Reciprocal() {
 }
 
 /// Inverse scale by a nonzero vector (*this)[i] = (*this)[i] / v[i]
-void VEC::PointwiseDivide(const VEC &v) {
+void VEC::PointwiseDivide(const VEC& v) {
     // unroll long for loops
     INT i;
     const INT len = this->size - this->size % 4;
@@ -202,13 +202,13 @@ void VEC::PointwiseDivide(const VEC &v) {
 }
 
 /// Copy *this to v
-void VEC::CopyTo(VEC &v) const {
+void VEC::CopyTo(VEC& v) const {
     v.values = this->values;
     v.size = this->size;
 }
 
 /// Shift (*this)[i] += a by a scalar
-void VEC::Shift(const DBL &a) {
+void VEC::Shift(const DBL& a) {
     // unroll long for loops
     INT i;
     const INT len = this->size - this->size % 4;
@@ -236,7 +236,7 @@ void VEC::Abs() {
 }
 
 /// y = y + a * x
-void VEC::AXPY(const DBL &a, const VEC &x) {
+void VEC::AXPY(const DBL& a, const VEC& x) {
     // unroll long for loops
     INT i;
     const INT len = this->size - this->size % 4;
@@ -250,7 +250,7 @@ void VEC::AXPY(const DBL &a, const VEC &x) {
 }
 
 /// y = x + a * y
-void VEC::XPAY(const DBL &a, const VEC &x) {
+void VEC::XPAY(const DBL& a, const VEC& x) {
     // unroll long for loops
     INT i;
     const INT len = this->size - this->size % 4;
@@ -265,7 +265,7 @@ void VEC::XPAY(const DBL &a, const VEC &x) {
 }
 
 /// *this = a * *this + b * v
-void VEC::AXPBY(const DBL &a, const DBL &b, const VEC &v) {
+void VEC::AXPBY(const DBL& a, const DBL& b, const VEC& v) {
 
     // unroll long for loops
     INT i;
@@ -315,7 +315,7 @@ void VEC::AXPBY(const DBL &a, const DBL &b, const VEC &v) {
 }
 
 /// *this = a * vec1 + b * vec2
-void VEC::WAXPBY(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2) {
+void VEC::WAXPBY(const DBL& a, const VEC& v1, const DBL& b, const VEC& v2) {
 
     this->size = v1.size;
 
@@ -457,7 +457,7 @@ DBL VEC::NormInf() const {
 }
 
 /// Dot product of with v
-DBL VEC::Dot(const VEC &v) const {
+DBL VEC::Dot(const VEC& v) const {
     // unroll long for loops
     INT i;
     DBL dot1 = 0.0, dot2 = 0.0, dot3 = 0.0, dot4 = 0.0;

@@ -14,7 +14,7 @@
 #include "PCG.hxx"
 
 // Assign param to this->param
-FaspRetCode PCG::Setup(const LOP *A, const VEC &b, VEC &x, const IterParam &param) {
+FaspRetCode PCG::Setup(const LOP *A, const VEC& b, VEC& x, const IterParam& param) {
     if (x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize() ||
         A->GetRowSize() != A->GetColSize())
         return FaspRetCode::ERROR_NONMATCH_SIZE;
@@ -42,7 +42,7 @@ void PCG::SetupPCD(const LOP* lop) {
 }
 
 /// Solve by PCG
-FaspRetCode PCG::Solve(const LOP *A, const VEC &b, VEC &x, IterParam &param) {
+FaspRetCode PCG::Solve(const LOP *A, const VEC& b, VEC& x, IterParam& param) {
 
     const unsigned MaxStag = 20;
     const INT len = b.GetSize();
@@ -60,9 +60,9 @@ FaspRetCode PCG::Solve(const LOP *A, const VEC &b, VEC &x, IterParam &param) {
     if (param.outLvl > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n";
 
     // Compute r_k = b - A * x
-    // A.YMAX(b, x, this->rk);
-    A->Apply(x,this->rk);
-    this->rk.XPAY(-1.0,b);
+    A->YMAX(b, x, this->rk);
+    //A->Apply(x,this->rk);
+    //this->rk.XPAY(-1.0,b);
 
     // Apply preconditioner z_k = B(r_k)
     this->lop->Apply(this->rk, this->zk);
@@ -128,9 +128,9 @@ FaspRetCode PCG::Solve(const LOP *A, const VEC &b, VEC &x, IterParam &param) {
                     Restart();
                 }
 
-                //A.YMAX(b, x, this->rk);
-                A->Apply(x,this->rk);
-                this->rk.XPAY(-1.0,b);
+                A->YMAX(b, x, this->rk);
+                //A->Apply(x,this->rk);
+                //this->rk.XPAY(-1.0,b);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
                 if (param.outLvl > PRINT_SOME) RealRes(resRel);
@@ -151,9 +151,9 @@ FaspRetCode PCG::Solve(const LOP *A, const VEC &b, VEC &x, IterParam &param) {
         // Check III: prevent false convergence
         if (resRel < param.relTol) {
             // Compute true residual r = b - Ax and update residual
-            //A->YMAX(b, x, this->rk);
-            A->Apply(x,this->rk);
-            this->rk.XPAY(-1.0,b);
+            A->YMAX(b, x, this->rk);
+            //A->Apply(x,this->rk);
+            //this->rk.XPAY(-1.0,b);
 
             // Compute residual norms
             DBL updated_resRel = resRel;
@@ -221,8 +221,8 @@ void PCG::Clean() {
 }
 
 /// Print out iteration information for iterative solvers
-void PCG::PrintInfo(const PRTLVL &outLvl, const INT &iter, const DBL &resRel,
-                    const DBL &resAbs, const DBL &factor) {
+void PCG::PrintInfo(const PRTLVL& outLvl, const INT& iter, const DBL& resRel,
+                    const DBL& resAbs, const DBL& factor) {
     if (outLvl > PRINT_SOME || (outLvl > PRINT_NONE && iter % 20 == 0)) {
         if (iter == 0) {
             std::cout << "--------------------------------------------------\n";
@@ -240,8 +240,8 @@ void PCG::PrintInfo(const PRTLVL &outLvl, const INT &iter, const DBL &resRel,
 }
 
 /// Print out final status of an iterative method
-void PCG::PrintFinal(const PRTLVL &outLvl, const INT &iter, const INT &maxit,
-                     const DBL &resRel) {
+void PCG::PrintFinal(const PRTLVL& outLvl, const INT& iter, const INT& maxit,
+                     const DBL& resRel) {
     if (outLvl > PRINT_NONE) {
         if (iter > maxit)
             std::cout << "### WARNING: MaxIt = " << maxit

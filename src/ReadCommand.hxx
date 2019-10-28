@@ -16,6 +16,6 @@ void Help();
 INT StringToInt(char *ch);
 
 // read parameters from command lines
-FaspRetCode ReadParam(int argc, char *args[], InitParam &init);
+FaspRetCode ReadParam(int argc, char *args[], InitParam& init);
 
 #endif //SRC_READCOMMAND_HXX

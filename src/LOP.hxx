@@ -32,16 +32,16 @@ public:
     LOP() : nrow(0), ncol(0) {};
 
     /// Assign nrow, ncol to *this
-    LOP(const INT &nrow, const INT &ncol);
+    LOP(const INT& nrow, const INT& ncol);
 
     /// Assign nrow, ncol=nrow to *this
-    LOP(const INT &nrow);
+    LOP(const INT& nrow);
 
     /// Assign LOP object to *this
-    LOP(const LOP &lop);
+    LOP(const LOP& lop);
 
     /// Overload = operator
-    const LOP &operator=(const LOP &lop);
+    const LOP &operator=(const LOP& lop);
 
     /// Default destructor
     ~LOP() = default;
@@ -56,7 +56,7 @@ public:
     //virtual void
 //    virtual void Apply(const VEC &x, VEC &y) const = 0; //fff:把它变成纯虚函数,整个LOP都是一个抽象类,不能定义对象
     /// temporary modification
-    virtual void Apply(const VEC &x,VEC &y) const {throw "Not supported!"; };
+    virtual void Apply(const VEC& x,VEC& y) const {throw "Not supported!"; };
 };
 
 
@@ -65,13 +65,13 @@ class IdentityLOP : public LOP {
 public:
     explicit IdentityLOP(INT n) : LOP(n, n) {}
 
-    IdentityLOP &operator=(const IdentityLOP &lop) {
+    IdentityLOP &operator=(const IdentityLOP& lop) {
         this->nrow = lop.nrow;
         this->ncol = lop.ncol;
         return *this;
     }
 
-    virtual void Apply(const VEC &x, VEC &y) const { y = x; }
+    virtual void Apply(const VEC& x, VEC& y) const { y = x; }
 };
 
 

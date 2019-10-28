@@ -83,7 +83,7 @@ public:
     unsigned int GetLine() const { return line; } ///< return thrown line number
 
     // Stardard output
-    void LogExcep(std::ostream &stream = std::cout) const;
+    void LogExcep(std::ostream& stream = std::cout) const;
 };
 
 /// \brief Allocation exception capturing class
@@ -108,7 +108,7 @@ public:
     unsigned int GetLine() const { return line; } ///< return thrown line number
 
     // Standard output
-    void LogExcep(std::ostream &stream = std::cout) const;
+    void LogExcep(std::ostream& stream = std::cout) const;
 };
 
 #endif /* end if for __RETCODE_HEADER__ */

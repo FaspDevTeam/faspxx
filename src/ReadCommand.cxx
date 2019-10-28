@@ -56,7 +56,7 @@ static int StringToInt(char *ch) {
 }
 
 // read parameters from command lines
-FaspRetCode ReadParam(int argc, char *args[], InitParam &init) {
+FaspRetCode ReadParam(int argc, char *args[], InitParam& init) {
 
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 

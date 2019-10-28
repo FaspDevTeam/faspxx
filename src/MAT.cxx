@@ -14,9 +14,9 @@
 #include "MATUtil.hxx"
 
 /// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
-MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
-         const std::vector<DBL> &values, const std::vector<INT> &colInd,
-         const std::vector<INT> &rowPtr, const std::vector<INT> &diagPtr) {
+MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+         const std::vector<DBL>& values, const std::vector<INT>& colInd,
+         const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -33,9 +33,9 @@ MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
 }
 
 /// Assign nrow, ncol, nnz, values, colInd, rowPtr to *this, generate diagPtr
-MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
-         const std::vector<INT> &colInd, const std::vector<INT> &rowPtr,
-         const std::vector<INT> &diagPtr) {
+MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
+         const std::vector<INT>& diagPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -52,9 +52,9 @@ MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
 }
 
 /// Assign nrow, ncol, nnz, colInd, rowPtr, diagPtr to *this (sparse structure)
-MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
-         const std::vector<DBL> &values, const std::vector<INT> &colInd,
-         const std::vector<INT> &rowPtr) {
+MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+         const std::vector<DBL>& values, const std::vector<INT>& colInd,
+         const std::vector<INT>& rowPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -71,8 +71,8 @@ MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
 }
 
 /// Assign nrow, ncol, nnz, colInd, rowPtr to *this (sparse structure), generate diagPtr
-MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
-         const std::vector<INT> &colInd, const std::vector<INT> &rowPtr) {
+MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -89,7 +89,7 @@ MAT::MAT(const INT &nrow, const INT &ncol, const INT &nnz,
 }
 
 /// Assign diagonal values to *this from a VEC
-MAT::MAT(const VEC &v) {
+MAT::MAT(const VEC& v) {
     INT size = v.GetSize();
 
     if (size == 0) {
@@ -133,7 +133,7 @@ MAT::MAT(const VEC &v) {
 }
 
 /// Assign diagonal values to *this from a vector
-MAT::MAT(const std::vector<DBL> &vt) {
+MAT::MAT(const std::vector<DBL>& vt) {
     const INT size = vt.size();
 
     if (size == 0) {
@@ -144,7 +144,7 @@ MAT::MAT(const std::vector<DBL> &vt) {
     INT *p;
     try {
         p = new INT[size + 1];
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         this->nrow = 0;
         this->ncol = 0;
         this->nnz = 0;
@@ -177,7 +177,7 @@ MAT::MAT(const std::vector<DBL> &vt) {
 }
 
 /// Assign MAT object to *this
-MAT::MAT(const MAT &mat) {
+MAT::MAT(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
     this->nnz = mat.nnz;
@@ -189,7 +189,7 @@ MAT::MAT(const MAT &mat) {
 }
 
 /// Overload = operator
-MAT &MAT::operator=(const MAT &mat) {
+MAT &MAT::operator=(const MAT& mat) {
     this->nrow = mat.nrow;
     this->ncol = mat.ncol;
     this->nnz = mat.nnz;
@@ -203,10 +203,10 @@ MAT &MAT::operator=(const MAT &mat) {
 }
 
 /// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
-void MAT::SetValues(const INT &nrow, const INT &ncol, const INT &nnz,
-                    const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                    const std::vector<INT> &rowPtr,
-                    const std::vector<INT> &diagPtr) {
+void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                    const std::vector<INT>& rowPtr,
+                    const std::vector<INT>& diagPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -223,9 +223,9 @@ void MAT::SetValues(const INT &nrow, const INT &ncol, const INT &nnz,
 }
 
 /// Assign nrow, ncol, nnz, values, rowPtr, colInd to *this.
-void MAT::SetValues(const INT &nrow, const INT &ncol, const INT &nnz,
-                    const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                    const std::vector<INT> &rowPtr) {
+void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                    const std::vector<INT>& rowPtr) {
     if (nrow == 0 || ncol == 0 || nnz == 0) {
         this->Empty();
         return;
@@ -261,7 +261,7 @@ INT MAT::GetNNZ() const {
 }
 
 /// Get the whole diagonal entries in *this into VEC object
-void MAT::GetDiag(std::vector<DBL> &v) const {
+void MAT::GetDiag(std::vector<DBL>& v) const {
     INT len = this->nrow > this->ncol ? this->ncol : this->nrow;
     v.resize(len);
 
@@ -274,7 +274,7 @@ void MAT::GetDiag(std::vector<DBL> &v) const {
 }
 
 /// Copy *this to mat
-void MAT::CopyTo(MAT &mat) const {
+void MAT::CopyTo(MAT& mat) const {
     mat = *this;
 }
 
@@ -365,7 +365,7 @@ void MAT::Transpose() {
 }
 
 /// mat = a * mat1 + b * mat2
-void Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2, MAT &mat) {
+void Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2, MAT& mat) {
 
     INT i, j, k, l;
     INT count = 0, added, countrow;
@@ -427,14 +427,14 @@ void Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2, MAT &mat) {
 }
 
 /// *this = a * *this + b * mat
-void MAT::Add(const DBL a, const DBL b, const MAT &mat) {
+void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
     MAT tmp;
     ::Add(a, *this, b, mat, tmp);
     this->operator=(tmp);
 }
 
 /// w = *this * v.
-void MAT::Apply(const VEC &v, VEC &w) const {
+void MAT::Apply(const VEC& v, VEC& w) const {
 
     INT begin, i, k;
 
@@ -521,7 +521,7 @@ void MAT::Apply(const VEC &v, VEC &w) const {
 }
 
 /// r = y - A * x: y minus A times x
-void MAT::YMAX(const VEC &y, const VEC &x, VEC &r) const {
+void MAT::YMAX(const VEC& y, const VEC& x, VEC& r) const {
     INT begin, i, k;
     if (this->values.size() > 0) {
         for (i = 0; i < this->nrow; ++i) {
@@ -542,7 +542,7 @@ void MAT::YMAX(const VEC &y, const VEC &x, VEC &r) const {
 }
 
 /// v = A'*v1 + v2
-void MAT::MultTransposeAdd(const VEC &v1, const VEC &v2, VEC &v) const {
+void MAT::MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const {
 
     const INT n = this->nrow, m = this->ncol, nnz = this->nnz;
     INT i, j, k, p;
@@ -676,7 +676,7 @@ void MAT::Empty() {
 
 /// Get (*this)[i][j]
 //! Note: If *this is a sparse structure, it will return 1.0 for nonzero entries
-DBL MAT::GetValue(const INT &row, const INT &ncol) const {
+DBL MAT::GetValue(const INT& row, const INT& ncol) const {
     if (this->colInd[this->rowPtr[row]] <= ncol ||
         this->colInd[this->rowPtr[row + 1] - 1] >= ncol) {
         for (INT j = this->rowPtr[row]; j < this->rowPtr[row + 1]; ++j) {
@@ -692,7 +692,7 @@ DBL MAT::GetValue(const INT &row, const INT &ncol) const {
 }
 
 /// Get the whole row-th row in *this into VEC object
-void MAT::GetRow(const INT &row, std::vector<DBL> &v) const {
+void MAT::GetRow(const INT& row, std::vector<DBL>& v) const {
     const INT begin = this->rowPtr[row], end = this->rowPtr[row + 1];
     v.resize(end - begin);
 
@@ -704,7 +704,7 @@ void MAT::GetRow(const INT &row, std::vector<DBL> &v) const {
 }
 
 /// Get the whole col-th column in *this into VEC object
-void MAT::GetCol(const INT &col, std::vector<DBL> &v) const {
+void MAT::GetCol(const INT& col, std::vector<DBL>& v) const {
     std::vector<DBL> tmp;
     INT count = 0;
     tmp.resize(this->nrow);
@@ -731,7 +731,7 @@ void MAT::GetCol(const INT &col, std::vector<DBL> &v) const {
 
 
 /// mat = matl * matr
-void Mult(const MAT &matl, const MAT &matr, MAT &mat) {
+void Mult(const MAT& matl, const MAT& matr, MAT& mat) {
     INT l, count;
     INT *tmp = new INT[matr.ncol];
 
@@ -808,7 +808,7 @@ void Mult(const MAT &matl, const MAT &matr, MAT &mat) {
 }
 
 /// *this = *this * mat
-void MAT::MultLeft(const MAT &mat) {
+void MAT::MultLeft(const MAT& mat) {
     MAT tmp;
     tmp = *this;
 
@@ -816,7 +816,7 @@ void MAT::MultLeft(const MAT &mat) {
 }
 
 /// *this = mat * *this
-void MAT::MultRight(const MAT &mat) {
+void MAT::MultRight(const MAT& mat) {
     MAT tmp;
     tmp = *this;
 

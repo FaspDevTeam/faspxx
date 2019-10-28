@@ -52,7 +52,7 @@ public:
                   norm2(1.0),
                   normInf(1.0) {};
 
-    IterParam(IterParam &inParam) {
+    IterParam(IterParam& inParam) {
         this->outLvl = inParam.outLvl;
         this->maxIter = inParam.maxIter;
         this->relTol = inParam.relTol;
@@ -61,15 +61,15 @@ public:
     }
 
     // Set input parameters
-    __inline__ void SetOutLvl(const PRTLVL &outLvl) { this->outLvl = outLvl; };
+    __inline__ void SetOutLvl(const PRTLVL& outLvl) { this->outLvl = outLvl; };
 
-    __inline__ void SetMaxIter(const INT &maxIter) { this->maxIter = maxIter; };
+    __inline__ void SetMaxIter(const INT& maxIter) { this->maxIter = maxIter; };
 
-    __inline__ void SetRelTol(const DBL &relTol) { this->relTol = relTol; };
+    __inline__ void SetRelTol(const DBL& relTol) { this->relTol = relTol; };
 
-    __inline__ void SetAbsTol(const DBL &absTol) { this->absTol = absTol; };
+    __inline__ void SetAbsTol(const DBL& absTol) { this->absTol = absTol; };
 
-    __inline__ void SetRestart(const INT &restart) { this->restart = restart; };
+    __inline__ void SetRestart(const INT& restart) { this->restart = restart; };
 
     // Get output parameters
     __inline__ INT GetNumIter() const { return numIter; };
