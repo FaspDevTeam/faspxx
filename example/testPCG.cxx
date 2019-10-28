@@ -19,7 +19,7 @@
 
 // Define a simple scaling preconditioner (Jacobi)
 // Todo: Move preconditioners to separate files
-class Scaling:public LOP{
+class Scaling:public LOP {
 private:
     VEC diag;
 public:
