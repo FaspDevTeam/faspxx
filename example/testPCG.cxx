@@ -87,7 +87,7 @@ int main(int argc, char *args[]) {
     std::vector<double> vt;
     mat.GetDiag(vt);
     Scaling jac(vt);
-    pcg.SetupPCD(jac);
+    pcg.SetupPCD(&jac);
 #endif
 
     // PCG solve
