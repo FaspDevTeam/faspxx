@@ -170,7 +170,6 @@ FaspRetCode ReadMTX(const char *filename, INT& row, INT& col, INT& nnz,
         } else {
             position++;
             if (buffer[position] == ' ') continue; // multiple consecutive spaces
-            if (buffer[position] == '\0') break;
             decimal[count] = '\0'; // mark the end of 'decimal' string
             count = 0;
             tmp++;
@@ -186,10 +185,11 @@ FaspRetCode ReadMTX(const char *filename, INT& row, INT& col, INT& nnz,
                     values[locate-1] = std::strtod(decimal, &next);
                     break;
             }
+            if (buffer[position] == '\0') break;
         }
     }
 
-    if ( locate != nnz-1 ) retCode = FaspRetCode::ERROR_INPUT_FILE;
+    if ( locate != nnz ) retCode = FaspRetCode::ERROR_INPUT_FILE;
 
     delete[] buffer;
 
