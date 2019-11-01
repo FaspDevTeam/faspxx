@@ -12,24 +12,25 @@
 #ifndef __PARAM_HEADER__      /*-- allow multiple inclusions --*/
 #define __PARAM_HEADER__      /**< indicate Param.hxx has been included before */
 
-#include "faspxx.hxx"
-#include <cstring>
-#include <iostream>
 #include <ostream>
+#include <iostream>
+#include <cstring>
+#include "faspxx.hxx"
 
 enum PRTLVL {
     PRINT_NONE = 0,
-    PRINT_MIN = 2,
+    PRINT_MIN  = 2,
     PRINT_SOME = 4,
     PRINT_MORE = 6,
-    PRINT_MAX = 8,
+    PRINT_MAX  = 8,
+    PRINT_ALL  = 10
 };
 
 class IterParam {
 
 private:
     // Input parameters
-    PRTLVL outLvl;    ///< Output level
+    PRTLVL outLvl; ///< Output level
     INT maxIter;   ///< Maximal number of iterations
     DBL relTol;    ///< Tolerance for relative residual
     DBL absTol;    ///< Tolerance for absolute residual
@@ -117,12 +118,9 @@ public:
 
     // destructor
     ~MatRhsLhs() {
-        if (matName != nullptr)
-            delete[] matName;
-        if (rhsName != nullptr)
-            delete[] rhsName;
-        if (lhsName != nullptr)
-            delete[] lhsName;
+        if (matName != nullptr) delete[] matName;
+        if (rhsName != nullptr) delete[] rhsName;
+        if (lhsName != nullptr) delete[] lhsName;
     }
 
     // set matrices' name

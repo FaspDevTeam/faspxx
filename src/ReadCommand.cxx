@@ -62,8 +62,9 @@ FaspRetCode ReadParam(int argc, char *args[], InitParam& init) {
 
     // At least provide matrix data file to start
     if ( argc == 1 ) {
-        std::cout << "### ERROR: Missing file operands" << std::endl;
-        std::cout << "Try './executable -help' for more information" << std::endl;
+        std::cout << "### ERROR: Missing file operands\n";
+        std::cout << "Usage: " << args[0] << " [-options]\n";
+        std::cout << "Try '"   << args[0] << " -help' for more information\n";
         retCode = FaspRetCode::ERROR_INPUT_PAR;
         return retCode;
     }
