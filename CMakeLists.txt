@@ -64,6 +64,9 @@ target_link_libraries(testReadData faspxx)
 add_executable(testPCG example/testPCG.cxx)
 target_link_libraries(testPCG faspxx)
 
+add_executable(testError example/testError.cxx)
+target_link_libraries(testError faspxx)
+
 # Enable or Disable GoogleTest, default "ON" (disable by "-DGTest=OFF")
 option(GTEST "Enable GoogleTest" ON)
 if ("${GTEST}" STREQUAL ON)
