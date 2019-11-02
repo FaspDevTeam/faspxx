@@ -30,21 +30,21 @@ class IterParam {
 
 private:
     // Input parameters
-    PRTLVL outLvl; ///< Output level
-    INT maxIter;   ///< Maximal number of iterations
-    DBL relTol;    ///< Tolerance for relative residual
-    DBL absTol;    ///< Tolerance for absolute residual
-    INT restart;   ///< Tolerance for absolute residual
+    PRTLVL verbose; ///< Output level
+    INT maxIter;    ///< Maximal number of iterations
+    DBL relTol;     ///< Tolerance for relative residual
+    DBL absTol;     ///< Tolerance for absolute residual
+    INT restart;    ///< Tolerance for absolute residual
 
     // Output parameters
-    INT numIter;   ///< Number of iteration used
-    DBL norm2;     ///< Eucliean norm of residual
-    DBL normInf;   ///< Infimum norm of residual
+    INT numIter;    ///< Number of iteration used
+    DBL norm2;      ///< Eucliean norm of residual
+    DBL normInf;    ///< Infimum norm of residual
 
 public:
     friend class PCG;
 
-    IterParam() : outLvl(PRINT_NONE),
+    IterParam() : verbose(PRINT_NONE),
                   maxIter(100),
                   relTol(1e-6),
                   absTol(1e-10),
@@ -54,15 +54,15 @@ public:
                   normInf(1.0) {};
 
     IterParam(IterParam& inParam) {
-        this->outLvl = inParam.outLvl;
+        this->verbose = inParam.verbose;
         this->maxIter = inParam.maxIter;
-        this->relTol = inParam.relTol;
-        this->absTol = inParam.absTol;
+        this->relTol  = inParam.relTol;
+        this->absTol  = inParam.absTol;
         this->restart = inParam.restart;
     }
 
     // Set input parameters
-    __inline__ void SetOutLvl(const PRTLVL& outLvl) { this->outLvl = outLvl; };
+    __inline__ void SetVerbose(const PRTLVL& verbose) { this->verbose = verbose; };
 
     __inline__ void SetMaxIter(const INT& maxIter) { this->maxIter = maxIter; };
 
@@ -80,11 +80,10 @@ public:
     __inline__ DBL GetNormInf() const { return normInf; };
 
     // Print parameters
-    // TODO:给Print()加一个默认参数就可以将输出重定向到任何流,比如文件; 用\n替换std::endl可以避免重复刷新缓冲流
     void Print(std::ostream &out = std::cout) const {
             out << "\nParameters for iterative method: \n"
                 << "-----------------------------------\n"
-                << "  Output level:         " << outLvl  << '\n'
+                << "  Print level:          " << verbose << '\n'
                 << "  Max num of iteration: " << maxIter << '\n'
                 << "  Relative tolerance:   " << relTol  << '\n'
                 << "  Absolute tolerance:   " << absTol  << '\n'
@@ -103,7 +102,7 @@ private:
     char *lhsName;
 
 public:
-    // default construtor
+    // default constructor
     MatRhsLhs() : matName(nullptr), rhsName(nullptr), lhsName(nullptr) {};
 
     // constructor
