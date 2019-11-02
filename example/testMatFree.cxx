@@ -6,7 +6,7 @@
 #include <iostream>
 #include "Param.hxx"
 #include "PCG.hxx"
-#include "Aux_testMatFree.hxx"
+#include "testMatFree.hxx"
 
 class MatFree : public LOP {
     int locate(const int r, const int c) const {
@@ -130,7 +130,7 @@ int main(int argc, char *args[]) {
 
     IterParam param;
 
-    param.SetOutLvl(PRINT_MAX);
+    param.SetVerbose(PRINT_MAX);
     param.SetMaxIter(1000);
     param.SetRelTol(1e-6);
     param.SetAbsTol(1e-10);
