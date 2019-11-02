@@ -1,5 +1,9 @@
 /**
  * a demo about mat-free method
+ * solve \Delta u = -f by free matrix method
+ * equation :
+ * \Delta u = -f , \Omega = [0, 1]*[0, 1] , f = -(x*x+y*y)sin(x*y)
+ * exact solution u = sin(x*y)
  */
 
 #include "LOP.hxx"
