@@ -1,13 +1,14 @@
 /**
- * a demo about mat-free method
- * solve \Delta u = -f by free matrix method
- * equation :
- * \Delta u = -f , \Omega = [0, 1]*[0, 1] , f = -(x*x+y*y)sin(x*y)
- * exact solution u = sin(x*y)
+ * A demo for matrix-free implementation of 2D Poisson FD solver:
+ * Solve the Poisson equation:
+ *      - \Delta u = f,  in \Omega = [0, 1]*[0, 1]
+ *      where f = -(x*x+y*y)sin(x*y)
+ * The exact solution of this problem is u = sin(x*y)
  */
 
-#include "LOP.hxx"
 #include <iostream>
+#include "Timing.hxx"
+#include "LOP.hxx"
 #include "Param.hxx"
 #include "PCG.hxx"
 #include "testMatFree.hxx"
@@ -18,7 +19,7 @@ class MatFree : public LOP {
     }
 
 public:
-    MatFree(const int row = 20, const int col = 20) {
+    MatFree(const int row = 32, const int col = 32) {
         nrow = row;
         ncol = col;
     }
@@ -101,75 +102,56 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     second = locate(nrow - 1, ncol - 2);
     third = locate(nrow - 1, ncol - 1);
     y[third] = -x[first] - x[second] + 4 * x[third];
-
 }
-
-class Scaling:public LOP{
-private:
-    VEC diag;
-public:
-    Scaling(const std::vector<double>& diag) {
-        this->diag.SetValues(diag);
-        this->nrow = diag.size();
-        this->ncol = diag.size();
-    }
-    void Apply(const VEC& x, VEC& y) const {
-        y = x;
-        y.PointwiseDivide(diag);
-    }
-};
 
 int main(int argc, char *args[]) {
 
-    const int dimen = 200;
+    const int dimen = 1024;
     double h = 1.0 / dimen;
     double *ptr;
+    GetWallTime timer;
 
     Rhs(dimen, &ptr, h);
 
     VEC rhs((dimen - 1) * (dimen - 1), ptr);
 
-    //VEC rhs((dimen-1)*(dimen-1),0.0);
     MatFree matfree(dimen, dimen);
 
     IterParam param;
-
-    param.SetVerbose(PRINT_MAX);
-    param.SetMaxIter(1000);
+    param.SetVerbose(PRINT_NONE);
+    param.SetMaxIter(100);
     param.SetRelTol(1e-6);
     param.SetAbsTol(1e-10);
     param.SetRestart(25);
+    param.Print();
 
     VEC x((dimen - 1) * (dimen - 1), 0.25);
 
+
     PCG pcg;
     pcg.Setup(&matfree, rhs, x, param);
-#if 0
-    std::vector<DBL> diag((dimen-1)*(dimen-1),4);
-    Scaling jac(diag);
-    pcg.SetupPCD(&jac);
-#else
+
     IdentityLOP lop((dimen - 1) * (dimen - 1));
     pcg.SetupPCD(&lop);
-#endif
 
+    timer.Start();
     pcg.Solve(&matfree, rhs, x, param);
+    std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
+
     pcg.Clean();
 
-    param.Print();
-
-    std::cout << "Norm2 : " << param.GetNorm2() << std::endl;
-    std::cout << "NormInf : " << param.GetNormInf() << std::endl;
     std::cout << "NumIter : " << param.GetNumIter() << std::endl;
+    std::cout << "Norm2   : " << param.GetNorm2()   << std::endl;
+    std::cout << "NormInf : " << param.GetNormInf() << std::endl;
 
-    double realtol = 0.0;
+    double realErr = 0.0;
     for (int j = 1; j <= dimen - 1; j++) {
         for (int k = 1; k <= dimen - 1; k++) {
-            if (realtol < fabs(x[locate(j, k, dimen)] - exact_solu(j * h, k * h)))
-                realtol = fabs(x[locate(j, k, dimen)] - exact_solu(j * h, k * h));
+            if (realErr < fabs(x[locate(j, k, dimen)] - exact_solu(j * h, k * h)))
+                realErr = fabs(x[locate(j, k, dimen)] - exact_solu(j * h, k * h));
         }
     }
-    std::cout << "Real tolerance : " << realtol << std::endl;
+    std::cout << "Error in inf-norm : " << realErr << std::endl;
 
     return 0;
 }
