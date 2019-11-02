@@ -40,6 +40,7 @@ project(faspxx CXX C)
 
 # Add include directory
 include_directories(${PROJECT_SOURCE_DIR}/src/)
+include_directories(${PROJECT_SOURCE_DIR}/example/)
 
 # Find source code from src
 file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
@@ -66,6 +67,9 @@ target_link_libraries(testPCG faspxx)
 
 add_executable(testError example/testError.cxx)
 target_link_libraries(testError faspxx)
+
+add_executable(testMatFree example/testMatFree.cxx)
+target_link_libraries(testMatFree faspxx)
 
 # Enable or Disable GoogleTest, default "ON" (disable by "-DGTest=OFF")
 option(GTEST "Enable GoogleTest" ON)
