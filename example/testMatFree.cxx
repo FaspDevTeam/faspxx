@@ -40,29 +40,29 @@ public:
 // generate rhs
 static void Rhs(int dimen, double *ptr, double h) {
 
-    for (int j = 0; j < (dimen - 1) * (dimen - 1); j++) ptr[j] = 0.0;
+    for (int j = 0; j < (dimen - 1) * (dimen - 1); ++j) ptr[j] = 0.0;
 
     // interior points
-    for (int k = 2; k <= dimen - 2; k++) {
-        for (int j = 2; j <= dimen - 2; j++)
+    for (int k = 2; k <= dimen - 2; ++k) {
+        for (int j = 2; j <= dimen - 2; ++j)
             ptr[locate(k, j)] = h * h * f(k * h, j * h);
     }
 
     // left boundary
-    for (int j = 2; j <= dimen - 2; j++)
+    for (int j = 2; j <= dimen - 2; ++j)
         ptr[locate(1, j)] = left(0, j * h) + h * h * f(1 * h, j * h);
 
     // right boundary
-    for (int j = 2; j <= dimen - 2; j++)
+    for (int j = 2; j <= dimen - 2; ++j)
         ptr[locate(dimen - 1, j)] =
                 right(1.0, j * h) + h * h * f((dimen - 1) * h, j * h);
 
     // lower boundary
-    for (int j = 2; j <= dimen - 2; j++)
+    for (int j = 2; j <= dimen - 2; ++j)
         ptr[locate(j, 1)] = lower(j * h, 0) + h * h * f(j * h, 1 * h);
 
     // upper boundary
-    for (int j = 2; j <= dimen - 2; j++)
+    for (int j = 2; j <= dimen - 2; ++j)
         ptr[locate(j, dimen - 1)] =
                 upper(j * h, 1.0) + h * h * f(j * h, (dimen - 1) * h);
 
@@ -90,8 +90,8 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     int first, second, third, fourth, fifth;
 
     // interior points
-    for (int k = 2; k <= nrow - 2; k++) {
-        for (int j = 2; j <= ncol - 2; j++) {
+    for (int k = 2; k <= nrow - 2; ++k) {
+        for (int j = 2; j <= ncol - 2; ++j) {
             first = locate(k - 1, j);
             second = locate(k, j - 1);
             third = locate(k, j);
@@ -102,7 +102,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // left boundary
-    for (int j = 2; j <= ncol - 2; j++) {
+    for (int j = 2; j <= ncol - 2; ++j) {
         second = locate(1, j - 1);
         third = locate(1, j);
         fourth = locate(1, j + 1);
@@ -111,7 +111,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // right boundary
-    for (int j = 2; j <= ncol - 2; j++) {
+    for (int j = 2; j <= ncol - 2; ++j) {
         first = locate(nrow - 2, j);
         second = locate(nrow - 1, j - 1);
         third = locate(nrow - 1, j);
@@ -120,7 +120,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // lower boundary
-    for (int k = 2; k <= nrow - 2; k++) {
+    for (int k = 2; k <= nrow - 2; ++k) {
         first = locate(k - 1, 1);
         third = locate(k, 1);
         fourth = locate(k, 2);
@@ -129,7 +129,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // upper boundary
-    for (int k = 2; k <= nrow - 2; k++) {
+    for (int k = 2; k <= nrow - 2; ++k) {
         first = locate(k - 1, ncol - 1);
         second = locate(k, ncol - 2);
         third = locate(k, ncol - 1);
@@ -242,8 +242,8 @@ int main(int argc, char *args[]) {
 
         // l2-norm between numerical solution and continuous solution
         norm2 = 0.0;
-        for (int j = 1; j <= dimen - 1; j++) {
-            for (int k = 1; k <= dimen - 1; k++) {
+        for (int j = 1; j <= dimen - 1; ++j) {
+            for (int k = 1; k <= dimen - 1; ++k) {
                 tmp = fabs(x[locate(j, k)] - exact_solu(j * h, k * h));
                 norm2 += tmp * tmp;
             }
@@ -259,7 +259,7 @@ int main(int argc, char *args[]) {
             std::cout << "the convergence order : " << order << std::endl;
         }
 
-        count++;
+        ++count;
     } // end while
     if (mark == 0)
         delete[] ptr;
