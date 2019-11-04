@@ -77,9 +77,9 @@ static void Rhs(int dimen, double *ptr, double h) {
                     (dimen - 1) * h, 1 * h);
     // right upper corner
     ptr[locate(dimen - 1, dimen - 1, dimen)] = upper((dimen - 1) * h, 1.0)
-                                                  + right(1.0, (dimen - 1) * h) +
-                                                  h * h * f((dimen - 1) * h,
-                                                            (dimen - 1) * h);
+                                               + right(1.0, (dimen - 1) * h) +
+                                               h * h * f((dimen - 1) * h,
+                                                         (dimen - 1) * h);
 }
 
 void MatFree::Apply(const VEC &x, VEC &y) const {
@@ -161,54 +161,79 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
 
 int main(int argc, char *args[]) {
 
-    const int dimen = 32;
-    const double h = 1.0 / dimen;
-    double *ptr;
-    GetWallTime timer;
-
-    ptr = new double[(dimen - 1) * (dimen - 1)];
-    Rhs(dimen, ptr, h); // Todo: ptr is never released?
-
-    VEC b((dimen - 1) * (dimen - 1), ptr);
-
-    VEC x((dimen - 1) * (dimen - 1), 0.25);
-
-    delete[] ptr;
-
-    MatFree matfree(dimen, dimen);
-
     IterParam param;
     param.SetVerbose(PRINT_NONE);
-    param.SetMaxIter(5000);
-    param.SetRelTol(1e-6);
-    param.SetAbsTol(1e-10);
+    param.SetMaxIter(10000);
+    param.SetRelTol(1e-16);
+    param.SetAbsTol(1e-12);
     param.SetRestart(25);
     param.Print();
 
-    PCG pcg;
-    pcg.Setup(matfree, b, x, param);
+    int count = 1;
+    int dimen=8;
+    double h = 0.0;
+    double *ptr = nullptr;
+    GetWallTime timer;
+    double order;
+    double tmp;
 
-    IdentityLOP lop((dimen - 1) * (dimen - 1));
-    pcg.SetupPCD(&lop);
+    double tmpnorm2=0.0,norm2;
 
-    timer.Start();
-    pcg.Solve(matfree, b, x, param);
-    std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
+    while (count < 5) {
 
-    pcg.Clean();
+        dimen*=2;
+        h = 1.0 / dimen;
 
-    std::cout << "NumIter : " << param.GetNumIter() << std::endl;
-    std::cout << "Norm2   : " << param.GetNorm2() << std::endl;
-    std::cout << "NormInf : " << param.GetNormInf() << std::endl;
-
-    double realErr = 0.0;
-    for (int j = 1; j <= dimen - 1; j++) {
-        for (int k = 1; k <= dimen - 1; k++) {
-            if (realErr < fabs(x[locate(j, k, dimen)] - exact_solu(j * h, k * h)))
-                realErr = fabs(x[locate(j, k, dimen)] - exact_solu(j * h, k * h));
+        if (ptr == nullptr)
+            ptr = new double[(dimen - 1) * (dimen - 1)];
+        else {
+            delete[] ptr;
+            ptr = new double[(dimen - 1) * (dimen - 1)];
         }
-    }
-    std::cout << "Error in inf-norm : " << realErr << std::endl;
 
+        Rhs(dimen, ptr, h); // Todo: ptr is never released?
+
+        VEC b((dimen - 1) * (dimen - 1), ptr);
+
+        VEC x((dimen - 1) * (dimen - 1), 0.25);
+
+        MatFree matfree(dimen, dimen);
+
+        PCG pcg;
+        pcg.Setup(matfree, b, x, param);
+
+        IdentityLOP lop((dimen - 1) * (dimen - 1));
+        pcg.SetupPCD(&lop);
+
+        timer.Start();
+        pcg.Solve(matfree, b, x, param);
+        std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
+
+        pcg.Clean();
+
+        //std::cout << "NumIter : " << param.GetNumIter() << std::endl;
+        std::cout << "Norm2   : " << param.GetNorm2() << std::endl;
+        //std::cout << "NormInf : " << param.GetNormInf() << std::endl;
+
+        norm2=0.0;
+        for (int j = 1; j <= dimen - 1; j++) {
+            for (int k = 1; k <= dimen - 1; k++){
+                tmp=fabs(x[locate(j, k, dimen)] - exact_solu(j * h, k * h));
+                norm2+=tmp*tmp;
+            }
+        }
+
+        if(tmpnorm2==0.0)
+            tmpnorm2=norm2;
+        else{
+            std::cout<<"tmpnorm2 : "<<tmpnorm2<<std::endl;
+            std::cout<<"norm2 : "<<norm2<<std::endl;
+            order=log(tmpnorm2/norm2)/log(2);
+            tmpnorm2=norm2;
+            std::cout<<"the convergence order : "<<order<<std::endl;
+        }
+
+        count++;
+    }
     return 0;
 }
