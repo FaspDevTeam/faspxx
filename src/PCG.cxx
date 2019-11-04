@@ -92,7 +92,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
         tmpb = this->ax.Dot(this->pk);
         if (fabs(tmpb) > 1e-40) alpha = tmpa / tmpb;
         else {
-            DivZero(); // Possible breakdown
+            FASPXX_WARNING("Divided by zero!"); // Possible breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
             goto FINISHED;
         }
@@ -115,7 +115,8 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
             // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
             DBL norminf = x.NormInf();
             if (norminf < solinftol) {
-                if (param.verbose > PRINT_MIN) ZeroSol();
+                if (param.verbose > PRINT_MIN)
+                    FASPXX_WARNING("Iteration stopped -- solution almost zero!");
                 errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                 break;
             }
@@ -125,7 +126,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
             if ((stagStep <= MaxStag) && (reldiff < maxdiff)) {
                 if (param.verbose > PRINT_SOME) {
                     DiffRes(reldiff, resRel);
-                    Restart();
+                    FASPXX_WARNING("Iteration restarted -- stagnation!");
                 }
 
                 //A->YMAX(b, x, this->rk);
@@ -138,7 +139,8 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
                 if (resRel < param.relTol) break;
                 else {
                     if (stagStep >= MaxStag) {
-                        if (param.verbose > PRINT_MIN) Stagged();
+                        if (param.verbose > PRINT_MIN)
+                            FASPXX_WARNING("Iteration stopped -- staggnation!");
                         errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                         break;
                     }
@@ -169,7 +171,8 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
             }
 
             if (moreStep >= param.restart) {
-                if (param.verbose > PRINT_MIN) ZeroTol();
+                if (param.verbose > PRINT_MIN)
+                    FASPXX_WARNING("The tolerence might be too small!");
                 errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
             }

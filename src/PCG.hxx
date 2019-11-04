@@ -16,6 +16,7 @@
 #include "MAT.hxx"
 #include "LOP.hxx"
 #include "Param.hxx"
+#include "ErrorLog.hxx"
 
 class PCG {
 private:
@@ -56,36 +57,6 @@ public:
     /// destructor
     ~PCG() {};
 };
-
-//! Warning for solution close to zero
-static __inline__ void ZeroSol(){
-    std::cout<<"### WARNING: Iteration stopped -- solution almost "<<
-             "zero! [ "<<__FILE__<<" , "<<__LINE__<<" ]"<<std::endl;
-}
-
-//! Warning for iteration restarted
-static __inline__ void Restart(){
-    std::cout<<"### WARNING: Iteration restarted -- stagnation! [ "<<
-             __FILE__<<" , "<<__LINE__<<" ]"<<std::endl;
-}
-
-//! Warning for stagged iteration
-static __inline__ void Stagged(){
-    std::cout<<"### WARNING: Iteration stopped -- staggnation! [ "<<
-             __FILE__<<" , "<<__LINE__<<" ]"<<std::endl;
-}
-
-//! Warning for tolerance practically close to zero
-static __inline__ void ZeroTol(){
-    std::cout<<"### WARNING: The tolerence might be too small! [ "<<
-             __FILE__<<" , "<<__LINE__<<" ]"<<std::endl;
-}
-
-//! Warning for divided by zero
-static __inline__ void DivZero(){
-    std::cout<<"### WARNING: Divided by zero! [ "<<
-             __FILE__<<" , "<<__LINE__<<" ]"<<std::endl;
-}
 
 //! Warning for actual relative residual
 static __inline__ void RealRes(DBL relres){
