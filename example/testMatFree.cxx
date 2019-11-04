@@ -2,8 +2,8 @@
  * A demo for matrix-free implementation of 2D Poisson FD solver:
  * Solve the Poisson equation:
  *      - \Delta u = f,  in \Omega = [0, 1]*[0, 1]
- *      where f = -(x*x+y*y)sin(x*y)
- * The exact solution of this problem is u = sin(x*y)
+ *      where f = M_PI*M_PI*(x*x+y*y)sin(M_PI*x*y)
+ * The exact solution of this problem is u = sin(M_PI*x*y)
  */
 // Todo: How to apply boundary condition?
 
@@ -27,7 +27,7 @@ public:
         ncol = col;
     }
 
-    void Apply(const VEC& x, VEC& y) const;
+    void Apply(const VEC &x, VEC &y) const;
 };
 
 /*
@@ -35,50 +35,54 @@ public:
  */
 // Todo: Why use two locate??? It should be same in the example.
 static int locate(int row, int column, int dimen) {
-    return (row-1)*(dimen-1)+column-1;
+    return (row - 1) * (dimen - 1) + column - 1;
 }
 
-static void Rhs(int dimen, double **ptr, double h) {
+static void Rhs(int dimen, double *ptr, double h) {
 
-    *ptr=new double[(dimen-1)*(dimen-1)];
+    for (int j = 0; j < (dimen - 1) * (dimen - 1); j++) ptr[j] = 0.0;
 
-    for (int j=0; j<(dimen-1)*(dimen-1); j++) (*ptr)[j] = 0.0;
-
-    for (int k=2; k<=dimen-2; k++) {
-        for (int j=2; j<=dimen-2; j++)
-            (*ptr)[locate(k,j,dimen)] = h*h*f(k*h,j*h);
+    for (int k = 2; k <= dimen - 2; k++) {
+        for (int j = 2; j <= dimen - 2; j++)
+            ptr[locate(k, j, dimen)] = h * h * f(k * h, j * h);
     }
 
     // left boundary
-    for (int j=2; j<=dimen-2; j++)
-        (*ptr)[locate(1,j,dimen)] = left(0,j*h)+h*h*f(1*h,j*h);
+    for (int j = 2; j <= dimen - 2; j++)
+        ptr[locate(1, j, dimen)] = left(0, j * h) + h * h * f(1 * h, j * h);
 
     // right boundary
-    for (int j=2; j<=dimen-2; j++)
-        (*ptr)[locate(dimen-1,j,dimen)] = right(1.0,j*h)+h*h*f((dimen-1)*h,j*h);
+    for (int j = 2; j <= dimen - 2; j++)
+        ptr[locate(dimen - 1, j, dimen)] =
+                right(1.0, j * h) + h * h * f((dimen - 1) * h, j * h);
 
     // lower boundary
-    for (int j=2; j<=dimen-2; j++)
-        (*ptr)[locate(j,1,dimen)] = lower(j*h,0)+h*h*f(j*h,1*h);
+    for (int j = 2; j <= dimen - 2; j++)
+        ptr[locate(j, 1, dimen)] = lower(j * h, 0) + h * h * f(j * h, 1 * h);
 
     // upper boundary
-    for (int j=2; j<=dimen-2; j++)
-        (*ptr)[locate(j,dimen-1,dimen)] = upper(j*h,1.0)+h*h*f(j*h,(dimen-1)*h);
+    for (int j = 2; j <= dimen - 2; j++)
+        ptr[locate(j, dimen - 1, dimen)] =
+                upper(j * h, 1.0) + h * h * f(j * h, (dimen - 1) * h);
 
     // left lower corner
-    (*ptr)[locate(1,1,dimen)]=left(0,h)+lower(h,0)+h*h*f(1*h,1*h);
+    ptr[locate(1, 1, dimen)] = left(0, h) + lower(h, 0) + h * h * f(1 * h, 1 * h);
     // left upper corner
-    (*ptr)[locate(1,dimen-1,dimen)]=left(0,h*(dimen-1))+upper(h,1.0)+h*h*f(1*h,
-                                                                           (dimen-1)*h);
+    ptr[locate(1, dimen - 1, dimen)] =
+            left(0, h * (dimen - 1)) + upper(h, 1.0) + h * h * f(1 * h,
+                                                                 (dimen - 1) * h);
     // right lower corner
-    (*ptr)[locate(dimen-1,1,dimen)]=lower((dimen-1)*h,0)+right(1.0,h)+h*h*f(
-            (dimen-1)*h,1*h);
+    ptr[locate(dimen - 1, 1, dimen)] =
+            lower((dimen - 1) * h, 0) + right(1.0, h) + h * h * f(
+                    (dimen - 1) * h, 1 * h);
     // right upper corner
-    (*ptr)[locate(dimen-1,dimen-1,dimen)]=upper((dimen-1)*h,1.0)
-                                          +right(1.0,(dimen-1)*h)+h*h*f((dimen-1)*h,(dimen-1)*h);
+    ptr[locate(dimen - 1, dimen - 1, dimen)] = upper((dimen - 1) * h, 1.0)
+                                                  + right(1.0, (dimen - 1) * h) +
+                                                  h * h * f((dimen - 1) * h,
+                                                            (dimen - 1) * h);
 }
 
-void MatFree::Apply(const VEC& x, VEC& y) const {
+void MatFree::Apply(const VEC &x, VEC &y) const {
     y.SetValues(x.GetSize(), 0.0);
     int first, second, third, fourth, fifth;
 
@@ -104,7 +108,7 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
     }
 
     // right boundary
-    for (int j = 2; j<= ncol - 2; j++) {
+    for (int j = 2; j <= ncol - 2; j++) {
         first = locate(nrow - 2, j);
         second = locate(nrow - 1, j - 1);
         third = locate(nrow - 1, j);
@@ -157,21 +161,25 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
 
 int main(int argc, char *args[]) {
 
-    const int dimen = 1024.0;
+    const int dimen = 32;
     const double h = 1.0 / dimen;
     double *ptr;
     GetWallTime timer;
 
-    Rhs(dimen,& ptr, h); // Todo: ptr is never released?
+    ptr = new double[(dimen - 1) * (dimen - 1)];
+    Rhs(dimen, ptr, h); // Todo: ptr is never released?
 
     VEC b((dimen - 1) * (dimen - 1), ptr);
+
     VEC x((dimen - 1) * (dimen - 1), 0.25);
+
+    delete[] ptr;
 
     MatFree matfree(dimen, dimen);
 
     IterParam param;
     param.SetVerbose(PRINT_NONE);
-    param.SetMaxIter(100);
+    param.SetMaxIter(5000);
     param.SetRelTol(1e-6);
     param.SetAbsTol(1e-10);
     param.SetRestart(25);
@@ -190,7 +198,7 @@ int main(int argc, char *args[]) {
     pcg.Clean();
 
     std::cout << "NumIter : " << param.GetNumIter() << std::endl;
-    std::cout << "Norm2   : " << param.GetNorm2()   << std::endl;
+    std::cout << "Norm2   : " << param.GetNorm2() << std::endl;
     std::cout << "NormInf : " << param.GetNormInf() << std::endl;
 
     double realErr = 0.0;
