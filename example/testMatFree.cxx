@@ -178,13 +178,13 @@ int main(int argc, char *args[]) {
     param.Print();
 
     PCG pcg;
-    pcg.Setup(&matfree, b, x, param);
+    pcg.Setup(matfree, b, x, param);
 
     IdentityLOP lop((dimen - 1) * (dimen - 1));
     pcg.SetupPCD(&lop);
 
     timer.Start();
-    pcg.Solve(&matfree, b, x, param);
+    pcg.Solve(matfree, b, x, param);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     pcg.Clean();

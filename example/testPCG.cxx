@@ -77,7 +77,7 @@ int main(int argc, char *args[]) {
 
     // Setup PCG class
     PCG pcg;
-    pcg.Setup(&mat, b, x, init.param);
+    pcg.Setup(mat, b, x, init.param);
 
     // Setup preconditioner
 #if 1
@@ -92,7 +92,7 @@ int main(int argc, char *args[]) {
 
     // PCG solve
     timer.Start();
-    retCode = pcg.Solve(&mat, b, x, init.param);
+    retCode = pcg.Solve(mat, b, x, init.param);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     // Clean up preconditioner and solver data
