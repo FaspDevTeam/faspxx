@@ -39,13 +39,13 @@ public:
             zk(0), ax(0){};
 
     /// check and allocate memory
-    FaspRetCode Setup(const LOP *A,const VEC& b,VEC& x,const IterParam& param);
+    FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x,const IterParam& param);
 
     /// build preconditioner operator
     void SetupPCD(const LOP* lop);
 
     /// solve by PCG
-    FaspRetCode Solve(const LOP *A, const VEC& b, VEC& x,IterParam& param);
+    FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x,IterParam& param);
 
     /// clean preconditioner operator
     void CleanPCD();

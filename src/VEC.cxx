@@ -132,7 +132,7 @@ void VEC::GetValues(const INT& size, const INT *indexPtr, DBL *array) const {
         array = nullptr;
         return;
     }
-    for (INT j = 0; j < size; j++) array[j] = this->values[indexPtr[j] % this->size];
+    for (INT j = 0; j < size; ++j) array[j] = this->values[indexPtr[j] % this->size];
 }
 
 /// Get the size of *this

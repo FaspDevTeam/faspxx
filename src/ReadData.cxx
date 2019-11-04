@@ -50,12 +50,12 @@ FaspRetCode ReadVEC(char *filename, VEC& rhs) {
     while (1) {
         if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
-            position++;
-            count++;
+            ++position;
+            ++count;
         } else {
             decimal[count] = '\0';
             count = 0;
-            position++;
+            ++position;
             len = std::strtol(decimal, &next, 10);
             break;
         }
@@ -68,14 +68,14 @@ FaspRetCode ReadVEC(char *filename, VEC& rhs) {
     while (1) { // compute the VEC object 's elements
         if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
-            position++;
-            count++;
+            ++position;
+            ++count;
         } else {
             decimal[count] = '\0';
             count = 0;
-            position++;
+            ++position;
             rhs[locate] = std::strtod(decimal, &next);
-            locate++;
+            ++locate;
             if (locate == len)
                 break;
         }
@@ -123,13 +123,13 @@ FaspRetCode ReadMTX(const char *filename, INT& row, INT& col, INT& nnz,
     while (1) { // read matrix 's row, column, nnz
         if (buffer[position] != ' ' && buffer[position] != '\n') {
             decimal[count] = buffer[position];
-            count++;
-            position++;
+            ++count;
+            ++position;
         } else {
             decimal[count] = '\0';
             count = 0;
-            mark++;
-            position++;
+            ++mark;
+            ++position;
             switch (mark) {
                 case 1:
                     row = std::strtol(decimal, &next, 10);
@@ -165,14 +165,14 @@ FaspRetCode ReadMTX(const char *filename, INT& row, INT& col, INT& nnz,
         if (buffer[position] != ' ' && buffer[position] != '\n' &&
             buffer[position] != '\0') {
             decimal[count] = buffer[position];
-            count++;
-            position++;
+            ++count;
+            ++position;
         } else {
-            position++;
+            ++position;
             if (buffer[position] == ' ') continue; // multiple consecutive spaces
             decimal[count] = '\0'; // mark the end of 'decimal' string
             count = 0;
-            tmp++;
+            ++tmp;
             locate = tmp / 3;
             switch (tmp % 3) {
                 case 1:
@@ -235,11 +235,11 @@ FaspRetCode ReadCSR(const char *filename, INT& row, INT& col, INT& nnz,
     while (true) {
         if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
-            count++;
-            position++;
+            ++count;
+            ++position;
         } else {
             decimal[count] = '\0'; // mark the end of 'decimal' string
-            position++;
+            ++position;
             break;
         }
     }
@@ -266,14 +266,14 @@ FaspRetCode ReadCSR(const char *filename, INT& row, INT& col, INT& nnz,
     while (true) {
         if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
-            count++;
-            position++;
+            ++count;
+            ++position;
         } else {
-            position++;
+            ++position;
             decimal[count] = '\0';
             count = 0;
             rowPtr[locate] = std::strtol(decimal, &next, 10);
-            locate++;
+            ++locate;
             if (locate == row + 1) break;
         }
     }
@@ -293,14 +293,14 @@ FaspRetCode ReadCSR(const char *filename, INT& row, INT& col, INT& nnz,
     while (true) {
         if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
-            count++;
-            position++;
+            ++count;
+            ++position;
         } else {
-            position++;
+            ++position;
             decimal[count] = '\0';
             count = 0;
             colInd[locate] = std::strtol(decimal, &next, 10);;
-            locate++;
+            ++locate;
             if (locate == nnz) break;
         }
     }
@@ -310,15 +310,15 @@ FaspRetCode ReadCSR(const char *filename, INT& row, INT& col, INT& nnz,
     while (true) {
         if (buffer[position] != '\n' && buffer[position] != '\0') {
             decimal[count] = buffer[position];
-            count++;
-            position++;
+            ++count;
+            ++position;
         } else {
             if (buffer[position] == '\0') break;
-            position++;
+            ++position;
             decimal[count] = '\0';
             count = 0;
             values[locate] = std::strtod(decimal, &next);;
-            locate++;
+            ++locate;
         }
     }
     if (locate != nnz) retCode = FaspRetCode::ERROR_INPUT_FILE;

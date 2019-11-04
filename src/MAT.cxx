@@ -633,10 +633,10 @@ void WriteMTX(char *filename, MAT mat) {
     tmp.Transpose();
 
     out << tmp.nrow << " " << tmp.ncol << " " << tmp.nnz << "\n";
-    for (j = 0; j < tmp.nrow; j++) {
+    for (j = 0; j < tmp.nrow; ++j) {
         begin = tmp.rowPtr[j];
         end = tmp.rowPtr[j + 1];
-        for (k = begin; k < end; k++)
+        for (k = begin; k < end; ++k)
             out << j << " " << tmp.colInd[j] << " " << tmp.values[j] << std::endl;
     }
 

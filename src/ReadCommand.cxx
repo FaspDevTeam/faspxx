@@ -64,7 +64,7 @@ FaspRetCode ReadParam(int argc, char* args[], InitParam& init) {
     bool noMatFile = true; // get matrix file name or not
     bool missInput = true; // missing input value
 
-    for ( int j = 1; j < argc; j++ ) {
+    for ( int j = 1; j < argc; ++j ) {
         const int flag = StringToInt(args[j]);
 
         if ( flag == 0 ) {

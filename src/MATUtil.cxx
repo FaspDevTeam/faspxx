@@ -143,7 +143,7 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
         goto WRONG_CSR;
     }
 
-    for ( INT j = 0; j < row; j++ ) {
+    for ( INT j = 0; j < row; ++j ) {
         if ( rowPtr[j] > rowPtr[j + 1] ) {
             std::cout << "### ERROR: Problem in " << j << "-th row, "
                       << "starting row pointer = " << rowPtr[j]
@@ -153,13 +153,13 @@ FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
     }
 
     INT begin, end;
-    for ( INT j = 0; j < row; j++ ) {
+    for ( INT j = 0; j < row; ++j ) {
         begin = rowPtr[j];
         end = rowPtr[j + 1];
 
         if ( begin == end ) continue;
 
-        for ( INT k = begin; k < end; k++ ) {
+        for ( INT k = begin; k < end; ++k ) {
             if ( 0 > colInd[k] || colInd[k] >= col ) {
                 std::cout << "### ERROR: Wrong column indices" << std::endl;
                 goto WRONG_CSR;
@@ -208,7 +208,7 @@ FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
         goto Return;
 
     /// simple examinations
-    for ( INT j = 0; j < row; j++ ) {
+    for ( INT j = 0; j < row; ++j ) {
         if ( rowPtr[j] >= rowPtr[j + 1] ) {
             goto Return;
         }
@@ -217,7 +217,7 @@ FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
     if ( rowPtr[0] < 0 || rowPtr[row] > nnz )
         goto Return;
 
-    for ( INT j = 0; j < row; j++ ) {
+    for ( INT j = 0; j < row; ++j ) {
         begin = rowPtr[j];
         end = rowPtr[j + 1];
         if ( begin == end )
@@ -229,7 +229,7 @@ FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
         }
 
         if ( end > begin + 1 ) {
-            for ( INT k = begin; k < end - 1; k++ ) {
+            for ( INT k = begin; k < end - 1; ++k ) {
                 if ( colInd[k] >= colInd[k + 1] )
                     goto Return;
             }
@@ -242,15 +242,15 @@ FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
     }
 
     /// exam diagPtr and colInd
-    for ( INT j = 0; j < row; j++ ) {
+    for ( INT j = 0; j < row; ++j ) {
         begin = rowPtr[j];
         end = rowPtr[j + 1];
-        for ( INT k = begin; k < end; k++ ) {
+        for ( INT k = begin; k < end; ++k ) {
             if ( colInd[k] == j ) {
                 if ( diagPtr[count] != k )
                     goto Return;
                 else
-                    count++;
+                    ++count;
             }
         }
     }
@@ -286,15 +286,15 @@ FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
 
     // 1. Count number of non zeros in each row -> rowPtrCSR[row+1]
     rowPtrCSR[0] = 0;
-    for ( INT j = 0; j < nnz; j++ ) rowPtrCSR[rowInd[j]+1]++;
+    for ( INT j = 0; j < nnz; ++j ) ++rowPtrCSR[rowInd[j]+1];
 
     // 2. Form an initial pointer for each row -> rowPtrCSR[row+1]
-    for ( INT i = 1; i < row; i++ ) rowPtrCSR[i] += rowPtrCSR[i-1];
+    for ( INT i = 1; i < row; ++i ) rowPtrCSR[i] += rowPtrCSR[i-1];
 
     // 3. Set values and colInd for CSR
     // Note: rowPtr used as a temporary pointer for current insertion position
     INT irow, jptr;
-    for ( INT j = 0; j < nnz; j++ ) {
+    for ( INT j = 0; j < nnz; ++j ) {
         irow = rowInd[j];
         jptr = rowPtrCSR[irow];
         colIndCSR[jptr] = colInd[j];
@@ -329,17 +329,17 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
     INT begin, end, numZeroDiag = 0;
     std::vector<bool> isZeroDiag(row);
 
-    for ( INT i = 0; i < row; i++) {
+    for ( INT i = 0; i < row; ++i) {
         isZeroDiag[i] = false; // Set a marker for diagonal pointer
         begin = rowPtr[i];
         end   = rowPtr[i+1];
-        for ( INT k = begin; k < end; k++ ) {
+        for ( INT k = begin; k < end; ++k ) {
             if ( colInd[k] == i ) {
                 isZeroDiag[i] = true; // Diagonal entry found
                 break;
             }
         }
-        if ( !isZeroDiag[i] ) numZeroDiag++; // If no diagonal entry, insert a zero
+        if ( !isZeroDiag[i] ) ++numZeroDiag; // If no diagonal entry, insert a zero
     }
 
     if ( numZeroDiag == 0 ) {
@@ -375,7 +375,7 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
 
     rowPtrNew[0] = 0; // Starting index always 0
 
-    for ( INT i = 0; i < row; i++) {
+    for ( INT i = 0; i < row; ++i) {
 
         begin = rowPtr[i];
         end   = rowPtr[i+1];
@@ -383,11 +383,11 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
         if ( !isZeroDiag[i] ) { // No diagonal entry
             // Lower triangular part
             nextEntry = begin;
-            for ( INT k = begin; k < end; k++ ) {
+            for ( INT k = begin; k < end; ++k ) {
                 if ( colInd[k] < i ) {
                     valuesNew[count] = values[k];
                     colIndNew[count] = colInd[k];
-                    count++;
+                    ++count;
                 } else {
                     nextEntry = k; // Record next nonzero location
                     break;
@@ -396,21 +396,21 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
             // Zero diagonal part
             valuesNew[count] = 0.0;
             colIndNew[count] = i;
-            diagLocation = count++;
+            diagLocation = ++count;
             // Upper triangular part
-            for ( INT k = nextEntry; k < end; k++ ) {
+            for ( INT k = nextEntry; k < end; ++k ) {
                 valuesNew[count] = values[k];
                 colIndNew[count] = colInd[k];
-                count++;
+                ++count;
             }
             // Update row pointers
             isZeroDiag[i] = diagLocation;
-            diagZeroAdded++;
+            ++diagZeroAdded;
         } else { // With diagonal entry, just copy
-            for ( INT k = begin; k < end; k++ ) {
+            for ( INT k = begin; k < end; ++k ) {
                 valuesNew[count] = values[k];
                 colIndNew[count] = colInd[k];
-                count++;
+                ++count;
             }
         }
         rowPtrNew[i+1] = rowPtr[i+1] + diagZeroAdded;
@@ -464,14 +464,14 @@ FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
     INT l, begin, end, index;
     DBL data;
 
-    for ( INT j = 0; j < row; j++ ) {
+    for ( INT j = 0; j < row; ++j ) {
         begin = rowPtr[j];
         end = rowPtr[j + 1];
         if ( end <= begin + 1 ) continue;
-        for ( INT k = begin + 1; k < end; k++ ) {
+        for ( INT k = begin + 1; k < end; ++k ) {
             index = colInd[k];
             data = values[k];
-            for ( l = k - 1; l >= begin; l-- ) {
+            for ( l = k - 1; l >= begin; --l ) {
                 if ( index < colInd[l] ) {
                     colInd[l + 1] = colInd[l];
                     values[l + 1] = values[l];

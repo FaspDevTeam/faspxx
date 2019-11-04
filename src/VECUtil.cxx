@@ -64,7 +64,7 @@ FaspRetCode CheckVECSize(const VEC& v, const INT& position)
 FaspRetCode CheckVECZero(const VEC& v, const DBL tol)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
-    for ( INT j = 0; j < v.GetSize(); j++ ) {
+    for ( INT j = 0; j < v.GetSize(); ++j ) {
         try {
             if ( fabs(v[j]) <= tol ) {
                 retCode = FaspRetCode::ERROR_DIVIDE_ZERO;
