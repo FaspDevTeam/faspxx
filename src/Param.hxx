@@ -26,6 +26,7 @@ enum PRTLVL {
     PRINT_ALL  = 10
 };
 
+/// \brief Parameters for Krylov space methods
 class IterParam {
 
 private:
@@ -78,6 +79,13 @@ public:
     __inline__ DBL GetNorm2() const { return norm2; };
 
     __inline__ DBL GetNormInf() const { return normInf; };
+
+    // Get other parameters
+    __inline__ INT GetMaxIter() const { return maxIter; };
+
+    __inline__ DBL GetRelTol() const { return relTol; };
+
+    __inline__ DBL GetAbsTol() const { return absTol; };
 
     // Print parameters
     void Print(std::ostream &out = std::cout) const {

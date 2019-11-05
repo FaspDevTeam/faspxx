@@ -1,5 +1,7 @@
-/** \file testGoogleTest.cxx
- *  \brief Test GTest unit-test suite
+/** \file testGTestAll.cxx
+ *  \brief GTest unit-test suite
+ *  \author Ronghong Fan
+ *  \date Oct/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -8,8 +10,14 @@
  */
 
 #include <gtest/gtest.h>
+
+/*---------------------------------*/
+/*--       Unit Test Suite       --*/
+/*---------------------------------*/
+
 #include "unitVEC.cxx"
 #include "unitMAT.cxx"
+#include "unitParam.cxx"
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/
