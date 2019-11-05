@@ -1,5 +1,7 @@
 /** \file unitVEC.cxx
  *  \brief Unit test for VEC class implementations
+ *  \author Ronghong Fan
+ *  \date Oct/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -10,7 +12,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include <cmath>
-#include "../src/VEC.hxx"
+#include "VEC.hxx"
 
 DBL TOL = 1E-10;
 

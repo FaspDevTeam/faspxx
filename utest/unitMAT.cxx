@@ -1,5 +1,7 @@
 /** \file unitMAT.cxx
  *  \brief Unit test for MAT class implementations
+ *  \author Ronghong Fan
+ *  \date Oct/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -9,8 +11,8 @@
 
 #include <gtest/gtest.h>
 #include <vector>
-#include "../src/MAT.hxx"
-#include "../src/VEC.hxx"
+#include "MAT.hxx"
+#include "VEC.hxx"
 
 MAT mat0;
 
