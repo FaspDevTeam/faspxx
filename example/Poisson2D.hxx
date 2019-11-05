@@ -17,12 +17,14 @@
 #include <cstring>
 #include <cmath>
 
-#define TEST_PROBLEM 3
+#define TEST_PROBLEM 5
 //---------------------------------
 // List of test problems:
 // 1 :  u(x,y) = sin(x) * sin(y)
 // 2 :  u(x,y) = sin(x*y)
 // 3 :  u(x,y) = x**2 + y**2
+// 4 :  u(x,y) = exp(x*y)
+// 5 :  u(x,y) = x**20 + y**20
 //---------------------------------
 
 /// \brief The exact solution
@@ -35,6 +37,12 @@ double ExactSolu(const double x, const double y) {
 #endif
 #if TEST_PROBLEM == 3
     return x * x + y * y;
+#endif
+#if TEST_PROBLEM == 4
+    return exp(x * y);
+#endif
+#if TEST_PROBLEM == 5
+    return pow(x,20)+pow(y,20);
 #endif
 }
 
@@ -49,6 +57,12 @@ double Load(const double x, const double y) {
 #if TEST_PROBLEM == 3
     return -4;
 #endif
+#if TEST_PROBLEM == 4
+    return -(x * x + y * y) * exp(x * y);
+#endif
+#if TEST_PROBLEM == 5
+    return -380*pow(x,18)-380*pow(y,18);
+#endif
 }
 
 /// \brief Left boundary condition
@@ -61,6 +75,12 @@ double LeftBdyCond(const double x, const double y) {
 #endif
 #if TEST_PROBLEM == 3
     return y * y;
+#endif
+#if TEST_PROBLEM == 4
+    return 1;
+#endif
+#if TEST_PROBLEM == 5
+    return pow(y,20);
 #endif
 }
 
@@ -75,10 +95,16 @@ double RightBdyCond(const double x, const double y) {
 #if TEST_PROBLEM == 3
     return 1 + y * y;
 #endif
+#if TEST_PROBLEM == 4
+    return exp(y);
+#endif
+#if TEST_PROBLEM == 5
+    return 1+pow(y,20);
+#endif
 }
 
 /// \brief Lower boundary condition
-double LowerBdyCond(const double x, const  double y) {
+double LowerBdyCond(const double x, const double y) {
 #if TEST_PROBLEM == 1
     return 0.0;
 #endif
@@ -87,6 +113,12 @@ double LowerBdyCond(const double x, const  double y) {
 #endif
 #if TEST_PROBLEM == 3
     return x * x;
+#endif
+#if TEST_PROBLEM == 4
+    return 1;
+#endif
+#if TEST_PROBLEM == 5
+    return pow(x,20);
 #endif
 }
 
@@ -100,6 +132,12 @@ double UpperBdyCond(const double x, const double y) {
 #endif
 #if TEST_PROBLEM == 3
     return 1 + x * x;
+#endif
+#if TEST_PROBLEM == 4
+    return exp(x);
+#endif
+#if TEST_PROBLEM == 5
+    return 1+pow(x,20);
 #endif
 }
 
