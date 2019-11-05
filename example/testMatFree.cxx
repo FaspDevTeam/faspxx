@@ -1,32 +1,28 @@
-/**
- * A demo for matrix-free implementation of 2D Poisson FD solver:
- * Solve the Poisson equation:
- *      - \Delta u = f,  in \Omega = [0, 1]*[0, 1]
- *      where f = M_PI*M_PI*(x*x+y*y)sin(M_PI*x*y)
- * The exact solution of this problem is u = sin(M_PI*x*y)
+/*! \file testMatFree.cxx
+ *  \brief A demo for matrix-free FD solver for 2D Poisson's equation
+ *             - \Delta u = f,  in \Omega = [0, 1]*[0, 1]
+ *  \author Kailei Zhang, Chensong Zhang
+ *  \date Nov/05/2019
  */
-// Todo: How to apply boundary condition?
 
 #include <iostream>
-#include "Timing.hxx"
 #include "LOP.hxx"
-#include "Param.hxx"
 #include "PCG.hxx"
+#include "Param.hxx"
+#include "Timing.hxx"
 #include "Poisson2D.hxx"
 
-// Number of parts divided in X or Y direction
-int dimen = 8;
+int dimen = 8; // number of initial partition in X and Y directions
 
-// locate position
-static int locate(int row, int column) {
+/// \brief Locate position of (x,y) in the global index
+static int locate(const int row, const int column) {
     return (row - 1) * (dimen - 1) + column - 1;
 }
 
 // Todo: Add detailed comments in this example!
-// free-matrix objects
+/// \brief Matrix-free linear operator object
 class MatFree : public LOP {
 public:
-
     // constructor by default
     MatFree(const int row = 32, const int col = 32) {
         nrow = row;
@@ -38,48 +34,50 @@ public:
 };
 
 // generate rhs
-static void Rhs(int dimen, double *ptr, double h) {
+static void Rhs(int dimen, double *ptr) {
+
+    const double h = 1.0 / dimen;
 
     for (int j = 0; j < (dimen - 1) * (dimen - 1); ++j) ptr[j] = 0.0;
 
     // interior points
     for (int k = 2; k <= dimen - 2; ++k) {
         for (int j = 2; j <= dimen - 2; ++j)
-            ptr[locate(k, j)] = h * h * f(k * h, j * h);
+            ptr[locate(k, j)] = h * h * Load(k * h, j * h);
     }
 
     // left boundary
     for (int j = 2; j <= dimen - 2; ++j)
-        ptr[locate(1, j)] = left(0, j * h) + h * h * f(1 * h, j * h);
+        ptr[locate(1, j)] = LeftBdyCond(0, j * h) + h * h * Load(1 * h, j * h);
 
     // right boundary
     for (int j = 2; j <= dimen - 2; ++j)
         ptr[locate(dimen - 1, j)] =
-                right(1.0, j * h) + h * h * f((dimen - 1) * h, j * h);
+                RightBdyCond(1.0, j * h) + h * h * Load((dimen - 1) * h, j * h);
 
     // lower boundary
     for (int j = 2; j <= dimen - 2; ++j)
-        ptr[locate(j, 1)] = lower(j * h, 0) + h * h * f(j * h, 1 * h);
+        ptr[locate(j, 1)] = LowerBdyCond(j * h, 0) + h * h * Load(j * h, 1 * h);
 
     // upper boundary
     for (int j = 2; j <= dimen - 2; ++j)
         ptr[locate(j, dimen - 1)] =
-                upper(j * h, 1.0) + h * h * f(j * h, (dimen - 1) * h);
+                UpperBdyCond(j * h, 1.0) + h * h * Load(j * h, (dimen - 1) * h);
 
     // left lower corner
-    ptr[locate(1, 1)] = left(0, h) + lower(h, 0) + h * h * f(1 * h, 1 * h);
+    ptr[locate(1, 1)] = LeftBdyCond(0, h) + LowerBdyCond(h, 0) + h * h * Load(1 * h, 1 * h);
     // left upper corner
     ptr[locate(1, dimen - 1)] =
-            left(0, h * (dimen - 1)) + upper(h, 1.0) + h * h * f(1 * h,
+            LeftBdyCond(0, h * (dimen - 1)) + UpperBdyCond(h, 1.0) + h * h * Load(1 * h,
                                                                  (dimen - 1) * h);
     // right lower corner
     ptr[locate(dimen - 1, 1)] =
-            lower((dimen - 1) * h, 0) + right(1.0, h) + h * h * f(
+            LowerBdyCond((dimen - 1) * h, 0) + RightBdyCond(1.0, h) + h * h * Load(
                     (dimen - 1) * h, 1 * h);
     // right upper corner
-    ptr[locate(dimen - 1, dimen - 1)] = upper((dimen - 1) * h, 1.0)
-                                        + right(1.0, (dimen - 1) * h) +
-                                        h * h * f((dimen - 1) * h,
+    ptr[locate(dimen - 1, dimen - 1)] = UpperBdyCond((dimen - 1) * h, 1.0)
+                                        + RightBdyCond(1.0, (dimen - 1) * h) +
+                                        h * h * Load((dimen - 1) * h,
                                                   (dimen - 1) * h);
 }
 
@@ -173,46 +171,33 @@ int main(int argc, char *args[]) {
     param.SetRestart(25);
     param.Print();
 
-    int count = 1; // number of mark cycles
-    double h = 0.0;
-    double *ptr = nullptr;
+    const int numTotalMesh = 5; // number of meshes in total
+    int mesh = 1; // number of mesh refinement cycles
+    double h = 0.0; // mesh size in X and Y directions
     GetWallTime timer;
-    double order; // convergence order
-    double tmp;
 
-    double tmpnorm2 = 0.0; // temporary l2-norm of residuals
-    double norm2; // l2-norm of residuals
-    int mark = 0;
+    double *ptr = nullptr;
+    bool markAllocDone = true;
+
     VEC b, x;
 
-    while (count < 5) {
+    while ( mesh < numTotalMesh ) {
 
         dimen *= 2;
         h = 1.0 / dimen;
 
         // apply for new memory space and try to catch error
-        if (ptr == nullptr) {
-            try {
-                ptr = new double[(dimen - 1) * (dimen - 1)];
-            } catch (std::bad_alloc &ex) {
-                mark = 1;
-                std::cout << "bad allocation" << std::endl;
-                break;
-            }
-        } else {
-            // free up the memory
-            delete[] ptr;
-            try { // apply for new memory space and try to catch error
-                ptr = new double[(dimen - 1) * (dimen - 1)];
-            } catch (std::bad_alloc &ex) {
-                mark = 1;
-                std::cout << "bad allocation" << std::endl;
-                break;
-            }
+        if ( ptr != nullptr ) delete[] ptr;
+        try {
+            ptr = new double[(dimen - 1) * (dimen - 1)];
+        } catch (std::bad_alloc &ex) {
+            markAllocDone = false;
+            std::cout << "bad allocation" << std::endl;
+            break;
         }
 
         // compute rhs
-        Rhs(dimen, ptr, h);
+        Rhs(dimen, ptr);
 
         // create b and x and assign values to them
         b.SetValues((dimen - 1) * (dimen - 1), ptr);
@@ -232,37 +217,45 @@ int main(int argc, char *args[]) {
         // time
         timer.Start();
         pcg.Solve(matfree, b, x, param); // solve by free-matrix method
-        std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
+        std::cout << "Solving Ax=b costs "
+                  << std::fixed << std::setprecision(3)
+                  << timer.Stop() << "ms" << std::endl;
 
         pcg.Clean(); // clean preconditioner
 
-        //std::cout << "NumIter : " << param.GetNumIter() << std::endl;
-        std::cout << "Norm2   : " << param.GetNorm2() << std::endl;
-        //std::cout << "NormInf : " << param.GetNormInf() << std::endl;
+        std::cout << std::scientific << std::setprecision(4)
+                  << "NumIter : " << param.GetNumIter() << std::endl
+                  << "Norm2   : " << param.GetNorm2() << std::endl
+                  << "NormInf : " << param.GetNormInf() << std::endl;
 
         // l2-norm between numerical solution and continuous solution
+        double norm2; // L2-norm of error
+        double norm2Last; // L2-norm of error in previous step
+
         norm2 = 0.0;
-        for (int j = 1; j <= dimen - 1; ++j) {
-            for (int k = 1; k <= dimen - 1; ++k) {
-                tmp = fabs(x[locate(j, k)] - exact_solu(j * h, k * h));
-                norm2 += tmp * tmp;
+        for ( int j = 1; j <= dimen - 1; ++j ) {
+            for ( int k = 1; k <= dimen - 1; ++k ) {
+                norm2 += pow(fabs(x[locate(j, k)] - ExactSolu(j * h, k * h)), 2.0);
             }
         }
+        norm2 *= h * h; // use quadrature rule to compute L2-norm!
 
-        if (tmpnorm2 == 0.0)
-            tmpnorm2 = norm2;
+        std::cout << "L2 norm of error : "
+                  << std::scientific << std::setprecision(4) << sqrt(norm2);
+        if ( mesh == 1 ) {
+            std::cout << std::endl;
+        }
         else {
-            std::cout << "tmpnorm2 : " << tmpnorm2 << std::endl;
-            std::cout << "norm2 : " << norm2 << std::endl;
-            order = log(tmpnorm2 / norm2) / log(2); // compute the convergence order
-            tmpnorm2 = norm2;
-            std::cout << "the convergence order : " << order << std::endl;
+            std::cout << ", Convergence rate : "
+                      << std::fixed << std::setprecision(3)
+                      << log(sqrt(norm2Last)/sqrt(norm2)) / log(2) << std::endl;
         }
 
-        ++count;
+        ++mesh;
+        norm2Last = norm2; // store the previous error in L2-norm
     } // end while
-    if (mark == 0)
-        delete[] ptr;
+    
+    if (markAllocDone) delete[] ptr;
 
     return 0;
 }

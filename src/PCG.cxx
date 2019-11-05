@@ -235,7 +235,7 @@ void PCG::PrintInfo(const PRTLVL& verbose, const INT& iter, const DBL& resRel,
         std::cout.precision(4);
         std::setiosflags(std::ios::scientific);
         std::cout << std::setw(6) << iter << " | "
-                  << std::scientific << std::setw(11) << resRel << " | "
+                  << std::scientific << std::setprecision(5) << resRel << " | "
                   << std::setw(11) << resAbs << " | "
                   << std::fixed << std::setprecision(5) << factor
                   << std::endl;

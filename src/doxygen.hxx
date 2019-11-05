@@ -8,7 +8,10 @@
  *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
  *-----------------------------------------------------------------------------------
  */
- 
+
+#ifndef __DOXYGEN_HXX__      /*-- allow multiple inclusions --*/
+#define __DOXYGEN_HXX__      /**< indicate doxygen.hxx has been included before */
+
 /** \mainpage Introduction
  *
  * This software distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
@@ -71,7 +74,9 @@ multigrid methods, Schwarz methods, and incomplete factorization methods.
  * some special marker in the usual comment as we put in c-files. 
  *
  */
- 
+
+#endif /* end if for __DOXYGEN_HXX__ */
+
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/
