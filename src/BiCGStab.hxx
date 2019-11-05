@@ -5,6 +5,12 @@
 #ifndef BICGSTAB_HXX
 #define BICGSTAB_HXX
 
+#include <cmath>
+#include "MAT.hxx"
+#include "LOP.hxx"
+#include "Param.hxx"
+#include "ErrorLog.hxx"
+
 class BiCGStab{
 private:
     const LOP *lop;
