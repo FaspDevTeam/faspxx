@@ -59,10 +59,12 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
     // Output iterative method info
     if (param.verbose > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n";
 
+    // Initial iteration
+    param.numIter = 0;
+
     // Compute r_k = b - A * x
-    //A->YMAX(b, x, this->rk);
-    A.Apply(x,this->rk);
-    this->rk.XPAY(-1.0,b);
+    A.Apply(x, this->rk);
+    this->rk.XPAY(-1.0, b);
 
     // Apply preconditioner z_k = B(r_k)
     this->lop->Apply(this->rk, this->zk);
@@ -140,7 +142,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
                 else {
                     if (stagStep >= MaxStag) {
                         if (param.verbose > PRINT_MIN)
-                            FASPXX_WARNING("Iteration stopped -- staggnation!");
+                            FASPXX_WARNING("Iteration stopped -- stagnation!");
                         errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                         break;
                     }
