@@ -15,16 +15,24 @@
 class BiCGStab{
 private:
     LOP *lop;
+    VEC r0star;
+    VEC pj;
+    VEC rj;
+    VEC sj;
+    VEC tmp;
+    VEC apj;
+    VEC asj;
 
 public:
     /// constructor by default
-    BiCGStab():lop(nullptr){}
+    BiCGStab():lop(nullptr),r0star(0),pj(0),rj(0),sj(0),
+        tmp(0),apj(0),asj(0){}
 
     /// check and allocate memory
     FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x,const IterParam& param);
 
     /// build preconditioner operator
-    void SetupPCD(const LOP* lop);
+    void SetupPCD(LOP *lop);
 
     /// solve by PCG
     FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x,IterParam& param);
