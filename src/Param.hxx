@@ -44,6 +44,7 @@ private:
 
 public:
     friend class PCG;
+    friend class BiCGStab;
 
     IterParam() : verbose(PRINT_NONE),
                   maxIter(100),
