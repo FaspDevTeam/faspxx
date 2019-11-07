@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
 
     MAT A;
 
-    ReadMat("../../data/fdm_10X10.csr", A);
+    ReadMat("../data/fdm_10X10.csr", A);
 
     INT row = A.GetRowSize(), col = A.GetColSize();
 
