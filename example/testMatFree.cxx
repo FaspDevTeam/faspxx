@@ -166,7 +166,7 @@ int main(int argc, char *args[]) {
     IterParam param;
     param.SetVerbose(PRINT_NONE);
     param.SetMaxIter(10000);
-    param.SetRelTol(1e-16);
+    param.SetRelTol(1e-8);
     param.SetAbsTol(1e-12);
     param.SetRestart(25);
     param.Print();
