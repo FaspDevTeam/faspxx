@@ -15,7 +15,7 @@
 #include "faspxx.hxx"
 #include "MAT.hxx"
 
-FaspRetCode ReadVEC(char* filename, VEC& rhs);
+FaspRetCode ReadVEC(const char* filename, VEC& rhs);
 
 FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowInd, std::vector<INT>& colInd,
@@ -25,7 +25,7 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowPtr, std::vector<INT>& colInd,
                     std::vector<DBL>& values);
 
-FaspRetCode ReadMat(char *filename, MAT& mat);
+FaspRetCode ReadMat(const char *filename, MAT& mat);
 
 #endif // __READ_DATA_HXX__
 

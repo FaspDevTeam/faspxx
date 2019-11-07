@@ -15,7 +15,7 @@
 #include <cstring>
 
 /// \bridf Read a VEC data file
-FaspRetCode ReadVEC(char *filename, VEC& rhs) {
+FaspRetCode ReadVEC(const char *filename, VEC& rhs) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     std::cout << "Reading from disk file " << filename << std::endl;
