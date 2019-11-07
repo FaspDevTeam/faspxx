@@ -76,10 +76,13 @@ FaspRetCode ReadVEC(const char *filename, VEC& rhs) {
             ++position;
             rhs[locate] = std::strtod(decimal, &next);
             ++locate;
-            if (locate == len)
-                break;
         }
+        if(buffer[position]=='\0')
+            break;
     }
+
+    if(locate!=nnz)
+        retCode=FaspRetCode ::ERROR_INPUT_FILE;
 
     delete[] buffer; // free up memory space
 
