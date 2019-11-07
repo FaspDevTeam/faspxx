@@ -12,6 +12,7 @@
 #include <iostream>
 #include <iomanip>
 #include "PCG.hxx"
+#include "Print.hxx"
 
 // Assign param to this->param
 FaspRetCode PCG::Setup(const LOP& A, const VEC& b, VEC& x, const IterParam& param) {
@@ -223,40 +224,6 @@ void PCG::Clean() {
     this->rk = zero;
     this->zk = zero;
     this->ax = zero;
-}
-
-/// Print out iteration information for iterative solvers
-void PCG::PrintInfo(const PRTLVL& verbose, const INT& iter, const DBL& resRel,
-                    const DBL& resAbs, const DBL& factor) {
-    if (verbose > PRINT_SOME || (verbose > PRINT_NONE && iter % 20 == 0)) {
-        if (iter == 0) {
-            std::cout << "--------------------------------------------------\n";
-            std::cout << "It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
-            std::cout << "--------------------------------------------------\n";
-        } // end if iter
-        std::cout.precision(4);
-        std::setiosflags(std::ios::scientific);
-        std::cout << std::setw(6) << iter << " | "
-                  << std::scientific << std::setprecision(5) << resRel << " | "
-                  << std::setw(11) << resAbs << " | "
-                  << std::fixed << std::setprecision(5) << factor
-                  << std::endl;
-    }
-}
-
-/// Print out final status of an iterative method
-void PCG::PrintFinal(const PRTLVL& verbose, const INT& iter, const INT& maxit,
-                     const DBL& resRel) {
-    if (verbose > PRINT_NONE) {
-        if (iter > maxit)
-            std::cout << "### WARNING: MaxIt = " << maxit
-                      << " reached with relative residual " << resRel << std::endl;
-        else if (iter >= 0) {
-            std::cout << "Number of iterations = " << iter
-                      << " with relative residual "
-                      << resRel << std::endl;
-        }
-    }
 }
 
 /*---------------------------------*/

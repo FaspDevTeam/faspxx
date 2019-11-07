@@ -11,6 +11,7 @@
 #include "LOP.hxx"
 #include "Param.hxx"
 #include "ErrorLog.hxx"
+#include "Print.hxx"
 
 class BiCGStab{
 private:
