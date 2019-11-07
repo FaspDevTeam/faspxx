@@ -14,16 +14,11 @@
 
 class BiCGStab{
 private:
-    const LOP *lop;
-    VEC r,rt,p,v,ph,xhalf,s,sh,t,xmin,tmp;
+    LOP *lop;
 
-    /// Print out final status of an iterative method
-    void PrintFinal(const PRTLVL& prtlvl, const INT& iter, const INT& maxit,
-                    const DBL& relres);
 public:
     /// constructor by default
-    BiCGStab():lop(nullptr),r(0),rt(0),p(0),v(0),ph(0),
-    xhalf(0),s(0),sh(0),t(0),xmin(0),tmp(0){}
+    BiCGStab():lop(nullptr){}
 
     /// check and allocate memory
     FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x,const IterParam& param);
@@ -44,7 +39,5 @@ public:
     ~BiCGStab() {};
 
 };
-
-void fasp_itinfo(PRTLVL,INT,DBL,DBL,DBL);
 
 #endif // BICGSTAB_HXX
