@@ -334,7 +334,7 @@ FaspRetCode ReadCSR(const char *filename, INT& row, INT& col, INT& nnz,
     return retCode;
 }
 
-FaspRetCode ReadMat(char *filename, MAT& mat){
+FaspRetCode ReadMat(const char *filename, MAT& mat){
     char type[4];
     INT flag;
     INT len=strlen(filename);
