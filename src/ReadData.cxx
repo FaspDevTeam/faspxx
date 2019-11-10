@@ -15,7 +15,7 @@
 #include <cstring>
 
 /// \bridf Read a VEC data file
-FaspRetCode ReadVEC(const char *filename, VEC& rhs) {
+FaspRetCode ReadVEC(const char *filename, VEC &rhs) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     std::cout << "Reading from disk file " << filename << std::endl;
@@ -77,12 +77,12 @@ FaspRetCode ReadVEC(const char *filename, VEC& rhs) {
             rhs[locate] = std::strtod(decimal, &next);
             ++locate;
         }
-        if(buffer[position]=='\0')
+        if (buffer[position] == '\0')
             break;
     }
 
-    if(locate!=nnz)
-        retCode=FaspRetCode ::ERROR_INPUT_FILE;
+    if (locate != len)
+        retCode = FaspRetCode::ERROR_INPUT_FILE;
 
     delete[] buffer; // free up memory space
 
@@ -90,9 +90,9 @@ FaspRetCode ReadVEC(const char *filename, VEC& rhs) {
 }
 
 /// \brief Read an MTX data file and store them in (rowInd, colInd, values)
-FaspRetCode ReadMTX(const char *filename, INT& row, INT& col, INT& nnz,
-                    std::vector<INT>& rowInd, std::vector<INT>& colInd,
-                    std::vector<DBL>& values) {
+FaspRetCode ReadMTX(const char *filename, INT &row, INT &col, INT &nnz,
+                    std::vector<INT> &rowInd, std::vector<INT> &colInd,
+                    std::vector<DBL> &values) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     std::cout << "Reading from disk file " << filename << std::endl;
@@ -185,14 +185,14 @@ FaspRetCode ReadMTX(const char *filename, INT& row, INT& col, INT& nnz,
                     colInd[locate] = std::strtol(decimal, &next, 10) - 1;
                     break;
                 case 0:
-                    values[locate-1] = std::strtod(decimal, &next);
+                    values[locate - 1] = std::strtod(decimal, &next);
                     break;
             }
             if (buffer[position] == '\0') break;
         }
     }
 
-    if ( locate != nnz ) retCode = FaspRetCode::ERROR_INPUT_FILE;
+    if (locate != nnz) retCode = FaspRetCode::ERROR_INPUT_FILE;
 
     delete[] buffer;
 
@@ -200,9 +200,9 @@ FaspRetCode ReadMTX(const char *filename, INT& row, INT& col, INT& nnz,
 }
 
 /// \brief Read a CSR data file and store them in (rowPtr, colInd, values)
-FaspRetCode ReadCSR(const char *filename, INT& row, INT& col, INT& nnz,
-                    std::vector<INT>& rowPtr, std::vector<INT>& colInd,
-                    std::vector<DBL>& values) {
+FaspRetCode ReadCSR(const char *filename, INT &row, INT &col, INT &nnz,
+                    std::vector<INT> &rowPtr, std::vector<INT> &colInd,
+                    std::vector<DBL> &values) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     // Open the file to read
@@ -337,45 +337,45 @@ FaspRetCode ReadCSR(const char *filename, INT& row, INT& col, INT& nnz,
     return retCode;
 }
 
-FaspRetCode ReadMat(const char *filename, MAT& mat){
+FaspRetCode ReadMat(const char *filename, MAT &mat) {
     char type[4];
     INT flag;
-    INT len=strlen(filename);
+    INT len = strlen(filename);
     FaspRetCode retCode;
 
-    if(len<=4){
-        retCode=FaspRetCode ::ERROR_INPUT_FILE;
+    if (len <= 4) {
+        retCode = FaspRetCode::ERROR_INPUT_FILE;
         return retCode;
     }
 
-    type[0]=filename[len-3];
-    type[1]=filename[len-2];
-    type[2]=filename[len-1];
-    type[3]='\0';
+    type[0] = filename[len - 3];
+    type[1] = filename[len - 2];
+    type[2] = filename[len - 1];
+    type[3] = '\0';
 
-    if(strcmp(type,"csr")==0)
-        flag=1;
-    else if(strcmp(type,"mtx")==0)
-        flag=2;
+    if (strcmp(type, "csr") == 0)
+        flag = 1;
+    else if (strcmp(type, "mtx") == 0)
+        flag = 2;
     else
-        flag=0;
+        flag = 0;
 
-    INT row,col,nnz;
-    std::vector<INT> rowPtr,colInd,rowInd;
+    INT row, col, nnz;
+    std::vector<INT> rowPtr, colInd, rowInd;
     std::vector<DBL> values;
 
-    switch(flag){
+    switch (flag) {
         case 0:
-            retCode=FaspRetCode ::ERROR_INPUT_FILE;
+            retCode = FaspRetCode::ERROR_INPUT_FILE;
             break;
         case 1:
             try {
-                retCode = ReadCSR(filename,row, col, nnz,
-                        rowPtr, colInd, values);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+                retCode = ReadCSR(filename, row, col, nnz,
+                                  rowPtr, colInd, values);
+                if (retCode < 0)
+                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
             }
-            catch ( FaspRunTime& ex ) {
+            catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
@@ -383,43 +383,43 @@ FaspRetCode ReadMat(const char *filename, MAT& mat){
             // Sort each row in ascending order
             try {
                 retCode = SortCSRRow(row, col, nnz, rowPtr, colInd, values);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+                if (retCode < 0)
+                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
             }
-            catch ( FaspRunTime& ex ) {
+            catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
             // Convert a MTX matrix to MAT
             try {
                 retCode = CSRtoMAT(row, col, nnz, values, colInd, rowPtr, mat);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+                if (retCode < 0)
+                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
             }
-            catch ( FaspRunTime& ex ) {
+            catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
             break;
         case 2:
             try {
-                retCode = ReadMTX(filename,row, col, nnz,rowInd,
-                        colInd, values);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+                retCode = ReadMTX(filename, row, col, nnz, rowInd,
+                                  colInd, values);
+                if (retCode < 0)
+                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
             }
-            catch ( FaspRunTime& ex ) {
+            catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
 
             // Sort each row in ascending order
             try {
-                retCode = MTXtoMAT(row, col, nnz, rowInd, colInd, values,mat);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
+                retCode = MTXtoMAT(row, col, nnz, rowInd, colInd, values, mat);
+                if (retCode < 0)
+                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
             }
-            catch ( FaspRunTime& ex ) {
+            catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
