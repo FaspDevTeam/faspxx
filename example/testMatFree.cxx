@@ -12,12 +12,11 @@
 #include "Timing.hxx"
 #include "Poisson2D.hxx"
 
-int dimen = 8; // number of initial partition in X and Y directions
+int dimen = 1024; // number of initial partition in X and Y directions
 
 /// \brief Locate position of (x,y) in the global index
-static int locate(const int row, const int column) {
-    return (row - 1) * (dimen - 1) + column - 1;
-}
+#define locate(row, column) (row - 1) * (dimen - 1) + column - 1
+
 
 // Todo: Add detailed comments in this example!
 /// \brief Matrix-free linear operator object
@@ -65,11 +64,13 @@ static void Rhs(int dimen, double *ptr) {
                 UpperBdyCond(j * h, 1.0) + h * h * Load(j * h, (dimen - 1) * h);
 
     // left lower corner
-    ptr[locate(1, 1)] = LeftBdyCond(0, h) + LowerBdyCond(h, 0) + h * h * Load(1 * h, 1 * h);
+    ptr[locate(1, 1)] =
+            LeftBdyCond(0, h) + LowerBdyCond(h, 0) + h * h * Load(1 * h, 1 * h);
     // left upper corner
     ptr[locate(1, dimen - 1)] =
-            LeftBdyCond(0, h * (dimen - 1)) + UpperBdyCond(h, 1.0) + h * h * Load(1 * h,
-                                                                 (dimen - 1) * h);
+            LeftBdyCond(0, h * (dimen - 1)) + UpperBdyCond(h, 1.0) +
+            h * h * Load(1 * h,
+                         (dimen - 1) * h);
     // right lower corner
     ptr[locate(dimen - 1, 1)] =
             LowerBdyCond((dimen - 1) * h, 0) + RightBdyCond(1.0, h) + h * h * Load(
@@ -78,7 +79,7 @@ static void Rhs(int dimen, double *ptr) {
     ptr[locate(dimen - 1, dimen - 1)] = UpperBdyCond((dimen - 1) * h, 1.0)
                                         + RightBdyCond(1.0, (dimen - 1) * h) +
                                         h * h * Load((dimen - 1) * h,
-                                                  (dimen - 1) * h);
+                                                     (dimen - 1) * h);
 }
 
 // free-matrix 's operator : acting on a VEC object
@@ -165,13 +166,13 @@ int main(int argc, char *args[]) {
     // convergence parameter setting
     IterParam param;
     param.SetVerbose(PRINT_NONE);
-    param.SetMaxIter(10000);
-    param.SetRelTol(1e-8);
-    param.SetAbsTol(1e-12);
-    param.SetRestart(25);
+    param.SetMaxIter(100);
+    param.SetRelTol(1e-6);
+    param.SetAbsTol(1e-10);
+    param.SetRestart(20);
     param.Print();
 
-    const int numTotalMesh = 5; // number of meshes in total
+    const int numTotalMesh = 2; // number of meshes in total
     int mesh = 1; // number of mesh refinement cycles
     double h = 0.0; // mesh size in X and Y directions
     GetWallTime timer;
@@ -181,13 +182,15 @@ int main(int argc, char *args[]) {
 
     VEC b, x;
 
-    while ( mesh < numTotalMesh ) {
+    while (mesh < numTotalMesh) {
 
-        dimen *= 2;
+        //dimen *= 2;
         h = 1.0 / dimen;
+        std::cout << "(dimen-1)*(dimen-1) : " << (dimen - 1) * (dimen - 1)
+                  << std::endl;
 
         // apply for new memory space and try to catch error
-        if ( ptr != nullptr ) delete[] ptr;
+        if (ptr != nullptr) delete[] ptr;
         try {
             ptr = new double[(dimen - 1) * (dimen - 1)];
         } catch (std::bad_alloc &ex) {
@@ -233,8 +236,8 @@ int main(int argc, char *args[]) {
         double norm2Last; // L2-norm of error in previous step
 
         norm2 = 0.0;
-        for ( int j = 1; j <= dimen - 1; ++j ) {
-            for ( int k = 1; k <= dimen - 1; ++k ) {
+        for (int j = 1; j <= dimen - 1; ++j) {
+            for (int k = 1; k <= dimen - 1; ++k) {
                 norm2 += pow(fabs(x[locate(j, k)] - ExactSolu(j * h, k * h)), 2.0);
             }
         }
@@ -242,19 +245,18 @@ int main(int argc, char *args[]) {
 
         std::cout << "L2 norm of error : "
                   << std::scientific << std::setprecision(4) << sqrt(norm2);
-        if ( mesh == 1 ) {
+        if (mesh == 1) {
             std::cout << std::endl;
-        }
-        else {
+        } else {
             std::cout << ", Convergence rate : "
                       << std::fixed << std::setprecision(3)
-                      << log(sqrt(norm2Last)/sqrt(norm2)) / log(2) << std::endl;
+                      << log(sqrt(norm2Last) / sqrt(norm2)) / log(2) << std::endl;
         }
 
         ++mesh;
         norm2Last = norm2; // store the previous error in L2-norm
     } // end while
-    
+
     if (markAllocDone) delete[] ptr;
 
     return 0;
