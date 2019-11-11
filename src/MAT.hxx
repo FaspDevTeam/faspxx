@@ -130,7 +130,6 @@ public:
 
 #endif
 
-
     /// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
     void SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
@@ -163,8 +162,8 @@ public:
     void Transpose();
 
     /// mat = a * mat1 + b * mat2
-    friend void Add(const DBL a, const MAT& mat1, const DBL b, const MAT&
-    mat2, MAT& mat);
+    friend void Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2,
+                    MAT& mat);
 
     /// *this = a * *this + b * mat
     void Add(const DBL a, const DBL b, const MAT& mat);
@@ -210,10 +209,6 @@ public:
     /// Get the whole col-th column in *this into VEC object
     void GetCol(const INT& col, std::vector<DBL>& v) const;
 
-    /*
-     * because of conflicts between "friend" and "static",
-     * "Mult" isn't marked "static".
-     */
     /// mat = matl * matr
     friend void Mult(const MAT& matl, const MAT& matr, MAT& mat);
 

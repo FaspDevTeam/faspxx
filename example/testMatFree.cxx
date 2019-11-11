@@ -86,80 +86,80 @@ static void Rhs(int dimen, double *ptr) {
 void MatFree::Apply(const VEC &x, VEC &y) const {
 
     y.SetValues(x.GetSize(), 0.0);
-    int first, second, third, fourth, fifth;
+    const int dimen1 = dimen - 1;
+    int lower, left, center, right, upper;
 
     // interior points
     for (int k = 2; k <= nrow - 2; ++k) {
         for (int j = 2; j <= ncol - 2; ++j) {
-            third = (k - 1) * (dimen - 1) + j - 1;
-            first = third-(dimen-1);
-            second = third-1;
-            fourth = third+1;
-            fifth = third+(dimen-1);
-            y[third] = -x[first] - x[second] + 4.0 * x[third] - x[fourth] - x[fifth];
+            center = (k - 1) * dimen1 + j - 1;
+            lower  = center - dimen1;
+            left   = center - 1;
+            right  = center + 1;
+            upper  = center + dimen1;
+            y[center] = -x[lower] - x[left] + 4.0 * x[center] - x[right] - x[upper];
         }
     }
 
-    // left boundary
-    for (int j = 2; j <= ncol - 2; ++j) {
-        third = j - 1;
-        first = third-(dimen-1);
-        second = third-1;
-        fourth = third+1;
-        fifth = third+(dimen-1);
-        y[third] = -x[second] + 4.0 * x[third] - x[fourth] - x[fifth];
-    }
-
-    // right boundary
-    for (int j = 2; j <= ncol - 2; ++j) {
-        third = (nrow - 2) * (dimen - 1) + j - 1;
-        first = third-(dimen-1);
-        second = third-1;
-        fourth = third+1;
-        y[third] = -x[first] - x[second] + 4.0 * x[third] - x[fourth];
-    }
-
     // lower boundary
-    for (int k = 2; k <= nrow - 2; ++k) {
-        third = (k - 1) * (dimen - 1);
-        first = third-(dimen-1);
-        fourth = third+1;
-        fifth = third+(dimen-1);
-        y[third] = -x[first] + 4.0 * x[third] - x[fourth] - x[fifth];
+    for (int j = 2; j <= ncol - 2; ++j) {
+        center = j - 1;
+        left   = center - 1;
+        right  = center + 1;
+        upper  = center + dimen1;
+        y[center] = -x[left] + 4.0 * x[center] - x[right] - x[upper];
     }
 
     // upper boundary
+    for (int j = 2; j <= ncol - 2; ++j) {
+        center = (nrow - 2) * dimen1 + j - 1;
+        lower  = center - dimen1;
+        left   = center - 1;
+        right  = center + 1;
+        y[center] = -x[lower] - x[left] + 4.0 * x[center] - x[right];
+    }
+
+    // left boundary
     for (int k = 2; k <= nrow - 2; ++k) {
-        third = (k - 1) * (dimen - 1) + ncol - 2;
-        first = third-(dimen-1);
-        second = third-1;
-        fifth = third+(dimen-1);
-        y[third] = -x[first] - x[second] + 4.0 * x[third] - x[fifth];
+        center = (k - 1) * dimen1;
+        lower  = center - dimen1;
+        right  = center + 1;
+        upper  = center + dimen1;
+        y[center] = -x[lower] + 4.0 * x[center] - x[right] - x[upper];
+    }
+
+    // right boundary
+    for (int k = 2; k <= nrow - 2; ++k) {
+        center = (k - 1) * dimen1 + ncol - 2;
+        lower  = center - dimen1;
+        left   = center - 1;
+        upper  = center + dimen1;
+        y[center] = -x[lower] - x[left] + 4.0 * x[center] - x[upper];
     }
 
     // left lower corner
-    third = locate(1, 1);
-    fourth = locate(1, 2);
-    fifth = locate(2, 1);
-    y[third] = 4.0 * x[third] - x[fourth] - x[fifth];
+    center = locate(1, 1);
+    right  = locate(1, 2);
+    upper  = locate(2, 1);
+    y[center] = 4.0 * x[center] - x[right] - x[upper];
 
     // left upper corner
-    second = locate(1, ncol - 2);
-    third = locate(1, ncol - 1);
-    fourth = locate(2, ncol - 1);
-    y[third] = -x[second] + 4.0 * x[third] - x[fourth];
+    left   = locate(1, ncol - 2);
+    center = locate(1, ncol - 1);
+    right  = locate(2, ncol - 1);
+    y[center] = -x[left] + 4.0 * x[center] - x[right];
 
     // right lower corner
-    first = locate(nrow - 2, 1);
-    third = locate(nrow - 1, 1);
-    fourth = locate(nrow - 1, 2);
-    y[third] = -x[first] + 4.0 * x[third] - x[fourth];
+    lower  = locate(nrow - 2, 1);
+    center = locate(nrow - 1, 1);
+    right  = locate(nrow - 1, 2);
+    y[center] = -x[lower] + 4.0 * x[center] - x[right];
 
     // right upper corner
-    first = locate(nrow - 2, ncol - 1);
-    second = locate(nrow - 1, ncol - 2);
-    third = locate(nrow - 1, ncol - 1);
-    y[third] = -x[first] - x[second] + 4.0 * x[third];
+    lower  = locate(nrow - 2, ncol - 1);
+    left   = locate(nrow - 1, ncol - 2);
+    center = locate(nrow - 1, ncol - 1);
+    y[center] = -x[lower] - x[left] + 4.0 * x[center];
 }
 
 int main(int argc, char *args[]) {
