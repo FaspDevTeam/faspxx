@@ -91,48 +91,49 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     // interior points
     for (int k = 2; k <= nrow - 2; ++k) {
         for (int j = 2; j <= ncol - 2; ++j) {
-            first = locate(k - 1, j);
-            second = locate(k, j - 1);
-            third = locate(k, j);
-            fourth = locate(k, j + 1);
-            fifth = locate(k + 1, j);
+            third = (k - 1) * (dimen - 1) + j - 1;
+            first = third-(dimen-1);
+            second = third-1;
+            fourth = third+1;
+            fifth = third+(dimen-1);
             y[third] = -x[first] - x[second] + 4.0 * x[third] - x[fourth] - x[fifth];
         }
     }
 
     // left boundary
     for (int j = 2; j <= ncol - 2; ++j) {
-        second = locate(1, j - 1);
-        third = locate(1, j);
-        fourth = locate(1, j + 1);
-        fifth = locate(2, j);
+        third = j - 1;
+        first = third-(dimen-1);
+        second = third-1;
+        fourth = third+1;
+        fifth = third+(dimen-1);
         y[third] = -x[second] + 4.0 * x[third] - x[fourth] - x[fifth];
     }
 
     // right boundary
     for (int j = 2; j <= ncol - 2; ++j) {
-        first = locate(nrow - 2, j);
-        second = locate(nrow - 1, j - 1);
-        third = locate(nrow - 1, j);
-        fourth = locate(nrow - 1, j + 1);
+        third = (nrow - 2) * (dimen - 1) + j - 1;
+        first = third-(dimen-1);
+        second = third-1;
+        fourth = third+1;
         y[third] = -x[first] - x[second] + 4.0 * x[third] - x[fourth];
     }
 
     // lower boundary
     for (int k = 2; k <= nrow - 2; ++k) {
-        first = locate(k - 1, 1);
-        third = locate(k, 1);
-        fourth = locate(k, 2);
-        fifth = locate(k + 1, 1);
+        third = (k - 1) * (dimen - 1);
+        first = third-(dimen-1);
+        fourth = third+1;
+        fifth = third+(dimen-1);
         y[third] = -x[first] + 4.0 * x[third] - x[fourth] - x[fifth];
     }
 
     // upper boundary
     for (int k = 2; k <= nrow - 2; ++k) {
-        first = locate(k - 1, ncol - 1);
-        second = locate(k, ncol - 2);
-        third = locate(k, ncol - 1);
-        fifth = locate(k + 1, ncol - 1);
+        third = (k - 1) * (dimen - 1) + ncol - 2;
+        first = third-(dimen-1);
+        second = third-1;
+        fifth = third+(dimen-1);
         y[third] = -x[first] - x[second] + 4.0 * x[third] - x[fifth];
     }
 
