@@ -16,6 +16,7 @@
 #include "LOP.hxx"
 #include "ReadCommand.hxx"
 #include "ReadData.hxx"
+#include "PCD.hxx"
 
 // Define a simple scaling preconditioner (Jacobi)
 // Todo: Move preconditioners to separate files
