@@ -12,7 +12,7 @@
 #include "Timing.hxx"
 #include "Poisson2D.hxx"
 
-int dimen = 1024; // number of initial partition in X and Y directions
+INT dimen = 1024; // number of initial partition in X and Y directions
 
 /// \brief Locate position of (x,y) in the global index
 #define locate(row, column) (row - 1) * (dimen - 1) + column - 1
@@ -23,7 +23,7 @@ int dimen = 1024; // number of initial partition in X and Y directions
 class MatFree : public LOP {
 public:
     // constructor by default
-    MatFree(const int row = 32, const int col = 32) {
+    MatFree(const INT row = 32, const INT col = 32) {
         nrow = row;
         ncol = col;
     }
@@ -33,33 +33,33 @@ public:
 };
 
 // generate rhs
-static void Rhs(int dimen, double *ptr) {
+static void Rhs(INT dimen, DBL *ptr) {
 
-    const double h = 1.0 / dimen;
+    const DBL h = 1.0 / dimen;
 
-    for (int j = 0; j < (dimen - 1) * (dimen - 1); ++j) ptr[j] = 0.0;
+    for (INT j = 0; j < (dimen - 1) * (dimen - 1); ++j) ptr[j] = 0.0;
 
     // interior points
-    for (int k = 2; k <= dimen - 2; ++k) {
-        for (int j = 2; j <= dimen - 2; ++j)
+    for (INT k = 2; k <= dimen - 2; ++k) {
+        for (INT j = 2; j <= dimen - 2; ++j)
             ptr[locate(k, j)] = h * h * Load(k * h, j * h);
     }
 
     // left boundary
-    for (int j = 2; j <= dimen - 2; ++j)
+    for (INT j = 2; j <= dimen - 2; ++j)
         ptr[locate(1, j)] = LeftBdyCond(0, j * h) + h * h * Load(1 * h, j * h);
 
     // right boundary
-    for (int j = 2; j <= dimen - 2; ++j)
+    for (INT j = 2; j <= dimen - 2; ++j)
         ptr[locate(dimen - 1, j)] =
                 RightBdyCond(1.0, j * h) + h * h * Load((dimen - 1) * h, j * h);
 
     // lower boundary
-    for (int j = 2; j <= dimen - 2; ++j)
+    for (INT j = 2; j <= dimen - 2; ++j)
         ptr[locate(j, 1)] = LowerBdyCond(j * h, 0) + h * h * Load(j * h, 1 * h);
 
     // upper boundary
-    for (int j = 2; j <= dimen - 2; ++j)
+    for (INT j = 2; j <= dimen - 2; ++j)
         ptr[locate(j, dimen - 1)] =
                 UpperBdyCond(j * h, 1.0) + h * h * Load(j * h, (dimen - 1) * h);
 
@@ -86,11 +86,11 @@ static void Rhs(int dimen, double *ptr) {
 void MatFree::Apply(const VEC &x, VEC &y) const {
 
     y.SetValues(x.GetSize(), 0.0);
-    int first, second, third, fourth, fifth;
+    INT first, second, third, fourth, fifth;
 
     // interior points
-    for (int k = 2; k <= nrow - 2; ++k) {
-        for (int j = 2; j <= ncol - 2; ++j) {
+    for (INT k = 2; k <= nrow - 2; ++k) {
+        for (INT j = 2; j <= ncol - 2; ++j) {
             third = (k - 1) * (dimen - 1) + j - 1;
             first = third-(dimen-1);
             second = third-1;
@@ -101,7 +101,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // left boundary
-    for (int j = 2; j <= ncol - 2; ++j) {
+    for (INT j = 2; j <= ncol - 2; ++j) {
         third = j - 1;
         first = third-(dimen-1);
         second = third-1;
@@ -111,7 +111,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // right boundary
-    for (int j = 2; j <= ncol - 2; ++j) {
+    for (INT j = 2; j <= ncol - 2; ++j) {
         third = (nrow - 2) * (dimen - 1) + j - 1;
         first = third-(dimen-1);
         second = third-1;
@@ -120,7 +120,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // lower boundary
-    for (int k = 2; k <= nrow - 2; ++k) {
+    for (INT k = 2; k <= nrow - 2; ++k) {
         third = (k - 1) * (dimen - 1);
         first = third-(dimen-1);
         fourth = third+1;
@@ -129,7 +129,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // upper boundary
-    for (int k = 2; k <= nrow - 2; ++k) {
+    for (INT k = 2; k <= nrow - 2; ++k) {
         third = (k - 1) * (dimen - 1) + ncol - 2;
         first = third-(dimen-1);
         second = third-1;
@@ -162,7 +162,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     y[third] = -x[first] - x[second] + 4.0 * x[third];
 }
 
-int main(int argc, char *args[]) {
+INT main(INT argc, char *args[]) {
 
     // convergence parameter setting
     IterParam param;
@@ -173,12 +173,12 @@ int main(int argc, char *args[]) {
     param.SetRestart(20);
     param.Print();
 
-    const int numTotalMesh = 2; // number of meshes in total
-    int mesh = 1; // number of mesh refinement cycles
-    double h = 0.0; // mesh size in X and Y directions
+    const INT numTotalMesh = 2; // number of meshes in total
+    INT mesh = 1; // number of mesh refinement cycles
+    DBL h = 0.0; // mesh size in X and Y directions
     GetWallTime timer;
 
-    double *ptr = nullptr;
+    DBL *ptr = nullptr;
     bool markAllocDone = true;
 
     VEC b, x;
@@ -193,7 +193,7 @@ int main(int argc, char *args[]) {
         // apply for new memory space and try to catch error
         if (ptr != nullptr) delete[] ptr;
         try {
-            ptr = new double[(dimen - 1) * (dimen - 1)];
+            ptr = new DBL[(dimen - 1) * (dimen - 1)];
         } catch (std::bad_alloc &ex) {
             markAllocDone = false;
             std::cout << "bad allocation" << std::endl;
@@ -233,12 +233,12 @@ int main(int argc, char *args[]) {
                   << "NormInf : " << param.GetNormInf() << std::endl;
 
         // l2-norm between numerical solution and continuous solution
-        double norm2; // L2-norm of error
-        double norm2Last; // L2-norm of error in previous step
+        DBL norm2; // L2-norm of error
+        DBL norm2Last; // L2-norm of error in previous step
 
         norm2 = 0.0;
-        for (int j = 1; j <= dimen - 1; ++j) {
-            for (int k = 1; k <= dimen - 1; ++k) {
+        for (INT j = 1; j <= dimen - 1; ++j) {
+            for (INT k = 1; k <= dimen - 1; ++k) {
                 norm2 += pow(fabs(x[locate(j, k)] - ExactSolu(j * h, k * h)), 2.0);
             }
         }
