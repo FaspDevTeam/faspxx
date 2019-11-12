@@ -10,14 +10,14 @@
 #include "PCG.hxx"
 #include "Param.hxx"
 #include "Timing.hxx"
-#include "Poisson2D.hxx"
 #include "PCD.hxx"
-
-INT dimen = 1024; // number of initial partition in X and Y directions
+#include "Poisson2D.hxx"
 
 /// \brief Locate position of (x,y) in the global index
-#define locate(row, column) (row - 1) * (dimen - 1) + column - 1
+#define locate(row, column) (((row) - 1) * (dimen - 1) + (column) - 1)
 
+const INT numTotalMesh = 4; // number of meshes in total
+INT dimen = 256; // number of partitions in X and Y directions
 
 // Todo: Add detailed comments in this example!
 /// \brief Matrix-free linear operator object
@@ -37,144 +37,142 @@ public:
 static void Rhs(INT dimen, DBL *ptr) {
 
     const DBL h = 1.0 / dimen;
+    const int dimen1 = dimen - 1;
 
-    for (INT j = 0; j < (dimen - 1) * (dimen - 1); ++j) ptr[j] = 0.0;
+    for ( INT j = 0; j < dimen1 * dimen1; ++j ) ptr[j] = 0.0;
 
     // interior points
-    for (INT k = 2; k <= dimen - 2; ++k) {
-        for (INT j = 2; j <= dimen - 2; ++j)
+    for ( INT k = 2; k < dimen1; ++k ) {
+        for ( INT j = 2; j < dimen1; ++j )
             ptr[locate(k, j)] = h * h * Load(k * h, j * h);
     }
 
     // left boundary
-    for (INT j = 2; j <= dimen - 2; ++j)
+    for ( INT j = 2; j < dimen1; ++j )
         ptr[locate(1, j)] = LeftBdyCond(0, j * h) + h * h * Load(1 * h, j * h);
 
     // right boundary
-    for (INT j = 2; j <= dimen - 2; ++j)
+    for ( INT j = 2; j < dimen1; ++j )
         ptr[locate(dimen - 1, j)] =
-                RightBdyCond(1.0, j * h) + h * h * Load((dimen - 1) * h, j * h);
+                RightBdyCond(1.0, j * h) + h * h * Load(dimen1 * h, j * h);
 
     // lower boundary
-    for (INT j = 2; j <= dimen - 2; ++j)
+    for ( INT j = 2; j < dimen1; ++j )
         ptr[locate(j, 1)] = LowerBdyCond(j * h, 0) + h * h * Load(j * h, 1 * h);
 
     // upper boundary
-    for (INT j = 2; j <= dimen - 2; ++j)
-        ptr[locate(j, dimen - 1)] =
-                UpperBdyCond(j * h, 1.0) + h * h * Load(j * h, (dimen - 1) * h);
+    for ( INT j = 2; j < dimen1; ++j )
+        ptr[locate(j, dimen1)] =
+                UpperBdyCond(j * h, 1.0) + h * h * Load(j * h, dimen1 * h);
 
     // left lower corner
     ptr[locate(1, 1)] =
             LeftBdyCond(0, h) + LowerBdyCond(h, 0) + h * h * Load(1 * h, 1 * h);
+
     // left upper corner
-    ptr[locate(1, dimen - 1)] =
-            LeftBdyCond(0, h * (dimen - 1)) + UpperBdyCond(h, 1.0) +
-            h * h * Load(1 * h,
-                         (dimen - 1) * h);
+    ptr[locate(1, dimen1)] =
+            LeftBdyCond(0, h * dimen1) + UpperBdyCond(h, 1.0)
+            + h * h * Load(1 * h, dimen1 * h);
+
     // right lower corner
-    ptr[locate(dimen - 1, 1)] =
-            LowerBdyCond((dimen - 1) * h, 0) + RightBdyCond(1.0, h) + h * h * Load(
-                    (dimen - 1) * h, 1 * h);
+    ptr[locate(dimen1, 1)] =
+            LowerBdyCond(dimen1 * h, 0) + RightBdyCond(1.0, h)
+            + h * h * Load(dimen1 * h, 1 * h);
+
     // right upper corner
-    ptr[locate(dimen - 1, dimen - 1)] = UpperBdyCond((dimen - 1) * h, 1.0)
-                                        + RightBdyCond(1.0, (dimen - 1) * h) +
-                                        h * h * Load((dimen - 1) * h,
-                                                     (dimen - 1) * h);
+    ptr[locate(dimen1, dimen1)] =
+            UpperBdyCond(dimen1 * h, 1.0) + RightBdyCond(1.0, dimen1 * h)
+            + h * h * Load(dimen1 * h,dimen1 * h);
 }
 
 // free-matrix 's operator : acting on a VEC object
 void MatFree::Apply(const VEC &x, VEC &y) const {
-    const DBL *x_data;
-    DBL *y_data;
+    const DBL *x_val;
+    x.GetArray(&x_val);
 
-    x.GetArray(&x_data);
     y.SetValues(x.GetSize(), 0.0);
-
-    y.GetArray(&y_data);
+    DBL *y_val;
+    y.GetArray(&y_val);
 
     const int dimen1 = dimen - 1;
     int lower, left, center, right, upper;
 
     // interior points
-    for (int k = 2; k <= nrow - 2; ++k) {
-        for (int j = 2; j <= ncol - 2; ++j) {
+    for ( int k = 2; k < nrow - 1; ++k ) {
+        for ( int j = 2; j < ncol - 1; ++j ) {
             center = (k - 1) * dimen1 + j - 1;
             lower  = center - dimen1;
             left   = center - 1;
             right  = center + 1;
             upper  = center + dimen1;
-            y_data[center] = -x_data[lower] - x_data[left] + 4.0 * x_data[center] -
-                    x_data[right] - x_data[upper];
+            y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center]
+                            -x_val[right] - x_val[upper];
         }
     }
 
     // lower boundary
-    for (int j = 2; j <= ncol - 2; ++j) {
+    for ( int j = 2; j < ncol - 1; ++j ) {
         center = j - 1;
         left   = center - 1;
         right  = center + 1;
         upper  = center + dimen1;
-        y_data[center] = -x_data[left] + 4.0 * x_data[center] - x_data[right] -
-                x_data[upper];
+        y_val[center] = -x_val[left] + 4.0 * x_val[center] - x_val[right] 
+                        -x_val[upper];
     }
 
     // upper boundary
-    for (int j = 2; j <= ncol - 2; ++j) {
+    for ( int j = 2; j < ncol - 1; ++j ) {
         center = (nrow - 2) * dimen1 + j - 1;
         lower  = center - dimen1;
         left   = center - 1;
         right  = center + 1;
-        y_data[center] = -x_data[lower] - x_data[left] + 4.0 * x_data[center] -
-                x_data[right];
+        y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center] 
+                        -x_val[right];
     }
 
     // left boundary
-    for (int k = 2; k <= nrow - 2; ++k) {
+    for ( int k = 2; k < nrow - 1; ++k ) {
         center = (k - 1) * dimen1;
         lower  = center - dimen1;
         right  = center + 1;
         upper  = center + dimen1;
-        y_data[center] = -x_data[lower] + 4.0 * x_data[center] - x_data[right] -
-                x_data[upper];
+        y_val[center] = -x_val[lower] + 4.0 * x_val[center] - x_val[right]
+                        -x_val[upper];
     }
 
     // right boundary
-    for (int k = 2; k <= nrow - 2; ++k) {
+    for ( int k = 2; k < nrow - 1; ++k ) {
         center = (k - 1) * dimen1 + ncol - 2;
         lower  = center - dimen1;
         left   = center - 1;
         upper  = center + dimen1;
-        y_data[center] = -x_data[lower] - x_data[left] + 4.0 * x_data[center] -
-                x_data[upper];
+        y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center]
+                        -x_val[upper];
     }
 
     // left lower corner
     center = locate(1, 1);
     right  = locate(1, 2);
     upper  = locate(2, 1);
-    y_data[center] = 4.0 * x_data[center] - x_data[right] - x_data[upper];
+    y_val[center] = 4.0 * x_val[center] - x_val[right] - x_val[upper];
 
     // left upper corner
     left   = locate(1, ncol - 2);
     center = locate(1, ncol - 1);
     right  = locate(2, ncol - 1);
-    y_data[center] = -x_data[left] + 4.0 * x_data[center] - x_data[right];
+    y_val[center] = -x_val[left] + 4.0 * x_val[center] - x_val[right];
 
     // right lower corner
     lower  = locate(nrow - 2, 1);
     center = locate(nrow - 1, 1);
     right  = locate(nrow - 1, 2);
-    y_data[center] = -x_data[lower] + 4.0 * x_data[center] - x_data[right];
+    y_val[center] = -x_val[lower] + 4.0 * x_val[center] - x_val[right];
 
     // right upper corner
     lower  = locate(nrow - 2, ncol - 1);
     left   = locate(nrow - 1, ncol - 2);
     center = locate(nrow - 1, ncol - 1);
-    y_data[center] = -x_data[lower] - x_data[left] + 4.0 * x_data[center];
-
-    x_data = nullptr;
-    y_data = nullptr;
+    y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center];
 }
 
 int main(int argc, char *args[]) {
@@ -188,8 +186,7 @@ int main(int argc, char *args[]) {
     param.SetRestart(20);
     param.Print();
 
-    const INT numTotalMesh = 2; // number of meshes in total
-    INT mesh = 1; // number of mesh refinement cycles
+    INT mesh = 0; // number of mesh refinement cycles
     DBL h = 0.0; // mesh size in X and Y directions
     GetWallTime timer;
 
@@ -198,9 +195,8 @@ int main(int argc, char *args[]) {
 
     VEC b, x;
 
-    while (mesh < numTotalMesh) {
+    while ( mesh < numTotalMesh ) {
 
-        //dimen *= 2;
         h = 1.0 / dimen;
         std::cout << "(dimen-1)*(dimen-1) : " << (dimen - 1) * (dimen - 1)
                   << std::endl;
@@ -269,8 +265,9 @@ int main(int argc, char *args[]) {
                       << log(sqrt(norm2Last) / sqrt(norm2)) / log(2) << std::endl;
         }
 
-        ++mesh;
         norm2Last = norm2; // store the previous error in L2-norm
+        dimen *= 2; // refine the grid
+        ++mesh;
     } // end while
 
     if (markAllocDone) delete[] ptr;
