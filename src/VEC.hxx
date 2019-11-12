@@ -32,56 +32,62 @@ public:
     explicit VEC() : values(0), size(0) {}
 
     /// Assign the size and the same value to a VEC object
-    explicit VEC(const INT& size, const DBL& value=0.0);
+    explicit VEC(const INT &size, const DBL &value = 0.0);
 
     /// Assign a vector object to a VEC object
-    explicit VEC(const std::vector<DBL>& vt);
+    explicit VEC(const std::vector<DBL> &vt);
 
     /// Assign a const VEC object to a VEC object
-    VEC(const VEC& v);
+    VEC(const VEC &v);
 
     /// Assign a DBL array to a VEC object
-    explicit VEC(const INT& size, const DBL *ptr);
+    explicit VEC(const INT &size, const DBL *ptr);
 
     /// Default destructor
     ~VEC() = default;
 
     /// Overload = operator
-    VEC& operator=(const VEC& v);
+    VEC &operator=(const VEC &v);
 
     /// Overload [] operator, entries can be modified
-    DBL& operator[](const INT& position);
+    DBL &operator[](const INT &position);
 
     /// Overload [] operator, entries cannot be modified
-    const DBL& operator[](const INT& position) const;
+    const DBL &operator[](const INT &position) const;
 
     /// Overload += operator
-    VEC& operator+=(const VEC& v);
+    VEC &operator+=(const VEC &v);
 
     /// Overload -= operator
-    VEC& operator-=(const VEC& v);
+    VEC &operator-=(const VEC &v);
 
     /// Set the size of VEC object and reserve memory
-    void Reserve(const INT& size);
+    void Reserve(const INT &size);
 
     /// Shrink *this 's memory to this->size
     void ShrinkToSize();
 
     /// Assign the size and the same value to a VEC object
-    void SetValues(const INT& size, const DBL& value = 0.0);
+    void SetValues(const INT &size, const DBL &value = 0.0);
 
     /// Assign a vector object to a VEC object
-    void SetValues(const std::vector<DBL>& vt);
+    void SetValues(const std::vector<DBL> &vt);
 
     /// Assign a DBL array to a VEC object, user should allocate memory for array
-    void SetValues(const INT& size, const DBL *array);
+    void SetValues(const INT &size, const DBL *array);
 
     /// Get the value of (*this)[position]
-    DBL GetValue(const INT& position) const;
+    DBL GetValue(const INT &position) const;
 
     /// Get "array" = the set of { this->values[indexPtr[j] mod this->size ] } and
     // "size" is the size of "indexPtr" and "array"
-    void GetValues(const INT &size , const INT *indexPtr, DBL *array) const;
+    void GetValues(const INT &size, const INT *indexPtr, DBL *array) const;
+
+    /// pointer points this->values
+    void GetArray(DBL **array);
+
+    /// pointer points this->values
+    void GetArray(const DBL **array) const;
 
     /// Get the size of *this
     INT GetSize() const;
@@ -90,37 +96,37 @@ public:
     INT GetCapacity() const;
 
     /// Scale (*this)[j] = a * (*this)[j] by a scalar
-    void Scale(const DBL& a);
+    void Scale(const DBL &a);
 
     /// Scale by a vector (*this)[j] *= v[j]
-    void PointwiseMult(const VEC& v);
+    void PointwiseMult(const VEC &v);
 
     /// Compute (*this)[j] = 1 / (*this)[j]
     void Reciprocal();
 
     /// Inverse scale by a nonzero vector (*this)[j] = (*this)[j] / v[j]
-    void PointwiseDivide(const VEC& v);
+    void PointwiseDivide(const VEC &v);
 
     /// Copy *this to v
-    void CopyTo(VEC& v) const;
+    void CopyTo(VEC &v) const;
 
     /// Shift (*this)[j] += a by a scalar
-    void Shift(const DBL& a);
+    void Shift(const DBL &a);
 
     /// Compute *this = abs(*this)
     void Abs();
 
     /// y = y + a * x
-    void AXPY(const DBL& a, const VEC& x);
+    void AXPY(const DBL &a, const VEC &x);
 
     /// y = x + a * y
-    void XPAY(const DBL& a, const VEC& x);
+    void XPAY(const DBL &a, const VEC &x);
 
     /// *this = a * *this + b * v
-    void AXPBY(const DBL& a, const DBL& b, const VEC& v);
+    void AXPBY(const DBL &a, const DBL &b, const VEC &v);
 
     /// *this = a * v1 + b * v2
-    void WAXPBY(const DBL& a, const VEC& v1, const DBL& b, const VEC& v2);
+    void WAXPBY(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2);
 
     /// Find max(*this)
     DBL Max() const;
@@ -135,7 +141,7 @@ public:
     DBL NormInf() const;
 
     /// Dot product of with v
-    DBL Dot(const VEC& v) const;
+    DBL Dot(const VEC &v) const;
 };
 
 #endif /* end if for __VEC_HEADER__ */
