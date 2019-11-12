@@ -4,8 +4,9 @@
 
 #include "BiCGStab.hxx"
 #include <ios>
-#include "PCG.hxx"
+#include "PCD.hxx"
 #include "Print.hxx"
+
 
 /// check and allocate memory
 FaspRetCode
