@@ -59,7 +59,7 @@ public:
     virtual void Apply(const VEC& x,VEC& y) const {throw "Not supported!"; };
 };
 
-
+#if 0
 // Identity linear operator
 class IdentityLOP : public LOP {
 public:
@@ -73,7 +73,7 @@ public:
 
     virtual void Apply(const VEC& x, VEC& y) const { y = x; }
 };
-
+#endif
 
 #endif /* end if for __LOP_HEADER__ */
 
