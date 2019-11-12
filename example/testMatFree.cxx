@@ -87,88 +87,91 @@ static void Rhs(INT dimen, DBL *ptr) {
 void MatFree::Apply(const VEC &x, VEC &y) const {
     const DBL *x_data;
     DBL *y_data;
+
     x.GetArray(&x_data);
     y.SetValues(x.GetSize(), 0.0);
+
     y.GetArray(&y_data);
-    INT first, second, third, fourth, fifth;
+
+    const int dimen1 = dimen - 1;
+    int lower, left, center, right, upper;
 
     // interior points
-    for (INT k = 2; k <= nrow - 2; ++k) {
-        for (INT j = 2; j <= ncol - 2; ++j) {
-            third = (k - 1) * (dimen - 1) + j - 1;
-            first = third - (dimen - 1);
-            second = third - 1;
-            fourth = third + 1;
-            fifth = third + (dimen - 1);
-
-            y_data[third] = -x_data[first] - x_data[second] + 4.0 * x_data[third] -
-                            x_data[fourth] - x_data[fifth];
+    for (int k = 2; k <= nrow - 2; ++k) {
+        for (int j = 2; j <= ncol - 2; ++j) {
+            center = (k - 1) * dimen1 + j - 1;
+            lower  = center - dimen1;
+            left   = center - 1;
+            right  = center + 1;
+            upper  = center + dimen1;
+            y_data[center] = -x_data[lower] - x_data[left] + 4.0 * x_data[center] -
+                    x_data[right] - x_data[upper];
         }
     }
 
-    // left boundary
-    for (INT j = 2; j <= ncol - 2; ++j) {
-        third = j - 1;
-        second = third - 1;
-        fourth = third + 1;
-        fifth = third + (dimen - 1);
-        y_data[third] = -x_data[second] + 4.0 * x_data[third] - x_data[fourth] -
-                        x_data[fifth];
-    }
-
-    // right boundary
-    for (INT j = 2; j <= ncol - 2; ++j) {
-        third = (nrow - 2) * (dimen - 1) + j - 1;
-        first = third - (dimen - 1);
-        second = third - 1;
-        fourth = third + 1;
-        y_data[third] = -x_data[first] - x_data[second] + 4.0 * x_data[third] -
-                        x_data[fourth];
-    }
-
     // lower boundary
-    for (INT k = 2; k <= nrow - 2; ++k) {
-        third = (k - 1) * (dimen - 1);
-        first = third - (dimen - 1);
-        fourth = third + 1;
-        fifth = third + (dimen - 1);
-        y_data[third] = -x_data[first] + 4.0 * x_data[third] - x_data[fourth] -
-                        x_data[fifth];
+    for (int j = 2; j <= ncol - 2; ++j) {
+        center = j - 1;
+        left   = center - 1;
+        right  = center + 1;
+        upper  = center + dimen1;
+        y_data[center] = -x_data[left] + 4.0 * x_data[center] - x_data[right] -
+                x_data[upper];
     }
 
     // upper boundary
-    for (INT k = 2; k <= nrow - 2; ++k) {
-        third = (k - 1) * (dimen - 1) + ncol - 2;
-        first = third - (dimen - 1);
-        second = third - 1;
-        fifth = third + (dimen - 1);
-        y_data[third] = -x_data[first] - x_data[second] + 4.0 * x_data[third] -
-                        x_data[fifth];
+    for (int j = 2; j <= ncol - 2; ++j) {
+        center = (nrow - 2) * dimen1 + j - 1;
+        lower  = center - dimen1;
+        left   = center - 1;
+        right  = center + 1;
+        y_data[center] = -x_data[lower] - x_data[left] + 4.0 * x_data[center] -
+                x_data[right];
+    }
+
+    // left boundary
+    for (int k = 2; k <= nrow - 2; ++k) {
+        center = (k - 1) * dimen1;
+        lower  = center - dimen1;
+        right  = center + 1;
+        upper  = center + dimen1;
+        y_data[center] = -x_data[lower] + 4.0 * x_data[center] - x_data[right] -
+                x_data[upper];
+    }
+
+    // right boundary
+    for (int k = 2; k <= nrow - 2; ++k) {
+        center = (k - 1) * dimen1 + ncol - 2;
+        lower  = center - dimen1;
+        left   = center - 1;
+        upper  = center + dimen1;
+        y_data[center] = -x_data[lower] - x_data[left] + 4.0 * x_data[center] -
+                x_data[upper];
     }
 
     // left lower corner
-    third = locate(1, 1);
-    fourth = locate(1, 2);
-    fifth = locate(2, 1);
-    y_data[third] = 4.0 * x_data[third] - x_data[fourth] - x_data[fifth];
+    center = locate(1, 1);
+    right  = locate(1, 2);
+    upper  = locate(2, 1);
+    y_data[center] = 4.0 * x_data[center] - x_data[right] - x_data[upper];
 
     // left upper corner
-    second = locate(1, ncol - 2);
-    third = locate(1, ncol - 1);
-    fourth = locate(2, ncol - 1);
-    y_data[third] = -x_data[second] + 4.0 * x_data[third] - x_data[fourth];
+    left   = locate(1, ncol - 2);
+    center = locate(1, ncol - 1);
+    right  = locate(2, ncol - 1);
+    y_data[center] = -x_data[left] + 4.0 * x_data[center] - x_data[right];
 
     // right lower corner
-    first = locate(nrow - 2, 1);
-    third = locate(nrow - 1, 1);
-    fourth = locate(nrow - 1, 2);
-    y_data[third] = -x_data[first] + 4.0 * x_data[third] - x_data[fourth];
+    lower  = locate(nrow - 2, 1);
+    center = locate(nrow - 1, 1);
+    right  = locate(nrow - 1, 2);
+    y_data[center] = -x_data[lower] + 4.0 * x_data[center] - x_data[right];
 
     // right upper corner
-    first = locate(nrow - 2, ncol - 1);
-    second = locate(nrow - 1, ncol - 2);
-    third = locate(nrow - 1, ncol - 1);
-    y_data[third] = -x_data[first] - x_data[second] + 4.0 * x_data[third];
+    lower  = locate(nrow - 2, ncol - 1);
+    left   = locate(nrow - 1, ncol - 2);
+    center = locate(nrow - 1, ncol - 1);
+    y_data[center] = -x_data[lower] - x_data[left] + 4.0 * x_data[center];
 
     x_data = nullptr;
     y_data = nullptr;
