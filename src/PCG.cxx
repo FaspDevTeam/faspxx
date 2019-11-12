@@ -11,8 +11,9 @@
 
 #include <iostream>
 #include <iomanip>
-#include "PCG.hxx"
+#include "PCD.hxx"
 #include "Print.hxx"
+#include "PCG.hxx"
 
 // Assign param to this->param
 FaspRetCode PCG::Setup(const LOP& A, const VEC& b, VEC& x, const IterParam& param) {
@@ -38,7 +39,7 @@ FaspRetCode PCG::Setup(const LOP& A, const VEC& b, VEC& x, const IterParam& para
 }
 
 // Assign lop to *this
-void PCG::SetupPCD(const LOP* lop) {
+void PCG::SetupPCD(LOP* lop) {
     this->lop = lop;
 }
 

@@ -20,7 +20,7 @@
 
 class PCG {
 private:
-    const LOP* lop;
+    LOP* lop;
     VEC rk;
     VEC pk;
     VEC zk;
@@ -35,7 +35,7 @@ public:
     FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x,const IterParam& param);
 
     /// build preconditioner operator
-    void SetupPCD(const LOP* lop);
+    void SetupPCD(LOP* lop);
 
     /// solve by PCG
     FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x,IterParam& param);
@@ -47,7 +47,7 @@ public:
     void Clean();
 
     /// destructor
-    ~PCG() {};
+    ~PCG(){};
 };
 
 #endif /* end if for __PCG_HEADER__ */
