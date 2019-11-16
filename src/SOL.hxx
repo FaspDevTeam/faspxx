@@ -26,7 +26,7 @@ protected:
     DBL absTol;     ///< Tolerance for absolute residual
     INT restart;    ///< Tolerance for absolute residual
     SOLType type;   ///< solver solverffftype
-    bool view;
+    bool view; // 查看所有参数
 
     /// Warning for actual relative residual
     void RealRes(DBL relres);
@@ -69,19 +69,19 @@ public:
     void SetRestart(INT restart); //fff放到gmres的子类里面似乎更好,因为不是所有的sol都要有这个参数
 
     /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
-    FaspRetCode SetFromFile(const char* file=NULL, const char* prefix=NULL);
+    FaspRetCode SetOptionsFromFile(const char* file=NULL, const char* prefix=NULL);
 
     /// check and allocate memory
-    virtual FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x,const IterParam& param) = 0;
+    virtual FaspRetCode Setup(const LOP& A,const VEC& b, VEC& x) = 0;
 
     /// build preconditioner operator
-    virtual void SetupPCD(LOP* lop)
+    virtual void SetPC(LOP* lop)
     {
         FASPXX_ABORT("Not supported!");
     }
 
     /// solve by SOL
-    virtual FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x,IterParam& param) = 0;
+    virtual FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x) = 0;
 
     /// clean preconditioner operator
     virtual void CleanPCD(); //fff不应该这里来清理,似乎应该有子类的成员函数来清理

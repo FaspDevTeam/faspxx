@@ -3,6 +3,7 @@
  */
 
 #include "SOL.hxx"
+#include "utils.hxx"
 #include<sstream>
 #include <cstring>
 
@@ -28,7 +29,8 @@ void SOL::DiffRes(DBL reldiff, DBL relres) {
 void SOL::PrintInfo(const PRTLVL &verbose, const INT &iter, const DBL &resRel,
                     const DBL &resAbs, const DBL &factor) {
     if (verbose > PRINT_SOME || (verbose > PRINT_NONE && iter % 20 == 0)) {
-        if (iter == 0) {
+        if (iter == 0)
+        {
             std::cout << "--------------------------------------------------\n";
             std::cout << "It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
             std::cout << "--------------------------------------------------\n";
@@ -94,7 +96,7 @@ void SOL::SetRestart(INT restart) {
 }
 
 /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
-FaspRetCode SOL::SetFromFile(const char* file, const char* prefix)
+FaspRetCode SOL::SetOptionsFromFile(const char* file, const char* prefix)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
@@ -135,25 +137,17 @@ FaspRetCode SOL::SetFromFile(const char* file, const char* prefix)
     }
 
     // TODO: 把下面的对每行处理的代码写成一个独立的函数
-    std::stringstream ss;
-    std::string line, param, value, buff;
+    std::string line, param, value;
     while (std::getline(input, line))
     {
-        line.erase(0, line.find_first_not_of(' '));//删除行首空格
-        line.erase(line.find_last_not_of(' ') + 1);//删除行末空格
+        if (!ProcessLine(line, param, value)) continue;
 
-        if (line.empty())   continue; // 跳过空白行
-        if (line[0] == '#') continue; // 跳过注释行
+        if (prefix)
+        {
+            if (param.find(prefix) == param.npos) continue;
+        }
 
-        ss.clear();
-        ss.str(line);
-        std::getline(ss, param, ' '); // 这里的 ' ' 有问题fff
-        std::getline(ss, value, ' ');
-
-        if (prefix != NULL && param.find(prefix) == param.npos) continue;
-
-        cout << "before|||" << param << "|||" << value << "|||" << endl;
-        if (prefix != NULL)
+        if (prefix)
         {
             std::string prefix_(prefix);
             size_t pos = param.find(prefix_);
@@ -161,12 +155,15 @@ FaspRetCode SOL::SetFromFile(const char* file, const char* prefix)
             {
                 param.erase(pos, prefix_.length());
             }
-        } else param[0] = '_'; // 把-sol改成_sol,方便下面的赋值
-        cout << " after|||" << param << "|||" << value << "|||" << endl;
+        }
+        else
+        {
+            param[0] = '_'; // 把-sol改成_sol,方便下面的赋值
+        }
 
         if (param == "_sol_type")
         {
-            if (value == "cg")        type = _PCG;
+            if (value == "cg")         type = _PCG;
             else if (value == "gmres") type = _GMRES;
             else if (value == "none")  type = _COUNT;
             else                       type = _COUNT;
@@ -195,15 +192,15 @@ FaspRetCode SOL::SetFromFile(const char* file, const char* prefix)
         {
             view = true;
         }
-        else
-        {
-            FASPXX_WARNING("Not supported parameter!");
-        }
+//        else
+//        {
+//            FASPXX_WARNING("Not supported parameter!");
+//        }
     }
     input.close();
     if (view)
     {
-        cout << "Parameters for sol " << prefix << '\n'
+        cout << "Parameters for sol " //<< prefix << '\n'
             << "Krylov method type: " << type << '\n'
             << "relative tolerance: " << relTol << '\n'
             << "absolute tolerance: " << absTol << '\n'

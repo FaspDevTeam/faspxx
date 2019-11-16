@@ -16,7 +16,8 @@
 #include "PCG.hxx"
 
 // Assign param to this->param
-FaspRetCode PCG::Setup(const LOP& A, const VEC& b, VEC& x, const IterParam& param) {
+FaspRetCode PCG::Setup(const LOP& A, const VEC& b, VEC& x)
+{
     if (x.GetSize() != A.GetColSize() || b.GetSize() != A.GetRowSize() ||
         A.GetRowSize() != A.GetColSize())
         return FaspRetCode::ERROR_NONMATCH_SIZE;
@@ -32,23 +33,24 @@ FaspRetCode PCG::Setup(const LOP& A, const VEC& b, VEC& x, const IterParam& para
     }
 
     /// identical preconditioner operator by default
-    if (lop == nullptr)
-        lop = new IdentityLOP(len); //fff这样不太好,容易忘记delete这个lop. 可以强制传入 pc
+    if (pc == nullptr)
+        pc = new IdentityLOP(len);
 
     return FaspRetCode::SUCCESS;
 }
 
 // Assign lop to *this
-void PCG::SetupPCD(LOP* lop) {
-    this->lop = lop;
+void PCG::SetPC(LOP* lop)
+{
+    this->pc = lop;
 }
 
 /// Solve by PCG
-FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
-
+FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
+{
     const unsigned MaxStag = 20;
     const INT len = b.GetSize();
-    const DBL maxdiff = 1e-4 * param.relTol; // Stagnation tolerance
+    const DBL maxdiff = 1e-4 * relTol; // Stagnation tolerance
     const DBL solinftol = 1e-20; // Infinity norm tolerance
 
     // Local variables
@@ -59,67 +61,62 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
     DBL factor, alpha, beta, tmpa, tmpb;
 
     // Output iterative method info
-    if (param.verbose > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n";
+    if (verbose > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n"; // fff建议不要有这些输出,否则程序运行起来会议一堆这样的输出.如果非要输出可以定义宏,全局可以打开关闭
 
     // Initial iteration
-    param.numIter = 0;
+    int iter = 0;
 
-    // Compute r_k = b - A * x
-    A.Apply(x, this->rk);
-    this->rk.XPAY(-1.0, b);
+    A.Apply(x, rk); // A * x -> rk
+    rk.XPAY(-1.0, b); // b - rk -> rk
 
-    // Apply preconditioner z_k = B(r_k)
-    this->lop->Apply(this->rk, this->zk);
+    pc->Apply(rk, zk); // Apply preconditioner z_k = B(r_k)
 
     // Compute initial residual
-    tmpAbs = this->rk.Norm2();
+    tmpAbs = rk.Norm2();
     denAbs = (1e-20 > tmpAbs) ? 1e-20 : tmpAbs;
     resRel = tmpAbs / denAbs;
 
     // If initial residual is already small, no need to iterate
-    if (resRel < param.relTol || tmpAbs < param.absTol) goto FINISHED;
+    if (resRel < relTol || tmpAbs < absTol) goto FINISHED;
 
     // Prepare for the main loop
-    PrintInfo(param.verbose, param.numIter, resRel, tmpAbs, 0.0);
-    this->pk = this->zk;
-    tmpa = this->zk.Dot(this->rk);
+    pk = zk;
+    tmpa = zk.Dot(rk);
 
     // Main PCG loop
-    while (param.numIter < param.maxIter) {
+    while (iter < maxIter)
+    {
+        iter++; // iteration count
 
-        ++param.numIter; // iteration count
+        A.Apply(pk, ax); // ax = A * p_k
 
-        // ax = A * p_k
-        A.Apply(this->pk, this->ax);
-
-        // alpha_k = (z_{k-1},r_{k-1})/(A*p_{k-1},p_{k-1})
-        tmpb = this->ax.Dot(this->pk);
+        // alpha_k = (z_{k-1}, r_{k-1})/(A*p_{k-1},p_{k-1})
+        tmpb = ax.Dot(pk);
         if (fabs(tmpb) > 1e-40) alpha = tmpa / tmpb;
-        else {
+        else
+        {
             FASPXX_WARNING("Divided by zero!"); // Possible breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
             goto FINISHED;
         }
 
-        // x_k = x_{k-1} + alpha_k*p_{k-1}
-        x.AXPY(alpha, this->pk);
-
-        // r_k = r_{k-1} - alpha_k*A*p_{k-1}
-        this->rk.AXPY(-alpha, this->ax);
+        x.AXPY(alpha, pk); // x_k = x_{k-1} + alpha_k*p_{k-1}
+        rk.AXPY(-alpha, ax); // r_k = r_{k-1} - alpha_k*A*p_{k-1}
 
         // Compute norm of residual
-        resAbs = this->rk.Norm2();
+        resAbs = rk.Norm2();
         resRel = resAbs / denAbs;
         factor = resAbs / tmpAbs;
 
         // Output iteration information if needed
-        PrintInfo(param.verbose, param.numIter, resRel, tmpAbs, factor);
+//        PrintInfo(verbose, iter, resRel, tmpAbs, factor);
 
-        if (factor > 0.9) { // Only check when converge slowly
+        if (factor > 0.9) // Only check when converge slowly
+        {
             // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
             DBL norminf = x.NormInf();
             if (norminf < solinftol) {
-                if (param.verbose > PRINT_MIN)
+                if (verbose > PRINT_MIN)
                     FASPXX_WARNING("Iteration stopped -- solution almost zero!");
                 errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                 break;
@@ -128,7 +125,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
             // Check II: if relative difference stagnated, try to restart
             DBL reldiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
             if ((stagStep <= MaxStag) && (reldiff < maxdiff)) {
-                if (param.verbose > PRINT_SOME) {
+                if (verbose > PRINT_SOME) {
                     DiffRes(reldiff, resRel);
                     FASPXX_WARNING("Iteration restarted -- stagnation!");
                 }
@@ -138,12 +135,12 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
                 this->rk.XPAY(-1.0,b);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
-                if (param.verbose > PRINT_SOME) RealRes(resRel);
+                if (verbose > PRINT_SOME) RealRes(resRel);
 
-                if (resRel < param.relTol) break;
+                if (resRel < relTol) break;
                 else {
                     if (stagStep >= MaxStag) {
-                        if (param.verbose > PRINT_MIN)
+                        if (verbose > PRINT_MIN)
                             FASPXX_WARNING("Iteration stopped -- stagnation!");
                         errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                         break;
@@ -155,7 +152,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
         } // End of check I and II
 
         // Check III: prevent false convergence
-        if (resRel < param.relTol) {
+        if (resRel < relTol) {
             // Compute true residual r = b - Ax and update residual
             //A->YMAX(b, x, this->rk);
             A.Apply(x,this->rk);
@@ -167,15 +164,15 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
             resRel = resAbs / denAbs;
 
             // Check convergence
-            if (resRel < param.relTol) break;
+            if (resRel < relTol) break;
 
-            if (param.verbose >= PRINT_MORE) {
+            if (verbose >= PRINT_MORE) {
                 Compres(updated_resRel);
                 RealRes(resRel);
             }
 
-            if (moreStep >= param.restart) {
-                if (param.verbose > PRINT_MIN)
+            if (moreStep >= restart) {
+                if (verbose > PRINT_MIN)
                     FASPXX_WARNING("The tolerence might be too small!");
                 errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
@@ -190,41 +187,43 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x, IterParam& param) {
         tmpAbs = resAbs;
 
         // Apply preconditioner z_k = B(r_k)
-        this->lop->Apply(this->rk, this->zk);
+        pc->Apply(rk, zk);
 
         // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
-        tmpb = this->zk.Dot(this->rk);
+        tmpb = zk.Dot(rk);
         beta = tmpb / tmpa;
         tmpa = tmpb;
 
         // Compute p_k = z_k + beta_k*p_{k-1}
-        this->pk.XPAY(beta, this->zk);
+        pk.XPAY(beta, zk);
 
     } // End of main PCG loop
 
     FINISHED: // Finish iterative method
-    PrintFinal(param.verbose, param.numIter, param.maxIter, resRel);
+//    PrintFinal(verbose, iter, maxIter, resRel);
 
     // Compute final residual norms
-    param.normInf = rk.NormInf();
-    param.norm2 = rk.Norm2();
+//    param.normInf = rk.NormInf();
+//    param.norm2 = rk.Norm2();
 
     return errorCode;
 }
 
 /// Clean up preconditioner. fff应该不需要这个:pc由外面换进来,应该由外面清理它的内存
-void PCG::CleanPCD() {
+void PCG::CleanPCD()
+{
     LOP* lop;
-    this->lop = lop;
+    pc = lop;
 }
 
 /// Release temporary memory
-void PCG::Clean() {
+void PCG::Clean()
+{
     VEC zero;
-    this->pk = zero;
-    this->rk = zero;
-    this->zk = zero;
-    this->ax = zero;
+    pk = zero;
+    rk = zero;
+    zk = zero;
+    ax = zero;
 }
 
 /*---------------------------------*/

@@ -108,15 +108,17 @@ int Test_PCG(int argc, char** argv)
     const char* vec_file = "";
     const char* initial_guess = "";
     bool print_level = false;
+    const char* opts = "../data/multiple_sol.opts";
+    const char* prefix = "-solver1";
 
     Parameters params(argc, argv);
     params.AddParam(&mat_file, "-mat", "Left hand side of linear system");
     params.AddParam(&vec_file, "-vec", "Right hand side of linear system");
     params.AddParam(&initial_guess, "-initial", "Initial guess of solution");
     params.AddParam(&print_level, "-level", "print level");
+    params.AddParam(&opts, "-opts_file", "Solver parameter file");
+    params.AddParam(&prefix, "-pref", "solver parameter prefix in file");
     params.Parse();
-    params.PrintHelp(cout << "jjjjjjjjjjjjjjjjjjjjjjjjjj");
-    params.PrintParams(cout << "hhhhhhhhhhhhhhhhhhhhhhhhhhh");
 
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     GetWallTime timer;
@@ -148,19 +150,15 @@ int Test_PCG(int argc, char** argv)
               << ", nnz = " << nnz << std::endl;
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
-    // Print parameters used by PCG
-    InitParam init;
-    if ( (retCode = ReadParam(argc, argv, init)) < 0 ) return retCode;
-    init.param.Print();
-
     // Setup PCG class
     PCG pcg;
-    pcg.Setup(mat, b, x, init.param);
+    pcg.SetOptionsFromFile(opts, prefix);
+    pcg.Setup(mat, b, x);
 
     // Setup preconditioner
 #if 1
     IdentityLOP lop(row);
-    pcg.SetupPCD(&lop);
+    pcg.SetPC(&lop);
 #else // Todo: Add choices for preconditioner
     std::vector<double> vt;
 mat.GetDiag(vt);
@@ -170,7 +168,7 @@ pcg.SetupPCD(&jac);
 
     // PCG solve
     timer.Start();
-    retCode = pcg.Solve(mat, b, x, init.param);
+    retCode = pcg.Solve(mat, b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     // Clean up preconditioner and solver data
@@ -184,12 +182,7 @@ int main(int argc, char** argv)
 //    Test_Parameter1();
 //    Test_Parameter2(argc, argv);
 
-//    Test_PCG(argc, argv);
-
-//    const char* opts = "../data/single_sol.opts";
-    const char* opts = "../data/multiple_sol.opts";
-    PCG pcg;
-    pcg.SetFromFile(opts);
+    Test_PCG(argc, argv);
 
     cout << "------------------- testSOL.cxx is Good! --------------------" << endl;
     return 0;
