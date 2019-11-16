@@ -11,19 +11,22 @@
 #include "Param.hxx"
 #include <iomanip>
 #include <iostream>
-#include <fstream>
+#include <fstream>  //fff统一将标准库写在前面,自己写的头文件写在后面
 #include "PCD.hxx"
+#include "ErrorLog.hxx"
 
 class SOL{
+private:
+    enum SOLType {_PCG, _GMRES, _BICGSTAB, _COUNT};
 protected:
-    LOP *inlop ;      ///< Preconditioner
-    PRTLVL verbose; ///< Output level
+    LOP* pc ;      ///< Preconditioner, inlopfffpc
+    INT verbose; ///< Output level
     INT maxIter;    ///< Maximal number of iterations
     DBL relTol;     ///< Tolerance for relative residual
     DBL absTol;     ///< Tolerance for absolute residual
     INT restart;    ///< Tolerance for absolute residual
-
-    char *solver;   ///< solver
+    SOLType type;   ///< solver solverffftype
+    bool view;
 
     /// Warning for actual relative residual
     void RealRes(DBL relres);
@@ -44,7 +47,7 @@ protected:
 
 public:
     /// Default constructor
-    SOL():inlop(nullptr),verbose(PRINT_NONE),maxIter(100),relTol(10-4),absTol(10-8),
+    SOL():pc(nullptr),verbose(PRINT_NONE),maxIter(100),relTol(10-4),absTol(10-8),
         restart(25){};
 
     /// constructor
@@ -63,22 +66,25 @@ public:
     void SetAbsTol(DBL absTol);
 
     /// Set 'restart' 's value
-    void SetRestart(INT restart);
+    void SetRestart(INT restart); //fff放到gmres的子类里面似乎更好,因为不是所有的sol都要有这个参数
 
     /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
-    FaspRetCode SetFromFile(const char* file);
+    FaspRetCode SetFromFile(const char* file=NULL, const char* prefix=NULL);
 
     /// check and allocate memory
     virtual FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x,const IterParam& param) = 0;
 
     /// build preconditioner operator
-    void SetupPCD(LOP* lop);
+    virtual void SetupPCD(LOP* lop)
+    {
+        FASPXX_ABORT("Not supported!");
+    }
 
     /// solve by SOL
     virtual FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x,IterParam& param) = 0;
 
     /// clean preconditioner operator
-    void CleanPCD();
+    virtual void CleanPCD(); //fff不应该这里来清理,似乎应该有子类的成员函数来清理
 
     /// Release temporary memory
     virtual void Clean() = 0;

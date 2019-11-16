@@ -17,8 +17,11 @@
 #include "LOP.hxx"
 #include "Param.hxx"
 #include "ErrorLog.hxx"
+#include "SOL.hxx"
 
-class PCG {
+
+class PCG: public SOL
+{
 private:
     LOP* lop;
     VEC rk;

@@ -74,6 +74,9 @@ target_link_libraries(testMatFree faspxx)
 add_executable(testBiCGStab example/testBiCGStab.cxx)
 target_link_libraries(testBiCGStab faspxx)
 
+add_executable(testSOL example/testSOL.cxx)
+target_link_libraries(testSOL faspxx)
+
 # Enable or Disable GoogleTest, default "ON" (disable by "-DGTest=OFF")
 option(GTEST "Enable GoogleTest" ON)
 if ("${GTEST}" STREQUAL ON)
