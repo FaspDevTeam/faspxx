@@ -9,9 +9,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: make directory
+    - name: prepare
       run: mkdir cmake_debug
     - name: cmake
       run: cd cmake_debug && cmake ..
     - name: make
-      run: make
+      run: cd cmake_debug && make
