@@ -1,6 +1,7 @@
 
 #include <cassert>
 #include <iostream>
+
 using namespace std;
 
 #include "../src/SOL.hxx"
@@ -11,21 +12,20 @@ using namespace std;
 #include "../src/ReadCommand.hxx"
 #include "../src/PCG.hxx"
 
-void Test_Parameter1()
-{
+void Test_Parameter1() {
     // ---------------- 3种输入参数的优先级: 命令行参数 > 运行时参数 > 文件参数? -------------------
     // 模拟user在C++源码里面给定的参数
     bool bool_param = 0;
-    int  int_param = 11;
-    double double_param = 3.14159;
-    const char* char_param = "running_parameters";
+    INT int_param = 11;
+    DBL double_param = 3.14159;
+    const char *char_param = "running_parameters";
 
     // 模拟用户输入的文件参数
-    const char* params_file = "./parameters_file";
+    const char *params_file = "./parameters_file";
 
     // 模拟命令行输入参数
-    int _argc = 11;
-    char* _argv[11] = {"execute_file",
+    INT _argc = 11;
+    char *_argv[11] = {"execute_file",
                        "-bool_param", "TRUE",
                        "-int_param", "22",
                        "-double_param", "1.41414",
@@ -40,8 +40,8 @@ void Test_Parameter1()
 
     Parameters params(_argc, _argv);
     params.AddParam(&bool_param, "-bool_param", "bool param help");
-    params.AddParam(&int_param, "-int_param", "int param help");
-    params.AddParam(&double_param, "-double_param", "double param help");
+    params.AddParam(&int_param, "-int_param", "INT param help");
+    params.AddParam(&double_param, "-double_param", "DBL param help");
     params.AddParam(&char_param, "-char_param", "char* param help");
     params.AddParam(&params_file, "-faspxx_opts", "additional parameter file");
     params.Parse();
@@ -55,17 +55,16 @@ void Test_Parameter1()
     assert(params_file == "/home/faspxx_file_parameters.txt");
 }
 
-void Test_Parameter2(int argc, char** argv)
-{
+void Test_Parameter2(INT argc, char **argv) {
     // ---------------- 3种输入参数的优先级: 命令行参数 > 运行时参数 > 文件参数? -------------------
     // 模拟程序运行时参数
     bool bool_param = 0;
-    int  int_param = 0;
-    double double_param = 0.0;
-    const char* char_param = "";
+    INT int_param = 0;
+    DBL double_param = 0.0;
+    const char *char_param = "";
 
     // 模拟文件参数
-    const char* params_file = "";
+    const char *params_file = "";
 
     assert(bool_param == false);
     assert(int_param == 0);
@@ -75,8 +74,8 @@ void Test_Parameter2(int argc, char** argv)
 
     Parameters params(argc, argv);  // 读取命令行参数
     params.AddParam(&bool_param, "-bool_param", "bool param help");
-    params.AddParam(&int_param, "-int_param", "int param help");
-    params.AddParam(&double_param, "-double_param", "double param help");
+    params.AddParam(&int_param, "-int_param", "INT param help");
+    params.AddParam(&double_param, "-double_param", "DBL param help");
     params.AddParam(&char_param, "-char_param", "char* param help");
     params.AddParam(&params_file, "-faspxx_opts", "additional parameter file");
     params.Parse();
@@ -84,32 +83,36 @@ void Test_Parameter2(int argc, char** argv)
 //    params.PrintHelp(cout << "\n");
 }
 
-class Scaling:public LOP {
+class Scaling : public LOP {
 private:
     VEC diag;
 public:
-    Scaling(const std::vector<double>& diag) {
+    Scaling(const std::vector<DBL> &diag) {
         this->diag.SetValues(diag);
         this->nrow = diag.size();
         this->ncol = diag.size();
     }
-    void Apply(const VEC& x, VEC& y) const {
+
+    void Apply(const VEC &x, VEC &y) const {
         y = x;
         y.PointwiseDivide(diag);
     }
 };
 
-int Test_PCG(int argc, char** argv)
-{
+INT Test_PCG(int argc, char **argv) {
 //    Test_Parameter1();
 //    Test_Parameter2(argc, argv);
 
-    const char* mat_file = "../data/fdm_10X10.csr";
-    const char* vec_file = "";
-    const char* initial_guess = "";
-    bool print_level = false;
-    const char* opts = "../data/multiple_sol.opts";
-    const char* prefix = "-solver1";
+    const char *mat_file = "../data/fdm_10X10.csr";
+    const char *vec_file = "";
+    const char *initial_guess = "";
+    //bool print_level = false;
+    PRTLVL print_level = PRINT_NONE;
+    const char *opts = "../data/multiple_sol.opts";
+    const char *prefix = "-solver1";
+    DBL resrel=1e-4;
+    DBL resabs=1e-8;
+    INT restart=20, maxIter=100;
 
     Parameters params(argc, argv);
     params.AddParam(&mat_file, "-mat", "Left hand side of linear system");
@@ -118,6 +121,10 @@ int Test_PCG(int argc, char** argv)
     params.AddParam(&print_level, "-level", "print level");
     params.AddParam(&opts, "-opts_file", "Solver parameter file");
     params.AddParam(&prefix, "-pref", "solver parameter prefix in file");
+    params.AddParam(&resrel, "-resrel", "residual relative tolerance");
+    params.AddParam(&resabs, "-resabs", "residual relative tolerance");
+    params.AddParam(&restart, "-restart", "restart");
+    params.AddParam(&maxIter, "-maxIter", "maximum iteration");
     params.Parse();
 
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
@@ -126,7 +133,7 @@ int Test_PCG(int argc, char** argv)
 
     // Read matrix data file
     MAT mat;
-    if ( (retCode = ReadMat(mat_file, mat)) < 0 ) return retCode;
+    if ((retCode = ReadMat(mat_file, mat)) < 0) return retCode;
     INT row = mat.GetRowSize();
     INT col = mat.GetColSize();
     INT nnz = mat.GetNNZ();
@@ -152,33 +159,33 @@ int Test_PCG(int argc, char** argv)
 
     // Setup PCG class
     PCG pcg;
-    pcg.SetOptionsFromFile(opts, prefix);
+    pcg.SetMaxIter(maxIter);
+    pcg.SetRelTol(resrel);
+    pcg.SetAbsTol(resabs);
+    pcg.SetRestart(restart);
+    pcg.SetPrtLvl(print_level);
+    // pcg.SetOptionsFromFile(opts, prefix);
     pcg.Setup(mat, b, x);
 
+    params.PrintParams(cout<<"\nhhhhhhhhhhhhhhhhhhhhhhhh\n");
     // Setup preconditioner
-#if 1
+
     IdentityLOP lop(row);
     pcg.SetPC(&lop);
-#else // Todo: Add choices for preconditioner
-    std::vector<double> vt;
-mat.GetDiag(vt);
-Scaling jac(vt);
-pcg.SetupPCD(&jac);
-#endif
 
     // PCG solve
     timer.Start();
     retCode = pcg.Solve(mat, b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
+    //pcg.Print();
     // Clean up preconditioner and solver data
     pcg.CleanPCD();
     pcg.Clean();
     return retCode;
 }
 
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
 //    Test_Parameter1();
 //    Test_Parameter2(argc, argv);
 
