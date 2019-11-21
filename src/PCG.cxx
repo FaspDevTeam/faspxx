@@ -80,6 +80,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
     if (resRel < relTol || tmpAbs < absTol) goto FINISHED;
 
     // Prepare for the main loop
+    PrintInfo(verbose,iter,resRel,tmpAbs,0.0);
     pk = zk;
     tmpa = zk.Dot(rk);
 
@@ -109,7 +110,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
         factor = resAbs / tmpAbs;
 
         // Output iteration information if needed
-//        PrintInfo(verbose, iter, resRel, tmpAbs, factor);
+        PrintInfo(verbose, iter, resRel, tmpAbs, factor);
 
         if (factor > 0.9) // Only check when converge slowly
         {
@@ -200,7 +201,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
     } // End of main PCG loop
 
     FINISHED: // Finish iterative method
-//    PrintFinal(verbose, iter, maxIter, resRel);
+    PrintFinal(verbose, iter, maxIter, resRel);
 
     // Compute final residual norms
 //    param.normInf = rk.NormInf();

@@ -4,7 +4,7 @@
 
 #include "SOL.hxx"
 #include "utils.hxx"
-#include<sstream>
+#include <sstream>
 #include <cstring>
 
 //! Warning for actual relative residual
@@ -182,7 +182,19 @@ FaspRetCode SOL::SetOptionsFromFile(const char* file, const char* prefix)
         }
         else if (param == "_sol_printlvl")
         {
-            verbose = std::stoi(value);
+            //verbose = std::stoi(value);
+            if(value=="PRINT_NONE")
+                verbose=PRINT_NONE;
+            else if(value=="PRINT_MIN")
+                verbose=PRINT_MIN;
+            else if(value=="PRINT_SOME")
+                verbose=PRINT_SOME;
+            else if(value=="PRINT_MORE")
+                verbose=PRINT_MORE;
+            else if(value=="PRINT_MAX")
+                verbose=PRINT_MAX;
+            else if(value=="PRINT_ALL")
+                verbose=PRINT_ALL;
         }
         else if (param == "_sol_restart")
         {

@@ -14,13 +14,14 @@
 #include <fstream>  //fff统一将标准库写在前面,自己写的头文件写在后面
 #include "PCD.hxx"
 #include "ErrorLog.hxx"
+#include <cstring>
 
 class SOL{
 private:
     enum SOLType {_PCG, _GMRES, _BICGSTAB, _COUNT};
 protected:
-    LOP* pc ;      ///< Preconditioner, inlopfffpc
-    INT verbose; ///< Output level
+    LOP* pc ;       ///< Preconditioner, inlopfffpc
+    PRTLVL verbose;    ///< Output level
     INT maxIter;    ///< Maximal number of iterations
     DBL relTol;     ///< Tolerance for relative residual
     DBL absTol;     ///< Tolerance for absolute residual
@@ -46,6 +47,7 @@ protected:
                     const DBL& resRel);
 
 public:
+
     /// Default constructor
     SOL():pc(nullptr),verbose(PRINT_NONE),maxIter(100),relTol(10-4),absTol(10-8),
         restart(25){};
