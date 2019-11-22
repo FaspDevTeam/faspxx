@@ -95,40 +95,27 @@ void SOL::SetRestart(INT restart) {
     this->restart = restart;
 }
 
+/// Get residual 's 'l2-norm'
+DBL SOL::GetNorm2(){
+    return this->norm2;
+}
+
+/// Get residual 's 'infty-norm'
+DBL SOL::GetInfNorm(){
+    return this->norminf;
+}
+
+/// Get iterations
+INT SOL::GetIterations(){
+    return this->numIter;
+}
+
 /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
 FaspRetCode SOL::SetOptionsFromFile(const char* file, const char* prefix)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     std::cout << "Reading SOL parameters from disk file " << file << std::endl; //fff这类输出最好有一个全局的控制变量,比如宏 FASPXX_VERBOSE,如果把这类输出无差别地都编译(个人觉得应该用宏控制编译),会有大量的输出
-
-//    std::ifstream in(file);
-//
-//    // Check whether file is openedd successfully
-//    if (!in.is_open()) {
-//        retCode = FaspRetCode::ERROR_OPEN_FILE;
-//        return retCode;
-//    }
-//
-//    // compute total bytes of file
-//    in.seekg(0, std::ios::end);
-//    long long int length = in.tellg();
-//    in.seekg(0, std::ios::beg);
-//
-//    char* buffer; // char * fff char*
-//    char decimal[128];
-//    long long int position; // mark the position of file pointer
-//
-//    try { // catch bad allocation error if it happen
-//        buffer = new char[length]; // apply for dynamic memory
-//    } catch (std::bad_alloc &ex) {
-//        in.close();
-//        retCode = FaspRetCode::ERROR_ALLOC_MEM;
-//        return retCode;
-//    }
-//
-//    in.read(buffer,length); // read the total bytes of file
-//    in.close(); // close the file pointer
 
     std::ifstream input(file);
     if (!input.is_open())

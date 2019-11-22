@@ -27,6 +27,9 @@ protected:
     DBL absTol;     ///< Tolerance for absolute residual
     INT restart;    ///< Tolerance for absolute residual
     SOLType type;   ///< solver solverffftype
+    DBL norm2;      ///< l2-norm
+    DBL norminf;    ///< infty-norm
+    INT numIter;    ///< iterations
     bool view; // 查看所有参数
 
     /// Warning for actual relative residual
@@ -68,7 +71,16 @@ public:
     void SetAbsTol(DBL absTol);
 
     /// Set 'restart' 's value
-    void SetRestart(INT restart); //fff放到gmres的子类里面似乎更好,因为不是所有的sol都要有这个参数
+    void SetRestart(INT restart);
+
+    /// Get residual 's 'l2-norm'
+    DBL GetNorm2();
+
+    /// Get residual 's 'infty-norm'
+    DBL GetInfNorm();
+
+    /// Get iterations
+    INT GetIterations();
 
     /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
     FaspRetCode SetOptionsFromFile(const char* file=NULL, const char* prefix=NULL);
