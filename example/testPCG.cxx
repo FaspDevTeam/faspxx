@@ -78,22 +78,22 @@ int main(int argc, char *args[]) {
 
     // Setup PCG class
     PCG pcg;
-    pcg.Setup(mat, b, x, init.param);
+    pcg.Setup(mat, b, x);
 
     // Setup preconditioner
 #if 1
     IdentityLOP lop(row);
-    pcg.SetupPCD(&lop);
+    pcg.SetPC(&lop);
 #else // Todo: Add choices for preconditioner
     std::vector<double> vt;
     mat.GetDiag(vt);
     Scaling jac(vt);
-    pcg.SetupPCD(&jac);
+    pcg.SetPC(&jac);
 #endif
 
     // PCG solve
     timer.Start();
-    retCode = pcg.Solve(mat, b, x, init.param);
+    retCode = pcg.Solve(mat, b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     // Clean up preconditioner and solver data

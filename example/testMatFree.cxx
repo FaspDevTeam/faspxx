@@ -223,15 +223,15 @@ int main(int argc, char *args[]) {
 
         // create PCG object
         PCG pcg;
-        pcg.Setup(matfree, b, x, param);
+        pcg.Setup(matfree, b, x);
 
         // create identity preconditioner
         IdentityLOP lop((dimen - 1) * (dimen - 1));
-        pcg.SetupPCD(&lop);
+        pcg.SetPC(&lop);
 
         // time
         timer.Start();
-        pcg.Solve(matfree, b, x, param); // solve by free-matrix method
+        pcg.Solve(matfree, b, x); // solve by free-matrix method
         std::cout << "Solving Ax=b costs "
                   << std::fixed << std::setprecision(3)
                   << timer.Stop() << "ms" << std::endl;
