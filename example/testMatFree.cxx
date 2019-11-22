@@ -17,7 +17,7 @@
 #define locate(row, column) (((row) - 1) * (dimen - 1) + (column) - 1)
 
 const INT numTotalMesh = 4; // number of meshes in total
-INT dimen = 256; // number of partitions in X and Y directions
+INT dimen = 16; // number of partitions in X and Y directions
 
 // Todo: Add detailed comments in this example!
 /// \brief Matrix-free linear operator object
@@ -223,6 +223,12 @@ int main(int argc, char *args[]) {
 
         // create PCG object
         PCG pcg;
+        // convergence parameter setting
+        pcg.SetPrtLvl(PRINT_NONE);
+        pcg.SetMaxIter(100000);
+        pcg.SetRestart(20);
+        pcg.SetAbsTol(1e-10);
+        pcg.SetRelTol(1e-6);
         pcg.Setup(matfree, b, x);
 
         // create identity preconditioner
@@ -239,9 +245,9 @@ int main(int argc, char *args[]) {
         pcg.Clean(); // clean preconditioner
 
         std::cout << std::scientific << std::setprecision(4)
-                  << "NumIter : " << param.GetNumIter() << std::endl
-                  << "Norm2   : " << param.GetNorm2() << std::endl
-                  << "NormInf : " << param.GetNormInf() << std::endl;
+                  << "NumIter : " << pcg.GetIterations() << std::endl
+                  << "Norm2   : " << pcg.GetNorm2() << std::endl
+                  << "NormInf : " << pcg.GetInfNorm() << std::endl;
 
         // l2-norm between numerical solution and continuous solution
         DBL norm2; // L2-norm of error
