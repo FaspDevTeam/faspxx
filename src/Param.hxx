@@ -16,7 +16,9 @@
 #include <iostream>
 #include <cstring>
 #include "faspxx.hxx"
+#include "Parameters.hxx"
 
+/*
 enum PRTLVL {
     PRINT_NONE = 0,
     PRINT_MIN  = 2,
@@ -24,7 +26,7 @@ enum PRTLVL {
     PRINT_MORE = 6,
     PRINT_MAX  = 8,
     PRINT_ALL  = 10
-};
+};*/
 
 /// \brief Parameters for Krylov space methods
 class IterParam {

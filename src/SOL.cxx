@@ -3,6 +3,9 @@
  */
 
 #include "SOL.hxx"
+#include "utils.hxx"
+#include <sstream>
+#include <cstring>
 
 //! Warning for actual relative residual
 void SOL::RealRes(DBL relres) {
@@ -26,7 +29,8 @@ void SOL::DiffRes(DBL reldiff, DBL relres) {
 void SOL::PrintInfo(const PRTLVL &verbose, const INT &iter, const DBL &resRel,
                     const DBL &resAbs, const DBL &factor) {
     if (verbose > PRINT_SOME || (verbose > PRINT_NONE && iter % 20 == 0)) {
-        if (iter == 0) {
+        if (iter == 0)
+        {
             std::cout << "--------------------------------------------------\n";
             std::cout << "It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
             std::cout << "--------------------------------------------------\n";
@@ -92,49 +96,139 @@ void SOL::SetRestart(INT restart) {
 }
 
 /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
-FaspRetCode SOL::SetFromFile(const char *file) {
+FaspRetCode SOL::SetOptionsFromFile(const char* file, const char* prefix)
+{
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
-    std::cout << "Reading SOL parameters from disk file " << file << std::endl;
+    std::cout << "Reading SOL parameters from disk file " << file << std::endl; //fff这类输出最好有一个全局的控制变量,比如宏 FASPXX_VERBOSE,如果把这类输出无差别地都编译(个人觉得应该用宏控制编译),会有大量的输出
 
-    std::ifstream in(file);
+//    std::ifstream in(file);
+//
+//    // Check whether file is openedd successfully
+//    if (!in.is_open()) {
+//        retCode = FaspRetCode::ERROR_OPEN_FILE;
+//        return retCode;
+//    }
+//
+//    // compute total bytes of file
+//    in.seekg(0, std::ios::end);
+//    long long int length = in.tellg();
+//    in.seekg(0, std::ios::beg);
+//
+//    char* buffer; // char * fff char*
+//    char decimal[128];
+//    long long int position; // mark the position of file pointer
+//
+//    try { // catch bad allocation error if it happen
+//        buffer = new char[length]; // apply for dynamic memory
+//    } catch (std::bad_alloc &ex) {
+//        in.close();
+//        retCode = FaspRetCode::ERROR_ALLOC_MEM;
+//        return retCode;
+//    }
+//
+//    in.read(buffer,length); // read the total bytes of file
+//    in.close(); // close the file pointer
 
-    // Check whether file is openedd successfully
-    if (!in.is_open()) {
-        retCode = FaspRetCode::ERROR_OPEN_FILE;
-        return retCode;
+    std::ifstream input(file);
+    if (!input.is_open())
+    {
+        FASPXX_WARNING("Not found sol option file!");
     }
 
-    // compute total bytes of file
-    in.seekg(0, std::ios::end);
-    long long int length = in.tellg();
-    in.seekg(0, std::ios::beg);
+    // TODO: 把下面的对每行处理的代码写成一个独立的函数
+    std::string line, param, value;
+    while (std::getline(input, line))
+    {
+        if (!ProcessLine(line, param, value)) continue;
 
-    char *buffer;
-    char decimal[128];
-    long long int position; // mark the position of file pointer
+        if (prefix)
+        {
+            if (param.find(prefix) == param.npos) continue;
+        }
 
-    try { // catch bad allocation error if it happen
-        buffer = new char[length]; // apply for dynamic memory
-    } catch (std::bad_alloc &ex) {
-        in.close();
-        retCode = FaspRetCode::ERROR_ALLOC_MEM;
-        return retCode;
+        if (prefix)
+        {
+            std::string prefix_(prefix);
+            size_t pos = param.find(prefix_);
+            if (pos != std::string::npos)
+            {
+                param.erase(pos, prefix_.length());
+            }
+        }
+        else
+        {
+            param[0] = '_'; // 把-sol改成_sol,方便下面的赋值
+        }
+
+        if (param == "_sol_type")
+        {
+            if (value == "cg")         type = _PCG;
+            else if (value == "gmres") type = _GMRES;
+            else if (value == "none")  type = _COUNT;
+            else                       type = _COUNT;
+        }
+        else if (param == "_sol_rtol")
+        {
+            relTol = std::stod(value);
+        }
+        else if (param == "_sol_atol")
+        {
+            absTol = std::stod(value);
+        }
+        else if (param == "_sol_maxiter")
+        {
+            maxIter = std::stoi(value);
+        }
+        else if (param == "_sol_printlvl")
+        {
+            //verbose = std::stoi(value);
+            if(value=="PRINT_NONE")
+                verbose=PRINT_NONE;
+            else if(value=="PRINT_MIN")
+                verbose=PRINT_MIN;
+            else if(value=="PRINT_SOME")
+                verbose=PRINT_SOME;
+            else if(value=="PRINT_MORE")
+                verbose=PRINT_MORE;
+            else if(value=="PRINT_MAX")
+                verbose=PRINT_MAX;
+            else if(value=="PRINT_ALL")
+                verbose=PRINT_ALL;
+        }
+        else if (param == "_sol_restart")
+        {
+            restart = std::stoi(value);
+        }
+        else if (param == "_sol_view")
+        {
+            view = true;
+        }
+//        else
+//        {
+//            FASPXX_WARNING("Not supported parameter!");
+//        }
     }
-
-    in.read(buffer,length); // read the total bytes of file
-    in.close(); // close the file pointer
-
-
+    input.close();
+    if (view)
+    {
+        cout << "Parameters for sol " //<< prefix << '\n'
+            << "Krylov method type: " << type << '\n'
+            << "relative tolerance: " << relTol << '\n'
+            << "absolute tolerance: " << absTol << '\n'
+            << "maximum iterations: " << maxIter << '\n'
+            << "view: " << view << endl;
+    }
+    return retCode;
 }
 
-/// build preconditioner operator
-void SOL::SetupPCD(LOP* lop){
-    this->inlop=lop;
-}
+///// build preconditioner operator
+//void SOL::SetupPCD(LOP* pc){
+//    this->pc = pc;
+//}
 
 /// clean preconditioner operator
 void SOL::CleanPCD(){
-    if(inlop!= nullptr)
-        delete inlop;
+    if(pc != nullptr)
+        delete pc;
 }
