@@ -15,7 +15,6 @@
 #include <cmath>
 #include "MAT.hxx"
 #include "LOP.hxx"
-#include "Param.hxx"
 #include "ErrorLog.hxx"
 #include "SOL.hxx"
 
@@ -23,7 +22,6 @@
 class PCG: public SOL
 {
 private:
-    LOP* pc; // ffflop改为pc
     VEC rk;
     VEC pk;
     VEC zk;
@@ -31,22 +29,17 @@ private:
 
 public:
     /// constructor by default
-    PCG() : pc(nullptr), rk(0), pk(0),
+    PCG() : rk(0), pk(0),
             zk(0), ax(0){};
 
     /// check and allocate memory
-    /* fff
-     * SetOperator(A)
-     * SetPreconditioner(P)
-     * Solve(x, b)
-     * */
     FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x);
 
     /// build preconditioner operator
     void SetPC(LOP* lop);
 
     /// solve by PCG
-    FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x);
+    FaspRetCode Solve(const VEC& b, VEC& x);
 
     /// clean preconditioner operator
     void CleanPCD();
