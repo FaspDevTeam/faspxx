@@ -16,21 +16,22 @@ BiCGStab::Setup(const LOP &_A, const VEC &b, VEC &x) {
 
     INT len = b.GetSize();
     try {
-        this->r0.SetValues(len, 0.0);
         this->rj.SetValues(len, 0.0);
+        this->r0.SetValues(len, 0.0);
         this->pj.SetValues(len, 0.0);
-        this->gj.SetValues(len, 0.0);
         this->sj.SetValues(len, 0.0);
+        this->ph.SetValues(len, 0.0);
+        this->xh.SetValues(len, 0.0);
         this->qj.SetValues(len, 0.0);
-        this->uj.SetValues(len, 0.0);
+        this->sh.SetValues(len, 0.0);
         this->yj.SetValues(len, 0.0);
-        this->xj.SetValues(len, 0.0);
-        this->tmp.SetValues(len, 0.0);
+        this->xmin.SetValues(len, 0.0);
+        this->tmp.SetValues(len,0.0);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
-    this->A=&_A;
+    this->A = &_A;
 
     /// identical preconditioner operator by default
     if (pc == nullptr) {
@@ -49,185 +50,274 @@ void BiCGStab::SetPC(LOP *lop) {
 /// solve by BiCGStab
 FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
 
-        const unsigned MaxStag = 20;
-        const INT len = b.GetSize();
-        const DBL maxdiff = 1e-4 * relTol; //Stagnation tolerance
-        const DBL solinftol = 1e-20;
+    // local variables
+    DBL n2b;
+    INT stag = 1, moresteps = 1, maxmsteps = 1;
+    INT flag, maxstagsteps, half_step = 0;
+    DBL absres0 = 1e+20, absres = 1e+20, relres = 1e+20;
+    DBL alpha, beta, omega, rho, rho1, rtv, tt;
+    DBL normr, normr_act, normph, normx, imin;
+    DBL norm_sh, norm_xh, normrmin, factor;
 
-        // Local variables
-        FaspRetCode errorCode = FaspRetCode::SUCCESS;
-        unsigned stagStep = 1, moreStep = 1;
-        DBL resAbs = 1e+20, tmpAbs = 1e+20;
-        DBL resRel = 1e+20, denAbs = 1e+20;
-        DBL alphaj, betaj, rjr0star, rjr0startmp, omegaj;
-        DBL tmp12,factor;
+    // Output some info for debuging
+    if (verbose > PRINT_NONE)
+        std::cout<<"\nCalling BiCGstab solver (CSR) ...\n";
 
-        // Output iterative method info
-        if (verbose > PRINT_NONE) std::cout << "\n Calling BiCGStab solver ...\n";
+    // rj = b-A*u
+    rj = b;
+    n2b = rj.Norm2();
 
-        // Initial iteration
+    flag = 1;
+    xmin = x;
+    imin = 0;
+
+    numIter = 0;
+
+    A->Apply(x, tmp);
+
+    rj.AXPY(-1.0, tmp);
+
+    normr = rj.Norm2();
+    normr_act = normr;
+    relres = normr / n2b;
+
+    // if initial residual is small, no need to iterate!
+    if (normr <= absTol || relres<relTol) {
+        flag = 0;
         numIter = 0;
+        goto FINISHED;
+    }
 
-        // r0 = b - A * x_{0}
-        A->Apply(x, this->tmp);
-        this->rj.WAXPBY(1.0, b, -1.0, this->tmp);
+    // output iteration information if needed
+    PrintInfo(verbose, numIter, relres, n2b, 0.0);
 
-        // Compute initial residual
-        tmpAbs=this->rj.Norm2();
-        denAbs=(1e-20>tmpAbs)?1e-20:tmpAbs;
-        resRel=tmpAbs/denAbs;
+    // shadow residual r0 = rj* := rj
+    r0 = rj;
+    normrmin = normr;
 
-        // If initial residual is already small, no need to iterate
-        if(resRel <relTol || tmpAbs<absTol) goto FINISHED;
+    rho = 1.0;
+    omega = 1.0;
+    stag = 0;
+    alpha = 0.0;
 
-        // Prepare for the main loop
-        PrintInfo(verbose,numIter,resRel,tmpAbs,0.0);
+    moresteps = 0;
+    maxmsteps = 10;
+    maxstagsteps = 3;
 
-        // r0_{*} = r0
-        this->r0 = this->rj;
+    // loop over maxit iterations (unless convergence or failure)
+    while(numIter<=maxIter){
+        numIter++;
 
-        // p0 = r0
-        this->pj = this->rj;
+        rho1 = rho;
+        rho = r0.Dot(rj);
 
-        while (true) {
+        if ((rho == 0.0) || (fabs(rho) >= DBL_MAX)) {
+            flag = 4;
+            goto FINISHED;
+        }
 
-            ++numIter;
-            if (numIter > maxIter) {
-                break;
-            }
+        if (numIter == 1) {
+            pj = rj;
+        } else {
+            beta = (rho / rho1) * (alpha / omega);
 
-            // alpha_{j} = (rj,r0star)/(A * pj,r0star)
-            rjr0star = this->rj.Dot(this->r0);
-
-
-            A->Apply(this->pj, this->apj);
-
-            tmp12 = this->apj.Dot(this->r0);
-            if (fabs(tmp12) > 1e-40) alphaj = rjr0star / tmp12;
-            else {
-                FASPXX_WARNING("Divided by zero!"); // Possible breakdown
-                errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
+            if ((beta == 0) || (fabs(beta) > DBL_MAX)) {
+                flag = 4;
                 goto FINISHED;
             }
 
-            // sj = rj - alpha_{j} * A * p_{j}
-            this->qj.WAXPBY(1.0, this->rj, -alphaj, this->apj);
+            // pj = rj + beta * (pj - omega * sj);
+            pj.AXPY(-omega, sj);
+            pj.AXPBY(beta, 1.0, rj);
+        }
 
+        pc->Apply(pj, ph);
 
+        // sj = A*ph
+        A->Apply(ph, sj);
+        rtv = r0.Dot(sj);
 
-            // omegaj = (A * sj,sj)/(A * sj,A * sj)
-            A->Apply(this->qj, this->asj);
-            omegaj = this->asj.Dot(this->sj) / this->asj.Dot(this->asj);
+        if ((rtv == 0.0) || (fabs(rtv) > DBL_MAX)) {
+            flag = 4;
+            goto FINISHED;
+        }
 
-            // x_{j+1} = x_{j} + alpha_{j} * pj + omegaj * s_{j}
-            this->tmp.WAXPBY(alphaj, this->pj, omegaj, this->sj);
-            x.XPAY(1.0, this->tmp);
+        alpha = rho / rtv;
 
-            // r_{j+1} = sj - omegaj * A * sj
-            this->rj.WAXPBY(1.0, this->sj, -omegaj, this->asj);
+        if (fabs(alpha) > DBL_MAX) {
+            flag = 4;
+            FASPXX_WARNING("Divided by zero!"); // Possible breakdown
+            goto FINISHED;
+        }
 
-            // Compute norm of residual
-            resAbs = this->rj.Norm2();
-            resRel = resAbs / denAbs;
-            factor = resAbs / tmpAbs;
+        normx = x.Norm2();
+        normph = ph.Norm2();
+        if (fabs(alpha) * normph < DBL_EPSILON * normx)
+            stag = stag + 1;
+        else
+            stag = 0;
 
-            // Output iteration information if needed
-            PrintInfo(verbose, numIter, resRel, tmpAbs, factor);
+        // xh = x + alpha * ph;        // form the "half" iterate
+        // qj = rj - alpha * sj;             // residual associated with xh
+        xh.WAXPBY(1.0, x, alpha, ph);
+        qj.WAXPBY(-alpha, sj, 1.0, rj);
+        normr = qj.Norm2();
+        normr_act = normr;
 
-            if (factor > 0.9) { // Only check when converge slowly
-                // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
-                DBL norminf = x.NormInf();
-                if (norminf < solinftol) {
-                    if (verbose > PRINT_MIN) FASPXX_WARNING(
-                            "Iteration stopped -- solution almost zero!");
-                    errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
-                    break;
+        // compute reduction factor of residual ||rj||
+        absres = normr_act;
+        factor = absres / absres0;
+        PrintInfo(verbose, numIter, normr_act / n2b, absres, factor);
+
+        // check for convergence
+        if ((normr <= absTol) || (stag >= maxstagsteps) || moresteps) {
+            qj = b;
+            A->Apply(xh, tmp);
+            qj.AXPY(-1.0, tmp);
+            normr_act = qj.Norm2();
+
+            if (normr_act <= absTol) {
+                // x = xh;
+                x = xh;
+                flag = 0;
+                imin = numIter - 0.5;
+                half_step++;
+                if (verbose >= PRINT_MORE)
+                    printf("Flag = %d Stag = %d Itermin = %.1f Half_step = %d\n",
+                           flag, stag, imin, half_step);
+                goto FINISHED;
+            } else {
+                if ((stag >= maxstagsteps) && (moresteps == 0)) stag = 0;
+
+                moresteps = moresteps + 1;
+                if (moresteps >= maxmsteps) {
+                    flag = 3;
+                    x = xh;
+                    goto FINISHED;
                 }
+            }
+        }
 
-                // Check II: if relative difference stagnated, try to restart
-                DBL reldiff = fabs(alphaj) * this->pj.Norm2() / x.Norm2();
-                if ((stagStep <= MaxStag) && (reldiff < maxdiff)) {
-                    if (verbose > PRINT_SOME) {
-                        DiffRes(reldiff, resRel);
-                        FASPXX_WARNING("Iteration restarted -- stagnation!");
-                    }
+        if (stag >= maxstagsteps) {
+            flag = 3;
+            goto FINISHED;
+        }
 
-                    A->Apply(x, this->rj);
-                    this->rj.XPAY(-1.0, b);
-                    resAbs = this->rj.Norm2();
-                    resRel = resAbs / denAbs;
+        if (normr_act < normrmin) // update minimal norm quantities
+        {
+            normrmin = normr_act;
+            xmin = xh;
+            imin = numIter - 0.5;
+            half_step++;
+            if (verbose >= PRINT_MORE)
+                std::cout<<"Flag = "<<flag<<"Stag = "<<stag<<"Itermin = "<<imin<<
+                    "Half_step : "<<half_step<<std::endl;
+        }
 
-                    if (verbose > PRINT_SOME) RealRes(resRel);
+        pc->Apply(qj, sh);
 
-                    if (resRel < relTol) break;
-                    else {
-                        if (stagStep >= MaxStag) {
-                            if (verbose > PRINT_MIN) FASPXX_WARNING(
-                                    "Iteration stopped -- stagnation!");
-                            errorCode = FaspRetCode::ERROR_SOLVER_STAG;
-                            break;
-                        }
-                        this->pj.SetValues(len, 0.0);
-                        ++stagStep;
-                    }
-                } // End of stagnation check!
-            } // End of check I and II
+        // yj = A*sh;
+        A->Apply(sh, yj);
+        // tt = yj' * yj;
+        tt = yj.Dot(yj);
+        if ((tt == 0) || (tt >= DBL_MAX)) {
+            flag = 4;
+            goto FINISHED;
+        }
 
-            // Check III: prevent false convergence
-            if (resRel < relTol) {
-                // Compute true residual r = b - Ax and update residual
-                A->Apply(x, this->rj);
-                this->rj.XPAY(-1.0, b);
+        // omega = (yj' * qj) / tt;
+        omega = qj.Dot(yj) / tt;
+        if (fabs(omega) > DBL_MAX) {
+            flag = 4;
+            goto FINISHED;
+        }
 
-                // Compute residual norms
-                DBL updated_resRel = resRel;
-                resAbs = rj.Norm2();
-                resRel = resAbs / denAbs;
+        norm_sh = sh.Norm2();
+        norm_xh = xh.Norm2();
 
-                // Check convergence
-                if (resRel < relTol) break;
+        if (fabs(omega) * norm_sh < DBL_EPSILON * norm_xh)
+            stag = stag + 1;
+        else
+            stag = 0;
 
-                if (verbose >= PRINT_MORE) {
-                    Compres(updated_resRel);
-                    RealRes(resRel);
+        // x = xh + omega * sh;
+        x.WAXPBY(1.0, xh, omega, sh);
+        //rj = qj - omega * yj;
+        rj.WAXPBY(1.0, qj, -omega, yj);
+        //normr = norm(rj);
+        normr = rj.Norm2();
+        normr_act = normr;
+
+        // check for convergence
+        if ((normr <= absTol) || (stag >= maxstagsteps) || moresteps) {
+            rj = b;
+            A->Apply(x, tmp);
+            rj.AXPY(-1.0, tmp);
+            normr_act = rj.Norm2();
+            if (normr_act <= absTol) {
+                flag = 0;
+                goto FINISHED;
+            } else {
+                if ((stag >= maxstagsteps) && (moresteps == 0)) stag = 0;
+                moresteps = moresteps + 1;
+                if (moresteps >= maxmsteps) {
+                    flag = 3;
+                    goto FINISHED;
                 }
+            }
+        }
 
-                if (moreStep >= restart) {
-                    if (verbose > PRINT_MIN) FASPXX_WARNING(
-                            "The tolerence might be too small!");
-                    errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
-                    break;
-                }
+        // update minimal norm quantities
+        if (normr_act < normrmin) {
+            normrmin = normr_act;
+            //fasp_darray_cp(m,x,xmin);
+            xmin = x;
+            imin = numIter;
+        }
 
-                // Prepare for restarting method
-                this->pj.SetValues(len, 0.0);
-                ++moreStep;
-            } // End of safe-gurad check!
+        if (stag >= maxstagsteps) {
+            flag = 3;
+            goto FINISHED;
+        }
 
-            // Save residual for next iteration
-            tmpAbs = resAbs;
+        if (verbose >= PRINT_MAX) RealRes(relres);
 
-            // Compute betaj = (r_{j+1},r0^{*})/(r_{j},r0^{*}) *
-            // \frac{alpha_{j}}{omega_{j}}
-            rjr0startmp = rjr0star;
-            rjr0star = this->rj.Dot(this->r0);
-            betaj = rjr0star / rjr0startmp * alphaj / omegaj;
+        absres0 = absres;
+    }   // for iter = 1 : maxit
 
-            // p_{j+1} = r_{j+1} + betaj * (p_{j} - omegaj * A * p_{j})
-            this->tmp.WAXPBY(1.0, this->pj, -omegaj, this->apj);
-            this->pj.WAXPBY(1.0, this->rj, betaj, this->tmp);
+    FINISHED:  // finish iterative method
+    // returned solution is first with minimal residual
+    if (flag == 0)
+        relres = normr_act / n2b;
+    else {
+        rj = b;
+        A->Apply(xmin, tmp);
+        rj.AXPY(-1.0, tmp);
+        normr = rj.Norm2();
 
-        } // End of main PCG loop
-
-        FINISHED: // Finish iterative method
-        PrintFinal(verbose,numIter,maxIter,resRel);
-
-        // Compute final residual norms
-        norminf=rj.NormInf();
-        norm2=rj.Norm2();
-
-        return errorCode;
+        if (normr <= normr_act) {
+            x = xmin;
+            numIter = imin;
+            relres = normr / n2b;
+        } else {
+            numIter=numIter;
+            relres = normr_act / n2b;
+        }
     }
+
+    if (verbose > PRINT_NONE) PrintFinal(verbose, numIter, maxIter, relres);
+
+    if (verbose >= PRINT_MORE)
+        std::cout<<"Flag = "<<flag<<"Stag = "<<stag<<"Itermin = "
+        <<imin<<"Half_step = "<<half_step<<std::endl;
+
+    norminf=rj.NormInf();
+    norm2=rj.Norm2();
+
+    if (numIter > maxIter)
+        return ERROR_SOLVER_MAXIT;
+
+    return FaspRetCode::SUCCESS;
 }
 
 /// clean preconditioner operator
@@ -239,15 +329,16 @@ void BiCGStab::CleanPCD() {
 /// Release temporary memory
 void BiCGStab::Clean() {
     VEC zero;
-    r0 = zero;
     rj = zero;
+    r0 = zero;
     pj = zero;
-    gj = zero;
     sj = zero;
+    ph = zero;
+    xh = zero;
     qj = zero;
-    uj = zero;
+    sh = zero;
     yj = zero;
-    xj = zero;
+    xmin = zero;
     tmp = zero;
 }
 

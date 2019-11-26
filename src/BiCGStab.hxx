@@ -14,21 +14,22 @@
 
 class BiCGStab:public SOL{
 private:
-    VEC r0;
     VEC rj;
+    VEC r0;
     VEC pj;
-    VEC gj;
     VEC sj;
+    VEC ph;
+    VEC xh;
     VEC qj;
-    VEC uj;
+    VEC sh;
     VEC yj;
-    VEC xj;
+    VEC xmin;
     VEC tmp;
 
 public:
     /// constructor by default
-    BiCGStab():r0(0),rj(0),pj(0),gj(0),sj(0),qj(0),
-        uj(0),yj(0),xj(0),tmp(0){}
+    BiCGStab():rj(0),r0(0),pj(0),sj(0),ph(0),xh(0),
+        qj(0),sh(0),yj(0),xmin(0),tmp(0){}
 
     /// check and allocate memory
     FaspRetCode Setup(const Mat& A,const VEC& b,VEC& x);
