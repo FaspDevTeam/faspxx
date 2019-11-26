@@ -11,47 +11,42 @@
 
 #include <iostream>
 #include <iomanip>
-#include "PCD.hxx"
 #include "Print.hxx"
+#include "PCD.hxx"
 #include "PCG.hxx"
 
-// Assign param to this->param
+/// Check and allocate memory for PCG
 FaspRetCode PCG::Setup(const LOP& A, const VEC& b, VEC& x)
 {
-    if (x.GetSize() != A.GetColSize() || b.GetSize() != A.GetRowSize() ||
-        A.GetRowSize() != A.GetColSize())
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
+    const INT len = b.GetSize();
 
-    INT len = b.GetSize();
+    // Check whether vector space sizes
+    if ( x.GetSize() != A.GetColSize() || A.GetRowSize() != A.GetColSize() ||
+         len != A.GetRowSize() ) return FaspRetCode::ERROR_NONMATCH_SIZE;
+
+    // Allocate memory for temporary vectors
     try {
+        rk.SetValues(len, 0.0);
         zk.SetValues(len, 0.0);
         pk.SetValues(len, 0.0);
-        rk.SetValues(len, 0.0);
         ax.SetValues(len, 0.0);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
     /// identical preconditioner operator by default
-    if (pc == nullptr)
-        pc = new IdentityLOP(len);
+    if ( pc == nullptr ) pc = new IdentityLOP(len);
 
     return FaspRetCode::SUCCESS;
-}
-
-// Assign lop to *this
-void PCG::SetPC(LOP* lop)
-{
-    this->pc = lop;
 }
 
 /// Solve by PCG
 FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
 {
-    const unsigned MaxStag = 20;
-    const INT len = b.GetSize();
+    const unsigned MaxStag = 20; // Maximum number of stagnations
     const DBL maxdiff = 1e-4 * relTol; // Stagnation tolerance
     const DBL solinftol = 1e-20; // Infinity norm tolerance
+    const INT len = b.GetSize();
 
     // Local variables
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
@@ -61,15 +56,14 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
     DBL factor, alpha, beta, tmpa, tmpb;
 
     // Output iterative method info
-    if (verbose > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n"; // fff建议不要有这些输出,否则程序运行起来会议一堆这样的输出.如果非要输出可以定义宏,全局可以打开关闭
+    if (verbose > PRINT_NONE) std::cout << "\nCalling PCG solver ...\n";
+    // TODO: Use it's name instead of fixed string "PCG" --zcs
 
     // Initial iteration
     int iter = 0;
-
-    A.Apply(x, rk); // A * x -> rk
-    rk.XPAY(-1.0, b); // b - rk -> rk
-
-    pc->Apply(rk, zk); // Apply preconditioner z_k = B(r_k)
+    A.Apply(x, rk);       // A * x -> r_k
+    rk.XPAY(-1.0, b);     // b - r_k -> r_k // TODO: It is r_k or -r_k? --zcs
+    pc->Apply(rk, zk); // B(r_k) -> z_k
 
     // Compute initial residual
     tmpAbs = rk.Norm2();
@@ -94,8 +88,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
         // alpha_k = (z_{k-1}, r_{k-1})/(A*p_{k-1},p_{k-1})
         tmpb = ax.Dot(pk);
         if (fabs(tmpb) > 1e-40) alpha = tmpa / tmpb;
-        else
-        {
+        else {
             FASPXX_WARNING("Divided by zero!"); // Possible breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
             goto FINISHED;
@@ -112,7 +105,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
         // Output iteration information if needed
         PrintInfo(verbose, iter, resRel, tmpAbs, factor);
 
-        if (factor > 0.9) // Only check when converge slowly
+        if (factor > 0.9) // Only check when it converges slowly
         {
             // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
             DBL norminf = x.NormInf();
@@ -131,9 +124,8 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
                     FASPXX_WARNING("Iteration restarted -- stagnation!");
                 }
 
-                //A->YMAX(b, x, this->rk);
-                A.Apply(x,this->rk);
-                this->rk.XPAY(-1.0,b);
+                A.Apply(x, this->rk);
+                this->rk.XPAY(-1.0, b); // TODO: It is r_k or -r_k? --zcs
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
                 if (verbose > PRINT_SOME) RealRes(resRel);
@@ -155,9 +147,8 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
         // Check III: prevent false convergence
         if (resRel < relTol) {
             // Compute true residual r = b - Ax and update residual
-            //A->YMAX(b, x, this->rk);
             A.Apply(x,this->rk);
-            this->rk.XPAY(-1.0,b);
+            this->rk.XPAY(-1.0, b); // TODO: It is r_k or -r_k? --zcs
 
             // Compute residual norms
             DBL updated_resRel = resRel;
@@ -174,7 +165,7 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
 
             if (moreStep >= restart) {
                 if (verbose > PRINT_MIN)
-                    FASPXX_WARNING("The tolerence might be too small!");
+                    FASPXX_WARNING("The tolerance might be too small!");
                 errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
             }
@@ -210,7 +201,13 @@ FaspRetCode PCG::Solve(const LOP& A, const VEC& b, VEC& x)
     return errorCode;
 }
 
-/// Clean up preconditioner. fff应该不需要这个:pc由外面换进来,应该由外面清理它的内存
+/// Setup preconditioner operator
+void PCG::SetPC(LOP* lop)
+{
+    this->pc = lop;
+}
+
+/// Clean up preconditioner operator
 void PCG::CleanPCD()
 {
     LOP* lop;
@@ -220,6 +217,7 @@ void PCG::CleanPCD()
 /// Release temporary memory
 void PCG::Clean()
 {
+    // TODO: Why not release? --zcs
     VEC zero;
     pk = zero;
     rk = zero;

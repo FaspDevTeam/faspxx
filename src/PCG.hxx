@@ -13,43 +13,37 @@
 #define __PCG_HEADER__      /**< indicate PCG.hxx has been included before */
 
 #include <cmath>
-#include "MAT.hxx"
 #include "LOP.hxx"
+#include "MAT.hxx"
+#include "SOL.hxx"
 #include "Param.hxx"
 #include "ErrorLog.hxx"
-#include "SOL.hxx"
-
 
 class PCG: public SOL
 {
 private:
-    LOP* pc; // ffflop改为pc
-    VEC rk;
-    VEC pk;
-    VEC zk;
-    VEC ax;
+    LOP*   pc; /// preconditioner
+    VEC    rk; /// work vector for residual
+    VEC    zk; /// work vector for preconditioned residual
+    VEC    pk; /// work vector for search direction
+    VEC    ax; /// work vector for A*pk
+    // TODO: it should also has a name member, like "Preconditioned Conjugate Gradient" --zcs
 
 public:
-    /// constructor by default
-    PCG() : pc(nullptr), rk(0), pk(0),
-            zk(0), ax(0){};
+    /// Default constructor
+    PCG() : pc(nullptr), rk(0), pk(0), zk(0), ax(0){};
 
-    /// check and allocate memory
-    /* fff
-     * SetOperator(A)
-     * SetPreconditioner(P)
-     * Solve(x, b)
-     * */
-    FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x);
+    /// Check and allocate memory for PCG
+    FaspRetCode Setup(const LOP& A, const VEC& b, VEC& x); // TODO: Get rid of b and x --zcs
 
-    /// build preconditioner operator
-    void SetPC(LOP* lop);
+    /// Setup preconditioner operator
+    void SetPC(LOP* lop); // TODO: PCD::Setup --zcs
 
-    /// solve by PCG
+    /// Solve by PCG
     FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x);
 
-    /// clean preconditioner operator
-    void CleanPCD();
+    /// Clean up preconditioner operator
+    void CleanPCD(); // TODO: PCD::Clean --zcs
 
     /// Release temporary memory
     void Clean();
