@@ -24,17 +24,17 @@ private:
     };
 protected:
     LOP *pc;        ///< Preconditioner, inlopfffpc
-    const LOP *A;
+    const LOP *A;   ///<
     PRTLVL verbose; ///< Output level
     INT maxIter;    ///< Maximal number of iterations
     DBL relTol;     ///< Tolerance for relative residual
     DBL absTol;     ///< Tolerance for absolute residual
     INT restart;    ///< Tolerance for absolute residual
-    SOLType type;   ///< solver solverffftype
+    SOLType type;   ///< solver
     DBL norm2;      ///< l2-norm
     DBL norminf;    ///< infty-norm
     INT numIter;    ///< iterations
-    bool view; // 查看所有参数
+    bool view;      ///< view all parameters
 
     /// Warning for actual relative residual
     void RealRes(DBL relres);
@@ -52,6 +52,9 @@ protected:
     /// Print out final status of an iterative method
     void PrintFinal(const PRTLVL &verbose, const INT &iter, const INT &maxit,
                     const DBL &resRel);
+
+    /// Select solver
+    char* SelectSolver(SOLType type);
 
 public:
 
@@ -76,6 +79,9 @@ public:
 
     /// Set 'restart' 's value
     void SetRestart(INT restart);
+
+    /// Set 'solver' type
+    void SetSolver(SOLType solver);
 
     /// Get residual 's 'l2-norm'
     DBL GetNorm2();

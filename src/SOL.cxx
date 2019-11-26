@@ -60,6 +60,18 @@ void SOL::PrintFinal(const PRTLVL &verbose, const INT &iter, const INT &maxit,
     }
 }
 
+/// Select solver
+char* SOL::SelectSolver(SOLType type){
+    switch(type){
+        case _PCG:
+            return "PCG";
+        case _GMRES:
+            return "GMRES";
+        default:
+            return "NO SOLVER!";
+    }
+}
+
 /// constructor
 SOL::SOL(PRTLVL verbose, INT maxIter, DBL relTol, DBL absTol, INT restart) {
     this->verbose = verbose;
@@ -93,6 +105,11 @@ void SOL::SetAbsTol(DBL absTol) {
 /// Set 'restart' 's value
 void SOL::SetRestart(INT restart) {
     this->restart = restart;
+}
+
+/// Set 'solver' type
+void SOL::SetSolver(SOLType solver){
+    this->type=solver;
 }
 
 /// Get residual 's 'l2-norm'
