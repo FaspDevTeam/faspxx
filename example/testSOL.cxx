@@ -1,9 +1,6 @@
 
 #include <cassert>
 #include <iostream>
-
-using namespace std;
-
 #include "../src/SOL.hxx"
 #include "../src/Parameters.hxx"
 #include "../src/Timing.hxx"
@@ -11,6 +8,8 @@ using namespace std;
 #include "../src/ReadData.hxx"
 #include "../src/ReadCommand.hxx"
 #include "../src/PCG.hxx"
+
+using namespace std;
 
 void Test_Parameter1() {
     // ---------------- 3种输入参数的优先级: 命令行参数 > 运行时参数 > 文件参数? -------------------
@@ -175,7 +174,7 @@ INT Test_PCG(int argc, char **argv) {
 
     // PCG solve
     timer.Start();
-    retCode = pcg.Solve(mat, b, x);
+    retCode = pcg.Solve(b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     //pcg.Print();

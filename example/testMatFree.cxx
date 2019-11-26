@@ -8,7 +8,7 @@
 #include <iostream>
 #include "LOP.hxx"
 #include "PCG.hxx"
-#include "Param.hxx"
+#include "Parameters.hxx"
 #include "Timing.hxx"
 #include "PCD.hxx"
 #include "Poisson2D.hxx"
@@ -87,6 +87,7 @@ static void Rhs(INT dimen, DBL *ptr) {
 
 // free-matrix 's operator : acting on a VEC object
 void MatFree::Apply(const VEC &x, VEC &y) const {
+    std::cout<<4.2<<std::endl;
     const DBL *x_val;
     x.GetArray(&x_val);
 
@@ -94,6 +95,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     DBL *y_val;
     y.GetArray(&y_val);
 
+    std::cout<<"debug 3.1"<<std::endl;
     const int dimen1 = dimen - 1;
     int lower, left, center, right, upper;
 
@@ -177,15 +179,6 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
 
 int main(int argc, char *args[]) {
 
-    // convergence parameter setting
-    IterParam param;
-    param.SetVerbose(PRINT_NONE);
-    param.SetMaxIter(100);
-    param.SetRelTol(1e-6);
-    param.SetAbsTol(1e-10);
-    param.SetRestart(20);
-    param.Print();
-
     INT mesh = 0; // number of mesh refinement cycles
     DBL h = 0.0; // mesh size in X and Y directions
     GetWallTime timer;
@@ -230,14 +223,20 @@ int main(int argc, char *args[]) {
         pcg.SetAbsTol(1e-10);
         pcg.SetRelTol(1e-6);
         pcg.Setup(matfree, b, x);
+        pcg.Print(cout<<"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"<<endl);
 
         // create identity preconditioner
         IdentityLOP lop((dimen - 1) * (dimen - 1));
         pcg.SetPC(&lop);
 
+        cout<<"debug 1"<<endl;
+
         // time
         timer.Start();
-        pcg.Solve(matfree, b, x); // solve by free-matrix method
+
+        cout<<"b.GetSize : "<<b.GetSize()<<endl;
+        cout<<"x.GetSize : "<<x.GetSize()<<endl;
+        pcg.Solve(b, x); // solve by free-matrix method
         std::cout << "Solving Ax=b costs "
                   << std::fixed << std::setprecision(3)
                   << timer.Stop() << "ms" << std::endl;

@@ -2,51 +2,93 @@
  * a test file
  */
 
-#include "BiCGStab.hxx"
 #include <iostream>
 #include "ReadData.hxx"
-#include "Param.hxx"
+#include "Parameters.hxx"
+#include "Timing.hxx"
+#include "PCD.hxx"
+#include "BiCGStab.hxx"
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
+    const char *mat_file = "../data/fdm_10X10.csr";
+    const char *vec_file = "";
+    const char *initial_guess = "";
+    //bool print_level = false;
+    PRTLVL print_level = PRINT_NONE;
+    const char *opts = "../data/multiple_sol.opts";
+    const char *prefix = "-solver1";
+    DBL resrel=1e-4;
+    DBL resabs=1e-8;
+    INT restart=20, maxIter=100;
 
-    MAT A;
+    Parameters params(argc, argv);
+    params.AddParam(&mat_file, "-mat", "Left hand side of linear system");
+    params.AddParam(&vec_file, "-vec", "Right hand side of linear system");
+    params.AddParam(&initial_guess, "-initial", "Initial guess of solution");
+    params.AddParam(&print_level, "-level", "print level");
+    params.AddParam(&opts, "-opts_file", "Solver parameter file");
+    params.AddParam(&prefix, "-pref", "solver parameter prefix in file");
+    params.AddParam(&resrel, "-resrel", "residual relative tolerance");
+    params.AddParam(&resabs, "-resabs", "residual relative tolerance");
+    params.AddParam(&restart, "-restart", "restart");
+    params.AddParam(&maxIter, "-maxIter", "maximum iteration");
+    params.Parse();
 
-    ReadMat("../data/fdm_10X10.csr", A);
+    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
+    GetWallTime timer;
+    timer.Start();
 
-    INT row = A.GetRowSize(), col = A.GetColSize();
+    // Read matrix data file
+    MAT mat;
+    if ((retCode = ReadMat(mat_file, mat)) < 0) return retCode;
+    INT row = mat.GetRowSize();
+    INT col = mat.GetColSize();
+    INT nnz = mat.GetNNZ();
 
-    BiCGStab Bi;
-    IterParam param;
+    // Read or generate right-hand side
+    VEC b, x;
+    if (strcmp(vec_file, "") != 0)
+        ReadVEC(vec_file, b);
+    else
+        b.SetValues(row, 0.0);
 
-    param.SetAbsTol(1e-4);
-    param.SetVerbose(PRINT_MORE);
-    param.SetRelTol(1e-8);
-    param.SetMaxIter(400);
-    param.Print();
+    // Read or generate initial guess
+    if (strcmp(initial_guess, "") != 0)
+        ReadVEC(initial_guess, x);
+    else
+        x.SetValues(col, 1.0);
 
-    VEC b(row,0.0),x(col,1.0);
+    // Print problem size information
+    std::cout << "  nrow = " << row
+              << ", ncol = " << col
+              << ", nnz = " << nnz << std::endl;
+    std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
-    Bi.Setup(A,b,x,param);
-    Bi.Solve(A,b,x,param);
-    Bi.Clean();
+    // Setup PCG class
+    BiCGStab bi;
+    bi.SetMaxIter(maxIter);
+    bi.SetRelTol(resrel);
+    bi.SetAbsTol(resabs);
+    bi.SetRestart(restart);
+    bi.SetPrtLvl(print_level);
+    // pcg.SetOptionsFromFile(opts, prefix);
+    bi.Setup(mat, b, x);
 
-    VEC tmp(row);
-    A.Apply(x,tmp);
+    params.PrintParams(cout<<"\nhhhhhhhhhhhhhhhhhhhhhhhh\n");
+    // Setup preconditioner
 
-    double realError=0;
-    double tmpError;
-    for(int j=0;j<row;j++){
-       tmpError=fabs(b[j]-tmp[j]);
-       if(realError<tmpError)
-           realError=tmpError;
-    }
-    cout<<"realError : "<<realError<<endl;
+    IdentityLOP lop(row);
+    bi.SetPC(&lop);
 
-    cout<<"NumIter : "<<param.GetNumIter()<<endl;
-    cout<<"NormInf : "<<param.GetNormInf()<<endl;
-    cout<<"Norm2 : "<<param.GetNorm2()<<endl;
+    // PCG solve
+    timer.Start();
+    retCode = bi.Solve(b, x);
+    std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
-    return 0;
+    // Clean up preconditioner and solver data
+    bi.CleanPCD();
+    bi.Clean();
+    return retCode;
 }
