@@ -2,6 +2,7 @@
 #include "Parameters.hxx"
 #include <cstring>
 #include <iomanip>
+#include <cstdlib>
 
 void Parameters::AddParam(bool *_ptr, const char *_name, const char *_help) {
     params.push_back(Param(_BOOL, _ptr, _name, _help));
@@ -29,6 +30,8 @@ void Parameters::AddParam(PRTLVL *_ptr, const char *_name, const char *_help) {
 
 
 void Parameters::Parse() {
+    char *tmp;
+    int len;
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             PrintHelp(std::cout);
@@ -39,17 +42,19 @@ void Parameters::Parse() {
             if (strcmp(argv[i], params[j].param_name) == 0) {
                 switch (params[j].type) {
                     case _BOOL:
-                        if (!strcmp(argv[i + 1], "true") ||
-                            !strcmp(argv[i + 1], "True") ||
-                            !strcmp(argv[i + 1], "TRUE"))
+                        tmp = new char[strlen(argv[i + 1])];
+                        len = strlen(argv[i + 1]);
+                        for (int j = 0; j < len; ++j)
+                            tmp[j] = argv[i + 1][j] - 'A' + 'a';
+                        if (!strcmp(tmp, "true"))
                             *((bool *) (params[j].param_ptr)) = 1;
-                        else if (!strcmp(argv[i + 1], "false") ||
-                                 !strcmp(argv[i + 1], "False") ||
-                                 !strcmp(argv[i + 1], "FALSE"))
+                        else if (!strcmp(tmp, "false"))
                             *((bool *) (params[j].param_ptr)) = 0;
                         else // 其余情况就是int型整数拿来给bool类型赋值
                             *((bool *) (params[j].param_ptr)) = (bool) (std::stoi(
                                     argv[i + 1]));
+                        delete[] tmp;
+                        tmp = nullptr;
                         break;
                     case _INT:
                         *((INT *) (params[j].param_ptr)) = std::stoi(argv[i + 1]);
@@ -70,18 +75,24 @@ void Parameters::Parse() {
                                     std::stoi(argv[i + 1]);
                             break;
                         }
-                        if (strcmp(argv[i + 1], "PRINT_NONE") == 0)
+                        tmp = new char[strlen(argv[i + 1])];
+                        len = strlen(argv[i + 1]);
+                        for (int j = 0; j < len; ++j)
+                            tmp[j] = (char) (argv[i + 1][j] - 'a' + 'A');
+                        if (strcmp(tmp, "PRINT_NONE") == 0)
                             *((PRTLVL *) (params[j].param_ptr)) = PRINT_NONE;
-                        else if (strcmp(argv[i + 1], "PRINT_MIN") == 0)
+                        else if (strcmp(tmp, "PRINT_MIN") == 0)
                             *((PRTLVL *) (params[j].param_ptr)) = PRINT_MIN;
-                        else if (strcmp(argv[i + 1], "PRINT_SOME") == 0)
+                        else if (strcmp(tmp, "PRINT_SOME") == 0)
                             *((PRTLVL *) (params[j].param_ptr)) = PRINT_SOME;
-                        else if (strcmp(argv[i + 1], "PRINT_MORE") == 0)
+                        else if (strcmp(tmp, "PRINT_MORE") == 0)
                             *((PRTLVL *) (params[j].param_ptr)) = PRINT_MORE;
-                        else if (strcmp(argv[i + 1], "PRINT_MAX") == 0)
+                        else if (strcmp(tmp, "PRINT_MAX") == 0)
                             *((PRTLVL *) (params[j].param_ptr)) = PRINT_MAX;
-                        else if (strcmp(argv[i + 1], "PRINT_ALL") == 0)
+                        else if (strcmp(tmp, "PRINT_ALL") == 0)
                             *((PRTLVL *) (params[j].param_ptr)) = PRINT_ALL;
+                        delete[] tmp;
+                        tmp = nullptr;
                         break;
                 }
                 break;
