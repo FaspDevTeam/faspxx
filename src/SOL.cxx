@@ -221,5 +221,5 @@ FaspRetCode SOL::SetOptionsFromFile(const char* file, const char* prefix)
 /// clean preconditioner operator
 void SOL::CleanPCD(){
     if(pc != nullptr)
-        delete pc;
+        pc=nullptr;
 }
