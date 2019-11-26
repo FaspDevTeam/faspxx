@@ -129,7 +129,7 @@ void Parameters::PrintParams(std::ostream &out) const {
 
 void Parameters::PrintHelp(std::ostream &out) const {
     static const char *indent = "   ";
-    static const char *newline_indent = "\n\t";
+    static const char *newline_indent = "\n    ";
     static const char *types[] = {" <bool>", " <INT>", " <DBL>", " <string>",
                                   "<PRTLVL>"};
 
