@@ -5,23 +5,27 @@
 #ifndef SOL_HXX
 #define SOL_HXX
 
+#include <cstring>
+#include <iomanip>
+#include <iostream>
+#include <fstream>
+#include "ErrorLog.hxx"
 #include "VEC.hxx"
 #include "LOP.hxx"
 #include "RetCode.hxx"
-#include "Param.hxx"
-#include <iomanip>
-#include <iostream>
-#include <fstream>  //fff统一将标准库写在前面,自己写的头文件写在后面
-#include "PCD.hxx"
-#include "ErrorLog.hxx"
-#include <cstring>
+#include "Parameters.hxx"
 
-class SOL{
+typedef LOP Mat;
+
+class SOL {
 private:
-    enum SOLType {_PCG, _GMRES, _BICGSTAB, _COUNT};
+    enum SOLType {
+        _PCG, _GMRES, _BICGSTAB, _COUNT
+    };
 protected:
-    LOP* pc ;       ///< Preconditioner, inlopfffpc
-    PRTLVL verbose;    ///< Output level
+    LOP *pc;        ///< Preconditioner, inlopfffpc
+    const Mat *A;
+    PRTLVL verbose; ///< Output level
     INT maxIter;    ///< Maximal number of iterations
     DBL relTol;     ///< Tolerance for relative residual
     DBL absTol;     ///< Tolerance for absolute residual
@@ -36,27 +40,27 @@ protected:
     void RealRes(DBL relres);
 
     /// Warning for computed relative residual
-    void Compres(DBL relres);
+    void CompRes(DBL relres);
 
     /// Output relative difference and residual
-    void DiffRes(DBL reldiff,DBL relres);
+    void DiffRes(DBL reldiff, DBL relres);
 
     /// Print out iteration information for iterative solvers
-    void PrintInfo(const PRTLVL& verbose, const INT& iter, const DBL& resRel,
-                   const DBL& resAbs, const DBL& factor);
+    void PrintInfo(const PRTLVL &verbose, const INT &iter, const DBL &resRel,
+                   const DBL &resAbs, const DBL &factor);
 
     /// Print out final status of an iterative method
-    void PrintFinal(const PRTLVL& verbose, const INT& iter, const INT& maxit,
-                    const DBL& resRel);
+    void PrintFinal(const PRTLVL &verbose, const INT &iter, const INT &maxit,
+                    const DBL &resRel);
 
 public:
 
     /// Default constructor
-    SOL():pc(nullptr),verbose(PRINT_NONE),maxIter(100),relTol(10-4),absTol(10-8),
-        restart(25){};
+    SOL() : pc(nullptr), A(nullptr), verbose(PRINT_NONE), maxIter(100), relTol(1e-4),
+            absTol(1e-8), restart(25), norm2(1.0), norminf(1.0), numIter(0) {};
 
     /// constructor
-    SOL(PRTLVL verbose,INT maxIter,DBL relTol,DBL absTol,INT restart);
+    SOL(PRTLVL verbose, INT maxIter, DBL relTol, DBL absTol, INT restart);
 
     /// Set 'verbose' 's value
     void SetPrtLvl(PRTLVL verbose);
@@ -82,20 +86,23 @@ public:
     /// Get iterations
     INT GetIterations();
 
+    // Print parameters
+    void Print(std::ostream &out = std::cout) const;
+
     /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
-    FaspRetCode SetOptionsFromFile(const char* file=NULL, const char* prefix=NULL);
+    FaspRetCode SetOptionsFromFile(const char *file = nullptr, const char *
+        prefix = nullptr);
 
     /// check and allocate memory
-    virtual FaspRetCode Setup(const LOP& A,const VEC& b, VEC& x) = 0;
+    virtual FaspRetCode Setup(const Mat &_A, const VEC &b, VEC &x) = 0;
 
     /// build preconditioner operator
-    virtual void SetPC(LOP* lop)
-    {
+    virtual void SetPC(LOP *lop) {
         FASPXX_ABORT("Not supported!");
     }
 
     /// solve by SOL
-    virtual FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x) = 0;
+    virtual FaspRetCode Solve(const VEC &b, VEC &x) = 0;
 
     /// clean preconditioner operator
     virtual void CleanPCD(); //fff不应该这里来清理,似乎应该有子类的成员函数来清理
@@ -104,7 +111,7 @@ public:
     virtual void Clean() = 0;
 
     // destructor
-    ~SOL(){};
+    ~SOL() {};
 };
 
 #endif // SOL_HXX

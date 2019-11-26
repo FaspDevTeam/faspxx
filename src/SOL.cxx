@@ -3,7 +3,7 @@
  */
 
 #include "SOL.hxx"
-#include "utils.hxx"
+#include "Utils.hxx"
 #include <sstream>
 #include <cstring>
 
@@ -14,7 +14,7 @@ void SOL::RealRes(DBL relres) {
 }
 
 //! Warning for computed relative residual
-void SOL::Compres(DBL relres) {
+void SOL::CompRes(DBL relres) {
     std::cout << "### WARNING: The computed relative residual = "
               << relres << std::endl;
 }
@@ -110,6 +110,18 @@ INT SOL::GetIterations(){
     return this->numIter;
 }
 
+/// Print parameters
+void SOL::Print(std::ostream &out) const {
+    out << "\nParameters for iterative method: \n"
+        << "-----------------------------------\n"
+        << "  Print level:          " << verbose << '\n'
+        << "  Max num of iteration: " << maxIter << '\n'
+        << "  Relative tolerance:   " << relTol  << '\n'
+        << "  Absolute tolerance:   " << absTol  << '\n'
+        << "  Restart number:       " << restart << '\n'
+        << "-----------------------------------\n";
+};
+
 /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
 FaspRetCode SOL::SetOptionsFromFile(const char* file, const char* prefix)
 {
@@ -191,31 +203,23 @@ FaspRetCode SOL::SetOptionsFromFile(const char* file, const char* prefix)
         {
             view = true;
         }
-//        else
-//        {
-//            FASPXX_WARNING("Not supported parameter!");
-//        }
     }
     input.close();
     if (view)
     {
         cout << "Parameters for sol " //<< prefix << '\n'
-            << "Krylov method type: " << type << '\n'
-            << "relative tolerance: " << relTol << '\n'
-            << "absolute tolerance: " << absTol << '\n'
-            << "maximum iterations: " << maxIter << '\n'
-            << "view: " << view << endl;
+             << "Krylov method type: " << type << '\n'
+             << "relative tolerance: " << relTol << '\n'
+             << "absolute tolerance: " << absTol << '\n'
+             << "maximum iterations: " << maxIter << '\n'
+             << "view: " << view << endl;
     }
     return retCode;
 }
 
-///// build preconditioner operator
-//void SOL::SetupPCD(LOP* pc){
-//    this->pc = pc;
-//}
 
 /// clean preconditioner operator
 void SOL::CleanPCD(){
     if(pc != nullptr)
-        delete pc;
+        pc=nullptr;
 }

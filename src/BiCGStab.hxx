@@ -9,34 +9,36 @@
 #include <cfloat>
 #include "MAT.hxx"
 #include "LOP.hxx"
-#include "Param.hxx"
 #include "ErrorLog.hxx"
-#include "Print.hxx"
+#include "SOL.hxx"
 
-class BiCGStab{
+class BiCGStab:public SOL{
 private:
-    LOP *lop;
-    VEC r0star;
-    VEC pj;
     VEC rj;
+    VEC r0;
+    VEC pj;
     VEC sj;
+    VEC ph;
+    VEC xh;
+    VEC qj;
+    VEC sh;
+    VEC yj;
+    VEC xmin;
     VEC tmp;
-    VEC apj;
-    VEC asj;
 
 public:
     /// constructor by default
-    BiCGStab():lop(nullptr),r0star(0),pj(0),rj(0),sj(0),
-        tmp(0),apj(0),asj(0){}
+    BiCGStab():rj(0),r0(0),pj(0),sj(0),ph(0),xh(0),
+        qj(0),sh(0),yj(0),xmin(0),tmp(0){}
 
     /// check and allocate memory
-    FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x,const IterParam& param);
+    FaspRetCode Setup(const Mat& A,const VEC& b,VEC& x);
 
     /// build preconditioner operator
-    void SetupPCD(LOP *lop);
+    void SetPC(LOP *lop);
 
-    /// solve by PCG
-    FaspRetCode Solve(const LOP& A, const VEC& b, VEC& x,IterParam& param);
+    /// solve by BiCGStab
+    FaspRetCode Solve(const VEC& b, VEC& x);
 
     /// clean preconditioner operator
     void CleanPCD();
