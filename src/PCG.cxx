@@ -62,6 +62,7 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
     DBL resRel = 1e+20, denAbs = 1e+20;
     DBL factor, alpha, beta, tmpa, tmpb;
 
+    std::cout<<"debug 2"<<std::endl;
     // fff建议不要有这些输出,否则程序运行起来会议一堆这样的输出.如果非要输出可以定义宏,全局可以打开关闭
     // Output iterative method info
     if (verbose > PRINT_NONE)
@@ -70,11 +71,14 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
 
     // Initial iteration
     numIter=0;
+    std::cout<<"debug 2.4"<<std::endl;
     A->Apply(x, rk); // A * x -> rk
+    std::cout<<"debug 2.6"<<std::endl;
     rk.XPAY(-1.0, b); // b - rk -> rk // TODO: It is r_k or -r_k? --zcs
 
     pc->Apply(rk, zk); // B(r_k) -> z_k
 
+    std::cout<<"debug 3"<<std::endl;
     // Compute initial residual
     tmpAbs = rk.Norm2();
     denAbs = (1e-20 > tmpAbs) ? 1e-20 : tmpAbs;

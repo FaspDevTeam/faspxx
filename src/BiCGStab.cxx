@@ -2,8 +2,8 @@
  * a demo
  */
 
-#include "BiCGStab.hxx"
 #include <ios>
+#include "BiCGStab.hxx"
 #include "PCD.hxx"
 
 

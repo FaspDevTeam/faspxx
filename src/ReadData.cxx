@@ -9,10 +9,10 @@
  *-----------------------------------------------------------------------------------
  */
 
+#include <cstring>
 #include <fstream>
 #include "ReadData.hxx"
 #include "MATUtil.hxx"
-#include <cstring>
 
 /// \bridf Read a VEC data file
 FaspRetCode ReadVEC(const char *filename, VEC &rhs) {

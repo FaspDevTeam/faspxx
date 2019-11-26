@@ -24,7 +24,7 @@ private:
     };
 protected:
     LOP *pc;        ///< Preconditioner, inlopfffpc
-    const Mat *A;
+    const LOP *A;
     PRTLVL verbose; ///< Output level
     INT maxIter;    ///< Maximal number of iterations
     DBL relTol;     ///< Tolerance for relative residual

@@ -34,7 +34,7 @@ public:
             zk(0), ax(0){};
 
     /// check and allocate memory
-    FaspRetCode Setup(const LOP& A,const VEC& b,VEC& x);
+    FaspRetCode Setup(const Mat& A,const VEC& b,VEC& x);
 
     /// build preconditioner operator
     void SetPC(LOP* lop); // TODO: PCD::Setup --zcs

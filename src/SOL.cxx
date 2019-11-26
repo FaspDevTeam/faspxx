@@ -2,10 +2,10 @@
  * SOL source code file
  */
 
-#include "SOL.hxx"
-#include "Utils.hxx"
 #include <sstream>
 #include <cstring>
+#include "SOL.hxx"
+#include "Utils.hxx"
 
 //! Warning for actual relative residual
 void SOL::RealRes(DBL relres) {
