@@ -1,10 +1,10 @@
 
-#ifndef FASPXX_UTILS_HXX
-#define FASPXX_UTILS_HXX
+#ifndef UTILS_HXX
+#define UTILS_HXX
 
 #include <string>
 
-bool ProcessLine(string& line, string& param, string& value)
+bool ProcessLine(std::string& line, std::string& param, std::string& value)
 {
     // 如果该行不包含有效内容(即除去空白行,注释行等), 返回false; 否则, 返回true
 
@@ -24,13 +24,4 @@ bool ProcessLine(string& line, string& param, string& value)
     return true;
 }
 
-
-
-
-
-
-
-
-
-
-#endif //FASPXX_UTILS_HXX
+#endif // UTILS_HXX
