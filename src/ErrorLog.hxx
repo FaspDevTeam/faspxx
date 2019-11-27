@@ -1,7 +1,7 @@
-/** \file ErrorLog.hxx
- *  \brief Logging error and warning messages
- *  \author Ronghong Fan
- *  \date Nov/01/2019
+/** \file    ErrorLog.hxx
+ *  \brief   Logging error and warning messages
+ *  \author  Ronghong Fan
+ *  \date    Nov/01/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -15,12 +15,12 @@
 #include <sstream>
 #include <iomanip>
 
-using namespace std;
-
-#define _FASPXX_LOCATION_                                         \
+/// Print out location at (file, line) and function name
+#define _FASPXX_LOCATION_                                          \
         "\n  ---> in file:     " << __FILE__ << ':' << __LINE__ << \
         "\n  ---> in function: " << __PRETTY_FUNCTION__ << '\n'
 
+/// Log error messages
 #define _FASPXX_MASSAGE_(msg)                         \
         {                                             \
             std::ostringstream info;                  \
@@ -29,17 +29,20 @@ using namespace std;
             std::cout << info.str().c_str();          \
         }
 
+/// Abort if critical error happens
 #define FASPXX_ABORT(msg)                              \
         {                                              \
             _FASPXX_MASSAGE_("### ABORT: " << msg);    \
             std::abort();                              \
         }
 
+/// Check condition and log user messages
 #define FASPXX_ASSERT(TRUE, msg)                                       \
    if (!(TRUE)) {                                                      \
       _FASPXX_MASSAGE_("### ASSERT: " << msg << " (" << #TRUE << ")"); \
    }
 
+/// Log warning messages
 #define FASPXX_WARNING(msg)                            \
         {                                              \
             _FASPXX_MASSAGE_("### WARNING: " << msg);  \

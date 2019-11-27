@@ -10,7 +10,7 @@
  */
 
 #ifndef __TIMING_HEADER__      /*-- allow multiple inclusions --*/
-#define __TIMING_HEADER__      /*-- indicate timing.hxx has been included --*/
+#define __TIMING_HEADER__      /**< indicate timing.hxx has been included --*/
 
 typedef unsigned long long uint64; //!< Unsigned long long int
 

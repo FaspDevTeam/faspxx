@@ -15,16 +15,20 @@
 #include "faspxx.hxx"
 #include "MAT.hxx"
 
+/// \brief Read a VEC data file
 FaspRetCode ReadVEC(const char* filename, VEC& rhs);
 
+/// \brief Read an MTX data file and store it in (rowInd, colInd, values)
 FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowInd, std::vector<INT>& colInd,
                     std::vector<DBL>& values);
 
+/// \brief Read a CSR data file and store it in (rowPtr, colInd, values)
 FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
                     std::vector<INT>& rowPtr, std::vector<INT>& colInd,
                     std::vector<DBL>& values);
 
+/// \brief Read an matrix data file and store it in MAT
 FaspRetCode ReadMat(const char *filename, MAT& mat);
 
 #endif // __READ_DATA_HXX__

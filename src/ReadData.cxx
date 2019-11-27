@@ -89,7 +89,7 @@ FaspRetCode ReadVEC(const char *filename, VEC &rhs) {
     return retCode;
 }
 
-/// \brief Read an MTX data file and store them in (rowInd, colInd, values)
+/// \brief Read an MTX data file and store it in (rowInd, colInd, values)
 FaspRetCode ReadMTX(const char *filename, INT &row, INT &col, INT &nnz,
                     std::vector<INT> &rowInd, std::vector<INT> &colInd,
                     std::vector<DBL> &values) {
@@ -199,7 +199,7 @@ FaspRetCode ReadMTX(const char *filename, INT &row, INT &col, INT &nnz,
     return retCode;
 }
 
-/// \brief Read a CSR data file and store them in (rowPtr, colInd, values)
+/// \brief Read a CSR data file and store it in (rowPtr, colInd, values)
 FaspRetCode ReadCSR(const char *filename, INT &row, INT &col, INT &nnz,
                     std::vector<INT> &rowPtr, std::vector<INT> &colInd,
                     std::vector<DBL> &values) {
@@ -337,6 +337,7 @@ FaspRetCode ReadCSR(const char *filename, INT &row, INT &col, INT &nnz,
     return retCode;
 }
 
+/// \brief Read an matrix data file and store it in MAT
 FaspRetCode ReadMat(const char *filename, MAT &mat) {
     char type[4];
     INT flag;

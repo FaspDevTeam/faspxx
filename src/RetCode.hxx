@@ -71,7 +71,7 @@ public:
     const FaspRetCode errorCode;  ///< Error Code
 
 public:
-    // Default constructor
+    /// Default constructor
     FaspRunTime(const FaspRetCode code_, const char *file_,
                 const char *func_, const unsigned int line_)
                :std::runtime_error(GetRetCode(code_)),
@@ -82,7 +82,7 @@ public:
     const char * GetFunc() const { return func; } ///< return thrown function name
     unsigned int GetLine() const { return line; } ///< return thrown line number
 
-    // Stardard output
+    // Standard output
     void LogExcep(std::ostream& stream = std::cout) const;
 };
 
@@ -98,7 +98,7 @@ public:
     const FaspRetCode errorCode = FaspRetCode::SUCCESS;  ///< Error Code
 
 public:
-    // Default constructor
+    /// Default constructor
     FaspBadAlloc(const char *file_, const char *func_, const unsigned int line_)
                 :std::bad_alloc(), file(file_), func(func_), line(line_) {}
 
