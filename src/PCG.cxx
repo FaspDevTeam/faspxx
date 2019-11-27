@@ -15,16 +15,11 @@
 #include "PCG.hxx"
 
 // Assign param to this->param
-FaspRetCode PCG::Setup(const LOP &_A, const VEC &b, VEC &x) {
+FaspRetCode PCG::Setup(const LOP &A) {
 
-    const INT len = b.GetSize();
+    const INT len = A.GetColSize();
 
-    // Check whether vector space sizes
-    if (x.GetSize() != _A.GetColSize() || b.GetSize() != _A.GetRowSize() ||
-        _A.GetRowSize() != _A.GetColSize())
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
-
-    this->A = &_A;
+    this->A = &A;
 
     // Allocate memory for temporary vectors
     try {
@@ -36,20 +31,22 @@ FaspRetCode PCG::Setup(const LOP &_A, const VEC &b, VEC &x) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
-    /// identical preconditioner operator by default
-    if (pc == nullptr)
-        pc = new IdentityLOP(len);
+    if(pc== nullptr){
+        pc=new IdentityPC();
+        mark=false;
+    }
 
     return FaspRetCode::SUCCESS;
 }
 
-// Assign lop to *this
-void PCG::SetPC(LOP *lop) {
-    this->pc = lop;
-}
-
 /// Solve by PCG
 FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
+
+    // Check whether vector space sizes
+    if (x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize() ||
+        A->GetRowSize() != A->GetColSize())
+        return FaspRetCode::ERROR_NONMATCH_SIZE;
+
     const unsigned MaxStag = 20; // Maximum number of stagnations
     const INT len = b.GetSize();
     const DBL maxdiff = 1e-4 * relTol; // Stagnation tolerance
@@ -62,15 +59,11 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
     DBL resRel = 1e+20, denAbs = 1e+20;
     DBL factor, alpha, beta, tmpa, tmpb;
 
-    // Output iterative method info
-    if (verbose > PRINT_NONE)
-        std::cout<< "\nCalling "<<SelectSolver(type)<<"solver ...\n";
-
     // Initial iteration
-    numIter=0;
+    numIter = 0;
     A->Apply(x, rk); // A * x -> rk
-    rk.XPAY(-1.0, b); // b - rk -> rk // TODO: It is r_k or -r_k? --zcs
-    pc->Apply(rk, zk); // B(r_k) -> z_k
+    rk.XPAY(-1.0, b); // b - rk -> rk
+    pc->Solve(rk, zk); // B(r_k) -> z_k
 
     // Compute initial residual
     tmpAbs = rk.Norm2();
@@ -131,7 +124,7 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
                 }
 
                 A->Apply(x, this->rk);
-                this->rk.XPAY(-1.0, b); // TODO: It is r_k or _r_K? --zcs
+                this->rk.XPAY(-1.0, b);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
                 if (verbose > PRINT_SOME) RealRes(resRel);
@@ -154,7 +147,7 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
         if (resRel < relTol) {
             // Compute true residual r = b - Ax and update residual
             A->Apply(x, this->rk);
-            this->rk.XPAY(-1.0, b); // TODO: It is r_k or -r_k? --zcs
+            this->rk.XPAY(-1.0, b);
 
             // Compute residual norms
             DBL updated_resRel = resRel;
@@ -185,7 +178,7 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
         tmpAbs = resAbs;
 
         // Apply preconditioner z_k = B(r_k)
-        pc->Apply(rk, zk);
+        pc->Solve(rk, zk);
 
         // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
         tmpb = zk.Dot(rk);
@@ -205,21 +198,6 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
     norm2 = rk.Norm2();
 
     return errorCode;
-}
-
-/// Clean up preconditioner. fff应该不需要这个:pc由外面换进来,应该由外面清理它的内存
-void PCG::CleanPCD() {
-    if (pc != nullptr)
-        pc = nullptr;
-}
-
-/// Release temporary memory
-void PCG::Clean() {
-    VEC zero;
-    pk = zero;
-    rk = zero;
-    zk = zero;
-    ax = zero;
 }
 
 /*---------------------------------*/
