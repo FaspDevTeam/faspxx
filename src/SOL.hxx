@@ -113,11 +113,8 @@ public:
     }
 
     /// solve by SOL
-    /// virtual FaspRetCode Solve(const VEC& x, VEC& y);
     virtual FaspRetCode Solve(const VEC &b, VEC &x) {
-        /// identity operator by default
-        x = b;
-        return FaspRetCode::SUCCESS;
+        FASPXX_ABORT("Not supported!");
     }
 
     /// Release temporary memory
