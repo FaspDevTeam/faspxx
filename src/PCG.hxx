@@ -26,7 +26,6 @@ private:
     VEC pk; /// work vector for preconditioned residual
     VEC zk; /// work vector for search direction
     VEC ax; /// work vector for A * pk
-    // TODO: it should also has a name member, like "Preconditioner Conjugate Gradient" --zcs
 
 public:
     /// constructor by default
@@ -34,19 +33,10 @@ public:
             zk(0), ax(0){};
 
     /// check and allocate memory
-    FaspRetCode Setup(const Mat& A,const VEC& b,VEC& x);
-
-    /// build preconditioner operator
-    void SetPC(LOP* lop); // TODO: PCD::Setup --zcs
+    FaspRetCode Setup(const Mat& A);
 
     /// solve by PCG
     FaspRetCode Solve(const VEC& b, VEC& x);
-
-    /// clean preconditioner operator
-    void CleanPCD(); // TODO: PCD::Clean --zcs
-
-    /// Release temporary memory
-    void Clean();
 
     /// destructor
     ~PCG(){};
