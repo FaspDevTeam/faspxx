@@ -12,6 +12,7 @@
 #include "ErrorLog.hxx"
 #include "VEC.hxx"
 #include "LOP.hxx"
+#include "PCD.hxx"
 #include "RetCode.hxx"
 #include "Parameters.hxx"
 
@@ -23,18 +24,19 @@ private:
         _PCG, _GMRES, _BICGSTAB, _COUNT
     };
 protected:
-    LOP *pc;        ///< Preconditioner, inlopfffpc
-    const LOP *A;   ///<
+    SOL *pc;        ///< Preconditioner, inlopfffpc
+    const Mat *A;   ///< Matrix object
     PRTLVL verbose; ///< Output level
     INT maxIter;    ///< Maximal number of iterations
     DBL relTol;     ///< Tolerance for relative residual
     DBL absTol;     ///< Tolerance for absolute residual
     INT restart;    ///< Tolerance for absolute residual
-    SOLType type;   ///< solver
+    SOLType type;   ///< Solver
     DBL norm2;      ///< l2-norm
-    DBL norminf;    ///< infty-norm
-    INT numIter;    ///< iterations
-    bool view;      ///< view all parameters
+    DBL norminf;    ///< Infty-norm
+    INT numIter;    ///< Iterations
+    bool view;      ///< View all parameters
+    bool mark;        ///< Mark where the PC is requesting memory
 
     /// Warning for actual relative residual
     void RealRes(DBL relres);
@@ -54,13 +56,14 @@ protected:
                     const DBL &resRel);
 
     /// Select solver
-    char* SelectSolver(SOLType type);
+    char *SelectSolver(SOLType type);
 
 public:
 
     /// Default constructor
-    SOL() : pc(nullptr), A(nullptr), verbose(PRINT_NONE), maxIter(100), relTol(1e-4),
-            absTol(1e-8), restart(25), norm2(1.0), norminf(1.0), numIter(0) {};
+    SOL() : pc(nullptr), A(nullptr), verbose(PRINT_NONE), maxIter(100),
+            relTol(1e-4), absTol(1e-8), restart(25), norm2(1.0), norminf(1.0),
+            numIter(0), mark(false) {};
 
     /// constructor
     SOL(PRTLVL verbose, INT maxIter, DBL relTol, DBL absTol, INT restart);
@@ -92,32 +95,38 @@ public:
     /// Get iterations
     INT GetIterations();
 
-    // Print parameters
+    /// Print parameters
     void Print(std::ostream &out = std::cout) const;
 
     /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
     FaspRetCode SetOptionsFromFile(const char *file = nullptr, const char *
-        prefix = nullptr);
+    prefix = nullptr);
 
     /// check and allocate memory
-    virtual FaspRetCode Setup(const Mat &_A, const VEC &b, VEC &x) = 0;
+    virtual FaspRetCode Setup(const Mat &_A) {
+        FASPXX_ABORT("Not supported!")
+    }
 
     /// build preconditioner operator
-    virtual void SetPC(LOP *lop) {
+    virtual void SetPC(SOL *pc) {
         FASPXX_ABORT("Not supported!");
     }
 
     /// solve by SOL
-    virtual FaspRetCode Solve(const VEC &b, VEC &x) = 0;
-
-    /// clean preconditioner operator
-    virtual void CleanPCD(); //fff不应该这里来清理,似乎应该有子类的成员函数来清理
+    /// virtual FaspRetCode Solve(const VEC& x, VEC& y);
+    virtual FaspRetCode Solve(const VEC &b, VEC &x) {
+        /// identity operator by default
+        x = b;
+        return FaspRetCode::SUCCESS;
+    }
 
     /// Release temporary memory
-    virtual void Clean() = 0;
+    virtual void Clean() {
+        FASPXX_ABORT("Not supported!")
+    }
 
     // destructor
-    ~SOL() {};
+    ~SOL();
 };
 
-#endif // SOL_HXX
+#endif // SOL_HXXs

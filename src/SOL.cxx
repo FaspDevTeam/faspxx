@@ -29,8 +29,7 @@ void SOL::DiffRes(DBL reldiff, DBL relres) {
 void SOL::PrintInfo(const PRTLVL &verbose, const INT &iter, const DBL &resRel,
                     const DBL &resAbs, const DBL &factor) {
     if (verbose > PRINT_SOME || (verbose > PRINT_NONE && iter % 20 == 0)) {
-        if (iter == 0)
-        {
+        if (iter == 0) {
             std::cout << "--------------------------------------------------\n";
             std::cout << "It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
             std::cout << "--------------------------------------------------\n";
@@ -61,8 +60,8 @@ void SOL::PrintFinal(const PRTLVL &verbose, const INT &iter, const INT &maxit,
 }
 
 /// Select solver
-char* SOL::SelectSolver(SOLType type){
-    switch(type){
+char *SOL::SelectSolver(SOLType type) {
+    switch (type) {
         case _PCG:
             return "PCG";
         case _GMRES:
@@ -108,22 +107,22 @@ void SOL::SetRestart(INT restart) {
 }
 
 /// Set 'solver' type
-void SOL::SetSolver(SOLType solver){
-    this->type=solver;
+void SOL::SetSolver(SOLType solver) {
+    this->type = solver;
 }
 
 /// Get residual 's 'l2-norm'
-DBL SOL::GetNorm2(){
+DBL SOL::GetNorm2() {
     return this->norm2;
 }
 
 /// Get residual 's 'infty-norm'
-DBL SOL::GetInfNorm(){
+DBL SOL::GetInfNorm() {
     return this->norminf;
 }
 
 /// Get iterations
-INT SOL::GetIterations(){
+INT SOL::GetIterations() {
     return this->numIter;
 }
 
@@ -133,97 +132,76 @@ void SOL::Print(std::ostream &out) const {
         << "-----------------------------------\n"
         << "  Print level:          " << verbose << '\n'
         << "  Max num of iteration: " << maxIter << '\n'
-        << "  Relative tolerance:   " << relTol  << '\n'
-        << "  Absolute tolerance:   " << absTol  << '\n'
+        << "  Relative tolerance:   " << relTol << '\n'
+        << "  Absolute tolerance:   " << absTol << '\n'
         << "  Restart number:       " << restart << '\n'
         << "-----------------------------------\n";
 };
 
 /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
-FaspRetCode SOL::SetOptionsFromFile(const char* file, const char* prefix)
-{
+FaspRetCode SOL::SetOptionsFromFile(const char *file, const char *prefix) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
-    std::cout << "Reading SOL parameters from disk file " << file << std::endl; //fff这类输出最好有一个全局的控制变量,比如宏 FASPXX_VERBOSE,如果把这类输出无差别地都编译(个人觉得应该用宏控制编译),会有大量的输出
+    std::cout << "Reading SOL parameters from disk file " << file
+              << std::endl; //fff这类输出最好有一个全局的控制变量,比如宏 FASPXX_VERBOSE,如果把这类输出无差别地都编译(个人觉得应该用宏控制编译),会有大量的输出
 
     std::ifstream input(file);
-    if (!input.is_open())
-    {
+    if (!input.is_open()) {
         FASPXX_WARNING("Not found sol option file!");
     }
 
     // TODO: 把下面的对每行处理的代码写成一个独立的函数
     std::string line, param, value;
-    while (std::getline(input, line))
-    {
+    while (std::getline(input, line)) {
         if (!ProcessLine(line, param, value)) continue;
 
-        if (prefix)
-        {
+        if (prefix) {
             if (param.find(prefix) == param.npos) continue;
         }
 
-        if (prefix)
-        {
+        if (prefix) {
             std::string prefix_(prefix);
             size_t pos = param.find(prefix_);
-            if (pos != std::string::npos)
-            {
+            if (pos != std::string::npos) {
                 param.erase(pos, prefix_.length());
             }
-        }
-        else
-        {
+        } else {
             param[0] = '_'; // 把-sol改成_sol,方便下面的赋值
         }
 
-        if (param == "_sol_type")
-        {
-            if (value == "cg")         type = _PCG;
+        if (param == "_sol_type") {
+            if (value == "cg") type = _PCG;
             else if (value == "gmres") type = _GMRES;
-            else if (value == "none")  type = _COUNT;
-            else                       type = _COUNT;
-        }
-        else if (param == "_sol_rtol")
-        {
+            else if (value == "none") type = _COUNT;
+            else type = _COUNT;
+        } else if (param == "_sol_rtol") {
             relTol = std::stod(value);
-        }
-        else if (param == "_sol_atol")
-        {
+        } else if (param == "_sol_atol") {
             absTol = std::stod(value);
-        }
-        else if (param == "_sol_maxiter")
-        {
+        } else if (param == "_sol_maxiter") {
             maxIter = std::stoi(value);
-        }
-        else if (param == "_sol_printlvl")
-        {
+        } else if (param == "_sol_printlvl") {
             //verbose = std::stoi(value);
-            if(value=="PRINT_NONE")
-                verbose=PRINT_NONE;
-            else if(value=="PRINT_MIN")
-                verbose=PRINT_MIN;
-            else if(value=="PRINT_SOME")
-                verbose=PRINT_SOME;
-            else if(value=="PRINT_MORE")
-                verbose=PRINT_MORE;
-            else if(value=="PRINT_MAX")
-                verbose=PRINT_MAX;
-            else if(value=="PRINT_ALL")
-                verbose=PRINT_ALL;
-        }
-        else if (param == "_sol_restart")
-        {
+            if (value == "PRINT_NONE")
+                verbose = PRINT_NONE;
+            else if (value == "PRINT_MIN")
+                verbose = PRINT_MIN;
+            else if (value == "PRINT_SOME")
+                verbose = PRINT_SOME;
+            else if (value == "PRINT_MORE")
+                verbose = PRINT_MORE;
+            else if (value == "PRINT_MAX")
+                verbose = PRINT_MAX;
+            else if (value == "PRINT_ALL")
+                verbose = PRINT_ALL;
+        } else if (param == "_sol_restart") {
             restart = std::stoi(value);
-        }
-        else if (param == "_sol_view")
-        {
+        } else if (param == "_sol_view") {
             view = true;
         }
     }
     input.close();
-    if (view)
-    {
+    if (view) {
         cout << "Parameters for sol " //<< prefix << '\n'
              << "Krylov method type: " << type << '\n'
              << "relative tolerance: " << relTol << '\n'
@@ -234,9 +212,11 @@ FaspRetCode SOL::SetOptionsFromFile(const char* file, const char* prefix)
     return retCode;
 }
 
+SOL::~SOL() {
+    if (mark == false)
+        delete pc;
+    else
+        pc = nullptr;
 
-/// clean preconditioner operator
-void SOL::CleanPCD(){
-    if(pc != nullptr)
-        pc=nullptr;
+    A = nullptr;
 }
