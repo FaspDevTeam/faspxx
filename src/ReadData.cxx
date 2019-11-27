@@ -14,7 +14,7 @@
 #include "ReadData.hxx"
 #include "MATUtil.hxx"
 
-/// \bridf Read a VEC data file
+/// \brief Read a VEC data file
 FaspRetCode ReadVEC(const char *filename, VEC &rhs) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
