@@ -7,26 +7,19 @@
 
 #include "SOL.hxx"
 
-class IdentityPC : public SOL{
-private:
-    INT row;
-    INT col;
-
+class IdentityPC : public SOL {
 public:
-
     // default constructor
-    IdentityPC():row(0),col(0){};
-
-    // constructor
-    explicit IdentityPC(INT row,INT col);
+    IdentityPC(){};
 
     /// solve by SOL
     virtual FaspRetCode Solve(const VEC& x, VEC& y);
 
     /// destructor
-    ~IdentityPC(){}
+    ~IdentityPC(){};
 
 };
+
 
 class Jacobi : public SOL{
 public :
@@ -36,7 +29,7 @@ public :
 
 public:
     // default constructor
-    Jacobi():row(0),col(0){}
+    Jacobi():row(0),col(0){};
 
     // constructor
     explicit Jacobi(INT row,INT col,std::vector<DBL> diag);
@@ -48,6 +41,5 @@ public:
     ~Jacobi(){};
 
 };
-
 
 #endif // PCD_HXX

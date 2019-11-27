@@ -60,7 +60,7 @@ void SOL::PrintFinal(const PRTLVL &verbose, const INT &iter, const INT &maxit,
 }
 
 /// Select solver
-char *SOL::SelectSolver(SOLType type) {
+const char *SOL::SelectSolver(SOLType type) {
     switch (type) {
         case _PCG:
             return "PCG";
@@ -210,6 +210,12 @@ FaspRetCode SOL::SetOptionsFromFile(const char *file, const char *prefix) {
              << "view: " << view << endl;
     }
     return retCode;
+}
+
+/// build preconditioner operator
+void SOL::SetPC(SOL *pc){
+    this->pc=pc;
+    mark=true;
 }
 
 SOL::~SOL() {

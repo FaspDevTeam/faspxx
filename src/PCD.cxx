@@ -4,12 +4,6 @@
 
 #include "PCD.hxx"
 
-// default constructor
-IdentityPC::IdentityPC(INT row, INT col) {
-    this->row = row;
-    this->col = col;
-}
-
 /// identity preconditioner
 FaspRetCode IdentityPC::Solve(const VEC &x, VEC &y) {
     FaspRetCode errorCode = FaspRetCode::SUCCESS;

@@ -12,7 +12,6 @@
 #include "ErrorLog.hxx"
 #include "VEC.hxx"
 #include "LOP.hxx"
-#include "PCD.hxx"
 #include "RetCode.hxx"
 #include "Parameters.hxx"
 
@@ -56,7 +55,7 @@ protected:
                     const DBL &resRel);
 
     /// Select solver
-    char *SelectSolver(SOLType type);
+    const char *SelectSolver(SOLType type);
 
 public:
 
@@ -108,9 +107,7 @@ public:
     }
 
     /// build preconditioner operator
-    virtual void SetPC(SOL *pc) {
-        FASPXX_ABORT("Not supported!");
-    }
+    virtual void SetPC(SOL *pc);
 
     /// solve by SOL
     virtual FaspRetCode Solve(const VEC &b, VEC &x) {
