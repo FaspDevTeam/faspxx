@@ -1,7 +1,7 @@
-/** \file LOP.hxx
- *  \brief Linear operator class declaration
- *  \author Chensong Zhang
- *  \date Sep/27/2019
+/** \file    LOP.hxx
+ *  \brief   Linear operator class declaration
+ *  \author  Chensong Zhang
+ *  \date    Sep/27/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -18,6 +18,9 @@
 
 /*! \class LOP
  *  \brief Linear operator class from VEC(ncol) to VEC(nrow)
+ *
+ *  This is a virtual class for all linear operators, for example a MAT sparse
+ *  matrix or a matrix-free operation.
  */
 class LOP {
 
@@ -31,10 +34,10 @@ public:
     /// Default constructor
     LOP() : nrow(0), ncol(0) {};
 
-    /// Assign nrow, ncol to *this
+    /// Assign nrow and ncol to *this
     LOP(const INT& nrow, const INT& ncol);
 
-    /// Assign nrow, ncol=nrow to *this
+    /// Assign nrow and ncol=nrow to *this
     LOP(const INT& nrow);
 
     /// Assign LOP object to *this
@@ -52,28 +55,9 @@ public:
     /// Get column space dimension
     INT GetColSize() const;
 
-    /// Return VEC = *this * v
-    //virtual void
-//    virtual void Apply(const VEC &x, VEC &y) const = 0; //fff:把它变成纯虚函数,整个LOP都是一个抽象类,不能定义对象
-    /// temporary modification
-    virtual void Apply(const VEC& x,VEC& y) const {throw("Not supported!"); };
+    /// Action of the linear operator to a vector
+    virtual void Apply(const VEC& x, VEC& y) const {throw("Action not defined!"); };
 };
-
-#if 0
-// Identity linear operator
-class IdentityLOP : public LOP {
-public:
-    explicit IdentityLOP(INT n) : LOP(n, n) {}
-
-    IdentityLOP &operator=(const IdentityLOP& lop) {
-        this->nrow = lop.nrow;
-        this->ncol = lop.ncol;
-        return *this;
-    }
-
-    virtual void Apply(const VEC& x, VEC& y) const { y = x; }
-};
-#endif
 
 #endif /* end if for __LOP_HEADER__ */
 
