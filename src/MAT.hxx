@@ -24,13 +24,13 @@
  *  give two simple examples here as follows:
  *
  *  Example 1.
- *  \[
+ *  \f{equation*}{
  *  \begin{pmatrix}
  *      1&  0&  2 \\
  *      0&  1&  0 \\
  *      3&  0&  0 \\
  *  \end{pmatrix}
- *  \]
+ *  }
  *  and
  *  nnz = 5, row = 3, col = 3,
  *  values = { 1, 2, 1, 3, 0 },
@@ -39,13 +39,13 @@
  *  diagPtr = { 0, 2, 4 }.
  *
  *  Example 2.
- *  \[
+ *  \f{equation*}{
  *  \begin{pmatrix}
  *      1&  7&  2 \\
  *      0&  0&  0 \\
  *      3&  0&  4 \\
  *  \end{pmatrix}
- *  \]
+ *  }
  *  and
  *  nnz = 6, row = 3, col = 3,
  *  values = { 1, 7, 2, 0, 3, 4 },
