@@ -4,27 +4,43 @@
 
 #include "PCD.hxx"
 
-// overload = operator
-IdentityLOP& IdentityLOP::operator=(const IdentityLOP& lop) {
-    this->nrow = lop.nrow;
-    this->ncol = lop.ncol;
-    return *this;
+// default constructor
+IdentityPC::IdentityPC(INT row, INT col) {
+    this->row = row;
+    this->col = col;
 }
 
-// 'y' = operator applys 'x'
-void IdentityLOP::Apply(const VEC& x, VEC& y) const {
-    y = x;
+/// identity preconditioner
+FaspRetCode IdentityPC::Solve(const VEC &x, VEC &y) {
+    FaspRetCode errorCode = FaspRetCode::SUCCESS;
+
+    if (x.GetSize() != y.GetSize())
+        errorCode = FaspRetCode::ERROR_VEC_SIZE;
+    else
+        y = x;
+
+    return errorCode;
 }
 
-// constructor
-Jacobi::Jacobi(const std::vector<double>& diag) {
+/// constructor
+Jacobi::Jacobi(INT row, INT col,std::vector<DBL> diag) {
+    this->row = row;
+    this->col = col;
+
     this->diag.SetValues(diag);
-    this->nrow = diag.size();
-    this->ncol = diag.size();
 }
 
-// 'y' = operator applys 'x'
-void Jacobi::Apply(const VEC& x, VEC& y) const {
-    y = x;
-    y.PointwiseDivide(diag);
+/// jacobi preconditioner
+FaspRetCode Jacobi::Solve(const VEC &x, VEC &y) {
+    FaspRetCode errorCode = FaspRetCode::SUCCESS;
+
+    if(x.GetSize()!=y.GetSize())
+        errorCode=FaspRetCode ::ERROR_VEC_SIZE;
+
+    VEC tmp=this->diag;
+    tmp.Reciprocal();
+    y=x;
+    y.PointwiseMult(tmp);
+
+    return errorCode;
 }
