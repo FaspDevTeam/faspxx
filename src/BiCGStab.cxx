@@ -35,16 +35,11 @@ BiCGStab::Setup(const LOP &_A, const VEC &b, VEC &x) {
 
     /// identical preconditioner operator by default
     if (pc == nullptr) {
-        IdentityLOP lop(len);
-        pc = &lop;
+        pc=new IdentityPC();
+        mark=false;
     }
 
     return FaspRetCode::SUCCESS;
-}
-
-/// build preconditioner operator
-void BiCGStab::SetPC(LOP *lop) {
-    this->pc = lop;
 }
 
 /// solve by BiCGStab
@@ -131,7 +126,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
             pj.AXPBY(beta, 1.0, rj);
         }
 
-        pc->Apply(pj, ph);
+        pc->Solve(pj, ph);
 
         // sj = A*ph
         A->Apply(ph, sj);
@@ -214,7 +209,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
                     "Half_step : "<<half_step<<std::endl;
         }
 
-        pc->Apply(qj, sh);
+        pc->Solve(qj, sh);
 
         // yj = A*sh;
         A->Apply(sh, yj);
@@ -318,28 +313,6 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
         return ERROR_SOLVER_MAXIT;
 
     return FaspRetCode::SUCCESS;
-}
-
-/// clean preconditioner operator
-void BiCGStab::CleanPCD() {
-    if (pc == nullptr)
-        pc = nullptr;
-}
-
-/// Release temporary memory
-void BiCGStab::Clean() {
-    VEC zero;
-    rj = zero;
-    r0 = zero;
-    pj = zero;
-    sj = zero;
-    ph = zero;
-    xh = zero;
-    qj = zero;
-    sh = zero;
-    yj = zero;
-    xmin = zero;
-    tmp = zero;
 }
 
 /*---------------------------------*/

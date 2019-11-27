@@ -34,17 +34,8 @@ public:
     /// check and allocate memory
     FaspRetCode Setup(const Mat& A,const VEC& b,VEC& x);
 
-    /// build preconditioner operator
-    void SetPC(LOP *lop);
-
     /// solve by BiCGStab
     FaspRetCode Solve(const VEC& b, VEC& x);
-
-    /// clean preconditioner operator
-    void CleanPCD();
-
-    /// Release temporary memory
-    void Clean();
 
     /// destructor
     ~BiCGStab() {};
