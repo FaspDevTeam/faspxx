@@ -13,6 +13,8 @@
 #include "PCD.hxx"
 #include "Poisson2D.hxx"
 
+using namespace std;
+
 /// \brief Locate position of (x,y) in the global index
 #define locate(row, column) (((row) - 1) * (dimen - 1) + (column) - 1)
 
@@ -222,14 +224,12 @@ int main(int argc, char *args[]) {
         pcg.SetRestart(20);
         pcg.SetAbsTol(1e-10);
         pcg.SetRelTol(1e-6);
-        pcg.Setup(matfree, b, x);
-        pcg.Print(cout<<"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"<<endl);
+        pcg.Setup(matfree);
+        pcg.Print(std::cout<<"hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"<<std::endl);
 
         // create identity preconditioner
-        IdentityLOP lop((dimen - 1) * (dimen - 1));
-        pcg.SetPC(&lop);
-
-        cout<<"debug 1"<<endl;
+        IdentityPC pc;
+        pcg.SetPC(&pc);
 
         // time
         timer.Start();

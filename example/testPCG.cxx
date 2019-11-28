@@ -97,23 +97,19 @@ int main(int argc, char *args[]) {
     pcg.SetRestart(restart);
     pcg.SetPrtLvl(print_level);
     // pcg.SetOptionsFromFile(opts, prefix);
-    pcg.Setup(mat, b, x);
+    pcg.Setup(mat);
 
-    params.PrintParams(cout<<"\nhhhhhhhhhhhhhhhhhhhhhhhh\n");
+    params.PrintParams(std::cout<<"\nhhhhhhhhhhhhhhhhhhhhhhhh\n");
     // Setup preconditioner
 
-    IdentityLOP lop(row);
-    pcg.SetPC(&lop);
+    IdentityPC pc;
+    pcg.SetPC(&pc);
 
     // PCG solve
     timer.Start();
     retCode = pcg.Solve(b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
-    //pcg.Print();
-    // Clean up preconditioner and solver data
-    pcg.CleanPCD();
-    pcg.Clean();
     return retCode;
 }
 

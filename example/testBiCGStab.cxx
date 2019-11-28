@@ -79,16 +79,13 @@ int main(int argc, char *argv[]) {
     params.PrintParams(cout<<"\nhhhhhhhhhhhhhhhhhhhhhhhh\n");
     // Setup preconditioner
 
-    IdentityLOP lop(row);
-    bi.SetPC(&lop);
+    IdentityPC pc;
+    bi.SetPC(&pc);
 
     // PCG solve
     timer.Start();
     retCode = bi.Solve(b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
-    // Clean up preconditioner and solver data
-    bi.CleanPCD();
-    bi.Clean();
     return retCode;
 }
