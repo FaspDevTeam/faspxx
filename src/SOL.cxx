@@ -202,12 +202,12 @@ FaspRetCode SOL::SetOptionsFromFile(const char *file, const char *prefix) {
     }
     input.close();
     if (view) {
-        cout << "Parameters for sol " //<< prefix << '\n'
-             << "Krylov method type: " << type << '\n'
-             << "relative tolerance: " << relTol << '\n'
-             << "absolute tolerance: " << absTol << '\n'
-             << "maximum iterations: " << maxIter << '\n'
-             << "view: " << view << endl;
+        std::cout << "Parameters for sol " //<< prefix << '\n'
+                  << "Krylov method type: " << type << '\n'
+                  << "relative tolerance: " << relTol << '\n'
+                  << "absolute tolerance: " << absTol << '\n'
+                  << "maximum iterations: " << maxIter << '\n'
+                  << "view: " << view << std::endl;
     }
     return retCode;
 }
@@ -218,11 +218,15 @@ void SOL::SetPC(SOL *pc){
     mark=true;
 }
 
-SOL::~SOL() {
+/// Release temporary memory
+void SOL::Clean(){
     if (mark == false)
         delete pc;
     else
         pc = nullptr;
+}
 
+/// destructor
+SOL::~SOL() {
     A = nullptr;
 }

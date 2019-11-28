@@ -99,7 +99,7 @@ public:
 
     /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
     FaspRetCode SetOptionsFromFile(const char *file = nullptr, const char *
-    prefix = nullptr);
+        prefix = nullptr);
 
     /// check and allocate memory
     virtual FaspRetCode Setup(const Mat &_A) {
@@ -115,11 +115,9 @@ public:
     }
 
     /// Release temporary memory
-    virtual void Clean() {
-        FASPXX_ABORT("Not supported!")
-    }
+    virtual void Clean();
 
-    // destructor
+    /// destructor
     ~SOL();
 };
 
