@@ -18,7 +18,7 @@ using namespace std;
 /// \brief Locate position of (x,y) in the global index
 #define locate(row, column) (((row) - 1) * (dimen - 1) + (column) - 1)
 
-const INT numTotalMesh = 4; // number of meshes in total
+const INT numTotalMesh = 2; // number of meshes in total
 INT dimen = 16; // number of partitions in X and Y directions
 
 // Todo: Add detailed comments in this example!
@@ -181,7 +181,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
 
 int main(int argc, char *args[]) {
 
-    INT mesh = 0; // number of mesh refinement cycles
+    INT mesh = 1; // number of mesh refinement cycles
     DBL h = 0.0; // mesh size in X and Y directions
     GetWallTime timer;
 
@@ -240,8 +240,6 @@ int main(int argc, char *args[]) {
         std::cout << "Solving Ax=b costs "
                   << std::fixed << std::setprecision(3)
                   << timer.Stop() << "ms" << std::endl;
-
-        pcg.Clean(); // clean preconditioner
 
         std::cout << std::scientific << std::setprecision(4)
                   << "NumIter : " << pcg.GetIterations() << std::endl
