@@ -17,23 +17,6 @@
 #include "ReadData.hxx"
 #include "PCD.hxx"
 
-// Define a simple scaling preconditioner (Jacobi)
-// Todo: Move preconditioners to separate files
-class Scaling:public LOP {
-private:
-    VEC diag;
-public:
-    Scaling(const std::vector<double>& diag) {
-        this->diag.SetValues(diag);
-        this->nrow = diag.size();
-        this->ncol = diag.size();
-    }
-    void Apply(const VEC& x, VEC& y) const {
-        y = x;
-        y.PointwiseDivide(diag);
-    }
-};
-
 int main(int argc, char *args[]) {
     const char *mat_file = "../data/fdm_10X10.csr";
     const char *vec_file = "";
@@ -109,6 +92,10 @@ int main(int argc, char *args[]) {
     timer.Start();
     retCode = pcg.Solve(b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
+
+    std::cout<<"Iterations : "<<pcg.GetIterations()<<std::endl;
+    std::cout<<"Norm2 : "<<pcg.GetNorm2()<<std::endl;
+    std::cout<<"NornInf : "<<pcg.GetInfNorm()<<std::endl;
 
     return retCode;
 }
