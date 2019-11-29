@@ -177,7 +177,7 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
 
 int main(int argc, char *args[]) {
 
-    INT mesh = 0; // number of mesh refinement cycles
+    INT mesh = 1; // number of mesh refinement cycles
     DBL h = 0.0; // mesh size in X and Y directions
     GetWallTime timer;
 
