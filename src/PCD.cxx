@@ -6,18 +6,12 @@
 
 /// identity preconditioner
 FaspRetCode IdentityPC::Solve(const VEC &x, VEC &y) {
-    FaspRetCode errorCode = FaspRetCode::SUCCESS;
-
-    if (x.GetSize() != y.GetSize())
-        errorCode = FaspRetCode::ERROR_VEC_SIZE;
-    else
-        y = x;
-
-    return errorCode;
+    y = x;
+    return FaspRetCode::SUCCESS;
 }
 
 /// constructor
-Jacobi::Jacobi(INT row, INT col,std::vector<DBL> diag) {
+Jacobi::Jacobi(INT row, INT col, std::vector<DBL> diag) {
     this->row = row;
     this->col = col;
 
@@ -26,15 +20,10 @@ Jacobi::Jacobi(INT row, INT col,std::vector<DBL> diag) {
 
 /// jacobi preconditioner
 FaspRetCode Jacobi::Solve(const VEC &x, VEC &y) {
-    FaspRetCode errorCode = FaspRetCode::SUCCESS;
-
-    if(x.GetSize()!=y.GetSize())
-        errorCode=FaspRetCode ::ERROR_VEC_SIZE;
-
-    VEC tmp=this->diag;
+    VEC tmp = this->diag;
     tmp.Reciprocal();
-    y=x;
+    y = x;
     y.PointwiseMult(tmp);
 
-    return errorCode;
+    return FaspRetCode ::SUCCESS;
 }

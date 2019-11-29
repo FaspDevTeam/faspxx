@@ -31,8 +31,8 @@ FaspRetCode PCG::Setup(const LOP &A) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
-    if(pc== nullptr){
-        pc=new IdentityPC();
+    if (pc == nullptr) {
+        pc = new IdentityPC();
         mark=false;
     }
 
@@ -61,8 +61,10 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
 
     // Initial iteration
     numIter = 0;
+
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
+
     pc->Solve(rk, zk); // B(r_k) -> z_k
 
     // Compute initial residual
@@ -83,7 +85,6 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
         numIter++; // iteration count
 
         A->Apply(pk, ax); // ax = A * p_k
-
         // alpha_k = (z_{k-1}, r_{k-1})/(A*p_{k-1},p_{k-1})
         tmpb = ax.Dot(pk);
         if (fabs(tmpb) > 1e-40) alpha = tmpa / tmpb;
@@ -194,8 +195,8 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
     PrintFinal(verbose, numIter, maxIter, resRel);
 
     // Compute final residual norms
-    norminf = rk.NormInf();
-    norm2 = rk.Norm2();
+    this->norminf = rk.NormInf();
+    this->norm2 = rk.Norm2();
 
     return errorCode;
 }
