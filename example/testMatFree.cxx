@@ -15,26 +15,25 @@
 
 using namespace std;
 
+const INT numTotalMesh = 2; // number of meshes in total
+INT dimen = 8; // number of partitions in X and Y directions
+#define Nx dimen-1
+#define Ny dimen-1
+
 /// \brief Locate position of (x,y) in the global index
 #define locate(row, column) (((row) - 1) * (dimen - 1) + (column) - 1)
 
-const INT numTotalMesh = 4; // number of meshes in total
-INT dimen = 16; // number of partitions in X and Y directions
-INT _nrow=dimen-1;
-INT _ncol=dimen-1;
-
-/// Todo: Add detailed comments in this example!
 /// \brief Matrix-free linear operator object
 class MatFree : public LOP {
 public:
     // constructor by default
-    MatFree(const INT row = 32, const INT col = 32) {
+    MatFree(const INT row, const INT col) {
         nrow = row;
         ncol = col;
     }
 
     // free-matrix 's operator : acting on a VEC object
-    void Apply(const VEC &x, VEC &y) const;
+    void Apply(const VEC& x, VEC& y) const;
 };
 
 // generate rhs
@@ -87,10 +86,15 @@ static void Rhs(INT dimen, DBL *ptr) {
     ptr[locate(dimen1, dimen1)] =
             UpperBdyCond(dimen1 * h, 1.0) + RightBdyCond(1.0, dimen1 * h)
             + h * h * Load(dimen1 * h,dimen1 * h);
+
+    std::cout<<"ptr : ";
+    for(int j=0;j<dimen1*dimen1;j++)
+        std::cout<<ptr[j]<<"  ";
+    std::cout<<std::endl;
 }
 
 // free-matrix 's operator : acting on a VEC object
-void MatFree::Apply(const VEC &x, VEC &y) const {
+void MatFree::Apply(const VEC& x, VEC& y) const {
 
     const DBL *x_val;
     x.GetArray(&x_val);
@@ -103,8 +107,8 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     int lower, left, center, right, upper;
 
     // interior points
-    for ( int k = 2; k < _nrow - 1; ++k ) {
-        for ( int j = 2; j < _ncol - 1; ++j ) {
+    for ( int k = 2; k < Nx - 1; ++k ) {
+        for ( int j = 2; j < Ny - 1; ++j ) {
             center = (k - 1) * dimen1 + j - 1;
             lower  = center - dimen1;
             left   = center - 1;
@@ -116,7 +120,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // lower boundary
-    for ( int j = 2; j < _ncol - 1; ++j ) {
+    for ( int j = 2; j < Ny - 1; ++j ) {
         center = j - 1;
         left   = center - 1;
         right  = center + 1;
@@ -126,8 +130,8 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // upper boundary
-    for ( int j = 2; j < _ncol - 1; ++j ) {
-        center = (_nrow - 2) * dimen1 + j - 1;
+    for ( int j = 2; j < Ny - 1; ++j ) {
+        center = (Nx - 2) * dimen1 + j - 1;
         lower  = center - dimen1;
         left   = center - 1;
         right  = center + 1;
@@ -136,7 +140,7 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // left boundary
-    for ( int k = 2; k < _nrow - 1; ++k ) {
+    for ( int k = 2; k < Nx - 1; ++k ) {
         center = (k - 1) * dimen1;
         lower  = center - dimen1;
         right  = center + 1;
@@ -146,8 +150,8 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     }
 
     // right boundary
-    for ( int k = 2; k < _nrow - 1; ++k ) {
-        center = (k - 1) * dimen1 + _ncol - 2;
+    for ( int k = 2; k < Nx - 1; ++k ) {
+        center = (k - 1) * dimen1 + Ny - 2;
         lower  = center - dimen1;
         left   = center - 1;
         upper  = center + dimen1;
@@ -162,28 +166,28 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     y_val[center] = 4.0 * x_val[center] - x_val[right] - x_val[upper];
 
     // left upper corner
-    left   = locate(1, _ncol - 2);
-    center = locate(1, _ncol - 1);
-    right  = locate(2, _ncol - 1);
+    left   = locate(1, Ny - 2);
+    center = locate(1, Ny - 1);
+    right  = locate(2, Ny - 1);
     y_val[center] = -x_val[left] + 4.0 * x_val[center] - x_val[right];
 
     // right lower corner
-    lower  = locate(_nrow - 2, 1);
-    center = locate(_nrow - 1, 1);
-    right  = locate(_nrow - 1, 2);
+    lower  = locate(Nx - 2, 1);
+    center = locate(Nx - 1, 1);
+    right  = locate(Nx - 1, 2);
     y_val[center] = -x_val[lower] + 4.0 * x_val[center] - x_val[right];
 
     // right upper corner
-    lower  = locate(_nrow - 2, _ncol - 1);
-    left   = locate(_nrow - 1, _ncol - 2);
-    center = locate(_nrow - 1, _ncol - 1);
+    lower  = locate(Nx - 2, Ny - 1);
+    left   = locate(Nx - 1, Ny - 2);
+    center = locate(Nx - 1, Ny - 1);
     y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center];
 }
 
 int main(int argc, char *args[]) {
 
     INT mesh = 1; // number of mesh refinement cycles
-    DBL h = 0.0; // mesh size in X and Y directions
+    DBL h = 0.0;  // mesh size in X and Y directions
     GetWallTime timer;
 
     DBL *ptr = nullptr;
@@ -217,19 +221,15 @@ int main(int argc, char *args[]) {
         PCG pcg;
 
         // convergence parameter setting
-        pcg.SetPrtLvl(PRINT_NONE);
+        pcg.SetPrtLvl(PRINT_MORE);
         pcg.SetMaxIter(100000);
         pcg.SetRestart(20);
         pcg.SetAbsTol(1e-10);
         pcg.SetRelTol(1e-6);
-
         pcg.Setup(matfree);
 
         // time
         timer.Start();
-
-        cout<<"b.GetSize : "<<b.GetSize()<<endl;
-        cout<<"x.GetSize : "<<x.GetSize()<<endl;
         pcg.Solve(b, x); // solve by free-matrix method
         std::cout << "Solving Ax=b costs "
                   << std::fixed << std::setprecision(3)
