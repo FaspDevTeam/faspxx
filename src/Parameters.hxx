@@ -18,11 +18,11 @@ enum PRTLVL {
 class Parameters {
 public:
     enum ParamType {
-        _BOOL, _INT, _DBL, _STRING, _PRTLVL
-    }; // 允许的参数类型
+        BoolType, IntType, DoubleType, StringType, PrintLevelType
+    }; // allowed parameter types
 
 private:
-    struct Param // 每一个参数都是一个结构体
+    struct Param // each parameter is saved in a struct
     {
         ParamType type;
         void *param_ptr;
@@ -33,7 +33,7 @@ private:
                 : type(_type), param_ptr(_ptr), param_name(_name), help(_help) {}
     };
 
-    std::vector<Param> params; // 保存所有的参数
+    std::vector<Param> params; // all parameters
     int argc;
     char **argv;
 
