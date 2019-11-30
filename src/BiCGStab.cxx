@@ -177,9 +177,6 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
                 flag = 0;
                 imin = numIter - 0.5;
                 half_step++;
-                if (verbose >= PRINT_MORE)
-                    printf("Flag = %d Stag = %d Itermin = %.1f Half_step = %d\n",
-                           flag, stag, imin, half_step);
                 goto FINISHED;
             } else {
                 if ((stag >= maxstagsteps) && (moresteps == 0)) stag = 0;
@@ -204,9 +201,6 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
             xmin = xh;
             imin = numIter - 0.5;
             half_step++;
-            if (verbose >= PRINT_MORE)
-                std::cout<<"Flag = "<<flag<<"Stag = "<<stag<<"Itermin = "<<imin<<
-                    "Half_step : "<<half_step<<std::endl;
         }
 
         pc->Solve(qj, sh);
@@ -301,10 +295,6 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
     }
 
     if (verbose > PRINT_NONE) PrintFinal(verbose, numIter, maxIter, relres);
-
-    if (verbose >= PRINT_MORE)
-        std::cout<<"Flag = "<<flag<<"Stag = "<<stag<<"Itermin = "
-        <<imin<<"Half_step = "<<half_step<<std::endl;
 
     norminf=rj.NormInf();
     norm2=rj.Norm2();
