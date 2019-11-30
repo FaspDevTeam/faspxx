@@ -1,7 +1,7 @@
-/*! \file   testErrorLog.cxx
- *  \brief  Test error log messages
- *  \author Ronghong Fan
- *  \date   Oct/12/2019
+/*! \file    testErrorLog.cxx
+ *  \brief   Test error log messages
+ *  \author  Ronghong Fan
+ *  \date    Oct/12/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.

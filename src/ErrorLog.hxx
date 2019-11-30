@@ -35,23 +35,24 @@
 //  msg: user-defined error message
 #define FASPXX_ABORT(msg)                          \
     {                                              \
-        _FASPXX_MASSAGE_("### ABORT: " << msg);    \
+        _FASPXX_MASSAGE_("### ABORT: " << (msg));  \
         std::abort();                              \
     }
 
 /// Check condition and log user messages
 //  cond: check condition
 //  msg: user-defined error message
-#define FASPXX_ASSERT(cond, msg)                                       \
-   if (!(cond)) {                                                      \
-      _FASPXX_MASSAGE_("### ASSERT: " << msg << " (" << #cond << ")"); \
+#define FASPXX_ASSERT(cond, msg)                   \
+   if (!(cond)) {                                  \
+      _FASPXX_MASSAGE_("### ASSERT: " << (msg) <<  \
+      " (" << #cond << ")");                       \
    }
 
 /// Log warning messages
 //  msg: user-defined error message
 #define FASPXX_WARNING(msg)                        \
     {                                              \
-        _FASPXX_MASSAGE_("### WARNING: " << msg);  \
+        _FASPXX_MASSAGE_("### WARNING: " << (msg));\
     }
 
 #endif /* end if for __ERRORLOG_HXX__ */
