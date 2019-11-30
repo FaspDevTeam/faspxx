@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
     const char *vec_file = "";
     const char *initial_guess = "";
     //bool print_level = false;
-    PRTLVL print_level = PRINT_NONE;
+    PRTLVL print_level = PRINT_MORE;
     const char *opts = "../data/multiple_sol.opts";
     const char *prefix = "-solver1";
     DBL resrel=1e-4;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
     bi.SetRestart(restart);
     bi.SetPrtLvl(print_level);
     // pcg.SetOptionsFromFile(opts, prefix);
-    bi.Setup(mat, b, x);
+    bi.Setup(mat);
 
     params.PrintParams(cout<<"\nhhhhhhhhhhhhhhhhhhhhhhhh\n");
     // Setup preconditioner
