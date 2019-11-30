@@ -16,37 +16,42 @@
 #include <iomanip>
 
 /// Print out location at (file, line) and function name
-#define _FASPXX_LOCATION_                                          \
-        "\n  ---> in file:     " << __FILE__ << ':' << __LINE__ << \
-        "\n  ---> in function: " << __PRETTY_FUNCTION__ << '\n'
+#define _FASPXX_LOCATION_                                         \
+    "\n    --> function: " << __PRETTY_FUNCTION__ <<              \
+    "\n    --> file:     " << __FILE__ << ':' << __LINE__ << '\n'
 
 /// Log error messages
-#define _FASPXX_MASSAGE_(msg)                         \
-        {                                             \
-            std::ostringstream info;                  \
-            info << std::setprecision(16);            \
-            info << '\n' << msg << _FASPXX_LOCATION_; \
-            std::cout << info.str().c_str();          \
-        }
+//  msg: user-defined error message
+#define _FASPXX_MASSAGE_(msg)                      \
+    {                                              \
+        std::ostringstream info;                   \
+        info << std::setprecision(16);             \
+        info << '\n' << msg << _FASPXX_LOCATION_;  \
+        std::cout << info.str().c_str();           \
+    }
 
 /// Abort if critical error happens
-#define FASPXX_ABORT(msg)                              \
-        {                                              \
-            _FASPXX_MASSAGE_("### ABORT: " << msg);    \
-            std::abort();                              \
-        }
+//  msg: user-defined error message
+#define FASPXX_ABORT(msg)                          \
+    {                                              \
+        _FASPXX_MASSAGE_("### ABORT: " << msg);    \
+        std::abort();                              \
+    }
 
 /// Check condition and log user messages
-#define FASPXX_ASSERT(TRUE, msg)                                       \
-   if (!(TRUE)) {                                                      \
-      _FASPXX_MASSAGE_("### ASSERT: " << msg << " (" << #TRUE << ")"); \
+//  cond: check condition
+//  msg: user-defined error message
+#define FASPXX_ASSERT(cond, msg)                                       \
+   if (!(cond)) {                                                      \
+      _FASPXX_MASSAGE_("### ASSERT: " << msg << " (" << #cond << ")"); \
    }
 
 /// Log warning messages
-#define FASPXX_WARNING(msg)                            \
-        {                                              \
-            _FASPXX_MASSAGE_("### WARNING: " << msg);  \
-        }
+//  msg: user-defined error message
+#define FASPXX_WARNING(msg)                        \
+    {                                              \
+        _FASPXX_MASSAGE_("### WARNING: " << msg);  \
+    }
 
 #endif /* end if for __ERRORLOG_HXX__ */
 

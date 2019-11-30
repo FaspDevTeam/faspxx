@@ -61,12 +61,13 @@ target_link_libraries(testVecSpeed faspxx)
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
 
+# Build ErrorLog message test
+add_executable(testErrorLog example/testErrorLog.cxx)
+target_link_libraries(testErrorLog faspxx)
+
 # Build PCG class test
 add_executable(testPCG example/testPCG.cxx)
 target_link_libraries(testPCG faspxx)
-
-add_executable(testError example/testError.cxx)
-target_link_libraries(testError faspxx)
 
 add_executable(testMatFree example/testMatFree.cxx)
 target_link_libraries(testMatFree faspxx)
