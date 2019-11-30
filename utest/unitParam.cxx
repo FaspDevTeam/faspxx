@@ -11,19 +11,21 @@
 
 #include <gtest/gtest.h>
 #include <iostream>
-#include "Param.hxx"
+//#include "Param.hxx"
 
 /*---------------------------------*/
 /*--     Beginning of TEST       --*/
 /*---------------------------------*/
 
-TEST(IterParam_Default, Default_Values)
-{
-    InitParam inparam;
-    EXPECT_EQ(inparam.param.GetMaxIter(), 100);
-    EXPECT_DOUBLE_EQ(inparam.param.GetRelTol(), 1e-6);
-    EXPECT_DOUBLE_EQ(inparam.param.GetAbsTol(), 1e-10);
-}
+//TEST(IterParam_Default, Default_Values)
+//{
+//    InitParam inparam;
+//    EXPECT_EQ(inparam.param.GetMaxIter(), 100);
+//    EXPECT_DOUBLE_EQ(inparam.param.GetRelTol(), 1e-6);
+//    EXPECT_DOUBLE_EQ(inparam.param.GetAbsTol(), 1e-10);
+//}
+
+// TODO: add gtest for class Parameters.hxx
 
 /*---------------------------------*/
 /*--        End of File          --*/
