@@ -4,27 +4,27 @@
 #include "Parameters.hxx"
 
 void Parameters::AddParam(bool *_ptr, const char *_name, const char *_help) {
-    params.push_back(Param(_BOOL, _ptr, _name, _help));
+    params.push_back(Param(BoolType, _ptr, _name, _help));
 }
 
 
 void Parameters::AddParam(INT *_ptr, const char *_name, const char *_help) {
-    params.push_back(Param(_INT, _ptr, _name, _help));
+    params.push_back(Param(IntType, _ptr, _name, _help));
 }
 
 
 void Parameters::AddParam(DBL *_ptr, const char *_name, const char *_help) {
-    params.push_back(Param(_DBL, _ptr, _name, _help));
+    params.push_back(Param(DoubleType, _ptr, _name, _help));
 }
 
 
 void Parameters::AddParam(const char **_ptr, const char *_name, const char *_help) {
-    params.push_back(Param(_STRING, _ptr, _name, _help));
+    params.push_back(Param(StringType, _ptr, _name, _help));
 }
 
 
 void Parameters::AddParam(PRTLVL *_ptr, const char *_name, const char *_help) {
-    params.push_back(Param(_PRTLVL, _ptr, _name, _help));
+    params.push_back(Param(PrintLevelType, _ptr, _name, _help));
 }
 
 
@@ -40,7 +40,7 @@ void Parameters::Parse() {
         for (int j = 0; j < params.size(); ++j) {
             if (strcmp(argv[i], params[j].param_name) == 0) {
                 switch (params[j].type) {
-                    case _BOOL:
+                    case BoolType:
                         tmp = new char[strlen(argv[i + 1])];
                         len = strlen(argv[i + 1]);
                         for (int j = 0; j < len; ++j)
@@ -55,16 +55,16 @@ void Parameters::Parse() {
                         delete[] tmp;
                         tmp = nullptr;
                         break;
-                    case _INT:
+                    case IntType:
                         *((INT *) (params[j].param_ptr)) = std::stoi(argv[i + 1]);
                         break;
-                    case _DBL:
+                    case DoubleType:
                         *((DBL *) (params[j].param_ptr)) = std::stod(argv[i + 1]);
                         break;
-                    case _STRING:
+                    case StringType:
                         *((char **) (params[j].param_ptr)) = argv[i + 1];
                         break;
-                    case _PRTLVL:
+                    case PrintLevelType:
                         int n = strlen(argv[i + 1]);
                         int k = 0;
                         while (k < n && '0' <= argv[i + 1][k] &&
@@ -106,20 +106,20 @@ void Parameters::PrintParams(std::ostream &out) const {
     for (int i = 0; i < params.size(); ++i) {
         out << "  " << params[i].param_name << ' ';
         switch (params[i].type) {
-            case _BOOL:
+            case BoolType:
                 out << std::boolalpha << *((bool *) (params[i].param_ptr))
                     << std::resetiosflags(out.flags());
                 break;
-            case _INT:
+            case IntType:
                 out << *((int *) (params[i].param_ptr));
                 break;
-            case _DBL:
+            case DoubleType:
                 out << *((double *) (params[i].param_ptr));
                 break;
-            case _STRING:
+            case StringType:
                 out << *((char **) (params[i].param_ptr));
                 break;
-            case _PRTLVL:
+            case PrintLevelType:
                 out << *((PRTLVL *) (params[i].param_ptr));
                 break;
         }
@@ -141,20 +141,20 @@ void Parameters::PrintHelp(std::ostream &out) const {
         ParamType type = params[i].type;
         out << indent << params[i].param_name << types[type] << ", current value: ";
         switch (type) {
-            case _BOOL:
+            case BoolType:
                 out << std::boolalpha << *(bool *) (params[i].param_ptr)
                     << std::setiosflags(out.flags());
                 break;
-            case _INT:
+            case IntType:
                 out << *(int *) (params[i].param_ptr);
                 break;
-            case _DBL:
+            case DoubleType:
                 out << *(double *) (params[i].param_ptr);
                 break;
-            case _STRING:
+            case StringType:
                 out << *(char **) (params[i].param_ptr);
                 break;
-            case _PRTLVL:
+            case PrintLevelType:
                 out << *(PRTLVL *) (params[i].param_ptr);
                 break;
         }
