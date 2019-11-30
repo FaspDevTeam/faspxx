@@ -14,6 +14,7 @@
 
 #include <sstream>
 #include <iomanip>
+#include <iostream>
 
 /// Print out location at (file, line) and function name
 #define _FASPXX_LOCATION_                                         \

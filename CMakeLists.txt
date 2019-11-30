@@ -53,27 +53,29 @@ install(TARGETS faspxx
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-# Build vector-operations speed test
+# Test vector-operations speed
 add_executable(testVecSpeed example/testVecSpeed.cxx)
 target_link_libraries(testVecSpeed faspxx)
 
-# Build ReadData test
+# Test ReadData
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
 
-# Build ErrorLog message test
+# Test ErrorLog message
 add_executable(testErrorLog example/testErrorLog.cxx)
 target_link_libraries(testErrorLog faspxx)
 
-# Build PCG class test
+# Test PCG class
 add_executable(testPCG example/testPCG.cxx)
 target_link_libraries(testPCG faspxx)
 
-add_executable(testMatFree example/testMatFree.cxx)
-target_link_libraries(testMatFree faspxx)
-
+# Test BiCGStab class
 add_executable(testBiCGStab example/testBiCGStab.cxx)
 target_link_libraries(testBiCGStab faspxx)
+
+# Test MatFree implementation of 2D5P stencil
+add_executable(testMatFree example/testMatFree.cxx)
+target_link_libraries(testMatFree faspxx)
 
 # GoogleTest, default "OFF" (enable by "-DGTEST=ON")
 option(GTEST "Enable GoogleTest" OFF)
