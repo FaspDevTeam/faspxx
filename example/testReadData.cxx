@@ -1,8 +1,7 @@
-/** \file testReadData.cxx
- *  \brief Test reading data routines
- *
- *  To compile this test, you may (after cmake) use
- *      $ make testReadData
+/** \file    testReadData.cxx
+ *  \brief   This example shows how to read data from disk files
+ *  \author  Kailei Zhang, Chensong Zhang
+ *  \date    Oct/12/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -13,9 +12,9 @@
 #include <iostream>
 #include "faspxx.hxx"
 #include "RetCode.hxx"
-#include "ReadData.hxx"
 #include "MATUtil.hxx"
 #include "VECUtil.hxx"
+#include "ReadData.hxx"
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/
@@ -29,7 +28,7 @@ int main()
     INT row, col, nnz;
     std::vector<INT> rowInd; // row index i
     std::vector<INT> colInd; // col index j
-    std::vector<DBL> values; // matrix(i,j)
+    std::vector<DBL> values; // entry(i,j)
 
     // There are two test matrix nos7.mtx and nos7-.mtx. The difference is nos7-.mtx
     // is modified from nos7.mtx by set the first row as zero. So they should give

@@ -63,26 +63,26 @@ static void Rhs(INT dimen, DBL *ptr) {
     // upper boundary
     for ( INT j = 2; j < dimen1; ++j )
         ptr[locate(j, dimen1)] =
-                UpperBdyCond(j * h, 1.0) + h * h * Load(j * h, dimen1 * h);
+            UpperBdyCond(j * h, 1.0) + h * h * Load(j * h, dimen1 * h);
 
     // left lower corner
     ptr[locate(1, 1)] =
-            LeftBdyCond(0, h) + LowerBdyCond(h, 0) + h * h * Load(1 * h, 1 * h);
+        LeftBdyCond(0, h) + LowerBdyCond(h, 0) + h * h * Load(1 * h, 1 * h);
 
     // left upper corner
     ptr[locate(1, dimen1)] =
-            LeftBdyCond(0, h * dimen1) + UpperBdyCond(h, 1.0)
-            + h * h * Load(1 * h, dimen1 * h);
+        LeftBdyCond(0, h * dimen1) + UpperBdyCond(h, 1.0)
+        + h * h * Load(1 * h, dimen1 * h);
 
     // right lower corner
     ptr[locate(dimen1, 1)] =
-            LowerBdyCond(dimen1 * h, 0) + RightBdyCond(1.0, h)
-            + h * h * Load(dimen1 * h, 1 * h);
+        LowerBdyCond(dimen1 * h, 0) + RightBdyCond(1.0, h)
+        + h * h * Load(dimen1 * h, 1 * h);
 
     // right upper corner
     ptr[locate(dimen1, dimen1)] =
-            UpperBdyCond(dimen1 * h, 1.0) + RightBdyCond(1.0, dimen1 * h)
-            + h * h * Load(dimen1 * h,dimen1 * h);
+        UpperBdyCond(dimen1 * h, 1.0) + RightBdyCond(1.0, dimen1 * h)
+        + h * h * Load(dimen1 * h,dimen1 * h);
 }
 
 // free-matrix 's operator : acting on a VEC object

@@ -60,4 +60,4 @@ public:
     void PrintHelp(std::ostream &out = std::cout) const;
 };
 
-#endif //FASPXX_PARAMETERS_HXX
+#endif // FASPXX_PARAMETERS_HXX
