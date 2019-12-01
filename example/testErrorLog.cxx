@@ -1,5 +1,5 @@
 /*! \file    testErrorLog.cxx
- *  \brief   Test error log messages
+ *  \brief   This example shows how to log error messages
  *  \author  Ronghong Fan
  *  \date    Oct/12/2019
  *
@@ -15,7 +15,7 @@
 void test( int* tmp = NULL )
 {
     if ( tmp == NULL )
-        FASPXX_ASSERT(false, "This is an assert test!");
+        FASPXX_ASSERT(1==2, "This is an assert test!");
 
     if ( tmp == NULL )
         FASPXX_WARNING("This might cause a problem!");
