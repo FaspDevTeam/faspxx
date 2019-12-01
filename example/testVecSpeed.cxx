@@ -1,8 +1,7 @@
-/** \file testVecSpeed.cxx
- *  \brief Test speed of vector implementations
- *
- *  To compile this test, you may (after cmake) use
- *      $ make testVecSpeed
+/** \file    testVecSpeed.cxx
+ *  \brief   Test speed of vector implementations
+ *  \author  Kailei Zhang
+ *  \date    Oct/12/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -17,16 +16,19 @@
 #include "Timing.hxx"
 #include "VEC.hxx"
 
-const INT LENGTH = 10000000;
+const int LENGTH = 10000000;
 const int count = 100;
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/
 /*---------------------------------*/
 
-int main() {
-    std::cout << "Problem size " << LENGTH << ", repeat " << count << " times:" << std::endl;
+int main()
+{
     if ( count < 1 ) return 0; // Do nothing at all!
+
+    std::cout << "Problem size " << LENGTH << ", repeat " << count << " times:"
+              << std::endl;
 
     int j, k;
     double sum;

@@ -24,6 +24,10 @@ void test( int* tmp = NULL )
         FASPXX_ABORT("This is an abort test!");
 }
 
+/*---------------------------------*/
+/*--     Beginning of main       --*/
+/*---------------------------------*/
+
 int main(int argc, char* argv[])
 {
     test();

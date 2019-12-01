@@ -1,5 +1,7 @@
-/*! \file VEC.hxx
- *  \brief Vector class declaration
+/*! \file    VEC.hxx
+ *  \brief   Vector class declaration
+ *  \author  Kailei Zhang, Chensong Zhang
+ *  \date    09/01/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -14,134 +16,125 @@
 #include "faspxx.hxx"
 #include "RetCode.hxx"
 
-/*! \class VEC
- *  \brief The VEC data structure and basic operations
- *  \author Kailei Zhang
- *  \date 09/01/2019
- */
+/// The default vector class in FASP++.
 class VEC {
 
 private:
-    std::vector<DBL> values;  ///< Actual values of vector in DBL
-    INT size;                 ///< Book-keeping size of VEC: It's NOT values.size!
+    std::vector<DBL> values;  ///< Actual values of vector in DBL.
+    INT size;                 ///< Book-keeping size of VEC. NOT values.size!
 
 public:
     friend class MAT;
 
-    /// Default constructor
+    /// Default constructor.
     explicit VEC() : values(0), size(0) {}
 
-    /// Assign the size and the same value to a VEC object
-    explicit VEC(const INT &size, const DBL &value = 0.0);
+    /// Assign the size and the same value to a VEC object.
+    explicit VEC(const INT& size, const DBL& value = 0.0);
 
-    /// Assign a vector object to a VEC object
-    explicit VEC(const std::vector<DBL> &vt);
+    /// Assign a vector object to a VEC object.
+    explicit VEC(const std::vector<DBL>& src);
 
-    /// Assign a const VEC object to a VEC object
-    VEC(const VEC &v);
+    /// Assign a const VEC object to a VEC object.
+    VEC(const VEC& src);
 
-    /// Assign a DBL array to a VEC object
-    explicit VEC(const INT &size, const DBL *ptr);
+    /// Assign a DBL array to a VEC object.
+    explicit VEC(const INT& size, const DBL *src);
 
-    /// Default destructor
+    /// Default destructor.
     ~VEC() = default;
 
-    /// Overload = operator
-    VEC &operator=(const VEC &v);
+    /// Overload the = operator.
+    VEC& operator=(const VEC& v);
 
-    /// Overload [] operator, entries can be modified
-    DBL &operator[](const INT &position);
+    /// Overload the [] operator.
+    DBL& operator[](const INT& position);
 
-    /// Overload [] operator, entries cannot be modified
-    const DBL &operator[](const INT &position) const;
+    /// Overload the [] operator, entries cannot be modified.
+    const DBL& operator[](const INT& position) const;
 
-    /// Overload += operator
-    VEC &operator+=(const VEC &v);
+    /// Overload += operator.
+    VEC& operator+=(const VEC& v);
 
-    /// Overload -= operator
-    VEC &operator-=(const VEC &v);
+    /// Overload -= operator.
+    VEC& operator-=(const VEC& v);
 
-    /// Set the size of VEC object and reserve memory
-    void Reserve(const INT &size);
+    /// Set the size of VEC object and reserve memory.
+    void Reserve(const INT& size);
 
-    /// Shrink *this 's memory to this->size
-    void ShrinkToSize();
+    /// Assign the size and the same value to a VEC object.
+    void SetValues(const INT& size, const DBL& value = 0.0);
 
-    /// Assign the size and the same value to a VEC object
-    void SetValues(const INT &size, const DBL &value = 0.0);
+    /// Assign a vector object to a VEC object.
+    void SetValues(const std::vector<DBL>& src);
 
-    /// Assign a vector object to a VEC object
-    void SetValues(const std::vector<DBL> &vt);
+    /// Assign values of a DBL array to a VEC object.
+    void SetValues(const INT& size, const DBL *array);
 
-    /// Assign a DBL array to a VEC object, user should allocate memory for array
-    void SetValues(const INT &size, const DBL *array);
+    /// Get the value of (*this)[position].
+    DBL GetValue(const INT& position) const;
 
-    /// Get the value of (*this)[position]
-    DBL GetValue(const INT &position) const;
+    /// Get value of this->values[index[j] and save it in array[j].
+    /// \note Users should allocate memory for array before calling this function!
+    void GetValues(const INT& size, const INT *index, DBL *array) const;
 
-    /// Get "array" = the set of { this->values[indexPtr[j] mod this->size ] } and
-    // "size" is the size of "indexPtr" and "array"
-    void GetValues(const INT &size, const INT *indexPtr, DBL *array) const;
-
-    /// pointer points this->values
+    /// Get pointer to this->values.
     void GetArray(DBL **array);
 
-    /// pointer points this->values
+    /// Get pointer to this->values, entries cannot be modified.
     void GetArray(const DBL **array) const;
 
-    /// Get the size of *this
+    /// Get the size of *this.
     INT GetSize() const;
 
-    /// Get the capacity of *this
-    INT GetCapacity() const;
+    /// Scale by a scalar.
+    void Scale(const DBL& a);
 
-    /// Scale (*this)[j] = a * (*this)[j] by a scalar
-    void Scale(const DBL &a);
-
-    /// Scale by a vector (*this)[j] *= v[j]
-    void PointwiseMult(const VEC &v);
-
-    /// Compute (*this)[j] = 1 / (*this)[j]
+    /// Compute reciprocal pointwise.
     void Reciprocal();
 
-    /// Inverse scale by a nonzero vector (*this)[j] = (*this)[j] / v[j]
-    void PointwiseDivide(const VEC &v);
+    /// Scale by a vector pointwise.
+    void PointwiseMult(const VEC& v);
 
-    /// Copy *this to v
-    void CopyTo(VEC &v) const;
+    /// Divide pointwise by a nonzero vector.
+    void PointwiseDivide(const VEC& v);
 
-    /// Shift (*this)[j] += a by a scalar
-    void Shift(const DBL &a);
+    /// Copy *this to another VEC.
+    void CopyTo(VEC& dst) const;
 
-    /// Compute *this = abs(*this)
+    /// Shift by a scalar pointwise.
+    void Shift(const DBL& a);
+
+    /// Compute absolute values pointwise.
     void Abs();
 
-    /// y = y + a * x
-    void AXPY(const DBL &a, const VEC &x);
+    /// y = y + a * x.
+    void AXPY(const DBL& a, const VEC& x);
 
-    /// y = x + a * y
-    void XPAY(const DBL &a, const VEC &x);
+    /// y = x + a * y.
+    void XPAY(const DBL& a, const VEC& x);
 
-    /// *this = a * *this + b * v
-    void AXPBY(const DBL &a, const DBL &b, const VEC &v);
+    /// x = a * x + b * y.
+    void AXPBY(const DBL& a, const DBL& b, const VEC& y);
+    // Todo: 为什么这里的this是x, 而前面是y，容易造成混乱，应该统一一下？-zcs
 
-    /// *this = a * v1 + b * v2
-    void WAXPBY(const DBL &a, const VEC &v1, const DBL &b, const VEC &v2);
+    /// *this = a * v1 + b * v2.
+    void WAXPBY(const DBL& a, const VEC& x, const DBL& b, const VEC& y);
 
-    /// Find max(*this)
+    /// Find maximal value.
     DBL Max() const;
 
-    /// Find min(*this)
+    /// Find minimal value.
     DBL Min() const;
 
-    /// Compute Euclidean norm of *this
+    /// Compute Euclidean norm.
     DBL Norm2() const;
 
-    /// Compute Infinity norm of *this
+    /// Compute infinity norm.
     DBL NormInf() const;
 
-    /// Dot product of with v
-    DBL Dot(const VEC &v) const;
+    /// Dot product of with v.
+    DBL Dot(const VEC& v) const;
 };
 
 #endif /* end if for __VEC_HEADER__ */
