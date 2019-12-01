@@ -13,7 +13,7 @@
 #include "VEC.hxx"
 #include "LOP.hxx"
 #include "RetCode.hxx"
-#include "Parameters.hxx"
+#include "Param.hxx"
 
 typedef LOP Mat;
 

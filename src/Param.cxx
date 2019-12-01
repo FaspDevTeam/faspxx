@@ -1,7 +1,7 @@
 
 #include <cstring>
 #include <iomanip>
-#include "Parameters.hxx"
+#include "Param.hxx"
 
 void Parameters::AddParam(bool *_ptr, const char *_name, const char *_help) {
     params.push_back(Param(BoolType, _ptr, _name, _help));

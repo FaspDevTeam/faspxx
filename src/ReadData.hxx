@@ -9,8 +9,8 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __READ_DATA__HEADER__ /*-- allow multiple inclusions --*/
-#define __READ_DATA__HEADER__ /**< indicate ReadData.hxx has been included before */
+#ifndef __READDATA__HEADER__ /*-- allow multiple inclusions --*/
+#define __READDATA__HEADER__ /**< indicate ReadData.hxx has been included before */
 
 #include "faspxx.hxx"
 #include "MAT.hxx"
@@ -72,7 +72,7 @@ FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
 /// Read a MAT data file and store it in MAT
 FaspRetCode ReadMat(const char *filename, MAT& dst);
 
-#endif /* end if for __READ_DATA__HEADER__ */
+#endif /* end if for __READDATA__HEADER__ */
 
 /*---------------------------------*/
 /*--        End of File          --*/

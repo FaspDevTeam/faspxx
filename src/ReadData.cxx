@@ -14,7 +14,7 @@
 #include "ReadData.hxx"
 #include "MATUtil.hxx"
 
-/// Read a VEC data file
+/// Read a VEC data file stored as val[i], i=0:end-1
 FaspRetCode ReadVEC(const char *filename, VEC &dst)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS;

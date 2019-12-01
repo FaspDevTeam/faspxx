@@ -1,6 +1,16 @@
+/*! \file    Param.hxx
+ *  \brief   Command line input parameters
+ *  \author  Ronghong Fan
+ *  \date    Nov/25/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
+ */
 
-#ifndef FASPXX_PARAMETERS_HXX
-#define FASPXX_PARAMETERS_HXX
+#ifndef __PARAM_HEADER__      /*-- allow multiple inclusions --*/
+#define __PARAM_HEADER__      /**< indicate Param.hxx has been included before */
 
 #include <vector>
 #include <iostream>
@@ -16,6 +26,7 @@ enum PRTLVL {
 };
 
 class Parameters {
+    
 public:
     enum ParamType {
         BoolType, IntType, DoubleType, StringType, PrintLevelType
@@ -60,4 +71,8 @@ public:
     void PrintHelp(std::ostream &out = std::cout) const;
 };
 
-#endif // FASPXX_PARAMETERS_HXX
+#endif /* end if for __PARAM_HEADER__ */
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/
