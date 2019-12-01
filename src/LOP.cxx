@@ -33,7 +33,7 @@ LOP::LOP(const LOP& lop)
 }
 
 /// Assignment for the LOP object.
-const LOP &LOP::operator=(const LOP& lop)
+LOP& LOP::operator=(const LOP& lop)
 {
     this->nrow = lop.nrow;
     this->mcol = lop.mcol;

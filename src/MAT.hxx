@@ -9,6 +9,18 @@
  *-----------------------------------------------------------------------------------
  */
 
+/*
+ *  This class defines the basic MAT data structure and its basic operations. The
+ *  CSRx data structure is an extension of the wellknown CSR sparse matrix format.
+ *  The differences lie in the following two aspects:
+ *      (1) Unlike the classical CSR format, the CSRx format requires the column
+ *          indices in each row are in ascending order;
+ *      (2) The CSRx format has a diagPtr array which stores the locations of the
+ *          diagonal entries in each row.
+ *  Note that the CSRx format stores the diagonal entries even if they are zero.
+ *  Furthermore, it is compatible with all CSR subroutines!
+ */
+
 #ifndef __MAT_HEADER__      /*-- allow multiple inclusions --*/
 #define __MAT_HEADER__      /**< indicate MAT.hxx has been included before */
 
@@ -17,24 +29,18 @@
 #include "VEC.hxx"
 #include "LOP.hxx"
 
-/// Sparse matrix class.
+/*! \class MAT
+ *  \brief Sparse matrix class.
+ */
 class MAT : public LOP {
 
 private:
 
-    INT nnz;    ///< number of nonzeros of the matrix
-
-    /// nonzero entries of the matrix, compressed row by row
-    std::vector<DBL> values;
-
-    /// column indices of the nonzero in values
-    std::vector<INT> colInd;
-
-    /// pointers to the beginning of each row in values
-    std::vector<INT> rowPtr;
-
-    /// pointers to diagonal entries in values
-    std::vector<INT> diagPtr;
+    INT nnz;                  ///< number of nonzeros of the matrix.
+    std::vector<DBL> values;  ///< nonzero entries, compressed row by row.
+    std::vector<INT> colInd;  ///< column indices of the nonzero in values.
+    std::vector<INT> rowPtr;  ///< pointers to the beginning of each row in values.
+    std::vector<INT> diagPtr; ///< pointers to diagonal entries in values.
 
 public:
 
@@ -44,125 +50,98 @@ public:
     // If "values" are not assigned, the matrix is just a sparse structure.   //
     //------------------------------------------------------------------------//
 
-    /// Default constructor
-    MAT() : nnz(0),values(0), colInd(0), rowPtr(0), diagPtr(0) {
+    /// Default constructor.
+    MAT() : nnz(0), values(0), colInd(0), rowPtr(0), diagPtr(0) {
         nrow = 0;
         mcol = 0;
     };
 
-    /// Assign nrow, mcol, nnz, values, colInd, rowPtr, diagPtr to *this
+    /// Construct sparse matrix from a CSRx matrix.
     MAT(const INT& nrow, const INT& mcol, const INT& nnz,
         const std::vector<DBL>& values, const std::vector<INT>& colInd,
         const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
 
-    /// Assign nrow, mcol, nnz, values, colInd, rowPtr to *this and generate diagPtr
+    /// Construct sparse matrix from a CSR matrix.
     MAT(const INT& nrow, const INT& mcol, const INT& nnz,
         const std::vector<DBL>& values, const std::vector<INT>& colInd,
         const std::vector<INT>& rowPtr);
 
-    /// Assign nrow, mcol, nnz, colInd, rowPtr to *this and generate diagPtr
+    /// Construct sparsity structure from a CSR matrix.
     MAT(const INT& nrow, const INT& mcol, const INT& nnz,
         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr);
 
-    /// Assign nrow, mcol, nnz, colInd, rowPtr, diagPtr to *this
+    /// Construct sparsity structure from a CSRx matrix.
     MAT(const INT& nrow, const INT& mcol, const INT& nnz,
         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
         const std::vector<INT>& diagPtr);
 
-    /// Assign diagonal values from a VEC to *this
+    /// Construct diagonal MAT matrix from a VEC object.
     explicit MAT(const VEC& v);
 
-    /// Assign diagonal values from a vector to *this
-    explicit MAT(const std::vector<DBL>& vt);
+    /// Construct diagonal MAT matrix from a vector object.
+    explicit MAT(const std::vector<DBL>& v);
 
-    /// Assign MAT object to *this
+    /// Clone from another MAT.
     MAT(const MAT& mat);
 
-    /// Overload = operator
-    MAT &operator=(const MAT& mat);
-
-    /// Default destructor
+    /// Default destructor.
     ~MAT() = default;
 
-    /// Set values of nrow, mcol, nnz, values, colInd, rowPtr, diagPtr
+    /// Overload = operator.
+    MAT &operator=(const MAT& mat);
+
+    /// Set values of the matrix with CSRx format.
     void SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
                    const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
 
-    /// Set values of nrow, mcol, nnz, values, rowPtr, colInd
+    /// Set values of the matrix with CSR format.
     void SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
                    const std::vector<INT>& rowPtr);
 
-    /// Get number of nonzeros
+    /// Get number of nonzeros of the matrix.
     INT GetNNZ() const;
 
-    /// Get the diagonal entries of *this to a VEC object
+    /// Get the diagonal entries of the matrix.
     void GetDiag(std::vector<DBL>& v) const;
 
-    /// Copy *this to another MAT object, mat
+    /// Copy the matrix to another MAT object.
     void CopyTo(MAT& mat) const;
 
-    /// Scale *this *= a
+    /// Scale the matrix with a scalar.
     void Scale(const DBL a);
 
-    /// Shift *this += a * I
+    /// Shift the matrix with a scalar matrix.
     void Shift(const DBL a);
 
-    /// Set all the entries to zero without changing matrix size
+    /// Set the matrix to a zero matrix.
     void Zero();
 
-    /// Transpose *this
-    void Transpose();
-
-    /// Return VEC = *this * vec
+    /// Sparse matrix-vector multiplication.
     void Apply(const VEC& v, VEC& w) const;
 
-    /// v= A'*v1 + v2
+    /// Transpose of the matrix.
+    void Transpose();
+
+    /// Compute transpose of A multiply by v1 plus v2.
     void MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const;
 
-    /// Write CSR format data to a disk file
+    /// Get the value of [i,j]-entry of the matrix
+    DBL GetValue(const INT& row, const INT& col) const;
+
+    /// Write an MAT matrix to a disk file in CSR format.
     friend void WriteCSR(char *filename, MAT mat);
 
-    /// Write MTX format data to a disk file
+    /// Write an MAT matrix to a disk file in MTX format.
     friend void WriteMTX(char *filename, MAT mat);
 
 private:
-    /// Form diagonal pointer using colInd and rowPtr
+    /// Form diagPtr according to colInd and rowPtr.
     void FormDiagPtr();
 
-    /// Empty a matrix
+    /// Make the matrix empty.
     void Empty();
-
-public: // Todo: Are we going to use the following functions??? -zcs
-
-    /// r = y - A * x: y minus A times x
-    void YMAX(const VEC& y, const VEC& x, VEC& r) const;
-
-    /// mat = a * mat1 + b * mat2
-    friend void Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2,
-                    MAT& mat);
-
-    /// *this = a * *this + b * mat
-    void Add(const DBL a, const DBL b, const MAT& mat);
-
-    /// Get (*this)[i][j]
-    DBL GetValue(const INT& row, const INT& col) const;
-
-    /// Get the whole row-th row in *this into VEC object
-    void GetRow(const INT& row, std::vector<DBL>& v) const;
-
-    /// Get the whole col-th column in *this into VEC object
-    void GetCol(const INT& col, std::vector<DBL>& v) const;
-
-    /// mat = matl * matr
-    friend void Mult(const MAT& matl, const MAT& matr, MAT& mat);
-
-    /// *this = mat * *this
-    void MultLeft(const MAT& mat);
-
-    /// *this = *this * mat
-    void MultRight(const MAT& mat);
 
 };
 

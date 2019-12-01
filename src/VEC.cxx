@@ -12,29 +12,28 @@
 #include <cmath>
 #include "VEC.hxx"
 
-/// Make a new VEC with the given size and a constant value.
+/// Assign the size and the same value to a VEC object.
 VEC::VEC(const INT& size, const DBL& value)
 {
     this->values.assign(size, value);
     this->size = size;
 }
 
-/// Make a new VEC by copying values from a vector.
+/// Assign a vector object to a VEC object.
 VEC::VEC(const std::vector<DBL>& src)
 {
     this->values = src;
     this->size = src.size();
 }
 
-/// Clone from another VEC.
+/// Assign a const VEC object to a VEC object.
 VEC::VEC(const VEC& src)
 {
     this->values = src.values;
     this->size = src.size;
 }
 
-/// Make a new VEC by copying values from a pointer. If source is nullptr,
-/// return an empty VEC.
+/// Assign a DBL array to a VEC object. If source is nullptr, return an empty VEC.
 VEC::VEC(const INT& size, const DBL *src)
 {
     if ( src == nullptr || size == 0 ) {

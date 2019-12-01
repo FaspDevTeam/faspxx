@@ -16,7 +16,9 @@
 #include "faspxx.hxx"
 #include "RetCode.hxx"
 
-/// General vector class.
+/*! \class VEC
+ *  \brief General vector class.
+ */
 class VEC {
 
 private:
@@ -29,16 +31,16 @@ public:
     /// Default constructor.
     explicit VEC() : values(0), size(0) {}
 
-    /// Assign the size and the same value to a VEC object.
+    /// Construct a new VEC with the given size and a constant value.
     explicit VEC(const INT& size, const DBL& value = 0.0);
 
-    /// Assign a vector object to a VEC object.
+    /// Construct a new VEC by copying values from a vector.
     explicit VEC(const std::vector<DBL>& src);
 
-    /// Assign a const VEC object to a VEC object.
+    /// Clone from another VEC.
     VEC(const VEC& src);
 
-    /// Assign a DBL array to a VEC object.
+    /// Construct a new VEC by copying values from a pointer.
     explicit VEC(const INT& size, const DBL *src);
 
     /// Default destructor.

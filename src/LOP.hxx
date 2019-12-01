@@ -14,9 +14,12 @@
 
 #include <vector>
 #include "faspxx.hxx"
+#include "ErrorLog.hxx"
 #include "VEC.hxx"
 
-/// Linear operator virtual class.
+/*! \class LOP
+ *  \brief Linear operator virtual class.
+ */
 class LOP {
 
 protected:
@@ -33,13 +36,13 @@ public:
     LOP(const INT& nrow, const INT& mcol);
 
     /// Make an LOP from VEC(nrow) to VEC(nrow).
-    LOP(const INT& nrow);
+    explicit LOP(const INT& nrow);
 
     /// Make an LOP from another LOP.
     LOP(const LOP& lop);
 
     /// Overload the = operator.
-    const LOP &operator=(const LOP& lop);
+    LOP& operator=(const LOP& lop);
 
     /// Default destructor.
     ~LOP() = default;
@@ -51,7 +54,9 @@ public:
     INT GetColSize() const;
 
     /// Action of the linear operator to a vector.
-    virtual void Apply(const VEC& x, VEC& y) const {throw("Action not defined!"); };
+    virtual void Apply(const VEC& x, VEC& y) const {
+        FASPXX_WARNING("Action not defined!")
+    };
 };
 
 #endif /* end if for __LOP_HEADER__ */
