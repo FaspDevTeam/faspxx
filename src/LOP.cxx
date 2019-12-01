@@ -1,7 +1,7 @@
-/** \file LOP.cxx
- *  \brief Linear operator class definition
- *  \author Chensong Zhang
- *  \date Sep/27/2019
+/** \file    LOP.cxx
+ *  \brief   Linear operator class definition
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    Oct/27/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -9,42 +9,47 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include "faspxx.hxx"
 #include "LOP.hxx"
 
-/// Assign nrow, ncol to *this
-LOP::LOP(const INT& nrow, const INT& ncol) {
+/// Assign nrow, mcol to *this.
+LOP::LOP(const INT& nrow, const INT& mcol)
+{
     this->nrow = nrow;
-    this->ncol = ncol;
+    this->mcol = mcol;
 }
 
-/// Assign nrow, ncol=nrow to *this
-LOP::LOP(const INT& nrow) {
+/// Assign nrow, mcol=nrow to *this.
+LOP::LOP(const INT& nrow)
+{
     this->nrow = nrow;
-    this->ncol = nrow;
+    this->mcol = nrow;
 }
 
-/// Assign LOP object to *this
-LOP::LOP(const LOP& lop) {
+/// Assign LOP object to *this.
+LOP::LOP(const LOP& lop)
+{
     this->nrow = lop.nrow;
-    this->ncol = lop.ncol;
+    this->mcol = lop.mcol;
 }
 
-/// Overload = operator
-const LOP &LOP::operator=(const LOP& lop) {
+/// Assignment for the LOP object.
+const LOP &LOP::operator=(const LOP& lop)
+{
     this->nrow = lop.nrow;
-    this->ncol = lop.ncol;
+    this->mcol = lop.mcol;
     return *this;
 }
 
-/// Get row space dimension
-INT LOP::GetRowSize() const {
+/// Dimension of the row space of LOP.
+INT LOP::GetRowSize() const
+{
     return this->nrow;
 }
 
-/// Get column space dimension
-INT LOP::GetColSize() const {
-    return this->ncol;
+/// Dimension of the column space of LOP.
+INT LOP::GetColSize() const
+{
+    return this->mcol;
 }
 
 /*---------------------------------*/

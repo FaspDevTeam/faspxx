@@ -17,57 +17,12 @@
 #include "VEC.hxx"
 #include "LOP.hxx"
 
-/*! \class MAT
- *  \brief Basic double matrix class in the CSRx data structure
- *
- *  This class defines the basic MAT data structure and its basic operations. The
- *  CSRx data structure is an extension of the wellknown CSR sparse matrix format.
- *  The differences lie in the following two aspects:
- *      (1) Unlike the classical CSR format, the CSRx format requires the column
- *          indices in each row are in ascending order;
- *      (2) The CSRx format has a diagPtr array which stores the locations of the
- *          diagonal entries in each row.
- *
- *  We give two simple examples here:
- *
- *  Example 1.
- *  \f{equation*}{
- *  \begin{pmatrix}
- *      1  &  0  &  2 \\
- *      0  &  1  &  0 \\
- *      3  &  0  &  0 \\
- *  \end{pmatrix}
- *  }
- *  and
- *      nnz = 5, row = 3, col = 3,
- *      values = { 1, 2, 1, 3, 0 },
- *      colInd = { 0, 2, 1, 0, 2 },
- *      rowPtr = { 0, 2, 3, 5 },
- *      diagPtr = { 0, 2, 4 }.
- *
- *  Example 2.
- *  \f{equation*}{
- *  \begin{pmatrix}
- *      1&  7&  2 \\
- *      0&  0&  0 \\
- *      3&  0&  4 \\
- *  \end{pmatrix}
- *  }
- *  and
- *      nnz = 6, row = 3, col = 3,
- *      values = { 1, 7, 2, 0, 3, 4 },
- *      colInd = { 0, 1, 2, 1, 0, 2 },
- *      rowPtr = { 0, 3, 4, 6 },
- *      diagPtr = { 0, 3, 5 }.
- *
- *  Note that the CSRx format stores the diagonal entries even if they are zero.
- *  Furthermore, it is compatible with all CSR subroutines!
- */
+/// Sparse matrix class.
 class MAT : public LOP {
 
 private:
 
-    INT nnz;    ///< number of "nonzeros" of the matrix
+    INT nnz;    ///< number of nonzeros of the matrix
 
     /// nonzero entries of the matrix, compressed row by row
     std::vector<DBL> values;
@@ -91,26 +46,26 @@ public:
 
     /// Default constructor
     MAT() : nnz(0),values(0), colInd(0), rowPtr(0), diagPtr(0) {
-        nrow=0;
-        ncol=0;
+        nrow = 0;
+        mcol = 0;
     };
 
-    /// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
-    MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+    /// Assign nrow, mcol, nnz, values, colInd, rowPtr, diagPtr to *this
+    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
         const std::vector<DBL>& values, const std::vector<INT>& colInd,
         const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
 
-    /// Assign nrow, ncol, nnz, values, colInd, rowPtr to *this and generate diagPtr
-    MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+    /// Assign nrow, mcol, nnz, values, colInd, rowPtr to *this and generate diagPtr
+    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
         const std::vector<DBL>& values, const std::vector<INT>& colInd,
         const std::vector<INT>& rowPtr);
 
-    /// Assign nrow, ncol, nnz, colInd, rowPtr to *this and generate diagPtr
-    MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+    /// Assign nrow, mcol, nnz, colInd, rowPtr to *this and generate diagPtr
+    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr);
 
-    /// Assign nrow, ncol, nnz, colInd, rowPtr, diagPtr to *this
-    MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+    /// Assign nrow, mcol, nnz, colInd, rowPtr, diagPtr to *this
+    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
         const std::vector<INT>& diagPtr);
 
@@ -129,13 +84,13 @@ public:
     /// Default destructor
     ~MAT() = default;
 
-    /// Set values of nrow, ncol, nnz, values, colInd, rowPtr, diagPtr
-    void SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+    /// Set values of nrow, mcol, nnz, values, colInd, rowPtr, diagPtr
+    void SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
                    const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
 
-    /// Set values of nrow, ncol, nnz, values, rowPtr, colInd
-    void SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+    /// Set values of nrow, mcol, nnz, values, rowPtr, colInd
+    void SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
                    const std::vector<INT>& rowPtr);
 

@@ -16,7 +16,7 @@
 #include "faspxx.hxx"
 #include "RetCode.hxx"
 
-/// The default vector class in FASP++.
+/// General vector class.
 class VEC {
 
 private:

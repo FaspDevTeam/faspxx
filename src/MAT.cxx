@@ -13,17 +13,62 @@
 #include "MAT.hxx"
 #include "MATUtil.hxx"
 
-/// Assign nrow, ncol, nnz, values, colInd, rowPtr, diagPtr to *this
-MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+/*!
+ *  This class defines the basic MAT data structure and its basic operations. The
+ *  CSRx data structure is an extension of the wellknown CSR sparse matrix format.
+ *  The differences lie in the following two aspects:
+ *      (1) Unlike the classical CSR format, the CSRx format requires the column
+ *          indices in each row are in ascending order;
+ *      (2) The CSRx format has a diagPtr array which stores the locations of the
+ *          diagonal entries in each row.
+ *
+ *  We give two simple examples here:
+ *
+ *  Example 1.
+ *  \f{equation*}{
+ *  \begin{pmatrix}
+ *      1  &  0  &  2 \\
+ *      0  &  1  &  0 \\
+ *      3  &  0  &  0 \\
+ *  \end{pmatrix}
+ *  }
+ *  and
+ *      nnz = 5, row = 3, col = 3,
+ *      values = { 1, 2, 1, 3, 0 },
+ *      colInd = { 0, 2, 1, 0, 2 },
+ *      rowPtr = { 0, 2, 3, 5 },
+ *      diagPtr = { 0, 2, 4 }.
+ *
+ *  Example 2.
+ *  \f{equation*}{
+ *  \begin{pmatrix}
+ *      1&  7&  2 \\
+ *      0&  0&  0 \\
+ *      3&  0&  4 \\
+ *  \end{pmatrix}
+ *  }
+ *  and
+ *      nnz = 6, row = 3, col = 3,
+ *      values = { 1, 7, 2, 0, 3, 4 },
+ *      colInd = { 0, 1, 2, 1, 0, 2 },
+ *      rowPtr = { 0, 3, 4, 6 },
+ *      diagPtr = { 0, 3, 5 }.
+ *
+ *  Note that the CSRx format stores the diagonal entries even if they are zero.
+ *  Furthermore, it is compatible with all CSR subroutines!
+ */
+
+/// Assign nrow, mcol, nnz, values, colInd, rowPtr, diagPtr to *this
+MAT::MAT(const INT& nrow, const INT& mcol, const INT& nnz,
          const std::vector<DBL>& values, const std::vector<INT>& colInd,
          const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr) {
-    if (nrow == 0 || ncol == 0 || nnz == 0) {
+    if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
         return;
     }
 
     this->nrow = nrow;
-    this->ncol = ncol;
+    this->mcol = mcol;
     this->nnz = nnz;
 
     this->values = values;
@@ -32,17 +77,17 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->diagPtr = diagPtr;
 }
 
-/// Assign nrow, ncol, nnz, values, colInd, rowPtr to *this and generate diagPtr
-MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+/// Assign nrow, mcol, nnz, values, colInd, rowPtr to *this and generate diagPtr
+MAT::MAT(const INT& nrow, const INT& mcol, const INT& nnz,
          const std::vector<DBL>& values, const std::vector<INT>& colInd,
          const std::vector<INT>& rowPtr) {
-    if (nrow == 0 || ncol == 0 || nnz == 0) {
+    if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
         return;
     }
 
     this->nrow = nrow;
-    this->ncol = ncol;
+    this->mcol = mcol;
     this->nnz = nnz;
 
     this->values = values;
@@ -51,16 +96,16 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->FormDiagPtr();
 }
 
-/// Assign nrow, ncol, nnz, colInd, rowPtr to *this and generate diagPtr
-MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+/// Assign nrow, mcol, nnz, colInd, rowPtr to *this and generate diagPtr
+MAT::MAT(const INT& nrow, const INT& mcol, const INT& nnz,
          const std::vector<INT>& colInd, const std::vector<INT>& rowPtr) {
-    if (nrow == 0 || ncol == 0 || nnz == 0) {
+    if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
         return;
     }
 
     this->nrow = nrow;
-    this->ncol = ncol;
+    this->mcol = mcol;
     this->nnz = nnz;
 
     this->values.resize(0);
@@ -69,17 +114,17 @@ MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
     this->FormDiagPtr();
 }
 
-/// Assign nrow, ncol, nnz, colInd, rowPtr, diagPtr to *this
-MAT::MAT(const INT& nrow, const INT& ncol, const INT& nnz,
+/// Assign nrow, mcol, nnz, colInd, rowPtr, diagPtr to *this
+MAT::MAT(const INT& nrow, const INT& mcol, const INT& nnz,
          const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
          const std::vector<INT>& diagPtr) {
-    if (nrow == 0 || ncol == 0 || nnz == 0) {
+    if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
         return;
     }
 
     this->nrow = nrow;
-    this->ncol = ncol;
+    this->mcol = mcol;
     this->nnz = nnz;
 
     this->values.resize(0);
@@ -102,13 +147,13 @@ MAT::MAT(const VEC& v) {
         p = new INT[size + 1];
     } catch (std::bad_alloc &ex) {
         this->nrow = 0;
-        this->ncol = 0;
+        this->mcol = 0;
         this->nnz = 0;
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
     this->nrow = size;
-    this->ncol = size;
+    this->mcol = size;
     this->nnz = size;
 
     this->values.resize(size);
@@ -146,13 +191,13 @@ MAT::MAT(const std::vector<DBL>& vt) {
         p = new INT[size + 1];
     } catch (std::bad_alloc& ex) {
         this->nrow = 0;
-        this->ncol = 0;
+        this->mcol = 0;
         this->nnz = 0;
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
     this->nrow = size;
-    this->ncol = size;
+    this->mcol = size;
     this->nnz = size;
 
     this->values.resize(size);
@@ -179,7 +224,7 @@ MAT::MAT(const std::vector<DBL>& vt) {
 /// Assign MAT object to *this
 MAT::MAT(const MAT& mat) {
     this->nrow = mat.nrow;
-    this->ncol = mat.ncol;
+    this->mcol = mat.mcol;
     this->nnz = mat.nnz;
 
     this->values = mat.values;
@@ -191,7 +236,7 @@ MAT::MAT(const MAT& mat) {
 /// Overload = operator
 MAT &MAT::operator=(const MAT& mat) {
     this->nrow = mat.nrow;
-    this->ncol = mat.ncol;
+    this->mcol = mat.mcol;
     this->nnz = mat.nnz;
 
     this->values = mat.values;
@@ -202,18 +247,18 @@ MAT &MAT::operator=(const MAT& mat) {
     return *this;
 }
 
-/// Set values of nrow, ncol, nnz, values, colInd, rowPtr, diagPtr
-void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+/// Set values of nrow, mcol, nnz, values, colInd, rowPtr, diagPtr
+void MAT::SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
                     const std::vector<INT>& rowPtr,
                     const std::vector<INT>& diagPtr) {
-    if (nrow == 0 || ncol == 0 || nnz == 0) {
+    if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
         return;
     }
 
     this->nrow = nrow;
-    this->ncol = ncol;
+    this->mcol = mcol;
     this->nnz = nnz;
 
     this->values = values;
@@ -222,17 +267,17 @@ void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
     this->diagPtr = diagPtr;
 }
 
-/// Set values of nrow, ncol, nnz, values, rowPtr, colInd
-void MAT::SetValues(const INT& nrow, const INT& ncol, const INT& nnz,
+/// Set values of nrow, mcol, nnz, values, rowPtr, colInd
+void MAT::SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
                     const std::vector<INT>& rowPtr) {
-    if (nrow == 0 || ncol == 0 || nnz == 0) {
+    if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
         return;
     }
 
     this->nrow = nrow;
-    this->ncol = ncol;
+    this->mcol = mcol;
 
     this->nnz = nnz;
 
@@ -251,7 +296,7 @@ INT MAT::GetNNZ() const {
 
 /// Get the whole diagonal entries in *this into VEC object
 void MAT::GetDiag(std::vector<DBL>& v) const {
-    INT len = this->nrow > this->ncol ? this->ncol : this->nrow;
+    INT len = this->nrow > this->mcol ? this->mcol : this->nrow;
     v.resize(len);
 
     if (this->values.size() != 0) {
@@ -293,16 +338,16 @@ void MAT::Zero() {
 
 /// Transpose *this
 void MAT::Transpose() {
-    const INT n = this->nrow, m = this->ncol, nnz = this->nnz;
+    const INT n = this->nrow, m = this->mcol, nnz = this->nnz;
     INT i, j, k, p;
 
     MAT tmp;
-    tmp.nrow = this->ncol;
-    tmp.ncol = this->nrow;
+    tmp.nrow = this->mcol;
+    tmp.mcol = this->nrow;
     tmp.nnz = this->nnz;
 
     try {
-        tmp.rowPtr.resize(this->ncol + 1);
+        tmp.rowPtr.resize(this->mcol + 1);
         tmp.colInd.resize(nnz);
     } catch (std::bad_alloc &ex) {
         throw (FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
@@ -443,12 +488,12 @@ void MAT::Apply(const VEC& v, VEC& w) const {
 /// v = A'*v1 + v2
 void MAT::MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const {
 
-    const INT n = this->nrow, m = this->ncol, nnz = this->nnz;
+    const INT n = this->nrow, m = this->mcol, nnz = this->nnz;
     INT i, j, k, p;
 
     MAT tmp;
     tmp.nrow = m;
-    tmp.ncol = n;
+    tmp.mcol = n;
     tmp.nnz = nnz;
 
     try {
@@ -515,7 +560,7 @@ void WriteCSR(char *filename, MAT mat) {
     std::ofstream out;
     out.open(filename);
 
-    out << mat.nrow << " " << mat.ncol << " " << mat.nnz << "\n";
+    out << mat.nrow << " " << mat.mcol << " " << mat.nnz << "\n";
     for (INT j = 0; j < mat.nrow + 1; ++j) out << mat.rowPtr[j] << "\n";
     for (INT j = 0; j < mat.nnz; ++j) out << mat.colInd[j] << "\n";
     for (INT j = 0; j < mat.nnz; ++j) out << mat.values[j] << "\n";
@@ -531,7 +576,7 @@ void WriteMTX(char *filename, MAT mat) {
     MAT tmp = mat;
     tmp.Transpose();
 
-    out << tmp.nrow << " " << tmp.ncol << " " << tmp.nnz << "\n";
+    out << tmp.nrow << " " << tmp.mcol << " " << tmp.nnz << "\n";
     for (j = 0; j < tmp.nrow; ++j) {
         begin = tmp.rowPtr[j];
         end = tmp.rowPtr[j + 1];
@@ -560,7 +605,7 @@ void MAT::FormDiagPtr() {
 /// Empty a matrix
 void MAT::Empty() {
     this->nrow = 0;
-    this->ncol = 0;
+    this->mcol = 0;
     this->nnz = 0;
     this->rowPtr.resize(0);
     this->diagPtr.resize(0);
@@ -612,7 +657,7 @@ void Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2, MAT& mat) {
     }
 
     mat.nrow = mat1.nrow;
-    mat.ncol = mat1.ncol;
+    mat.mcol = mat1.mcol;
 
     mat.rowPtr.resize(mat.nrow + 1);
     mat.colInd.resize(mat1.nnz + mat2.nnz);
@@ -652,7 +697,7 @@ void Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2, MAT& mat) {
     mat.colInd.resize(count);
     mat.values.resize(count);
 
-    SortCSRRow(mat.nrow, mat.ncol, mat.nnz, mat.rowPtr, mat.colInd, mat.values);
+    SortCSRRow(mat.nrow, mat.mcol, mat.nnz, mat.rowPtr, mat.colInd, mat.values);
 }
 
 /// *this = a * *this + b * mat
@@ -664,11 +709,11 @@ void MAT::Add(const DBL a, const DBL b, const MAT& mat) {
 
 /// Get (*this)[i][j]
 //! Note: If *this is a sparse structure, it will return 1.0 for nonzero entries
-DBL MAT::GetValue(const INT& row, const INT& ncol) const {
-    if (this->colInd[this->rowPtr[row]] <= ncol ||
-        this->colInd[this->rowPtr[row + 1] - 1] >= ncol) {
+DBL MAT::GetValue(const INT& row, const INT& mcol) const {
+    if (this->colInd[this->rowPtr[row]] <= mcol ||
+        this->colInd[this->rowPtr[row + 1] - 1] >= mcol) {
         for (INT j = this->rowPtr[row]; j < this->rowPtr[row + 1]; ++j) {
-            if (ncol == this->colInd[j]) {
+            if (mcol == this->colInd[j]) {
                 if (this->values.size() > 0)
                     return this->values[j];
                 else
@@ -720,13 +765,13 @@ void MAT::GetCol(const INT& col, std::vector<DBL>& v) const {
 /// mat = matl * matr
 void Mult(const MAT& matl, const MAT& matr, MAT& mat) {
     INT l, count;
-    INT *tmp = new INT[matr.ncol];
+    INT *tmp = new INT[matr.mcol];
 
     mat.nrow = matl.nrow;
-    mat.ncol = matr.ncol;
+    mat.mcol = matr.mcol;
     mat.rowPtr.resize(mat.nrow + 1);
 
-    for (INT i = 0; i < matr.ncol; ++i) tmp[i] = -1;
+    for (INT i = 0; i < matr.mcol; ++i) tmp[i] = -1;
 
     for (INT i = 0; i < mat.nrow; ++i) {
         count = 0;

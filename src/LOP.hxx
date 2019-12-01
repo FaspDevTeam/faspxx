@@ -16,46 +16,41 @@
 #include "faspxx.hxx"
 #include "VEC.hxx"
 
-/*! \class LOP
- *  \brief Linear operator class from VEC(ncol) to VEC(nrow)
- *
- *  This is a virtual class for all linear operators, for example a MAT sparse
- *  matrix or a matrix-free operation.
- */
+/// Linear operator virtual class.
 class LOP {
 
 protected:
 
     INT nrow;   ///< number of rows
-    INT ncol;   ///< number of columns
+    INT mcol;   ///< number of columns
 
 public:
 
-    /// Default constructor
-    LOP() : nrow(0), ncol(0) {};
+    /// Default constructor.
+    LOP() : nrow(0), mcol(0) { };
 
-    /// Assign nrow and ncol to *this
-    LOP(const INT& nrow, const INT& ncol);
+    /// Make an LOP from VEC(mcol) to VEC(nrow).
+    LOP(const INT& nrow, const INT& mcol);
 
-    /// Assign nrow and ncol=nrow to *this
+    /// Make an LOP from VEC(nrow) to VEC(nrow).
     LOP(const INT& nrow);
 
-    /// Assign LOP object to *this
+    /// Make an LOP from another LOP.
     LOP(const LOP& lop);
 
-    /// Overload = operator
+    /// Overload the = operator.
     const LOP &operator=(const LOP& lop);
 
-    /// Default destructor
+    /// Default destructor.
     ~LOP() = default;
 
-    /// Get row space dimension
+    /// Get row space dimension.
     INT GetRowSize() const;
 
-    /// Get column space dimension
+    /// Get column space dimension.
     INT GetColSize() const;
 
-    /// Action of the linear operator to a vector
+    /// Action of the linear operator to a vector.
     virtual void Apply(const VEC& x, VEC& y) const {throw("Action not defined!"); };
 };
 

@@ -26,7 +26,7 @@ public:
     // constructor by default
     MatFree(const INT row, const INT col){
         nrow = row;
-        ncol = col;
+        mcol = col;
     }
 
     // free-matrix 's operator : acting on a VEC object
