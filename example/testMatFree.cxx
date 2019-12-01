@@ -8,7 +8,7 @@
 #include <iostream>
 #include "LOP.hxx"
 #include "PCG.hxx"
-#include "Parameters.hxx"
+#include "Param.hxx"
 #include "Timing.hxx"
 #include "PCD.hxx"
 #include "Poisson2D.hxx"

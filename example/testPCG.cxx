@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include "Timing.hxx"
-#include "Parameters.hxx"
+#include "Param.hxx"
 #include "PCG.hxx"
 #include "LOP.hxx"
 #include "ReadData.hxx"

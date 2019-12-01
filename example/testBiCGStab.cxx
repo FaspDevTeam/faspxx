@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "ReadData.hxx"
-#include "Parameters.hxx"
+#include "Param.hxx"
 #include "Timing.hxx"
 #include "PCD.hxx"
 #include "BiCGStab.hxx"
