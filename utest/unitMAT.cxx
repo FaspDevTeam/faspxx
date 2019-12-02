@@ -1,7 +1,7 @@
-/** \file unitMAT.cxx
- *  \brief Unit test for MAT class implementations
- *  \author Ronghong Fan
- *  \date Oct/24/2019
+/** \file    unitMAT.cxx
+ *  \brief   Unit test for MAT class implementations
+ *  \author  Ronghong Fan
+ *  \date    Oct/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -139,18 +139,6 @@ TEST(MAT_MultVec, MultVec)
     }
 }
 
-// TODO: need to modify
-//TEST(MAT_GetRow, GetRow)
-//{
-//    std::vector<DBL> vec;
-//    mat1.GetRow(0, vec);
-//    for (INT i=0; i<mat1.GetRowSize(); i++)
-//    {
-//        std::cout << mat1.GetValue(0, i) << ", " << vec[i] << std::endl;
-//        EXPECT_EQ(mat1.GetValue(0, i), vec[i]); // TODO: bug?
-//    }
-//}
-
 TEST(MAT_operator_equal, operator_equal)
 {
     MAT mat;
@@ -164,15 +152,6 @@ TEST(MAT_operator_equal, operator_equal)
         for (INT j=0; j<mat.GetColSize(); j++)
             EXPECT_EQ(mat.GetValue(i, j), mat6.GetValue(i, j));
 }
-
-//// TODO: bug?
-//TEST(MAT_GetDiag, GetDiag)
-//{
-//    std::vector<DBL> diag;
-//    mat4.GetDiag(diag);
-//    for (INT i=0; i<diag2.size(); i++)
-//        EXPECT_EQ(diag[i], diag2);
-//}
 
 TEST(MAT_Zero, Zero)
 {

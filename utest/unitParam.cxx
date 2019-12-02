@@ -1,7 +1,7 @@
-/** \file unitMAT.cxx
- *  \brief Unit test for MAT class implementations
- *  \author Ronghong Fan
- *  \date Oct/24/2019
+/** \file    unitMAT.cxx
+ *  \brief   Unit test for MAT class implementations
+ *  \author  Ronghong Fan
+ *  \date    Oct/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -30,8 +30,3 @@
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/
-
-
-
-
-

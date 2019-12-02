@@ -1,7 +1,7 @@
-/** \file unitVEC.cxx
- *  \brief Unit test for VEC class implementations
- *  \author Ronghong Fan
- *  \date Oct/24/2019
+/** \file    unitVEC.cxx
+ *  \brief   Unit test for VEC class implementations
+ *  \author  Ronghong Fan
+ *  \date    Oct/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -70,7 +70,7 @@ TEST(VEC_copy_constructor, CopyConstructor)
 
 TEST(VEC_operator_plus, Plus)
 {
-    VEC v8 = v5; // TODO: VEC v8; v8 += v5 should do default initialization
+    VEC v8 = v5;
     v8 += v5;
     for (INT i=0; i<v8.GetSize(); i++) {
         EXPECT_EQ(v8[i], 2*v5[i]);
