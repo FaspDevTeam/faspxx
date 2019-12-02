@@ -107,7 +107,6 @@ FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec)
 }
 
 /// Check whether the data is good for CSR
-// Todo: Need to change about .size(). It is not size any more.
 FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
                      const std::vector<INT>& rowPtr)
@@ -345,7 +344,6 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
     if ( numZeroDiag == 0 ) {
         // Set values for MAT matrix
         try {
-            // Todo: Not working with reserve
             retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
             if ( retCode < 0 )
                 throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );

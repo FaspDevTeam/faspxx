@@ -181,7 +181,6 @@ FaspRetCode SOL::SetOptionsFromFile(const char *file, const char *prefix) {
         FASPXX_WARNING("Not found sol option file!");
     }
 
-    // TODO: 把下面的对每行处理的代码写成一个独立的函数
     std::string line, param, value;
     while (std::getline(input, line)) {
         if (!ProcessLine(line, param, value)) continue;
