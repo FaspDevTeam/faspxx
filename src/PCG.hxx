@@ -23,6 +23,7 @@
  */
 class PCG: public SOL
 {
+
 private:
     VEC rk; ///< work vector for residual
     VEC pk; ///< work vector for preconditioned residual

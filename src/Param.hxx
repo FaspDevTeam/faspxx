@@ -1,6 +1,6 @@
 /*! \file    Param.hxx
- *  \brief   Command line input parameters
- *  \author  Ronghong Fan
+ *  \brief   Command line input parameter declaration
+ *  \author  Ronghong Fan, Chensong Zhang
  *  \date    Nov/25/2019
  *
  *-----------------------------------------------------------------------------------
@@ -16,57 +16,59 @@
 #include <iostream>
 #include "faspxx.hxx"
 
-enum PRTLVL {
-    PRINT_NONE = 0,
-    PRINT_MIN  = 2,
-    PRINT_SOME = 4,
-    PRINT_MORE = 6,
-    PRINT_MAX  = 8,
-    PRINT_ALL  = 10
+/// Level of output
+enum Output {
+    PRINT_NONE = 0,  // no output
+    PRINT_MIN  = 2,  // minimal output
+    PRINT_SOME = 4,  // some output
+    PRINT_MORE = 6,  // more output
+    PRINT_MAX  = 8,  // even more output
+    PRINT_ALL  = 10  // all possible output
 };
 
+/// Command line parameters
 class Parameters {
     
 public:
     enum ParamType {
-        BoolType, IntType, DoubleType, StringType, PrintLevelType
-    }; // allowed parameter types
+        BoolType, IntType, DoubleType, StringType, OutputType
+    }; ///< Possible parameter types
 
 private:
-    struct Param // each parameter is saved in a struct
-    {
-        ParamType type;
-        void *param_ptr;
-        const char *param_name;
-        const char *help;
+    struct ParamHolder {
+        ParamType      paramType;  ///< Type of parameter
+        const char *   paramName;  ///< Name of parameter
+        const char *   paramHelp;  ///< Help message
+        void *         paramPtr;   ///< Pointer to parameter data
 
-        Param(ParamType _type, void *_ptr, const char *_name, const char *_help)
-                : type(_type), param_ptr(_ptr), param_name(_name), help(_help) {}
-    };
+        ParamHolder(ParamType type, const char * name, const char * help, void * ptr)
+                : paramType(type), paramName(name), paramHelp(help), paramPtr(ptr) {}
+    }; ///< Each parameter is saved in a holder
 
-    std::vector<Param> params; // all parameters
-    int argc;
+    std::vector<ParamHolder> params; ///< all parameters
+
+    int    argc;
     char **argv;
 
 public:
-    Parameters(int _argc, char *_argv[]) : argc(_argc), argv(_argv) {}
+    Parameters(int _argc, char * _argv[]) : argc(_argc), argv(_argv) {}
 
     ~Parameters() {}
 
-    // TODO: required or optional for every parameterfff
-    void AddParam(bool *_ptr, const char *_name, const char *_help);
+    // TODO: required or optional for every parameter -fff
+    void AddParam(const char * name, const char * help, bool * ptr);
 
-    void AddParam(INT *_ptr, const char *_name, const char *_help);
+    void AddParam(const char * name, const char * help, INT * ptr);
 
-    void AddParam(DBL *_ptr, const char *_name, const char *_help);
+    void AddParam(const char * name, const char * help, DBL * ptr);
 
-    void AddParam(const char **_ptr, const char *_name, const char *_help);
+    void AddParam(const char * name, const char * help, const char ** ptr);
 
-    void AddParam(PRTLVL *_ptr, const char *_name, const char *_help);
+    void AddParam(const char * name, const char * help, Output * ptr);
 
     void Parse();
 
-    void PrintParams(std::ostream &out = std::cout) const;
+    void Print(std::ostream &out = std::cout) const;
 
     void PrintHelp(std::ostream &out = std::cout) const;
 };

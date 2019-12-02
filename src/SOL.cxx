@@ -26,7 +26,7 @@ void SOL::DiffRes(DBL reldiff, DBL relres) {
 }
 
 /// Print out iteration information for iterative solvers
-void SOL::PrintInfo(const PRTLVL &verbose, const INT &iter, const DBL &resRel,
+void SOL::PrintInfo(const Output &verbose, const INT &iter, const DBL &resRel,
                     const DBL &resAbs, const DBL &factor) {
     if (verbose > PRINT_SOME || (verbose > PRINT_NONE && iter % 20 == 0)) {
         if (iter == 0) {
@@ -45,7 +45,7 @@ void SOL::PrintInfo(const PRTLVL &verbose, const INT &iter, const DBL &resRel,
 }
 
 /// Print out final status of an iterative method
-void SOL::PrintFinal(const PRTLVL &verbose, const INT &iter, const INT &maxit,
+void SOL::PrintFinal(const Output &verbose, const INT &iter, const INT &maxit,
                      const DBL &resRel) {
     if (verbose > PRINT_NONE) {
         if (iter > maxit)
@@ -72,7 +72,7 @@ const char *SOL::SelectSolver(SOLType type) {
 }
 
 /// constructor
-SOL::SOL(PRTLVL verbose, INT maxIter, DBL relTol, DBL absTol, INT restart) {
+SOL::SOL(Output verbose, INT maxIter, DBL relTol, DBL absTol, INT restart) {
     this->verbose = verbose;
     this->maxIter = maxIter;
     this->relTol = relTol;
@@ -81,7 +81,7 @@ SOL::SOL(PRTLVL verbose, INT maxIter, DBL relTol, DBL absTol, INT restart) {
 }
 
 /// Set 'verbose' 's value
-void SOL::SetPrtLvl(PRTLVL verbose) {
+void SOL::SetPrtLvl(Output verbose) {
     this->verbose = verbose;
 }
 

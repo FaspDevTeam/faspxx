@@ -38,7 +38,7 @@ private:
 protected:
     SOL *pc;        ///< Preconditioner, inlopfffpc
     const Mat *A;   ///< Matrix object
-    PRTLVL verbose; ///< Output level
+    Output verbose; ///< Output level
     INT maxIter;    ///< Maximal number of iterations
     DBL relTol;     ///< Tolerance for relative residual
     DBL absTol;     ///< Tolerance for absolute residual
@@ -60,11 +60,11 @@ protected:
     void DiffRes(DBL reldiff, DBL relres);
 
     /// Print out iteration information for iterative solvers
-    void PrintInfo(const PRTLVL &verbose, const INT &iter, const DBL &resRel,
+    void PrintInfo(const Output &verbose, const INT &iter, const DBL &resRel,
                    const DBL &resAbs, const DBL &factor);
 
     /// Print out final status of an iterative method
-    void PrintFinal(const PRTLVL &verbose, const INT &iter, const INT &maxit,
+    void PrintFinal(const Output &verbose, const INT &iter, const INT &maxit,
                     const DBL &resRel);
 
     /// Select solver
@@ -78,10 +78,10 @@ public:
             numIter(0), mark(false) {};
 
     /// constructor
-    SOL(PRTLVL verbose, INT maxIter, DBL relTol, DBL absTol, INT restart);
+    SOL(Output verbose, INT maxIter, DBL relTol, DBL absTol, INT restart);
 
     /// Set 'verbose' 's value
-    void SetPrtLvl(PRTLVL verbose);
+    void SetPrtLvl(Output verbose);
 
     /// Set 'maxIter' 's value
     void SetMaxIter(INT maxIter);
