@@ -32,24 +32,29 @@ class Parameters {
 public:
     /// Possible parameter types
     enum ParamType {
-        BoolType, IntType, DoubleType, StringType, OutputType
+        BoolType    = 0,
+        IntType     = 1,
+        DoubleType  = 2,
+        StringType  = 3,
+        OutputType  = 4
     };
 
 private:
+    /// Each parameter is stored in a holder
     struct ParamHolder {
-        ParamType      paramType;  ///< Type of parameter
-        const char *   paramName;  ///< Name of parameter
-        const char *   paramHelp;  ///< Help message
-        void *         paramPtr;   ///< Pointer to parameter data
+        ParamType      paramType;    ///< Type of parameter
+        const char *   paramName;    ///< Name of parameter
+        const char *   paramHelp;    ///< Help message
+        void *         paramPtr;     ///< Pointer to parameter data
 
         ParamHolder(ParamType type, const char * name, const char * help, void * ptr)
                 : paramType(type), paramName(name), paramHelp(help), paramPtr(ptr) {}
-    }; ///< Each parameter is saved in a holder
+    };
 
     std::vector<ParamHolder> params; ///< all parameters
 
-    int    argc;
-    char **argv;
+    int      argc;                   ///< number of command-line arguments
+    char   **argv;                   ///< command-line arguments
 
 public:
     /// Default constructor

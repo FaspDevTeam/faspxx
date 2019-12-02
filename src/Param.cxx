@@ -152,18 +152,21 @@ void Parameters::Print(std::ostream &out) const
 void Parameters::PrintHelp(std::ostream &out) const
 {
     static const char *indent = "   ";
-    static const char *newline_indent = "\n    ";
-    static const char *types[] = {"<bool>", "<INT>", "<DBL>", "<string>", "<Output>"};
+    static const char *types[] = {"<bool>", "<int>", "<double>", "<string>", "<Output>"};
 
-    out << "\nUsage: " << argv[0] << " [parameters] ...\n"
-        << "Parameters:\n";
-    out << indent << "-h, --help"
-        << newline_indent << "Print this help message and exit.\n";
+    out << "Usage: " << argv[0] << " [options] ...\n"
+        << "Options:\n";
+    out << indent << std::setw(21) << std::left
+        << "-h, --help" << " : Print help information and exit.\n";
+
     for ( size_t i = 0; i < params.size(); ++i ) {
         ParamType type = params[i].paramType;
-        out << indent << params[i].paramName << " " << types[type]
-            << ", current value: ";
-        switch (type) {
+        out << indent << std::setw(12) << std::left << params[i].paramName
+            << " " << std::setw(8) << types[type];
+        if ( params[i].paramHelp ) out << " : " << params[i].paramHelp;
+
+        out << ", default = [";
+        switch ( type ) {
             case BoolType:
                 out << std::boolalpha << *(bool *) (params[i].paramPtr)
                     << std::setiosflags(out.flags());
@@ -181,10 +184,7 @@ void Parameters::PrintHelp(std::ostream &out) const
                 out << *(Output *) (params[i].paramPtr);
                 break;
         }
-        if (params[i].paramHelp) {
-            out << newline_indent << params[i].paramHelp;
-        }
-        out << '\n';
+        out << "]\n";
     }
 }
 
