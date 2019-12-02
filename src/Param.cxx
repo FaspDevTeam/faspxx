@@ -122,10 +122,12 @@ void Parameters::Parse()
 
 void Parameters::Print(std::ostream &out) const
 {
+    static const char *indent = "   ";
     out << "\nInput Parameters:\n";
     out << "---------------------------------------------------\n";
     for ( size_t i = 0; i < params.size(); ++i ) {
-        out << "  " << std::setw(10) << params[i].paramName << " : ";
+        out << indent << std::setw(10) << std::left << params[i].paramName;
+        out << " : ";
         switch (params[i].paramType) {
             case BoolType:
                 out << std::boolalpha << *((bool *) (params[i].paramPtr))
