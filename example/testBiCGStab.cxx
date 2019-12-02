@@ -3,11 +3,11 @@
  */
 
 #include <iostream>
+#include "Timing.hxx"
 #include "ReadData.hxx"
 #include "Param.hxx"
-#include "Timing.hxx"
-#include "PCD.hxx"
 #include "BiCGStab.hxx"
+#include "Iter.hxx"
 
 using namespace std;
 
@@ -77,9 +77,9 @@ int main(int argc, char *argv[]) {
     bi.Setup(mat);
 
     params.PrintParams(cout<<"\nhhhhhhhhhhhhhhhhhhhhhhhh\n");
-    // Setup preconditioner
 
-    IdentityPC pc;
+    // Setup preconditioner
+    Identity pc;
     bi.SetPC(&pc);
 
     // PCG solve

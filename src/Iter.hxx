@@ -1,45 +1,62 @@
-/**
- * a header file for some preconditioners
+/*! \file    Iter.hxx
+ *  \brief   Simple iterative methods declaration
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    Dec/02/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
-#ifndef PCD_HXX
-#define PCD_HXX
+#ifndef __ITER_HEADER__      /*-- allow multiple inclusions --*/
+#define __ITER_HEADER__      /**< indicate Iter.hxx has been included before */
 
+#include "faspxx.hxx"
 #include "SOL.hxx"
 
-class IdentityPC : public SOL {
-public:
-    // default constructor
-    IdentityPC(){};
+/*! \class Identity
+ *  \brief Identity iterator.
+ */
+class Identity : public SOL {
 
-    /// solve by SOL
-    virtual FaspRetCode Solve(const VEC& x, VEC& y);
+public:
+    /// default constructor
+    Identity(){};
 
     /// destructor
-    ~IdentityPC(){};
+    ~Identity(){};
 
+    /// Iterator
+    virtual FaspRetCode Solve(const VEC& x, VEC& y);
 };
 
-
+/*! \class Jacobi
+ *  \brief Jacobi iterator.
+ */
 class Jacobi : public SOL{
+
 public :
-    INT row;
-    INT col;
+    INT row; // Todo: 有什么用? -zcs
+    INT col; // Todo: 有什么用? -zcs
     VEC diag;
 
 public:
-    // default constructor
+    /// default constructor
     Jacobi():row(0),col(0){};
-
-    // constructor
-    explicit Jacobi(INT row,INT col,std::vector<DBL> diag);
-
-    /// solve by SOL
-    virtual FaspRetCode Solve(const VEC& x, VEC& y);
 
     /// destructor
     ~Jacobi(){};
 
+    /// constructor
+    explicit Jacobi(INT row, INT col, std::vector<DBL> diag);
+
+    /// Iterator
+    virtual FaspRetCode Solve(const VEC& x, VEC& y);
 };
 
-#endif // PCD_HXX
+#endif /* end if for __ITER_HEADER__ */
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

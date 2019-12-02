@@ -3,9 +3,8 @@
  */
 
 #include <ios>
+#include "Iter.hxx"
 #include "BiCGStab.hxx"
-#include "PCD.hxx"
-
 
 /// check and allocate memory
 FaspRetCode
@@ -30,7 +29,7 @@ BiCGStab::Setup(const LOP &A) {
 
     /// identical preconditioner operator by default
     if (pc == nullptr) {
-        pc = new IdentityPC();
+        pc = new Identity();
         mark = false;
     }
 
@@ -184,7 +183,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
 
             if (moreStep >= restart) {
                 if (verbose > PRINT_MIN) FASPXX_WARNING(
-                        "The tolerence might be too small!");
+                        "The tolerance might be too small!");
                 errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
             }

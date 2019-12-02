@@ -6,11 +6,11 @@
  */
 
 #include <iostream>
+#include "Timing.hxx"
+#include "Param.hxx"
 #include "LOP.hxx"
 #include "PCG.hxx"
-#include "Param.hxx"
-#include "Timing.hxx"
-#include "PCD.hxx"
+#include "Iter.hxx"
 #include "Poisson2D.hxx"
 
 /// \brief Locate position of (x,y) in the global index
@@ -223,7 +223,7 @@ int main(int argc, char *args[]) {
         pcg.Setup(matfree);
 
         // create identity preconditioner
-        IdentityPC pc;
+        Identity pc;
         pcg.SetPC(&pc);
 
         // time

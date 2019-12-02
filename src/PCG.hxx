@@ -13,9 +13,9 @@
 #define __PCG_HEADER__      /**< indicate PCG.hxx has been included before */
 
 #include <cmath>
-#include "MAT.hxx"
-#include "LOP.hxx"
 #include "ErrorLog.hxx"
+#include "LOP.hxx"
+#include "MAT.hxx"
 #include "SOL.hxx"
 
 /*! \class PCG

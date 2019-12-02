@@ -11,11 +11,11 @@
 
 #include <iostream>
 #include "Timing.hxx"
-#include "Param.hxx"
-#include "PCG.hxx"
-#include "LOP.hxx"
 #include "ReadData.hxx"
-#include "PCD.hxx"
+#include "Param.hxx"
+#include "LOP.hxx"
+#include "PCG.hxx"
+#include "Iter.hxx"
 
 int main(int argc, char *args[]) {
     const char *mat_file = "../data/fdm_10X10.csr";
@@ -82,10 +82,10 @@ int main(int argc, char *args[]) {
     // pcg.SetOptionsFromFile(opts, prefix);
     pcg.Setup(mat);
 
-    params.PrintParams(std::cout<<"\nhhhhhhhhhhhhhhhhhhhhhhhh\n");
-    // Setup preconditioner
+    params.PrintParams();
 
-    IdentityPC pc;
+    // Setup preconditioner
+    Identity pc;
     pcg.SetPC(&pc);
 
     // PCG solve

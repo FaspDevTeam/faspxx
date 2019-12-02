@@ -11,7 +11,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include "PCD.hxx"
+#include "Iter.hxx"
 #include "PCG.hxx"
 
 // Assign param to this->param
@@ -32,7 +32,7 @@ FaspRetCode PCG::Setup(const LOP &A) {
     }
 
     if (pc == nullptr) {
-        pc = new IdentityPC();
+        pc = new Identity();
         mark=false;
     }
 
