@@ -2,11 +2,10 @@
 #include <cassert>
 #include <iostream>
 #include "../src/SOL.hxx"
-#include "../src/Parameters.hxx"
+#include "../src/Param.hxx"
 #include "../src/Timing.hxx"
 #include "../src/MAT.hxx"
 #include "../src/ReadData.hxx"
-//#include "../src/ReadCommand.hxx"
 #include "../src/PCG.hxx"
 
 using namespace std;

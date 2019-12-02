@@ -65,6 +65,10 @@ target_link_libraries(testReadData faspxx)
 add_executable(testErrorLog example/testErrorLog.cxx)
 target_link_libraries(testErrorLog faspxx)
 
+# Test SOL class
+#add_executable(testSOL example/testSOL.cxx)
+#target_link_libraries(testSOL faspxx)
+
 # Test PCG class
 add_executable(testPCG example/testPCG.cxx)
 target_link_libraries(testPCG faspxx)
