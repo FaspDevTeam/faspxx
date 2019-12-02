@@ -42,7 +42,7 @@ public:
         rj(0),sj(0),ptmp(0),stmp(0),mp(0),ms(0){};
 
     /// check and allocate memory
-    FaspRetCode Setup(const Mat& A);
+    FaspRetCode Setup(const LOP& A);
 
     /// solve by BiCGStab
     FaspRetCode Solve(const VEC& b, VEC& x);

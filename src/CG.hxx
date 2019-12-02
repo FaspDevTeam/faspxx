@@ -36,7 +36,7 @@ public:
             zk(0), ax(0){};
 
     /// check and allocate memory
-    FaspRetCode Setup(const Mat& A);
+    FaspRetCode Setup(const LOP& A);
 
     /// solve by CG
     FaspRetCode Solve(const VEC& b, VEC& x);

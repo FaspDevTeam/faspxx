@@ -23,8 +23,6 @@
 #include "LOP.hxx"
 #include "VEC.hxx"
 
-typedef LOP Mat;   // Todo: 为什么需要Mat？ -zcs
-
 /*! \class SOL
  *  \brief Iterative solvers.
  */
@@ -37,7 +35,7 @@ private:
 
 protected:
     SOL *pc;        ///< Preconditioner, inlopfffpc
-    const Mat *A;   ///< Matrix object
+    const LOP *A;   ///< Matrix object
     Output verbose; ///< Output level
     INT maxIter;    ///< Maximal number of iterations
     DBL relTol;     ///< Tolerance for relative residual
@@ -115,7 +113,7 @@ public:
         prefix = nullptr);
 
     /// check and allocate memory
-    virtual FaspRetCode Setup(const Mat &_A) {
+    virtual FaspRetCode Setup(const LOP &_A) {
         FASPXX_ABORT("Not supported!")
     }
 
