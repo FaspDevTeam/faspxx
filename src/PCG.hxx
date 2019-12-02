@@ -1,7 +1,7 @@
-/*! \file PCG.hxx
- *  \brief PCG class declaration
- *  \author Chensong Zhang, Kailei Zhang
- *  \date Oct/11/2019
+/*! \file    PCG.hxx
+ *  \brief   PCG class declaration
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    Oct/11/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -18,14 +18,16 @@
 #include "ErrorLog.hxx"
 #include "SOL.hxx"
 
-
+/*! \class PCG
+ *  \brief Preconditioned conjugate gradient method.
+ */
 class PCG: public SOL
 {
 private:
-    VEC rk; /// work vector for residual
-    VEC pk; /// work vector for preconditioned residual
-    VEC zk; /// work vector for search direction
-    VEC ax; /// work vector for A * pk
+    VEC rk; ///< work vector for residual
+    VEC pk; ///< work vector for preconditioned residual
+    VEC zk; ///< work vector for search direction
+    VEC ax; ///< work vector for A * pk
 
 public:
     /// constructor by default
