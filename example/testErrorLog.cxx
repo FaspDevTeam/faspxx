@@ -18,7 +18,7 @@ void test( int* tmp = NULL )
         FASPXX_ASSERT(1==2, "This is an assert test!");
 
     if ( tmp == NULL )
-        FASPXX_WARNING("This might cause a problem!");
+        FASPXX_WARNING("This is a warning test!");
 
     if ( tmp == NULL )
         FASPXX_ABORT("This is an abort test!");

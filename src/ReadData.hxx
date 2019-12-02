@@ -9,8 +9,8 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __READDATA__HEADER__ /*-- allow multiple inclusions --*/
-#define __READDATA__HEADER__ /**< indicate ReadData.hxx has been included before */
+#ifndef __READDATA__HEADER__   /*-- allow multiple inclusions --*/
+#define __READDATA__HEADER__   /**< indicate ReadData.hxx has been included before */
 
 #include "faspxx.hxx"
 #include "MAT.hxx"
