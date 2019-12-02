@@ -113,7 +113,7 @@ void Parameters::Parse()
 void Parameters::Print(std::ostream &out) const
 {
     out << "\nInput Parameters:\n";
-    out << "--------------------------------------------------\n";
+    out << "---------------------------------------------------\n";
     for ( size_t i = 0; i < params.size(); ++i ) {
         out << "  " << std::setw(10) << params[i].paramName << " : ";
         switch (params[i].paramType) {

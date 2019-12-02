@@ -14,9 +14,8 @@
 #include "BiCGStab.hxx"
 
 /// check and allocate memory
-FaspRetCode
-BiCGStab::Setup(const LOP &A) {
-
+FaspRetCode BiCGStab::Setup(const LOP &A)
+{
     INT len = A.GetColSize();
     try {
         r0star.SetValues(len,0.0);
@@ -44,22 +43,21 @@ BiCGStab::Setup(const LOP &A) {
 }
 
 /// solve by BiCGStab
-FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
-
-    if (x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize() ||
-        A->GetRowSize() != A->GetColSize())
+FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
+{
+    if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize() ||
+         A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     const unsigned MaxStag = 20;
     const INT len = b.GetSize();
-    const DBL maxdiff = 1e-4 * relTol; //Stagnation tolerance
+    const DBL maxdiff = 1e-4 * relTol; // Stagnation tolerance
     const DBL solinftol = 1e-20;
 
     // Local variables
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
     unsigned stagStep = 1, moreStep = 1;
-    DBL resAbs = 1e+20, tmpAbs = 1e+20;
-    DBL resRel = 1e+20, denAbs = 1e+20;
+    DBL resAbs, tmpAbs, resRel, denAbs;
     DBL alphaj, betaj, rjr0star, rjr0startmp, omegaj;
     DBL tmp12,factor;
 
@@ -71,15 +69,15 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
     this->rj.WAXPBY(1.0, b, -1.0, this->tmp);
 
     // Compute initial residual
-    tmpAbs=this->rj.Norm2();
-    denAbs=(1e-20>tmpAbs)?1e-20:tmpAbs;
-    resRel=tmpAbs/denAbs;
+    tmpAbs = this->rj.Norm2();
+    denAbs = (1e-20>tmpAbs)?1e-20:tmpAbs;
+    resRel = tmpAbs/denAbs;
 
     // If initial residual is already small, no need to iterate
-    if(resRel <relTol || tmpAbs<absTol) goto FINISHED;
+    if ( resRel < relTol || tmpAbs < absTol ) goto FINISHED;
 
     // Prepare for the main loop
-    PrintInfo(verbose,numIter,resRel,tmpAbs,0.0);
+    PrintInfo(verbose, numIter, resRel, tmpAbs, 0.0);
 
     // r0_{*} = r0
     this->r0star = this->rj;
@@ -87,7 +85,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
     // p0 = r0
     this->pj = this->rj;
 
-    while (numIter<maxIter) {
+    while ( numIter<maxIter ) {
 
         ++numIter;
 
@@ -98,7 +96,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
         pc->Solve(this->apj,this->ptmp);
 
         tmp12 = this->ptmp.Dot(this->r0star);
-        if (fabs(tmp12) > 1e-40) alphaj = rjr0star / tmp12;
+        if ( fabs(tmp12) > 1e-40 ) alphaj = rjr0star / tmp12;
         else {
             FASPXX_WARNING("Divided by zero!"); // Possible breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
@@ -189,8 +187,8 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
             }
 
             if (moreStep >= restart) {
-                if (verbose > PRINT_MIN) FASPXX_WARNING(
-                        "The tolerance might be too small!");
+                if (verbose > PRINT_MIN)
+                    FASPXX_WARNING("The tolerance might be too small!");
                 errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
             }

@@ -34,18 +34,27 @@ void SOL::DiffRes(DBL reldiff, DBL relres) {
 /// Print out iteration information for iterative solvers
 void SOL::PrintInfo(const Output &verbose, const INT &iter, const DBL &resRel,
                     const DBL &resAbs, const DBL &factor) {
-    if (verbose > PRINT_SOME || (verbose > PRINT_NONE && iter % 20 == 0)) {
-        if (iter == 0) {
-            std::cout << "--------------------------------------------------\n";
-            std::cout << "It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
-            std::cout << "--------------------------------------------------\n";
+    if ( verbose > PRINT_SOME || (verbose > PRINT_NONE && iter % 20 == 0) ) {
+
+        // Initial iteration
+        if ( iter == 0 ) {
+            std::cout << "---------------------------------------------------\n";
+            std::cout << " It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
+            std::cout << "---------------------------------------------------\n";
+            std::cout.precision(4);
+            std::setiosflags(std::ios::scientific);
+            std::cout << std::setw(7) << iter << " | "
+                      << std::scientific << std::setprecision(5) << resRel << " | "
+                      << std::setw(11) << resAbs << " | " << std::endl;
         } // end if iter
+
+        // Later iterations
         std::cout.precision(4);
         std::setiosflags(std::ios::scientific);
-        std::cout << std::setw(6) << iter << " | "
+        std::cout << std::setw(7) << iter << " | "
                   << std::scientific << std::setprecision(5) << resRel << " | "
                   << std::setw(11) << resAbs << " | "
-                  << std::fixed << std::setprecision(5) << factor
+                  << std::fixed << std::setprecision(4) << factor
                   << std::endl;
     }
 }

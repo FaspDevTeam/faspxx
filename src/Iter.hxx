@@ -16,7 +16,7 @@
 #include "SOL.hxx"
 
 /*! \class Identity
- *  \brief Identity iterator.
+ *  \brief Identity operator.
  */
 class Identity : public SOL {
 
