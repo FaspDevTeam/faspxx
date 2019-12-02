@@ -13,23 +13,25 @@
 #include "Iter.hxx"
 #include "Poisson2D.hxx"
 
-/// \brief Locate position of (x,y) in the global index
+/// Locate position of (x,y) in the global index
 #define locate(row, column) (((row) - 1) * (dimen - 1) + (column) - 1)
 
 const INT numTotalMesh = 4; // number of meshes in total
 INT dimen = 16; // number of partitions in X and Y directions
 
-// Todo: Add detailed comments in this example!
-/// \brief Matrix-free linear operator object
+// Todo: Add detailed comments in this example! -zcs
+
+/// Matrix-free linear operator object
 class MatFree : public LOP {
+
 public:
-    // constructor by default
+    /// Default constructor
     MatFree(const INT row, const INT col){
         nrow = row;
         mcol = col;
     }
 
-    // free-matrix 's operator : acting on a VEC object
+    /// Matrix-free matrix-vector multiplication
     void Apply(const VEC& x, VEC& y) const;
 };
 
