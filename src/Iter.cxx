@@ -19,17 +19,14 @@ FaspRetCode Identity::Solve(const VEC& x, VEC& y) {
 }
 
 /// constructor
-Jacobi::Jacobi(INT row, INT col, std::vector<DBL> diag) {
-    this->row = row;
-    this->col = col;
-    this->diag.SetValues(diag);
+Jacobi::Jacobi(std::vector<DBL> diag) {
+    this->diagReciprocal.SetValues(diag);
+    this->diagReciprocal.Reciprocal();
 }
 
 /// jacobi preconditioner
 FaspRetCode Jacobi::Solve(const VEC& x, VEC& y) {
-    VEC tmp = this->diag;
-    tmp.Reciprocal(); // Todo: 这个只要在构造函数做一次就可以了，不用每次Solve都算一遍 -zcs
     y = x;
-    y.PointwiseMult(tmp);
+    y.PointwiseMult(this->diagReciprocal);
     return FaspRetCode ::SUCCESS;
 }

@@ -110,15 +110,14 @@ public:
     /// Compute absolute values pointwise.
     void Abs();
 
-    /// y = y + a * x.
-    void AXPY(const DBL& a, const VEC& x);
+    /// x = x + a * y.
+    void AXPY(const DBL& a, const VEC& y);
 
-    /// y = x + a * y.
-    void XPAY(const DBL& a, const VEC& x);
+    /// x = y + a * x.
+    void XPAY(const DBL& a, const VEC& y);
 
     /// x = a * x + b * y.
     void AXPBY(const DBL& a, const DBL& b, const VEC& y);
-    // Todo: 为什么这里的this是x, 而前面是y，容易造成混乱，应该统一一下？-zcs
 
     /// *this = a * v1 + b * v2.
     void WAXPBY(const DBL& a, const VEC& x, const DBL& b, const VEC& y);

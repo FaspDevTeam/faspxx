@@ -37,19 +37,17 @@ public:
 class Jacobi : public SOL{
 
 public :
-    INT row; // Todo: 有什么用? -zcs
-    INT col; // Todo: 有什么用? -zcs
-    VEC diag;
+    VEC diagReciprocal;
 
 public:
     /// default constructor
-    Jacobi():row(0),col(0){};
+    Jacobi():diagReciprocal(0){};
 
     /// destructor
     ~Jacobi(){};
 
     /// constructor
-    explicit Jacobi(INT row, INT col, std::vector<DBL> diag);
+    explicit Jacobi(std::vector<DBL> diag);
 
     /// Iterator
     virtual FaspRetCode Solve(const VEC& x, VEC& y);
