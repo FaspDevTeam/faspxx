@@ -55,8 +55,12 @@ void Parameters::Parse()
                     case BoolType:
                         tmp = new char[strlen(argv[i + 1])];
                         len = strlen(argv[i + 1]);
-                        for (int j = 0; j < len; ++j)
-                            tmp[j] = argv[i + 1][j] - 'A' + 'a';
+                        for (int j = 0; j < len; ++j) {
+                            if ('A' <= argv[i + 1][j] && argv[i + 1][j] <= 'Z')
+                                tmp[j] = (char) (argv[i + 1][j] - 'A' + 'a');
+                            else
+                                tmp[j] = argv[i + 1][j];
+                        }
                         if (!strcmp(tmp, "true"))
                             *((bool *) (params[j].paramPtr)) = 1;
                         else if (!strcmp(tmp, "false"))
@@ -85,10 +89,16 @@ void Parameters::Parse()
                                     std::stoi(argv[i + 1]);
                             break;
                         }
+                        std::cout<<"Print_level : "<<argv[i+1]<<std::endl;
                         tmp = new char[strlen(argv[i + 1])];
                         len = strlen(argv[i + 1]);
-                        for (int j = 0; j < len; ++j)
-                            tmp[j] = (char) (argv[i + 1][j] - 'a' + 'A');
+                        for (int j = 0; j < len; ++j){
+                            if('a'<=argv[i+1][j] && argv[i+1][j]<='z')
+                                tmp[j]=(char)(argv[i+1][j]-'a'+'A');
+                            else
+                                tmp[j]=argv[i+1][j];
+                        }
+                        std::cout<<"Output Type : "<<tmp<<std::endl;
                         if (strcmp(tmp, "PRINT_NONE") == 0)
                             *((Output *) (params[j].paramPtr)) = PRINT_NONE;
                         else if (strcmp(tmp, "PRINT_MIN") == 0)
