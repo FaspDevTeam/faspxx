@@ -1,11 +1,17 @@
-/**
- * SOL source code file
+/*! \file    SOL.cxx
+ *  \brief   Solver class definition
+ *  \author  Kailei Zhang, Chensong Zhang
+ *  \date    Nov/25/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
 #include <sstream>
 #include <cstring>
 #include "SOL.hxx"
-#include "Utils.hxx"
 
 //! Warning for actual relative residual
 void SOL::RealRes(DBL relres) {
@@ -85,7 +91,6 @@ void SOL::SetPrtLvl(Output verbose) {
     this->verbose = verbose;
 }
 
-
 /// Set 'maxIter' 's value
 void SOL::SetMaxIter(INT maxIter) {
     this->maxIter = maxIter;
@@ -137,6 +142,23 @@ void SOL::Print(std::ostream &out) const {
         << "  Restart number:       " << restart << '\n'
         << "-----------------------------------\n";
 };
+
+/// Process a line. Return false if the line is a comment or empty.
+static bool ProcessLine(std::string& line, std::string& param, std::string& value)
+{
+    // Remove spaces in the beginning and end of each line
+    line.erase(0, line.find_first_not_of(' '));
+    line.erase(line.find_last_not_of(' ') + 1);
+
+    if ( line.empty()   ) return false; // Skip empty lines
+    if ( line[0] == '#' ) return false; // Skip comments
+    if ( line[0] == '%' ) return false; // Skip comments
+
+    std::string buff;
+    std::stringstream ss(line);
+    ss >> param >> value >> buff;
+    return true;
+}
 
 /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
 FaspRetCode SOL::SetOptionsFromFile(const char *file, const char *prefix) {
@@ -230,3 +252,7 @@ void SOL::Clean(){
 SOL::~SOL() {
     A = nullptr;
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

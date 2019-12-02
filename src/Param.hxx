@@ -30,9 +30,10 @@ enum Output {
 class Parameters {
     
 public:
+    /// Possible parameter types
     enum ParamType {
         BoolType, IntType, DoubleType, StringType, OutputType
-    }; ///< Possible parameter types
+    };
 
 private:
     struct ParamHolder {
@@ -51,25 +52,36 @@ private:
     char **argv;
 
 public:
+    /// Default constructor
     Parameters(int _argc, char * _argv[]) : argc(_argc), argv(_argv) {}
 
+    /// Default destructor
     ~Parameters() {}
 
     // TODO: required or optional for every parameter -fff
+
+    /// Add a bool type parameter
     void AddParam(const char * name, const char * help, bool * ptr);
 
+    /// Add an INT type parameter
     void AddParam(const char * name, const char * help, INT * ptr);
 
+    /// Add a DBL type parameter
     void AddParam(const char * name, const char * help, DBL * ptr);
 
+    /// Add a string type parameter
     void AddParam(const char * name, const char * help, const char ** ptr);
 
+    /// Add a Output type parameter
     void AddParam(const char * name, const char * help, Output * ptr);
 
+    /// Parse parameters
     void Parse();
 
+    /// Print parameters
     void Print(std::ostream &out = std::cout) const;
 
+    /// Print help message
     void PrintHelp(std::ostream &out = std::cout) const;
 };
 

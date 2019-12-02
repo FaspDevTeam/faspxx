@@ -17,9 +17,9 @@
 #include <iostream>
 
 /// Print out location at (file, line) and function name
-#define _FASPXX_LOCATION_                                         \
-    "\n    --> function: " << __PRETTY_FUNCTION__ <<              \
-    "\n    --> file:     " << __FILE__ << ':' << __LINE__ << '\n'
+#define _FASPXX_LOCATION_                                 \
+    "\n    --> function: " << __PRETTY_FUNCTION__ <<      \
+    "\n    --> file:     " << __FILE__ << ':' << __LINE__
 
 /// Log error messages
 //  msg: user-defined error message
