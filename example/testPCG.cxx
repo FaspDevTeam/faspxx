@@ -21,8 +21,7 @@ int main(int argc, char *args[]) {
     const char *mat_file = "../data/fdm_10X10.csr";
     const char *vec_file = "";
     const char *initial_guess = "";
-    //bool print_level = false;
-    PRTLVL print_level = PRINT_NONE;
+    Output print_level = PRINT_NONE;
     const char *opts = "../data/multiple_sol.opts";
     const char *prefix = "-solver1";
     DBL resrel=1e-4;
@@ -30,16 +29,16 @@ int main(int argc, char *args[]) {
     INT restart=20, maxIter=100;
 
     Parameters params(argc, args);
-    params.AddParam(&mat_file, "-mat", "Left hand side of linear system");
-    params.AddParam(&vec_file, "-vec", "Right hand side of linear system");
-    params.AddParam(&initial_guess, "-initial", "Initial guess of solution");
-    params.AddParam(&print_level, "-level", "print level");
-    params.AddParam(&opts, "-opts_file", "Solver parameter file");
-    params.AddParam(&prefix, "-pref", "solver parameter prefix in file");
-    params.AddParam(&resrel, "-resrel", "residual relative tolerance");
-    params.AddParam(&resabs, "-resabs", "residual relative tolerance");
-    params.AddParam(&restart, "-restart", "restart");
-    params.AddParam(&maxIter, "-maxIter", "maximum iteration");
+    params.AddParam("-mat", "Left hand side of linear system", &mat_file);
+    params.AddParam("-vec", "Right hand side of linear system", &vec_file);
+    params.AddParam("-initial", "Initial guess of solution", &initial_guess);
+    params.AddParam("-level", "print level", &print_level);
+    params.AddParam("-opts_file", "Solver parameter file", &opts);
+    params.AddParam("-pref", "solver parameter prefix in file", &prefix);
+    params.AddParam("-resrel", "residual relative tolerance", &resrel);
+    params.AddParam("-resabs", "residual relative tolerance", &resabs);
+    params.AddParam("-restart", "restart", &restart);
+    params.AddParam("-maxIter", "maximum iteration", &maxIter);
     params.Parse();
 
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
@@ -82,7 +81,7 @@ int main(int argc, char *args[]) {
     // pcg.SetOptionsFromFile(opts, prefix);
     pcg.Setup(mat);
 
-    params.PrintParams();
+    params.Print();
 
     // Setup preconditioner
     Identity pc;
@@ -92,10 +91,9 @@ int main(int argc, char *args[]) {
     timer.Start();
     retCode = pcg.Solve(b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
-
-    std::cout<<"Iterations : "<<pcg.GetIterations()<<std::endl;
-    std::cout<<"Norm2 : "<<pcg.GetNorm2()<<std::endl;
-    std::cout<<"NornInf : "<<pcg.GetInfNorm()<<std::endl;
+    std::cout << "Number of iterations : " << pcg.GetIterations() << std::endl;
+    std::cout << "Norm2 of residual    : " << pcg.GetNorm2()      << std::endl;
+    std::cout << "NormInf of residual  : " << pcg.GetInfNorm()    << std::endl;
 
     return retCode;
 }

@@ -37,7 +37,7 @@ public:
 static void Rhs(INT dimen, DBL *ptr) {
 
     const DBL h = 1.0 / dimen;
-    const int dimen1 = dimen - 1;
+    const INT dimen1 = dimen - 1;
 
     for ( INT j = 0; j < dimen1 * dimen1; ++j ) ptr[j] = 0.0;
 
