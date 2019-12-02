@@ -1,17 +1,27 @@
-/**
- * BiCGStab algorithm
+/*! \file    BiCGStab.hxx
+ *  \brief   Preconditioned BiCGStab class declaration
+ *  \author  Kailei Zhang, Chensong Zhang
+ *  \date    Nov/25/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
-#ifndef BICGSTAB_HXX
-#define BICGSTAB_HXX
+#ifndef __BICGSTAB_HEADER__    /*-- allow multiple inclusions --*/
+#define __BICGSTAB_HEADER__    /**< indicate BiCGStab.hxx has been included before */
 
 #include <cmath>
 #include <cfloat>
-#include "MAT.hxx"
-#include "LOP.hxx"
 #include "ErrorLog.hxx"
+#include "LOP.hxx"
+#include "MAT.hxx"
 #include "SOL.hxx"
 
+/*! \class BiCGStab
+ *  \brief Preconditioned BiCGStab method.
+ */
 class BiCGStab:public SOL{
 private:
     VEC r0star;
@@ -42,4 +52,8 @@ public:
 
 };
 
-#endif // BICGSTAB_HXX
+#endif /* end if for __BICGSTAB_HEADER__ */
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/
