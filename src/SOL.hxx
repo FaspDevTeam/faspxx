@@ -1,27 +1,40 @@
-/**
- * SOL header file
+/*! \file    SOL.hxx
+ *  \brief   Solver class declaration
+ *  \author  Kailei Zhang, Chensong Zhang
+ *  \date    Nov/25/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
-#ifndef SOL_HXX
-#define SOL_HXX
+#ifndef __SOL_HEADER__      /*-- allow multiple inclusions --*/
+#define __SOL_HEADER__      /**< indicate SOL.hxx has been included before */
 
 #include <cstring>
 #include <iomanip>
 #include <iostream>
 #include <fstream>
-#include "ErrorLog.hxx"
-#include "VEC.hxx"
-#include "LOP.hxx"
+#include "faspxx.hxx"
 #include "RetCode.hxx"
+#include "ErrorLog.hxx"
 #include "Param.hxx"
+#include "LOP.hxx"
+#include "VEC.hxx"
 
-typedef LOP Mat;
+typedef LOP Mat;   // Todo: 为什么需要Mat？ -zcs
 
+/*! \class SOL
+ *  \brief Iterative solvers.
+ */
 class SOL {
+
 private:
     enum SOLType {
         _PCG, _GMRES, _BICGSTAB, _COUNT
     };
+
 protected:
     SOL *pc;        ///< Preconditioner, inlopfffpc
     const Mat *A;   ///< Matrix object
@@ -121,4 +134,8 @@ public:
     ~SOL();
 };
 
-#endif // SOL_HXXs
+#endif /* end if for __SOL_HEADER__ */
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/
