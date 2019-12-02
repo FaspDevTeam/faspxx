@@ -9,7 +9,7 @@
 #include "Timing.hxx"
 #include "Param.hxx"
 #include "LOP.hxx"
-#include "PCG.hxx"
+#include "CG.hxx"
 #include "Iter.hxx"
 #include "Poisson2D.hxx"
 
@@ -213,7 +213,7 @@ int main(int argc, char *args[]) {
         MatFree matfree((dimen-1)*(dimen-1), (dimen-1)*(dimen-1));
 
         // create PCG object
-        PCG pcg;
+        CG pcg;
         // convergence parameter setting
         pcg.SetPrtLvl(PRINT_NONE);
         pcg.SetMaxIter(100000);

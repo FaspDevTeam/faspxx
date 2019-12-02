@@ -14,7 +14,7 @@
 #include "ReadData.hxx"
 #include "Param.hxx"
 #include "LOP.hxx"
-#include "PCG.hxx"
+#include "CG.hxx"
 #include "Iter.hxx"
 
 int main(int argc, char *args[]) {
@@ -72,7 +72,7 @@ int main(int argc, char *args[]) {
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
     // Setup PCG class
-    PCG pcg;
+    CG pcg;
     pcg.SetMaxIter(maxIter);
     pcg.SetRelTol(resrel);
     pcg.SetAbsTol(resabs);

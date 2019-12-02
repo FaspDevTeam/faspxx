@@ -1,7 +1,7 @@
-/*! \file PCG.cxx
- *  \brief PCG class definition
- *  \author Chensong Zhang, Kailei Zhang
- *  \date Oct/13/2019
+/*! \file    CG.cxx
+ *  \brief   Preconditioned CG class definition
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    Oct/13/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -12,10 +12,10 @@
 #include <iostream>
 #include <iomanip>
 #include "Iter.hxx"
-#include "PCG.hxx"
+#include "CG.hxx"
 
 // Assign param to this->param
-FaspRetCode PCG::Setup(const LOP &A) {
+FaspRetCode CG::Setup(const LOP &A) {
 
     const INT len = A.GetColSize();
 
@@ -39,8 +39,8 @@ FaspRetCode PCG::Setup(const LOP &A) {
     return FaspRetCode::SUCCESS;
 }
 
-/// Solve by PCG
-FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
+/// Solve by CG
+FaspRetCode CG::Solve(const VEC &b, VEC &x) {
 
     // Check whether vector space sizes
     if (x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize() ||
@@ -80,7 +80,7 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
     pk = zk;
     tmpa = zk.Dot(rk);
 
-    // Main PCG loop
+    // Main CG loop
     while (numIter < maxIter) {
         numIter++; // iteration count
 
@@ -189,7 +189,7 @@ FaspRetCode PCG::Solve(const VEC &b, VEC &x) {
         // Compute p_k = z_k + beta_k*p_{k-1}
         pk.XPAY(beta, zk);
 
-    } // End of main PCG loop
+    } // End of main CG loop
 
     FINISHED: // Finish iterative method
     PrintFinal(verbose, numIter, maxIter, resRel);

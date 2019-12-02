@@ -1,5 +1,5 @@
-/*! \file    PCG.hxx
- *  \brief   PCG class declaration
+/*! \file    CG.hxx
+ *  \brief   Preconditioned CG class declaration
  *  \author  Chensong Zhang, Kailei Zhang
  *  \date    Oct/11/2019
  *
@@ -9,8 +9,8 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __PCG_HEADER__      /*-- allow multiple inclusions --*/
-#define __PCG_HEADER__      /**< indicate PCG.hxx has been included before */
+#ifndef __CG_HEADER__      /*-- allow multiple inclusions --*/
+#define __CG_HEADER__      /**< indicate CG.hxx has been included before */
 
 #include <cmath>
 #include "ErrorLog.hxx"
@@ -18,10 +18,10 @@
 #include "MAT.hxx"
 #include "SOL.hxx"
 
-/*! \class PCG
+/*! \class CG
  *  \brief Preconditioned conjugate gradient method.
  */
-class PCG: public SOL
+class CG: public SOL
 {
 
 private:
@@ -32,20 +32,20 @@ private:
 
 public:
     /// constructor by default
-    PCG() : rk(0), pk(0),
+    CG() : rk(0), pk(0),
             zk(0), ax(0){};
 
     /// check and allocate memory
     FaspRetCode Setup(const Mat& A);
 
-    /// solve by PCG
+    /// solve by CG
     FaspRetCode Solve(const VEC& b, VEC& x);
 
     /// destructor
-    ~PCG(){};
+    ~CG(){};
 };
 
-#endif /* end if for __PCG_HEADER__ */
+#endif /* end if for __CG_HEADER__ */
 
 /*---------------------------------*/
 /*--        End of File          --*/
