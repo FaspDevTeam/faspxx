@@ -48,16 +48,16 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     const unsigned MaxStag = 20; // Maximum number of stagnations
-    const INT len = b.GetSize();
-    const DBL maxdiff = 1e-4 * relTol; // Stagnation tolerance
-    const DBL solinftol = 1e-20; // Infinity norm tolerance
+    const int len = b.GetSize();
+    const double maxdiff = 1e-4 * relTol; // Stagnation tolerance
+    const double solinftol = 1e-20; // Infinity norm tolerance
 
     // Local variables
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
     unsigned stagStep = 1, moreStep = 1;
-    DBL resAbs = 1e+20, tmpAbs = 1e+20;
-    DBL resRel = 1e+20, denAbs = 1e+20;
-    DBL factor, alpha, beta, tmpa, tmpb;
+    double resAbs = 1e+20, tmpAbs = 1e+20;
+    double resRel = 1e+20, denAbs = 1e+20;
+    double factor, alpha, beta, tmpa, tmpb;
 
     // Initial iteration
     numIter = 0;
@@ -151,7 +151,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
             this->rk.XPAY(-1.0, b);
 
             // Compute residual norms
-            DBL updated_resRel = resRel;
+            double updated_resRel = resRel;
             resAbs = rk.Norm2();
             resRel = resAbs / denAbs;
 

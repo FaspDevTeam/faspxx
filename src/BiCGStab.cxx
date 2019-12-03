@@ -16,7 +16,7 @@
 /// check and allocate memory
 FaspRetCode BiCGStab::Setup(const LOP &A)
 {
-    INT len = A.GetColSize();
+    const INT len = A.GetColSize();
     try {
         r0star.SetValues(len,0.0);
         tmp.SetValues(len,0.0);
@@ -50,16 +50,16 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     const unsigned MaxStag = 20;
-    const INT len = b.GetSize();
-    const DBL maxdiff = 1e-4 * relTol; // Stagnation tolerance
-    const DBL solinftol = 1e-20;
+    const int len = b.GetSize();
+    const double maxdiff = 1e-4 * relTol; // Stagnation tolerance
+    const double solinftol = 1e-20;
 
     // Local variables
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
     unsigned stagStep = 1, moreStep = 1;
-    DBL resAbs, tmpAbs, resRel, denAbs;
-    DBL alphaj, betaj, rjr0star, rjr0startmp, omegaj;
-    DBL tmp12,factor;
+    double resAbs, tmpAbs, resRel, denAbs;
+    double alphaj, betaj, rjr0star, rjr0startmp, omegaj;
+    double tmp12,factor;
 
     // Initial iteration
     numIter = 0;
@@ -130,7 +130,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
         if (factor > 0.9) { // Only check when converge slowly
             // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
-            DBL norminf = x.NormInf();
+            double norminf = x.NormInf();
             if (norminf < solinftol) {
                 if (verbose > PRINT_MIN) FASPXX_WARNING(
                         "Iteration stopped -- solution almost zero!");
@@ -139,7 +139,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
             }
 
             // Check II: if relative difference stagnated, try to restart
-            DBL reldiff = fabs(alphaj) * this->pj.Norm2() / x.Norm2();
+            double reldiff = fabs(alphaj) * this->pj.Norm2() / x.Norm2();
             if ((stagStep <= MaxStag) && (reldiff < maxdiff)) {
                 if (verbose > PRINT_SOME) {
                     WarnDiffRes(reldiff, resRel);
@@ -174,7 +174,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
             this->rj.XPAY(-1.0, b);
 
             // Compute residual norms
-            DBL updated_resRel = resRel;
+            double updated_resRel = resRel;
             resAbs = rj.Norm2();
             resRel = resAbs / denAbs;
 
