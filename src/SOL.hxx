@@ -41,14 +41,14 @@ private:
 protected:
     SOLType      type;       ///< Algorithm type
     const LOP *  A;          ///< Coefficient matrix in Ax=b
-    int          maxIter;    ///< Maximal number of iterations
-    int          minIter;    ///< Minimal number of iterations
-    double       relTol;     ///< Tolerance for relative residual
-    double       absTol;     ///< Tolerance for absolute residual
-    int          restart;    ///< Restart number
-    double       norm2;      ///< Euclidean norm
-    double       normInf;    ///< Infinity norm
-    int          numIter;    ///< Number of iterations when exit
+    INT          maxIter;    ///< Maximal number of iterations
+    INT          minIter;    ///< Minimal number of iterations
+    DBL          relTol;     ///< Tolerance for relative residual
+    DBL          absTol;     ///< Tolerance for absolute residual
+    INT          restart;    ///< Restart number
+    DBL          norm2;      ///< Euclidean norm
+    DBL          normInf;    ///< Infinity norm
+    INT          numIter;    ///< Number of iterations when exit
     SOL *        pc;         ///< Preconditioner for this solver
     Output       verbose;    ///< Output verbosity level
     bool         mark;       ///< Mark where the PC is allocating memory
