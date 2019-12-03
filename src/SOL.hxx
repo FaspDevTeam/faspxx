@@ -41,30 +41,30 @@ private:
 protected:
     SOLType      type;       ///< Algorithm type
     const LOP *  A;          ///< Coefficient matrix in Ax=b
-    INT          maxIter;    ///< Maximal number of iterations
-    INT          minIter;    ///< Minimal number of iterations
-    DBL          relTol;     ///< Tolerance for relative residual
-    DBL          absTol;     ///< Tolerance for absolute residual
-    INT          restart;    ///< Restart number
-    DBL          norm2;      ///< Euclidean norm
-    DBL          normInf;    ///< Infinity norm
-    INT          numIter;    ///< Number of iterations when exit
+    int          maxIter;    ///< Maximal number of iterations
+    int          minIter;    ///< Minimal number of iterations
+    double       relTol;     ///< Tolerance for relative residual
+    double       absTol;     ///< Tolerance for absolute residual
+    int          restart;    ///< Restart number
+    double       norm2;      ///< Euclidean norm
+    double       normInf;    ///< Infinity norm
+    int          numIter;    ///< Number of iterations when exit
     SOL *        pc;         ///< Preconditioner for this solver
     Output       verbose;    ///< Output verbosity level
     bool         mark;       ///< Mark where the PC is allocating memory
 
     /// Warning for actual relative residual
-    void WarnRealRes(DBL relres) const;
+    void WarnRealRes(double relres) const;
 
     /// Warning for computed relative residual
-    void WarnCompRes(DBL relres) const;
+    void WarnCompRes(double relres) const;
 
     /// Output relative difference and residual
-    void WarnDiffRes(DBL reldiff, DBL relres) const;
+    void WarnDiffRes(double reldiff, double relres) const;
 
     /// Print out iteration information for iterative solvers
-    void PrintInfo(const INT& iter, const DBL& resRel, const DBL& resAbs,
-                   const DBL& factor, std::ostream& out = std::cout) const;
+    void PrintInfo(const int& iter, const double& resRel, const double& resAbs,
+                   const double& factor, std::ostream& out = std::cout) const;
 
 public:
 
@@ -74,7 +74,7 @@ public:
             numIter(0), pc(nullptr), verbose(PRINT_NONE), mark(false) {};
 
     /// Constructor // Todo: 有用吗？如果有用，为什么只有这几个参数？-zcs
-    SOL(Output verbose, INT maxIter, DBL relTol, DBL absTol, INT restart);
+    SOL(Output verbose, int maxIter, double relTol, double absTol, int restart);
 
     /// Default destructor
     ~SOL();
@@ -83,19 +83,19 @@ public:
     void SetOutput(Output verbose);
 
     /// Set 'maxIter' 's value
-    void SetMaxIter(INT maxIter);
+    void SetMaxIter(int maxIter);
 
     /// Set 'minIter' 's value
-    void SetMinIter(INT maxIter);
+    void SetMinIter(int maxIter);
 
     /// Set 'relTol' 's value
-    void SetRelTol(DBL relTol);
+    void SetRelTol(double relTol);
 
     /// Set 'absTol' 's value
-    void SetAbsTol(DBL absTol);
+    void SetAbsTol(double absTol);
 
     /// Set 'restart' 's value
-    void SetRestart(INT restart);
+    void SetRestart(int restart);
 
     /// Set 'solver' type
     void SetSolType(SOLType solver);
@@ -104,13 +104,13 @@ public:
     const char * GetSolType(SOLType type) const;
 
     /// Get residual 's Euclidean norm
-    DBL GetNorm2() const;
+    double GetNorm2() const;
 
     /// Get residual 's infinity norm
-    DBL GetInfNorm() const;
+    double GetInfNorm() const;
 
     /// Get iterations
-    INT GetIterations() const;
+    int GetIterations() const;
 
     /// Print parameters
     void PrintParam(std::ostream& out = std::cout) const;

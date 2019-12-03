@@ -19,12 +19,12 @@ void Parameters::AddParam(const char * name, const char * help, bool * ptr)
     params.push_back(ParamHolder(BoolType, name, help, ptr));
 }
 
-void Parameters::AddParam(const char * name, const char * help, INT * ptr)
+void Parameters::AddParam(const char * name, const char * help, int * ptr)
 {
     params.push_back(ParamHolder(IntType, name, help, ptr));
 }
 
-void Parameters::AddParam(const char * name, const char * help, DBL * ptr)
+void Parameters::AddParam(const char * name, const char * help, double * ptr)
 {
     params.push_back(ParamHolder(DoubleType, name, help, ptr));
 }
@@ -42,8 +42,8 @@ void Parameters::AddParam(const char * name, const char * help, Output * ptr)
 void Parameters::Parse()
 {
     char *tmp;
-    INT len;
-    for ( INT i = 1; i < argc; i++ ) {
+    int len;
+    for ( int i = 1; i < argc; i++ ) {
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             PrintHelp(std::cout);
             return;
@@ -55,7 +55,7 @@ void Parameters::Parse()
                     case BoolType:
                         tmp = new char[strlen(argv[i + 1])];
                         len = strlen(argv[i + 1]);
-                        for (INT j = 0; j < len; ++j) {
+                        for (int j = 0; j < len; ++j) {
                             if ('A' <= argv[i + 1][j] && argv[i + 1][j] <= 'Z')
                                 tmp[j] = (char) (argv[i + 1][j] - 'A' + 'a');
                             else
@@ -71,28 +71,28 @@ void Parameters::Parse()
                         delete[] tmp;
                         break;
                     case IntType:
-                        *((INT *) (params[j].paramPtr)) = std::stoi(argv[i + 1]);
+                        *((int *) (params[j].paramPtr)) = std::stoi(argv[i + 1]);
                         break;
                     case DoubleType:
-                        *((DBL *) (params[j].paramPtr)) = std::stod(argv[i + 1]);
+                        *((double *) (params[j].paramPtr)) = std::stod(argv[i + 1]);
                         break;
                     case StringType:
                         *((char **) (params[j].paramPtr)) = argv[i + 1];
                         break;
                     case OutputType:
-                        INT n = strlen(argv[i + 1]);
-                        INT k = 0;
+                        int n = strlen(argv[i + 1]);
+                        int k = 0;
                         while (k < n && '0' <= argv[i + 1][k] &&
                                argv[i + 1][k] <= '9') { k++; }
                         if (k == n) {
-                            *((INT *) (params[j].paramPtr)) =
+                            *((int *) (params[j].paramPtr)) =
                                     std::stoi(argv[i + 1]);
                             break;
                         }
                         std::cout<<"Print_level : "<<argv[i+1]<<std::endl;
                         tmp = new char[strlen(argv[i + 1])];
                         len = strlen(argv[i + 1]);
-                        for (INT j = 0; j < len; ++j){
+                        for (int j = 0; j < len; ++j){
                             if('a'<=argv[i+1][j] && argv[i+1][j]<='z')
                                 tmp[j]=(char)(argv[i+1][j]-'a'+'A');
                             else
@@ -134,10 +134,10 @@ void Parameters::Print(std::ostream &out) const
                     << std::resetiosflags(out.flags());
                 break;
             case IntType:
-                out << *((INT *) (params[i].paramPtr));
+                out << *((int *) (params[i].paramPtr));
                 break;
             case DoubleType:
-                out << *((DBL *) (params[i].paramPtr));
+                out << *((double *) (params[i].paramPtr));
                 break;
             case StringType:
                 out << *((char **) (params[i].paramPtr));
@@ -154,7 +154,7 @@ void Parameters::Print(std::ostream &out) const
 void Parameters::PrintHelp(std::ostream &out) const
 {
     static const char *indent = "   ";
-    static const char *types[] = {"<bool>", "<INT>", "<DBL>", "<string>", "<Output>"};
+    static const char *types[] = {"<bool>", "<int>", "<double>", "<string>", "<Output>"};
 
     out << "Usage: " << argv[0] << " [options] ...\n"
         << "Options:\n";
@@ -174,10 +174,10 @@ void Parameters::PrintHelp(std::ostream &out) const
                     << std::setiosflags(out.flags());
                 break;
             case IntType:
-                out << *(INT *) (params[i].paramPtr);
+                out << *(int *) (params[i].paramPtr);
                 break;
             case DoubleType:
-                out << *(DBL *) (params[i].paramPtr);
+                out << *(double *) (params[i].paramPtr);
                 break;
             case StringType:
                 out << *(char **) (params[i].paramPtr);

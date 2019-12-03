@@ -14,28 +14,28 @@
 #include "SOL.hxx"
 
 //! Warning for actual relative residual
-void SOL::WarnRealRes(DBL relres) const
+void SOL::WarnRealRes(double relres) const
 {
     std::cout << "### WARNING: The actual relative residual = " << relres << '\n';
 }
 
 //! Warning for computed relative residual
-void SOL::WarnCompRes(DBL relres) const
+void SOL::WarnCompRes(double relres) const
 {
     std::cout << "### WARNING: The computed relative residual = "
               << relres << std::endl;
 }
 
 //! Output relative difference and residual
-void SOL::WarnDiffRes(DBL reldiff, DBL relres) const
+void SOL::WarnDiffRes(double reldiff, double relres) const
 {
     std::cout << "### WARNING: ||u-u'|| = " << reldiff
               << " and the comp. rel. res. = " << relres << std::endl;
 }
 
 /// Print out iteration information for iterative solvers
-void SOL::PrintInfo(const INT& iter, const DBL& resRel, const DBL& resAbs,
-                    const DBL& factor, std::ostream& out) const
+void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
+                    const double& factor, std::ostream& out) const
 {
     if ( verbose > PRINT_SOME || (verbose > PRINT_NONE && iter%20 == 0) ) {
         out.precision(4);
@@ -72,7 +72,7 @@ void SOL::PrintFinal(std::ostream& out) const
 }
 
 /// constructor
-SOL::SOL(Output verbose, INT maxIter, DBL relTol, DBL absTol, INT restart) 
+SOL::SOL(Output verbose, int maxIter, double relTol, double absTol, int restart)
 {
     this->verbose = verbose;
     this->maxIter = maxIter;
@@ -94,31 +94,31 @@ void SOL::SetOutput(Output verbose)
 }
 
 /// Set 'maxIter' 's value
-void SOL::SetMaxIter(INT maxIter) 
+void SOL::SetMaxIter(int maxIter)
 {
     this->maxIter = maxIter;
 }
 
 /// Set 'minIter' 's value
-void SOL::SetMinIter(INT minIter)
+void SOL::SetMinIter(int minIter)
 {
     this->minIter = minIter;
 }
 
 /// Set 'relTol' 's value
-void SOL::SetRelTol(DBL relTol) 
+void SOL::SetRelTol(double relTol)
 {
     this->relTol = relTol;
 }
 
 /// Set 'absTol' 's value
-void SOL::SetAbsTol(DBL absTol) 
+void SOL::SetAbsTol(double absTol)
 {
     this->absTol = absTol;
 }
 
 /// Set 'restart' 's value
-void SOL::SetRestart(INT restart) 
+void SOL::SetRestart(int restart)
 {
     this->restart = restart;
 }
@@ -151,19 +151,19 @@ const char *SOL::GetSolType(SOLType type) const
 }
 
 /// Get residual 's 'l2-norm'
-DBL SOL::GetNorm2() const
+double SOL::GetNorm2() const
 {
     return this->norm2;
 }
 
 /// Get residual 's 'infty-norm'
-DBL SOL::GetInfNorm() const
+double SOL::GetInfNorm() const
 {
     return this->normInf;
 }
 
 /// Get iterations
-INT SOL::GetIterations() const
+int SOL::GetIterations() const
 {
     return this->numIter;
 }
