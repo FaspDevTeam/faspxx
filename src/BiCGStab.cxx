@@ -77,7 +77,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
     if ( resRel < relTol || tmpAbs < absTol ) goto FINISHED;
 
     // Prepare for the main loop
-    PrintInfo(verbose, numIter, resRel, tmpAbs, 0.0);
+    PrintInfo(numIter, resRel, tmpAbs, 0.0);
 
     // r0_{*} = r0
     this->r0star = this->rj;
@@ -126,7 +126,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         factor = resAbs / tmpAbs;
 
         // Output iteration information if needed
-        PrintInfo(verbose, numIter, resRel, tmpAbs, factor);
+        PrintInfo(numIter, resRel, tmpAbs, factor);
 
         if (factor > 0.9) { // Only check when converge slowly
             // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
@@ -142,7 +142,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
             DBL reldiff = fabs(alphaj) * this->pj.Norm2() / x.Norm2();
             if ((stagStep <= MaxStag) && (reldiff < maxdiff)) {
                 if (verbose > PRINT_SOME) {
-                    DiffRes(reldiff, resRel);
+                    WarnDiffRes(reldiff, resRel);
                     FASPXX_WARNING("Iteration restarted -- stagnation!");
                 }
 
@@ -151,13 +151,13 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                 resAbs = this->rj.Norm2();
                 resRel = resAbs / denAbs;
 
-                if (verbose > PRINT_SOME) RealRes(resRel);
+                if (verbose > PRINT_SOME) WarnRealRes(resRel);
 
                 if (resRel < relTol) break;
                 else {
                     if (stagStep >= MaxStag) {
-                        if (verbose > PRINT_MIN) FASPXX_WARNING(
-                                "Iteration stopped -- stagnation!");
+                        if (verbose > PRINT_MIN)
+                            FASPXX_WARNING("Iteration stopped -- stagnation!");
                         errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                         break;
                     }
@@ -182,8 +182,8 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
             if (resRel < relTol) break;
 
             if (verbose >= PRINT_MORE) {
-                CompRes(updated_resRel);
-                RealRes(resRel);
+                WarnCompRes(updated_resRel);
+                WarnRealRes(resRel);
             }
 
             if (moreStep >= restart) {
@@ -213,12 +213,10 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
     } // End of main PCG loop
 
-    FINISHED: // Finish iterative method
-    PrintFinal(verbose,numIter,maxIter,resRel);
-
-    // Compute final residual norms
-    this->norminf=rj.NormInf();
-    this->norm2=rj.Norm2();
+FINISHED: // Finish iterative method
+    this->normInf = rj.NormInf();
+    this->norm2   = rj.Norm2();
+    PrintFinal();
 
     return errorCode;
 }

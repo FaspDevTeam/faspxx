@@ -14,85 +14,60 @@
 #include "SOL.hxx"
 
 //! Warning for actual relative residual
-void SOL::RealRes(DBL relres) {
+void SOL::WarnRealRes(DBL relres) const
+{
     std::cout << "### WARNING: The actual relative residual = " << relres << '\n';
 }
 
 //! Warning for computed relative residual
-void SOL::CompRes(DBL relres) {
+void SOL::WarnCompRes(DBL relres) const
+{
     std::cout << "### WARNING: The computed relative residual = "
               << relres << std::endl;
 }
 
 //! Output relative difference and residual
-void SOL::DiffRes(DBL reldiff, DBL relres) {
-    std::cout << "||u-u'|| = " << reldiff <<
-              " and the comp. rel. res. = " << relres << std::endl;
+void SOL::WarnDiffRes(DBL reldiff, DBL relres) const
+{
+    std::cout << "### WARNING: ||u-u'|| = " << reldiff
+              << " and the comp. rel. res. = " << relres << std::endl;
 }
 
 /// Print out iteration information for iterative solvers
-void SOL::PrintInfo(const Output& verbose, const INT& iter, const DBL& resRel,
-                    const DBL& resAbs, const DBL& factor)
+void SOL::PrintInfo(const INT& iter, const DBL& resRel, const DBL& resAbs,
+                    const DBL& factor, std::ostream& out) const
 {
     if ( verbose > PRINT_SOME || (verbose > PRINT_NONE && iter%20 == 0) ) {
-
-        // Initial iteration
-        if ( iter == 0 ) {
-            std::cout << "---------------------------------------------------\n";
-            std::cout << " It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
-            std::cout << "---------------------------------------------------\n";
-            std::cout.precision(4);
-            std::setiosflags(std::ios::scientific);
-            std::cout << std::setw(7) << iter << " | "
-                      << std::scientific << std::setprecision(5) << resRel << " | "
-                      << std::setw(11) << resAbs << " | " << std::endl;
-        } // end if iter
-
-        // Later iterations
-        std::cout.precision(4);
+        out.precision(4);
         std::setiosflags(std::ios::scientific);
-        std::cout << std::setw(7) << iter << " | "
-                  << std::scientific << std::setprecision(5) << resRel << " | "
-                  << std::setw(11) << resAbs << " | "
-                  << std::fixed << std::setprecision(4) << factor
-                  << std::endl;
-    }
-}
-
-/// Print out final status of an iterative method
-void SOL::PrintFinal(const Output& verbose, const INT& iter, const INT& maxit,
-                     const DBL& resRel) 
-{
-    if (verbose > PRINT_NONE) {
-        if (iter > maxit)
-            std::cout << "### WARNING: MaxIt = " << maxit
-                      << " reached with relative residual " << resRel << std::endl;
-        else if (iter >= 0) {
-            std::cout << "Number of iterations = " << iter
-                      << " with relative residual "
-                      << resRel << std::endl;
+        if ( iter == 0 ) { // Initial iteration
+            out << "---------------------------------------------------\n";
+            out << " It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
+            out << "---------------------------------------------------\n";
+            out << std::setw(7) << iter << " | "
+                << std::scientific << std::setprecision(5) << resRel << " | "
+                << std::setw(11) << resAbs << " | " << std::endl;
+        } else { // Later iterations
+            out << std::setw(7) << iter << " | "
+                << std::scientific << std::setprecision(5) << resRel << " | "
+                << std::setw(11) << resAbs << " | "
+                << std::fixed << std::setprecision(4) << factor << std::endl;
         }
     }
 }
 
-/// Select solver
-const char *SOL::GetSolType(SOLType type) 
+/// Print out final status of an iterative method
+void SOL::PrintFinal(std::ostream& out) const
 {
-    switch (type) {
-        case CG:
-            return "CG";
-        case BICGSTAB:
-            return "BiCGStab";
-        case MINRES:
-            return "MinRes";
-        case GMRES:
-            return "GMRES";
-        case FGMRES:
-            return "FGMRES";
-        case VFGMRES:
-            return "VFGMRES";
-        default:
-            return "Unknown solver type!";
+    if ( verbose > PRINT_NONE ) {
+        out << "---------------------------------------------------\n";
+        if ( numIter >= maxIter ) {
+            std::cout << "### WARNING: maxIter = " << maxIter << " reached!" << '\n';
+        }
+        out << std::scientific << std::setprecision(5);
+        out << "Number of iterations : " << numIter << '\n';
+        out << "Norm2 of residual    : " << norm2   << '\n';
+        out << "NormInf of residual  : " << normInf << '\n';
     }
 }
 
@@ -106,6 +81,12 @@ SOL::SOL(Output verbose, INT maxIter, DBL relTol, DBL absTol, INT restart)
     this->restart = restart;
 }
 
+/// destructor
+SOL::~SOL()
+{
+    A = nullptr;
+}
+
 /// Set 'verbose' 's value
 void SOL::SetOutput(Output verbose) 
 {
@@ -116,6 +97,12 @@ void SOL::SetOutput(Output verbose)
 void SOL::SetMaxIter(INT maxIter) 
 {
     this->maxIter = maxIter;
+}
+
+/// Set 'minIter' 's value
+void SOL::SetMinIter(INT minIter)
+{
+    this->minIter = minIter;
 }
 
 /// Set 'relTol' 's value
@@ -142,34 +129,56 @@ void SOL::SetSolType(SOLType type)
     this->type = type;
 }
 
+/// Select solver
+const char *SOL::GetSolType(SOLType type) const
+{
+    switch (type) {
+        case CG:
+            return "CG";
+        case BICGSTAB:
+            return "BiCGStab";
+        case MINRES:
+            return "MinRes";
+        case GMRES:
+            return "GMRES";
+        case FGMRES:
+            return "FGMRES";
+        case VFGMRES:
+            return "VFGMRES";
+        default:
+            return "Unknown solver type!";
+    }
+}
+
 /// Get residual 's 'l2-norm'
-DBL SOL::GetNorm2() 
+DBL SOL::GetNorm2() const
 {
     return this->norm2;
 }
 
 /// Get residual 's 'infty-norm'
-DBL SOL::GetInfNorm() 
+DBL SOL::GetInfNorm() const
 {
-    return this->norminf;
+    return this->normInf;
 }
 
 /// Get iterations
-INT SOL::GetIterations() 
+INT SOL::GetIterations() const
 {
     return this->numIter;
 }
 
 /// Print parameters
-void SOL::Print(std::ostream& out) const 
+void SOL::PrintParam(std::ostream& out) const
 {
     out << "\nParameters for iterative method: \n"
         << "-----------------------------------\n"
-        << "  Print level:          " << verbose << '\n'
         << "  Max num of iteration: " << maxIter << '\n'
-        << "  Relative tolerance:   " << relTol << '\n'
-        << "  Absolute tolerance:   " << absTol << '\n'
+        << "  Min num of iteration: " << minIter << '\n'
+        << "  Relative tolerance:   " << relTol  << '\n'
+        << "  Absolute tolerance:   " << absTol  << '\n'
         << "  Restart number:       " << restart << '\n'
+        << "  Output level:         " << verbose << '\n'
         << "-----------------------------------\n";
 };
 
@@ -269,12 +278,6 @@ void SOL::Clean()
         delete pc;
     else
         pc = nullptr;
-}
-
-/// destructor
-SOL::~SOL() 
-{
-    A = nullptr;
 }
 
 /*---------------------------------*/

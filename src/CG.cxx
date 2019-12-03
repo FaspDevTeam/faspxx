@@ -76,7 +76,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
     if (resRel < relTol || tmpAbs < absTol) goto FINISHED;
 
     // Prepare for the main loop
-    PrintInfo(verbose, numIter, resRel, tmpAbs, 0.0);
+    PrintInfo(numIter, resRel, tmpAbs, 0.0);
     pk = zk;
     tmpa = zk.Dot(rk);
 
@@ -103,7 +103,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
         factor = resAbs / tmpAbs;
 
         // Output iteration information if needed
-        PrintInfo(verbose, numIter, resRel, tmpAbs, factor);
+        PrintInfo(numIter, resRel, tmpAbs, factor);
 
         if (factor > 0.9) // Only check when converge slowly
         {
@@ -120,7 +120,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
             DBL reldiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
             if ((stagStep <= MaxStag) && (reldiff < maxdiff)) {
                 if (verbose > PRINT_SOME) {
-                    DiffRes(reldiff, resRel);
+                    WarnDiffRes(reldiff, resRel);
                     FASPXX_WARNING("Iteration restarted -- stagnation!");
                 }
 
@@ -128,7 +128,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
                 this->rk.XPAY(-1.0, b);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
-                if (verbose > PRINT_SOME) RealRes(resRel);
+                if (verbose > PRINT_SOME) WarnRealRes(resRel);
 
                 if (resRel < relTol) break;
                 else {
@@ -159,13 +159,13 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
             if (resRel < relTol) break;
 
             if (verbose >= PRINT_MORE) {
-                CompRes(updated_resRel);
-                RealRes(resRel);
+                WarnCompRes(updated_resRel);
+                WarnRealRes(resRel);
             }
 
             if (moreStep >= restart) {
-                if (verbose > PRINT_MIN) FASPXX_WARNING(
-                        "The tolerence might be too small!");
+                if (verbose > PRINT_MIN)
+                    FASPXX_WARNING("The tolerence might be too small!");
                 errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
             }
@@ -191,12 +191,10 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
 
     } // End of main CG loop
 
-    FINISHED: // Finish iterative method
-    PrintFinal(verbose, numIter, maxIter, resRel);
-
-    // Compute final residual norms
-    this->norminf = rk.NormInf();
-    this->norm2 = rk.Norm2();
+FINISHED: // Finish iterative method
+    this->normInf = rk.NormInf();
+    this->norm2   = rk.Norm2();
+    PrintFinal();
 
     return errorCode;
 }

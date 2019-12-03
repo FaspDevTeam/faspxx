@@ -68,8 +68,6 @@ int main(int argc, char *argv[]) {
 
     // Print problem size information
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
-    std::cout << "  nrow = " << row << ", ncol = " << col
-              << ", nnz = "  << nnz << std::endl;
 
     // Setup PCG class
     BiCGStab bcgs;
@@ -89,7 +87,8 @@ int main(int argc, char *argv[]) {
     // PCG solve
     timer.Start();
     retCode = bcgs.Solve(b, x);
-    std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
+    std::cout << "Solving linear system costs " << std::fixed
+              << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
 
     return retCode;
 }
