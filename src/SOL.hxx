@@ -1,6 +1,6 @@
 /*! \file    SOL.hxx
  *  \brief   Solver class declaration
- *  \author  Kailei Zhang, Chensong Zhang
+ *  \author  Kailei Zhang, Chensong Zhang, Ronghong Fan
  *  \date    Nov/25/2019
  *
  *-----------------------------------------------------------------------------------
@@ -30,23 +30,28 @@ class SOL {
 
 private:
     enum SOLType {
-        _PCG, _GMRES, _BICGSTAB, _COUNT
+        CG        = 1,       ///< Conjugate Gradient
+        BICGSTAB  = 2,       ///< Bi-Conjugate Gradient Stabilized
+        MINRES    = 3,       ///< Minimal Residual
+        GMRES     = 4,       ///< Generalized Minimal Residual
+        FGMRES    = 5,       ///< Flexible GMRES
+        VFGMRES   = 6,       ///< Variable-restarting FGMRES
     };
 
 protected:
-    SOL *pc;        ///< Preconditioner, inlopfffpc
-    const LOP *A;   ///< Matrix object
-    Output verbose; ///< Output level
-    INT maxIter;    ///< Maximal number of iterations
-    DBL relTol;     ///< Tolerance for relative residual
-    DBL absTol;     ///< Tolerance for absolute residual
-    INT restart;    ///< Tolerance for absolute residual
-    SOLType type;   ///< Solver
-    DBL norm2;      ///< l2-norm
-    DBL norminf;    ///< Infty-norm
-    INT numIter;    ///< Iterations
-    bool view;      ///< View all parameters
-    bool mark;        ///< Mark where the PC is requesting memory
+    SOLType      type;       ///< Algorithm type
+    const LOP *  A;          ///< Coefficient matrix in Ax=b
+    int          maxIter;    ///< Maximal number of iterations
+    int          minIter;    ///< Minimal number of iterations
+    double       relTol;     ///< Tolerance for relative residual
+    double       absTol;     ///< Tolerance for absolute residual
+    int          restart;    ///< Restart number
+    double       norm2;      ///< Euclidean norm
+    double       norminf;    ///< Infinity norm
+    int          numIter;    ///< Number of iterations when exit
+    SOL *        pc;         ///< Preconditioner for this solver
+    Output       verbose;    ///< Output verbosity level
+    bool         mark;       ///< Mark where the PC is allocating memory
 
     /// Warning for actual relative residual
     void RealRes(DBL relres);
@@ -58,31 +63,37 @@ protected:
     void DiffRes(DBL reldiff, DBL relres);
 
     /// Print out iteration information for iterative solvers
-    void PrintInfo(const Output &verbose, const INT &iter, const DBL &resRel,
-                   const DBL &resAbs, const DBL &factor);
+    void PrintInfo(const Output& verbose, const INT& iter, const DBL& resRel,
+                   const DBL& resAbs, const DBL& factor);
 
     /// Print out final status of an iterative method
-    void PrintFinal(const Output &verbose, const INT &iter, const INT &maxit,
-                    const DBL &resRel);
+    void PrintFinal(const Output& verbose, const INT& iter, const INT& maxit,
+                    const DBL& resRel);
 
     /// Select solver
-    const char *SelectSolver(SOLType type);
+    const char * GetSolType(SOLType type);
 
 public:
 
     /// Default constructor
-    SOL() : pc(nullptr), A(nullptr), verbose(PRINT_NONE), maxIter(100),
-            relTol(1e-4), absTol(1e-8), restart(25), norm2(1.0), norminf(1.0),
-            numIter(0), mark(false) {};
+    SOL() : type(SOLType::CG), A(nullptr), maxIter(100), minIter(0),
+            relTol(1e-6), absTol(1e-8), restart(25), norm2(1.0), norminf(1.0),
+            numIter(0), pc(nullptr), verbose(PRINT_NONE), mark(false) {};
 
-    /// constructor
+    /// Constructor // Todo: 有用吗？如果有用，为什么只有这几个参数？-zcs
     SOL(Output verbose, INT maxIter, DBL relTol, DBL absTol, INT restart);
 
+    /// Default destructor
+    ~SOL();
+
     /// Set 'verbose' 's value
-    void SetPrtLvl(Output verbose);
+    void SetOutput(Output verbose);
 
     /// Set 'maxIter' 's value
     void SetMaxIter(INT maxIter);
+
+    /// Set 'minIter' 's value
+    void SetMinIter(INT maxIter);
 
     /// Set 'relTol' 's value
     void SetRelTol(DBL relTol);
@@ -94,7 +105,7 @@ public:
     void SetRestart(INT restart);
 
     /// Set 'solver' type
-    void SetSolver(SOLType solver);
+    void SetSolType(SOLType solver);
 
     /// Get residual 's 'l2-norm'
     DBL GetNorm2();
@@ -106,30 +117,26 @@ public:
     INT GetIterations();
 
     /// Print parameters
-    void Print(std::ostream &out = std::cout) const;
+    void Print(std::ostream& out = std::cout) const;
 
-    /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
-    FaspRetCode SetOptionsFromFile(const char *file = nullptr, const char *
-        prefix = nullptr);
+    /// Set parameters from a disk file
+    void SetSolFromFile(const char *file = nullptr, const char *prefix = nullptr);
 
-    /// check and allocate memory
-    virtual FaspRetCode Setup(const LOP &_A) {
-        FASPXX_ABORT("Not supported!")
-    }
-
-    /// build preconditioner operator
-    virtual void SetPC(SOL *pc);
-
-    /// solve by SOL
-    virtual FaspRetCode Solve(const VEC &b, VEC &x) {
+    /// Check and allocate memory
+    virtual FaspRetCode Setup(const LOP& _A) {
         FASPXX_ABORT("Not supported!");
     }
 
-    /// Release temporary memory
-    virtual void Clean();
+    /// Setup preconditioner operator
+    virtual void SetPC(SOL *pc);
 
-    /// destructor
-    ~SOL();
+    /// Solve Ax=b using the iterative method
+    virtual FaspRetCode Solve(const VEC& b, VEC& x) {
+        FASPXX_ABORT("Not supported!");
+    }
+
+    /// Release temporary memory and clean up
+    virtual void Clean();
 };
 
 #endif /* end if for __SOL_HEADER__ */

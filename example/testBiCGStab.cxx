@@ -67,30 +67,28 @@ int main(int argc, char *argv[]) {
         x.SetValues(col, 1.0);
 
     // Print problem size information
-    std::cout << "  nrow = " << row
-              << ", ncol = " << col
-              << ", nnz = " << nnz << std::endl;
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
+    std::cout << "  nrow = " << row << ", ncol = " << col
+              << ", nnz = "  << nnz << std::endl;
 
     // Setup PCG class
-    BiCGStab bi;
-    bi.SetMaxIter(maxIter);
-    bi.SetRelTol(resrel);
-    bi.SetAbsTol(resabs);
-    bi.SetRestart(restart);
-    bi.SetPrtLvl(print_level);
-    // pcg.SetOptionsFromFile(opts, prefix);
-    bi.Setup(mat);
+    BiCGStab bcgs;
+    bcgs.SetMaxIter(maxIter);
+    bcgs.SetRelTol(resrel);
+    bcgs.SetAbsTol(resabs);
+    bcgs.SetRestart(restart);
+    bcgs.SetOutput(print_level);
+    bcgs.Setup(mat);
 
     params.Print();
 
     // Setup preconditioner
     Identity pc;
-    bi.SetPC(&pc);
+    bcgs.SetPC(&pc);
 
     // PCG solve
     timer.Start();
-    retCode = bi.Solve(b, x);
+    retCode = bcgs.Solve(b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
 
     return retCode;

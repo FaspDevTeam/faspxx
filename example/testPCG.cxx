@@ -66,34 +66,32 @@ int main(int argc, char *args[]) {
         x.SetValues(col, 1.0);
 
     // Print problem size information
-    std::cout << "  nrow = " << row
-              << ", ncol = " << col
-              << ", nnz = " << nnz << std::endl;
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
+    std::cout << "  nrow = " << row << ", ncol = " << col
+              << ", nnz = "  << nnz << std::endl;
 
     // Setup PCG class
-    CG pcg;
-    pcg.SetMaxIter(maxIter);
-    pcg.SetRelTol(resrel);
-    pcg.SetAbsTol(resabs);
-    pcg.SetRestart(restart);
-    pcg.SetPrtLvl(print_level);
-    // pcg.SetOptionsFromFile(opts, prefix);
-    pcg.Setup(mat);
+    CG cg;
+    cg.SetMaxIter(maxIter);
+    cg.SetRelTol(resrel);
+    cg.SetAbsTol(resabs);
+    cg.SetRestart(restart);
+    cg.SetOutput(print_level);
+    cg.Setup(mat);
 
     params.Print();
 
     // Setup preconditioner
     Identity pc;
-    pcg.SetPC(&pc);
+    cg.SetPC(&pc);
 
     // PCG solve
     timer.Start();
-    retCode = pcg.Solve(b, x);
+    retCode = cg.Solve(b, x);
     std::cout << "Solving Ax=b costs " << timer.Stop() << "ms" << std::endl;
-    std::cout << "Number of iterations : " << pcg.GetIterations() << std::endl;
-    std::cout << "Norm2 of residual    : " << pcg.GetNorm2()      << std::endl;
-    std::cout << "NormInf of residual  : " << pcg.GetInfNorm()    << std::endl;
+    std::cout << "Number of iterations : " << cg.GetIterations() << std::endl;
+    std::cout << "Norm2 of residual    : " << cg.GetNorm2()      << std::endl;
+    std::cout << "NormInf of residual  : " << cg.GetInfNorm()    << std::endl;
 
     return retCode;
 }

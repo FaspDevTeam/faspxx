@@ -215,32 +215,32 @@ int main(int argc, char *args[]) {
         MatFree matfree((dimen-1)*(dimen-1), (dimen-1)*(dimen-1));
 
         // create PCG object
-        CG pcg;
+        CG cg;
         // convergence parameter setting
-        pcg.SetPrtLvl(PRINT_NONE);
-        pcg.SetMaxIter(100000);
-        pcg.SetRestart(20);
-        pcg.SetAbsTol(1e-10);
-        pcg.SetRelTol(1e-6);
-        pcg.Setup(matfree);
+        cg.SetOutput(PRINT_NONE);
+        cg.SetMaxIter(100000);
+        cg.SetRestart(20);
+        cg.SetAbsTol(1e-10);
+        cg.SetRelTol(1e-6);
+        cg.Setup(matfree);
 
         // create identity preconditioner
         Identity pc;
-        pcg.SetPC(&pc);
+        cg.SetPC(&pc);
 
         // time
         timer.Start();
-        pcg.Solve(b, x); // solve by free-matrix method
+        cg.Solve(b, x); // solve by free-matrix method
         std::cout << "Solving Ax=b costs "
                   << std::fixed << std::setprecision(3)
                   << timer.Stop() << "ms" << std::endl;
 
-        pcg.Clean(); // clean preconditioner
+        cg.Clean(); // clean preconditioner
 
         std::cout << std::scientific << std::setprecision(4)
-                  << "NumIter : " << pcg.GetIterations() << std::endl
-                  << "Norm2   : " << pcg.GetNorm2() << std::endl
-                  << "NormInf : " << pcg.GetInfNorm() << std::endl;
+                  << "NumIter : " << cg.GetIterations() << std::endl
+                  << "Norm2   : " << cg.GetNorm2() << std::endl
+                  << "NormInf : " << cg.GetInfNorm() << std::endl;
 
         // l2-norm between numerical solution and continuous solution
         DBL norm2; // L2-norm of error
