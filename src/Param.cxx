@@ -137,7 +137,7 @@ void Parameters::Print(std::ostream &out) const
                 out << *((INT *) (params[i].paramPtr));
                 break;
             case DoubleType:
-                out << *((double *) (params[i].paramPtr));
+                out << *((DBL *) (params[i].paramPtr));
                 break;
             case StringType:
                 out << *((char **) (params[i].paramPtr));
@@ -154,7 +154,7 @@ void Parameters::Print(std::ostream &out) const
 void Parameters::PrintHelp(std::ostream &out) const
 {
     static const char *indent = "   ";
-    static const char *types[] = {"<bool>", "<INT>", "<double>", "<string>", "<Output>"};
+    static const char *types[] = {"<bool>", "<INT>", "<DBL>", "<string>", "<Output>"};
 
     out << "Usage: " << argv[0] << " [options] ...\n"
         << "Options:\n";
@@ -177,7 +177,7 @@ void Parameters::PrintHelp(std::ostream &out) const
                 out << *(INT *) (params[i].paramPtr);
                 break;
             case DoubleType:
-                out << *(double *) (params[i].paramPtr);
+                out << *(DBL *) (params[i].paramPtr);
                 break;
             case StringType:
                 out << *(char **) (params[i].paramPtr);
