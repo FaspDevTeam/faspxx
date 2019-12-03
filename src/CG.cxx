@@ -108,7 +108,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
         if (factor > 0.9) // Only check when converge slowly
         {
             // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
-            DBL norminf = x.NormInf();
+            double norminf = x.NormInf();
             if (norminf < solinftol) {
                 if (verbose > PRINT_MIN) FASPXX_WARNING(
                         "Iteration stopped -- solution almost zero!");
@@ -117,7 +117,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
             }
 
             // Check II: if relative difference stagnated, try to restart
-            DBL reldiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
+            double reldiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
             if ((stagStep <= MaxStag) && (reldiff < maxdiff)) {
                 if (verbose > PRINT_SOME) {
                     WarnDiffRes(reldiff, resRel);
