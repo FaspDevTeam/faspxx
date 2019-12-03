@@ -1,5 +1,5 @@
-/*! \file    testPCG.hxx
- *  \brief   Test performance of PCG method
+/*! \file    testCG.hxx
+ *  \brief   Test performance of CG method
  *  \author  Kailei Zhang, Chensong Zhang
  *  \date    Oct/12/2019
  *
@@ -24,9 +24,8 @@ int main(int argc, char *args[]) {
     Output print_level = PRINT_NONE;
     const char *opts = "../data/multiple_sol.opts";
     const char *prefix = "-solver1";
-    DBL resrel=1e-4;
-    DBL resabs=1e-8;
-    INT restart=20, maxIter=100;
+    DBL resrel = 1e-6, resabs = 1e-8;
+    INT restart = 20, maxIter = 100;
 
     Parameters params(argc, args);
     params.AddParam("-mat", "Left hand side of linear system", &mat_file);

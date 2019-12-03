@@ -1,8 +1,7 @@
-/*! \file testMatFree.cxx
- *  \brief A demo for matrix-free FD solver for 2D Poisson's equation
- *             - \Delta u = f,  in \Omega = [0, 1]*[0, 1]
- *  \author Kailei Zhang, Chensong Zhang
- *  \date Nov/05/2019
+/*! \file    testMatFree.cxx
+ *  \brief   Test performance of matrix-free 5P2D solver for the Poisson's equation
+ *  \author  Kailei Zhang, Chensong Zhang
+ *  \date    Nov/05/2019
  */
 
 #include <iostream>
