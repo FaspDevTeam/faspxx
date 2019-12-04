@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
     Output print_level = PRINT_MORE;
     const char *opts = "../data/multiple_sol.opts";
     const char *prefix = "-solver1";
-    DBL resrel = 1e-6, resabs = 1e-8;
-    INT restart = 20, maxIter = 100;
+    double resrel = 1e-6, resabs = 1e-8;
+    int restart = 20, maxIter = 100;
 
     Parameters params(argc, argv);
     params.AddParam("-mat", "Left hand side of linear system", &mat_file);

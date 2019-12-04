@@ -53,7 +53,7 @@ private:
 
     std::vector<ParamHolder> params; ///< all parameters
 
-    INT      argc;                   ///< number of command-line arguments
+    int      argc;                   ///< number of command-line arguments
     char   **argv;                   ///< command-line arguments
 
 public:

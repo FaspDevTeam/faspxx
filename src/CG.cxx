@@ -48,7 +48,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     const unsigned MaxStag = 20; // Maximum number of stagnations
-    const int len = b.GetSize();
+    const INT len = b.GetSize();
     const double maxdiff = 1e-4 * relTol; // Stagnation tolerance
     const double solinftol = 1e-20; // Infinity norm tolerance
 
