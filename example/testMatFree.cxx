@@ -15,7 +15,7 @@
 /// Locate position of (x,y) in the global index
 #define locate(row, column) (((row) - 1) * (dimen - 1) + (column) - 1)
 
-const INT numTotalMesh = 4; // number of meshes in total
+const int numTotalMesh = 4; // number of meshes in total
 INT dimen = 16; // number of partitions in X and Y directions
 
 // Todo: Add detailed comments in this example! -zcs
@@ -95,12 +95,12 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
     DBL *y_val;
     y.GetArray(&y_val);
 
-    const int dimen1 = dimen - 1;
-    int lower, left, center, right, upper;
+    const INT dimen1 = dimen - 1;
+    INT lower, left, center, right, upper;
 
     // interior points
-    for ( int k = 2; k < dimen - 1; ++k ) {
-        for ( int j = 2; j < dimen - 1; ++j ) {
+    for ( INT k = 2; k < dimen - 1; ++k ) {
+        for ( INT j = 2; j < dimen - 1; ++j ) {
             center = (k - 1) * dimen1 + j - 1;
             lower  = center - dimen1;
             left   = center - 1;
@@ -112,7 +112,7 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
     }
 
     // lower boundary
-    for ( int j = 2; j < dimen - 1; ++j ) {
+    for ( INT j = 2; j < dimen - 1; ++j ) {
         center = j - 1;
         left   = center - 1;
         right  = center + 1;
@@ -122,7 +122,7 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
     }
 
     // upper boundary
-    for ( int j = 2; j < dimen - 1; ++j ) {
+    for ( INT j = 2; j < dimen - 1; ++j ) {
         center = (dimen - 2) * dimen1 + j - 1;
         lower  = center - dimen1;
         left   = center - 1;
@@ -132,7 +132,7 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
     }
 
     // left boundary
-    for ( int k = 2; k < dimen - 1; ++k ) {
+    for ( INT k = 2; k < dimen - 1; ++k ) {
         center = (k - 1) * dimen1;
         lower  = center - dimen1;
         right  = center + 1;
@@ -142,7 +142,7 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
     }
 
     // right boundary
-    for ( int k = 2; k < dimen - 1; ++k ) {
+    for ( INT k = 2; k < dimen - 1; ++k ) {
         center = (k - 1) * dimen1 + dimen - 2;
         lower  = center - dimen1;
         left   = center - 1;
