@@ -69,7 +69,7 @@ public:
     void AddParam(const char * name, const char * help, bool * ptr);
 
     /// Add an INT type parameter
-    void AddParam(const char * name, const char * help, INT * ptr);
+    void AddParam(const char * name, const char * help, int * ptr);
 
     /// Add a DBL type parameter
     void AddParam(const char * name, const char * help, DBL * ptr);
