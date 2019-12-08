@@ -14,12 +14,10 @@
 #include "Iter.hxx"
 #include "CG.hxx"
 
-// Assign param to this->param
-FaspRetCode CG::Setup(const LOP &A) {
-
+/// Allocate memory, assign param to this->param
+FaspRetCode CG::Setup(const LOP &A)
+{
     const INT len = A.GetColSize();
-
-    this->A = &A;
 
     // Allocate memory for temporary vectors
     try {
@@ -31,9 +29,13 @@ FaspRetCode CG::Setup(const LOP &A) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
-    if (pc == nullptr) {
+    // Setup the coefficient matrix
+    this->A = &A;
+
+    // If pc is null, then use regular CG without preconditioning
+    if ( pc == nullptr ) {
+        withPC = false;
         pc = new Identity();
-        mark=false;
     }
 
     return FaspRetCode::SUCCESS;
@@ -197,6 +199,11 @@ FINISHED: // Finish iterative method
     PrintFinal();
 
     return errorCode;
+}
+
+void CG::Clean()
+{
+    if ( withPC == false ) delete pc;
 }
 
 /*---------------------------------*/

@@ -39,6 +39,7 @@ int main(int argc, char *args[]) {
     params.AddParam("-restart", "restart", &restart);
     params.AddParam("-maxIter", "maximum iteration", &maxIter);
     params.Parse();
+    params.Print();
 
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     GetWallTime timer;
@@ -46,26 +47,29 @@ int main(int argc, char *args[]) {
 
     // Read matrix data file
     MAT mat;
-    if ((retCode = ReadMat(mat_file, mat)) < 0) return retCode;
-    INT row = mat.GetRowSize();
-    INT col = mat.GetColSize();
-    INT nnz = mat.GetNNZ();
+    if ( (retCode = ReadMat(mat_file, mat)) < 0 ) return retCode;
+    const INT nrow = mat.GetRowSize();
+    const INT mcol = mat.GetColSize();
 
     // Read or generate right-hand side
-    VEC b, x;
-    if (strcmp(vec_file, "") != 0)
+    VEC b;
+    if ( strcmp(vec_file, "") != 0 )
         ReadVEC(vec_file, b);
     else
-        b.SetValues(row, 0.0);
+        b.SetValues(nrow, 0.0);
 
     // Read or generate initial guess
-    if (strcmp(initial_guess, "") != 0)
+    VEC x;
+    if ( strcmp(initial_guess, "") != 0 )
         ReadVEC(initial_guess, x);
     else
-        x.SetValues(col, 1.0);
+        x.SetValues(mcol, 1.0);
 
     // Print problem size information
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
+
+    // Setup preconditioner
+    Identity pc;
 
     // Setup PCG class
     CG cg;
@@ -74,13 +78,8 @@ int main(int argc, char *args[]) {
     cg.SetAbsTol(resabs);
     cg.SetRestart(restart);
     cg.SetOutput(print_level);
-    cg.Setup(mat);
-
-    params.Print();
-
-    // Setup preconditioner
-    Identity pc;
     cg.SetPC(&pc);
+    cg.Setup(mat);
 
     // PCG solve
     timer.Start();

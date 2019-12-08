@@ -71,16 +71,6 @@ void SOL::PrintFinal(std::ostream& out) const
     }
 }
 
-/// constructor
-SOL::SOL(Output verbose, int maxIter, double relTol, double absTol, int restart)
-{
-    this->verbose = verbose;
-    this->maxIter = maxIter;
-    this->relTol = relTol;
-    this->absTol = absTol;
-    this->restart = restart;
-}
-
 /// destructor
 SOL::~SOL()
 {
@@ -267,17 +257,8 @@ void SOL::SetSolFromFile(const char *file, const char *prefix)
 /// build preconditioner operator
 void SOL::SetPC(SOL *pc)
 {
-    this->pc=pc;
-    mark=true;
-}
-
-/// Release temporary memory
-void SOL::Clean()
-{
-    if (mark == false)
-        delete pc;
-    else
-        pc = nullptr;
+    this->pc = pc;
+    withPC = true;
 }
 
 /*---------------------------------*/

@@ -41,15 +41,16 @@ public:
     BiCGStab():r0star(0),tmp(0),apj(0),asj(0),pj(0),
         rj(0),sj(0),ptmp(0),stmp(0),mp(0),ms(0){};
 
+    /// destructor
+    ~BiCGStab() {};
+
     /// check and allocate memory
     FaspRetCode Setup(const LOP& A);
 
     /// solve by BiCGStab
     FaspRetCode Solve(const VEC& b, VEC& x);
 
-    /// destructor
-    ~BiCGStab() {};
-
+    void Clean();
 };
 
 #endif /* end if for __BICGSTAB_HEADER__ */

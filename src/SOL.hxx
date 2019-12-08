@@ -39,8 +39,10 @@ private:
     };
 
 protected:
-    SOLType      type;       ///< Algorithm type
     const LOP *  A;          ///< Coefficient matrix in Ax=b
+    SOL *        pc;         ///< Preconditioner for this solver
+    bool         withPC;     ///< Given a PC or not
+    SOLType      type;       ///< Algorithm type
     int          maxIter;    ///< Maximal number of iterations
     int          minIter;    ///< Minimal number of iterations
     double       relTol;     ///< Tolerance for relative residual
@@ -49,9 +51,7 @@ protected:
     double       norm2;      ///< Euclidean norm
     double       normInf;    ///< Infinity norm
     int          numIter;    ///< Number of iterations when exit
-    SOL *        pc;         ///< Preconditioner for this solver
     Output       verbose;    ///< Output verbosity level
-    bool         mark;       ///< Mark where the PC is allocating memory
 
     /// Warning for actual relative residual
     void WarnRealRes(double relres) const;
@@ -69,12 +69,9 @@ protected:
 public:
 
     /// Default constructor
-    SOL() : type(SOLType::CG), A(nullptr), maxIter(100), minIter(0),
-            relTol(1e-6), absTol(1e-8), restart(25), norm2(1.0), normInf(1.0),
-            numIter(0), pc(nullptr), verbose(PRINT_NONE), mark(false) {};
-
-    /// Constructor // Todo: 有用吗？如果有用，为什么只有这几个参数？-zcs
-    SOL(Output verbose, int maxIter, double relTol, double absTol, int restart);
+    SOL() : A(nullptr), pc(nullptr), withPC(false), type(SOLType::CG), maxIter(100),
+            minIter(0), relTol(1e-6), absTol(1e-8), restart(25), norm2(1.0),
+            normInf(1.0), numIter(0), verbose(PRINT_NONE) {};
 
     /// Default destructor
     ~SOL();
@@ -86,7 +83,7 @@ public:
     void SetMaxIter(int maxIter);
 
     /// Set 'minIter' 's value
-    void SetMinIter(int maxIter);
+    void SetMinIter(int minIter);
 
     /// Set 'relTol' 's value
     void SetRelTol(double relTol);
@@ -121,7 +118,7 @@ public:
     /// Set parameters from a disk file
     void SetSolFromFile(const char *file = nullptr, const char *prefix = nullptr);
 
-    /// Check and allocate memory
+    /// Setup the iterative method
     virtual FaspRetCode Setup(const LOP& _A) {
         FASPXX_ABORT("Not supported!");
     }
@@ -135,7 +132,9 @@ public:
     }
 
     /// Release temporary memory and clean up
-    virtual void Clean();
+    virtual void Clean() {
+        FASPXX_ABORT("Not supported!");
+    }
 };
 
 #endif /* end if for __SOL_HEADER__ */

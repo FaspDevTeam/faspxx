@@ -31,18 +31,19 @@ private:
     VEC ax; ///< work vector for A * pk
 
 public:
-    /// constructor by default
-    CG() : rk(0), pk(0),
-            zk(0), ax(0){};
+    /// Default constructor。
+    CG() : rk(0), pk(0), zk(0), ax(0){};
 
-    /// check and allocate memory
+    /// Default destructor。
+    ~CG(){};
+
+    /// Setup the CG method.
     FaspRetCode Setup(const LOP& A);
 
-    /// solve by CG
+    /// Solve Ax=b using the CG method.
     FaspRetCode Solve(const VEC& b, VEC& x);
 
-    /// destructor
-    ~CG(){};
+    void Clean();
 };
 
 #endif /* end if for __CG_HEADER__ */

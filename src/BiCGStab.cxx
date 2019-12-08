@@ -17,6 +17,8 @@
 FaspRetCode BiCGStab::Setup(const LOP &A)
 {
     const INT len = A.GetColSize();
+
+    // Allocate memory for temporary vectors
     try {
         r0star.SetValues(len,0.0);
         tmp.SetValues(len,0.0);
@@ -31,12 +33,13 @@ FaspRetCode BiCGStab::Setup(const LOP &A)
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
+    // Setup the coefficient matrix
     this->A = &A;
 
-    /// identical preconditioner operator by default
-    if (pc == nullptr) {
+    // If pc is null, then use regular BiCGStab without preconditioning
+    if ( pc == nullptr ) {
+        withPC = false;
         pc = new Identity();
-        mark = false;
     }
 
     return FaspRetCode::SUCCESS;
@@ -221,6 +224,10 @@ FINISHED: // Finish iterative method
     return errorCode;
 }
 
+void BiCGStab::Clean()
+{
+    if ( withPC == false ) delete pc;
+}
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/
