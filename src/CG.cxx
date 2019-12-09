@@ -59,9 +59,9 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 
     // Declaration and definition of local variables
     const INT len = b.GetSize();
-    const unsigned maxStag  = 20; // Maximum number of stagnation before quit
-    const double solStagTol = 1e-4 * relTol; // Solution stagnation tolerance
-    const double solZeroTol = 1e-20; // Solution close to zero tolerance
+    const unsigned maxStag  = 20; // maximum number of stagnation before quit
+    const double solStagTol = 1e-4 * relTol; // solution stagnation tolerance
+    const double solZeroTol = 1e-20; // solution close to zero tolerance
     unsigned stagStep = 0, moreStep = 0;
     double resAbs, tmpAbs, resRel, denAbs;
     double factor, alpha, beta, tmpa, tmpb;
@@ -70,7 +70,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     numIter = 0;
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
-    pc->Solve(rk, zk); // Apply preconditioning: B(r_k) -> z_k
+    pc->Solve(rk, zk); // preconditioning: B(r_k) -> z_k
 
     // Compute initial residual
     resAbs = rk.Norm2();
@@ -97,7 +97,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
         tmpb = ax.Dot(pk);
         if ( fabs(tmpb) > 1e-40 ) alpha = tmpa / tmpb;
         else {
-            FASPXX_WARNING("Divided by zero!"); // Possible breakdown
+            FASPXX_WARNING("Divided by zero!"); // breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
             goto FINISHED;
         }

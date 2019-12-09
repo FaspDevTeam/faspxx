@@ -1,5 +1,5 @@
 /*! \file    SOL.hxx
- *  \brief   Solver class declaration
+ *  \brief   Iterative solver class declaration
  *  \author  Kailei Zhang, Chensong Zhang, Ronghong Fan
  *  \date    Nov/25/2019
  *
@@ -24,7 +24,7 @@
 #include "VEC.hxx"
 
 /*! \class SOL
- *  \brief Iterative solvers.
+ *  \brief Base class for iterative solvers.
  */
 class SOL {
 

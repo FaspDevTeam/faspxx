@@ -1,5 +1,5 @@
 /*! \file    SOL.cxx
- *  \brief   Solver class definition
+ *  \brief   Iterative solver class definition
  *  \author  Kailei Zhang, Chensong Zhang
  *  \date    Nov/25/2019
  *

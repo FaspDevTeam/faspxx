@@ -31,10 +31,10 @@ private:
     VEC ax; ///< work vector for A * pk
 
 public:
-    /// Default constructor。
+    /// Default constructor.
     CG() : rk(0), pk(0), zk(0), ax(0){};
 
-    /// Default destructor。
+    /// Default destructor.
     ~CG(){};
 
     /// Setup the CG method.
