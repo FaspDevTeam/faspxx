@@ -21,23 +21,25 @@ int main(int argc, char *args[]) {
     const char *mat_file = "../data/fdm_10X10.csr";
     const char *vec_file = "";
     const char *initial_guess = "";
-    Output print_level = PRINT_NONE;
+    Output verbose = PRINT_NONE;
     const char *opts = "../data/multiple_sol.opts";
     const char *prefix = "-solver1";
     double resrel = 1e-6, resabs = 1e-8;
-    int restart = 20, maxIter = 100;
+    int restart = 20, maxIter = 100, minIter = 0;
 
     Parameters params(argc, args);
     params.AddParam("-mat", "Left hand side of linear system", &mat_file);
     params.AddParam("-vec", "Right hand side of linear system", &vec_file);
     params.AddParam("-initial", "Initial guess of solution", &initial_guess);
-    params.AddParam("-level", "print level", &print_level);
+    params.AddParam("-verbose", "Verbose level", &verbose);
     params.AddParam("-opts_file", "Solver parameter file", &opts);
+
     params.AddParam("-pref", "solver parameter prefix in file", &prefix);
-    params.AddParam("-resrel", "residual relative tolerance", &resrel);
-    params.AddParam("-resabs", "residual relative tolerance", &resabs);
-    params.AddParam("-restart", "restart", &restart);
-    params.AddParam("-maxIter", "maximum iteration", &maxIter);
+    params.AddParam("-resrel", "Relative residual tolerance", &resrel);
+    params.AddParam("-resabs", "Absolute residual tolerance", &resabs);
+    params.AddParam("-restart", "Iteration restart number", &restart);
+    params.AddParam("-maxIter", "Maximum iteration steps", &maxIter);
+    params.AddParam("-minIter", "Minimum iteration steps", &minIter);
     params.Parse();
     params.Print();
 
@@ -73,11 +75,12 @@ int main(int argc, char *args[]) {
 
     // Setup PCG class
     CG cg;
+    cg.SetOutput(verbose);
     cg.SetMaxIter(maxIter);
+    cg.SetMinIter(minIter);
     cg.SetRelTol(resrel);
     cg.SetAbsTol(resabs);
     cg.SetRestart(restart);
-    cg.SetOutput(print_level);
     cg.SetPC(&pc);
     cg.Setup(mat);
 

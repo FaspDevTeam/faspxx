@@ -40,10 +40,11 @@ public:
     /// Setup the CG method.
     FaspRetCode Setup(const LOP& A);
 
+    /// Clean up CG data allocated during Setup.
+    void Clean();
+
     /// Solve Ax=b using the CG method.
     FaspRetCode Solve(const VEC& b, VEC& x);
-
-    void Clean();
 };
 
 #endif /* end if for __CG_HEADER__ */

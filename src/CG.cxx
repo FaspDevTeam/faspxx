@@ -14,7 +14,7 @@
 #include "Iter.hxx"
 #include "CG.hxx"
 
-/// Allocate memory, assign param to this->param
+/// Allocate memory, assign param to this->param.
 FaspRetCode CG::Setup(const LOP &A)
 {
     const INT len = A.GetColSize();
@@ -41,133 +41,138 @@ FaspRetCode CG::Setup(const LOP &A)
     return FaspRetCode::SUCCESS;
 }
 
-/// Solve by CG
-FaspRetCode CG::Solve(const VEC &b, VEC &x) {
+/// Release memory.
+void CG::Clean()
+{
+    if ( !withPC ) delete pc;
+}
 
+/// Using the Preconditioned Conjugate Gradient method.
+FaspRetCode CG::Solve(const VEC &b, VEC &x)
+{
     // Check whether vector space sizes
-    if (x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize() ||
-        A->GetRowSize() != A->GetColSize())
+    if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
+                                        || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
-    const unsigned MaxStag = 20; // Maximum number of stagnations
-    const INT len = b.GetSize();
-    const double maxdiff = 1e-4 * relTol; // Stagnation tolerance
-    const double solinftol = 1e-20; // Infinity norm tolerance
-
-    // Local variables
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
-    unsigned stagStep = 1, moreStep = 1;
-    double resAbs = 1e+20, tmpAbs = 1e+20;
-    double resRel = 1e+20, denAbs = 1e+20;
+
+    // Declaration and definition of local variables
+    const INT len = b.GetSize();
+    const unsigned maxStag  = 20; // Maximum number of stagnation before quit
+    const double solStagTol = 1e-4 * relTol; // Solution stagnation tolerance
+    const double solZeroTol = 1e-20; // Solution close to zero tolerance
+    unsigned stagStep = 0, moreStep = 0;
+    double resAbs, tmpAbs, resRel, denAbs;
     double factor, alpha, beta, tmpa, tmpb;
 
-    // Initial iteration
+    // Initialize iterative method
     numIter = 0;
-
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
-
-    pc->Solve(rk, zk); // B(r_k) -> z_k
+    pc->Solve(rk, zk); // Apply preconditioning: B(r_k) -> z_k
 
     // Compute initial residual
-    tmpAbs = rk.Norm2();
-    denAbs = (1e-20 > tmpAbs) ? 1e-20 : tmpAbs;
-    resRel = tmpAbs / denAbs;
+    resAbs = rk.Norm2();
+    denAbs = (1e-20 > resAbs) ? 1e-20 : resAbs;
+    resRel = resAbs / denAbs;
+    tmpAbs = resAbs; // save residual for the next iteration
 
-    // If initial residual is already small, no need to iterate
-    if (resRel < relTol || tmpAbs < absTol) goto FINISHED;
+    // If initial residual is very small, no need to iterate
+    PrintInfo(numIter, resRel, resAbs, 0.0);
+    if ( resRel < relTol || resAbs < absTol ) goto FINISHED;
 
     // Prepare for the main loop
-    PrintInfo(numIter, resRel, tmpAbs, 0.0);
     pk = zk;
     tmpa = zk.Dot(rk);
 
     // Main CG loop
-    while (numIter < maxIter) {
-        numIter++; // iteration count
+    while ( numIter < maxIter ) {
 
-        A->Apply(pk, ax); // ax = A * p_k
+        ++numIter; // iteration count
+
+        A->Apply(pk, ax); // ax = A * p_k, main computational work
+
         // alpha_k = (z_{k-1}, r_{k-1})/(A*p_{k-1},p_{k-1})
         tmpb = ax.Dot(pk);
-        if (fabs(tmpb) > 1e-40) alpha = tmpa / tmpb;
+        if ( fabs(tmpb) > 1e-40 ) alpha = tmpa / tmpb;
         else {
             FASPXX_WARNING("Divided by zero!"); // Possible breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
             goto FINISHED;
         }
 
+        // Update solution and residual
         x.AXPY(alpha, pk); // x_k = x_{k-1} + alpha_k*p_{k-1}
         rk.AXPY(-alpha, ax); // r_k = r_{k-1} - alpha_k*A*p_{k-1}
 
-        // Compute norm of residual
+        // Compute norm of residual and output iteration information if needed
         resAbs = rk.Norm2();
         resRel = resAbs / denAbs;
         factor = resAbs / tmpAbs;
+        PrintInfo(numIter, resRel, resAbs, factor);
 
-        // Output iteration information if needed
-        PrintInfo(numIter, resRel, tmpAbs, factor);
-
-        if (factor > 0.9) // Only check when converge slowly
-        {
+        // Apply stagnation checks if it converges slowly
+        if ( factor > 0.95 && numIter > minIter ) {
             // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
-            double norminf = x.NormInf();
-            if (norminf < solinftol) {
-                if (verbose > PRINT_MIN) FASPXX_WARNING(
-                        "Iteration stopped -- solution almost zero!");
+            double xNormInf = x.NormInf();
+            if ( xNormInf < solZeroTol ) {
+                if ( verbose > PRINT_MIN )
+                    FASPXX_WARNING("Iteration stopped due to x almost zero!");
                 errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                 break;
             }
 
-            // Check II: if relative difference stagnated, try to restart
-            double reldiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
-            if ((stagStep <= MaxStag) && (reldiff < maxdiff)) {
-                if (verbose > PRINT_SOME) {
-                    WarnDiffRes(reldiff, resRel);
-                    FASPXX_WARNING("Iteration restarted -- stagnation!");
-                }
-
+            // Check II: if relative difference close to zero, try to restart
+            double xRelDiff = fabs(alpha) * this->pk.Norm2() / x.Norm2();
+            if ( (stagStep <= maxStag) && (xRelDiff < solStagTol) ) {
+                // Compute and update the residual before restart
                 A->Apply(x, this->rk);
                 this->rk.XPAY(-1.0, b);
                 resAbs = this->rk.Norm2();
                 resRel = resAbs / denAbs;
-                if (verbose > PRINT_SOME) WarnRealRes(resRel);
+                if ( verbose > PRINT_SOME ) WarnRealRes(resRel);
 
-                if (resRel < relTol) break;
+                if ( resRel < relTol ) break; // already converged
                 else {
-                    if (stagStep >= MaxStag) {
-                        if (verbose > PRINT_MIN) FASPXX_WARNING(
-                                "Iteration stopped -- stagnation!");
+                    if ( stagStep >= maxStag ) {
+                        if ( verbose > PRINT_MIN ) FASPXX_WARNING(
+                                "Iteration stopped due to stagnation!");
                         errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                         break;
                     }
                     this->pk.SetValues(len, 0.0);
                     ++stagStep;
                 }
+
+                if ( verbose > PRINT_SOME ) {
+                    WarnDiffRes(xRelDiff, resRel);
+                    FASPXX_WARNING("Iteration restarted due to stagnation!");
+                }
             } // End of stagnation check!
         } // End of check I and II
 
-        // Check III: prevent false convergence
-        if (resRel < relTol) {
+        // Check III: prevent false convergence!!!
+        if ( resRel < relTol && numIter > minIter ) {
             // Compute true residual r = b - Ax and update residual
             A->Apply(x, this->rk);
             this->rk.XPAY(-1.0, b);
 
-            // Compute residual norms
-            double updated_resRel = resRel;
+            // Compute residual norms and check convergence
+            double resRelOld = resRel;
             resAbs = rk.Norm2();
             resRel = resAbs / denAbs;
+            if ( resRel < relTol ) break;
 
-            // Check convergence
-            if (resRel < relTol) break;
-
-            if (verbose >= PRINT_MORE) {
-                WarnCompRes(updated_resRel);
+            // If false converged, print out warning messages
+            if ( verbose >= PRINT_MORE ) {
+                WarnCompRes(resRelOld);
                 WarnRealRes(resRel);
             }
 
-            if (moreStep >= restart) {
-                if (verbose > PRINT_MIN)
-                    FASPXX_WARNING("The tolerence might be too small!");
+            if ( moreStep >= restart ) { // Note: restart has different meaning here
+                if ( verbose > PRINT_MIN )
+                    FASPXX_WARNING("The tolerance might be too small!");
                 errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                 break;
             }
@@ -177,33 +182,31 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
             ++moreStep;
         } // End of safe-guard check!
 
-        // Save residual for next iteration
-        tmpAbs = resAbs;
+        // Prepare for the next iteration
+        if ( numIter < maxIter ) {
+            // Save residual for next iteration
+            tmpAbs = resAbs;
 
-        // Apply preconditioner z_k = B(r_k)
-        pc->Solve(rk, zk);
+            // Apply preconditioner z_k = B(r_k)
+            pc->Solve(rk, zk);
 
-        // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
-        tmpb = zk.Dot(rk);
-        beta = tmpb / tmpa;
-        tmpa = tmpb;
+            // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
+            tmpb = zk.Dot(rk);
+            beta = tmpb / tmpa;
+            tmpa = tmpb;
 
-        // Compute p_k = z_k + beta_k*p_{k-1}
-        pk.XPAY(beta, zk);
+            // Compute p_k = z_k + beta_k*p_{k-1}
+            pk.XPAY(beta, zk);
+        }
 
     } // End of main CG loop
 
 FINISHED: // Finish iterative method
+    this->norm2   = resAbs;
     this->normInf = rk.NormInf();
-    this->norm2   = rk.Norm2();
-    PrintFinal();
+    if ( verbose > PRINT_NONE ) PrintFinal();
 
     return errorCode;
-}
-
-void CG::Clean()
-{
-    if ( withPC == false ) delete pc;
 }
 
 /*---------------------------------*/

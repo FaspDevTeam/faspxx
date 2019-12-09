@@ -13,7 +13,7 @@
 #include "Iter.hxx"
 #include "BiCGStab.hxx"
 
-/// check and allocate memory
+/// Allocate memory, assign param to this->param.
 FaspRetCode BiCGStab::Setup(const LOP &A)
 {
     const INT len = A.GetColSize();
@@ -45,7 +45,13 @@ FaspRetCode BiCGStab::Setup(const LOP &A)
     return FaspRetCode::SUCCESS;
 }
 
-/// solve by BiCGStab
+/// Release memory.
+void BiCGStab::Clean()
+{
+    if ( !withPC ) delete pc;
+}
+
+/// Using the Preconditioned Bi-Conjugate Gradient Stabilized method.
 FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 {
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize() ||
@@ -224,10 +230,6 @@ FINISHED: // Finish iterative method
     return errorCode;
 }
 
-void BiCGStab::Clean()
-{
-    if ( withPC == false ) delete pc;
-}
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/

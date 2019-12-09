@@ -118,21 +118,21 @@ public:
     /// Set parameters from a disk file
     void SetSolFromFile(const char *file = nullptr, const char *prefix = nullptr);
 
+    /// Setup preconditioner operator
+    virtual void SetPC(SOL *pc);
+
     /// Setup the iterative method
     virtual FaspRetCode Setup(const LOP& _A) {
         FASPXX_ABORT("Not supported!");
     }
 
-    /// Setup preconditioner operator
-    virtual void SetPC(SOL *pc);
-
-    /// Solve Ax=b using the iterative method
-    virtual FaspRetCode Solve(const VEC& b, VEC& x) {
+    /// Release temporary memory and clean up
+    virtual void Clean() {
         FASPXX_ABORT("Not supported!");
     }
 
-    /// Release temporary memory and clean up
-    virtual void Clean() {
+    /// Solve Ax=b using the iterative method
+    virtual FaspRetCode Solve(const VEC& b, VEC& x) {
         FASPXX_ABORT("Not supported!");
     }
 };

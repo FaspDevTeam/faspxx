@@ -35,23 +35,23 @@ void SOL::WarnDiffRes(double reldiff, double relres) const
 
 /// Print out iteration information for iterative solvers
 void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
-                    const double& factor, std::ostream& out) const
+                    const double& ratio, std::ostream& out) const
 {
     if ( verbose > PRINT_SOME || (verbose > PRINT_NONE && iter%20 == 0) ) {
         out.precision(4);
         std::setiosflags(std::ios::scientific);
         if ( iter == 0 ) { // Initial iteration
-            out << "---------------------------------------------------\n";
-            out << " It Num | ||r||/||b|| |    ||r||    | Conv. Factor \n";
-            out << "---------------------------------------------------\n";
-            out << std::setw(7) << iter << " | "
+            out << "---------------------------------------------\n";
+            out << " It Num | ||r||/||b|| |    ||r||    | Ratio \n";
+            out << "---------------------------------------------\n";
+            out << std::setw(7) << std::right << iter << " | "
                 << std::scientific << std::setprecision(5) << resRel << " | "
                 << std::setw(11) << resAbs << " | " << std::endl;
         } else { // Later iterations
-            out << std::setw(7) << iter << " | "
+            out << std::setw(7) << std::right << iter << " | "
                 << std::scientific << std::setprecision(5) << resRel << " | "
                 << std::setw(11) << resAbs << " | "
-                << std::fixed << std::setprecision(4) << factor << std::endl;
+                << std::fixed << std::setprecision(4) << ratio << std::endl;
         }
     }
 }
@@ -60,7 +60,7 @@ void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
 void SOL::PrintFinal(std::ostream& out) const
 {
     if ( verbose > PRINT_NONE ) {
-        out << "---------------------------------------------------\n";
+        out << "---------------------------------------------\n";
         if ( numIter >= maxIter ) {
             std::cout << "### WARNING: maxIter = " << maxIter << " reached!" << '\n';
         }

@@ -37,20 +37,22 @@ private:
     VEC ms;
 
 public:
-    /// constructor by default
-    BiCGStab():r0star(0),tmp(0),apj(0),asj(0),pj(0),
-        rj(0),sj(0),ptmp(0),stmp(0),mp(0),ms(0){};
+    /// Default constructor。
+    BiCGStab() : r0star(0), tmp(0), apj(0), asj(0), pj(0),
+                 rj(0), sj(0), ptmp(0), stmp(0), mp(0),
+                 ms(0) { };
 
-    /// destructor
+    /// Default destructor。
     ~BiCGStab() {};
 
-    /// check and allocate memory
+    /// Setup the BiCGStab method.
     FaspRetCode Setup(const LOP& A);
 
-    /// solve by BiCGStab
-    FaspRetCode Solve(const VEC& b, VEC& x);
-
+    /// Clean up CG data allocated during Setup.
     void Clean();
+
+    /// Solve Ax=b using the BiCGStab method.
+    FaspRetCode Solve(const VEC& b, VEC& x);
 };
 
 #endif /* end if for __BICGSTAB_HEADER__ */
