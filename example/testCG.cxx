@@ -74,19 +74,19 @@ int main(int argc, char *args[]) {
     Identity pc;
 
     // Setup PCG class
-    CG cg;
-    cg.SetOutput(verbose);
-    cg.SetMaxIter(maxIter);
-    cg.SetMinIter(minIter);
-    cg.SetRelTol(resrel);
-    cg.SetAbsTol(resabs);
-    cg.SetRestart(restart);
-    cg.SetPC(&pc);
-    cg.Setup(mat);
+    CG solver;
+    solver.SetOutput(verbose);
+    solver.SetMaxIter(maxIter);
+    solver.SetMinIter(minIter);
+    solver.SetRelTol(resrel);
+    solver.SetAbsTol(resabs);
+    solver.SetRestart(restart);
+    solver.SetPC(&pc);
+    solver.Setup(mat);
 
     // PCG solve
     timer.Start();
-    retCode = cg.Solve(b, x);
+    retCode = solver.Solve(b, x);
     std::cout << "Solving linear system costs " << std::fixed
               << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
 
