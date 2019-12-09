@@ -37,19 +37,19 @@ public:
 class Jacobi : public SOL{
 
 public :
-    VEC diagReciprocal;
+    VEC diagInv;   ///< Diagonal of inverse of diagonal
 
 public:
-    /// default constructor
-    Jacobi():diagReciprocal(0){};
+    /// Default constructor.
+    Jacobi() : diagInv(0) { };
 
-    /// destructor
+    /// Default destructor.
     ~Jacobi(){};
 
-    /// constructor
+    /// Standard constructor.
     explicit Jacobi(std::vector<DBL> diag);
 
-    /// Iterator
+    /// Solve Ax=b using the Jacobi method.
     virtual FaspRetCode Solve(const VEC& x, VEC& y);
 };
 

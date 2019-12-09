@@ -12,21 +12,26 @@
 #include "faspxx.hxx"
 #include "Iter.hxx"
 
-/// identity preconditioner
+/// Does nothing in preconditioning
 FaspRetCode Identity::Solve(const VEC& x, VEC& y) {
     y = x;
     return FaspRetCode::SUCCESS;
 }
 
-/// constructor
+/// Compute the inverse of diagonal part
 Jacobi::Jacobi(std::vector<DBL> diag) {
-    this->diagReciprocal.SetValues(diag);
-    this->diagReciprocal.Reciprocal();
+    this->diagInv.SetValues(diag);
+    this->diagInv.Reciprocal();
 }
 
-/// jacobi preconditioner
+/// Apply the Jacobi iteration
+// Todo: This is only one step of Jacobi method. It should look like CG. -zcs
 FaspRetCode Jacobi::Solve(const VEC& x, VEC& y) {
     y = x;
-    y.PointwiseMult(this->diagReciprocal);
+    y.PointwiseMult(this->diagInv);
     return FaspRetCode ::SUCCESS;
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/
