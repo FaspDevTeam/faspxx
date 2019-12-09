@@ -51,6 +51,7 @@ void BiCGStab::Clean()
     if ( !withPC ) delete pc;
 }
 
+// Todo: Add comments and modify it as CG. -zcs
 /// Using the Preconditioned Bi-Conjugate Gradient Stabilized method.
 FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 {
