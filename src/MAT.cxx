@@ -241,8 +241,8 @@ INT MAT::GetNNZ() const {
 
 /// Get the diagonal entries of *this and save them in a VEC object.
 void MAT::GetDiag(VEC &v) const {
-    INT len=this->nrow;
-    v.size=len;
+    INT len = this->nrow;
+    v.size = len;
     v.values.resize(len);
 
     if (this->values.size() > 0) {
@@ -253,77 +253,53 @@ void MAT::GetDiag(VEC &v) const {
 
 }
 
-/// Get the diagonal entries of *this and save them in a MAT object.
-void MAT::GetDiag(MAT& m) const{
-    m.nrow=this->nrow;
-    m.mcol=this->mcol;
-    m.nnz=this->nrow;
+/// Get the diagonal entries 's reciprocal of *this and save them in a MAT object.
+void MAT::GetDiagInv(MAT &m) const {
+    m.nrow = this->nrow;
+    m.mcol = this->mcol;
+    m.nnz = this->nrow;
 
-    std::cout<<"m.nrow : "<<m.nrow<<std::endl;
-    std::cout<<"m.mcol : "<<m.mcol<<std::endl;
-    std::cout<<"m.nnz : "<<m.nnz<<std::endl;
-
-    m.rowPtr.resize(m.nrow+1);
-    for(INT j=0;j<m.nrow+1;++j)
-        m.rowPtr[j]=j;
-
-    std::cout<<"m.rowPtr : ";
-    for(INT j=0;j<m.nrow+1;++j)
-        std::cout<<m.rowPtr[j]<<"  ";
-    std::cout<<std::endl;
+    m.rowPtr.resize(m.nrow + 1);
+    for (INT j = 0; j < m.nrow + 1; ++j)
+        m.rowPtr[j] = j;
 
     m.diagPtr.resize(m.nrow);
-    for(INT j=0;j<m.nrow;++j)
-        m.diagPtr[j]=j;
-
-    std::cout<<"m.diagPtr : ";
-    for(INT j=0;j<m.nrow;++j)
-        std::cout<<m.diagPtr[j]<<"  ";
-    std::cout<<std::endl;
+    for (INT j = 0; j < m.nrow; ++j)
+        m.diagPtr[j] = j;
 
     m.colInd.resize(m.nnz);
-    for(INT j=0;j<m.nnz;++j)
-        m.colInd[j]=j;
-
-    std::cout<<"m.colInd : ";
-    for(INT j=0;j<m.nnz;++j)
-        std::cout<<m.colInd[j]<<"  ";
-    std::cout<<std::endl;
+    for (INT j = 0; j < m.nnz; ++j)
+        m.colInd[j] = j;
 
     m.values.resize(m.nnz);
-    for(INT j=0;j<m.nnz;++j)
-        m.values[j]=this->values[this->diagPtr[j]];
-
-    std::cout<<"m.values : ";
-    for(INT j=0;j<m.nnz;++j)
-        std::cout<<m.values[j]<<"  ";
-    std::cout<<std::endl;
+    for (INT j = 0; j < m.nnz; ++j)
+        m.values[j] = 1.0 / this->values[this->diagPtr[j]];
 
 }
 
 // Get the lower triangular matrix
-void MAT::GetLowerTri(MAT& lTri) const{
-    lTri.nrow=this->nrow;
-    lTri.mcol=this->mcol;
-    lTri.rowPtr.resize(this->nrow+1);
+void MAT::GetLowerTri(MAT &lTri) const {
+    lTri.nrow = this->nrow;
+    lTri.mcol = this->mcol;
+    lTri.rowPtr.resize(this->nrow + 1);
 
-    lTri.rowPtr[0]=0;
-    for(INT j=1;j<this->nrow+1;++j)
-        lTri.rowPtr[j]=this->diagPtr[j-1]-this->rowPtr[j-1]+1;
+    lTri.rowPtr[0] = 0;
+    for (INT j = 1; j < this->nrow + 1; ++j)
+        lTri.rowPtr[j] = this->diagPtr[j - 1] - this->rowPtr[j - 1] + 1;
 
-    for(INT j=1;j<this->nrow+1;++j)
-        lTri.rowPtr[j]+=lTri.rowPtr[j-1];
+    for (INT j = 1; j < this->nrow + 1; ++j)
+        lTri.rowPtr[j] += lTri.rowPtr[j - 1];
 
-    lTri.nnz=lTri.rowPtr[this->nrow];
+    lTri.nnz = lTri.rowPtr[this->nrow];
 
     lTri.values.resize(lTri.nnz);
     lTri.colInd.resize(lTri.nnz);
 
-    INT count=0;
-    for(INT j=0;j<this->nrow;++j){
-        for(INT k=this->rowPtr[j];k<=this->diagPtr[j];++k){
-            lTri.values[count]=this->values[k];
-            lTri.colInd[count]=this->colInd[k];
+    INT count = 0;
+    for (INT j = 0; j < this->nrow; ++j) {
+        for (INT k = this->rowPtr[j]; k <= this->diagPtr[j]; ++k) {
+            lTri.values[count] = this->values[k];
+            lTri.colInd[count] = this->colInd[k];
             count++;
         }
     }
@@ -332,28 +308,28 @@ void MAT::GetLowerTri(MAT& lTri) const{
 }
 
 // Get the upper triangular matrix
-void MAT::GetUpperTri(MAT& uTri) const{
-    uTri.nrow=this->nrow;
-    uTri.mcol=this->mcol;
-    uTri.rowPtr.resize(this->nrow+1);
+void MAT::GetUpperTri(MAT &uTri) const {
+    uTri.nrow = this->nrow;
+    uTri.mcol = this->mcol;
+    uTri.rowPtr.resize(this->nrow + 1);
 
-    uTri.rowPtr[0]=0;
-    for(INT j=1;j<this->nrow+1;++j)
-        uTri.rowPtr[j]=this->rowPtr[j]-this->diagPtr[j-1];
+    uTri.rowPtr[0] = 0;
+    for (INT j = 1; j < this->nrow + 1; ++j)
+        uTri.rowPtr[j] = this->rowPtr[j] - this->diagPtr[j - 1];
 
-    for(INT j=1;j<this->nrow+1;++j)
-        uTri.rowPtr[j]+=uTri.rowPtr[j-1];
+    for (INT j = 1; j < this->nrow + 1; ++j)
+        uTri.rowPtr[j] += uTri.rowPtr[j - 1];
 
-    uTri.nnz=uTri.rowPtr[this->nrow];
+    uTri.nnz = uTri.rowPtr[this->nrow];
 
     uTri.values.resize(uTri.nnz);
     uTri.colInd.resize(uTri.nnz);
 
-    INT count=0;
-    for(INT j=0;j<this->nrow;++j){
-        for(INT k=this->diagPtr[j];k<=this->rowPtr[j+1]-1;++k){
-            uTri.values[count]=this->values[k];
-            uTri.colInd[count]=this->colInd[k];
+    INT count = 0;
+    for (INT j = 0; j < this->nrow; ++j) {
+        for (INT k = this->diagPtr[j]; k <= this->rowPtr[j + 1] - 1; ++k) {
+            uTri.values[count] = this->values[k];
+            uTri.colInd[count] = this->colInd[k];
             count++;
         }
     }
@@ -688,7 +664,7 @@ void MAT::Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2) {
 }
 
 /// *this = matl * matr
-void MAT::Mult(const MAT& matl, const MAT& matr){
+void MAT::Mult(const MAT &matl, const MAT &matr) {
     INT l, count;
     INT *tmp = new INT[matr.mcol];
 
@@ -767,6 +743,22 @@ void MAT::Mult(const MAT& matl, const MAT& matr){
 
     this->FormDiagPtr();
 
+}
+
+/// *this = *this * mat
+void MAT::MultLeft(const MAT &mat) {
+    MAT tmp;
+    tmp = *this;
+
+    Mult(tmp, mat);
+}
+
+/// *this = mat * *this
+void MAT::MultRight(const MAT &mat) {
+    MAT tmp;
+    tmp = *this;
+
+    Mult(mat, tmp);
 }
 
 /// Write data to a disk file in CSR format
@@ -965,22 +957,6 @@ void Mult(const MAT& matl, const MAT& matr, MAT& mat) {
     }
 
     mat.nnz = mat.rowPtr[mat.nrow] - mat.rowPtr[0];
-}
-
-/// *this = *this * mat
-void MAT::MultLeft(const MAT& mat) {
-    MAT tmp;
-    tmp = *this;
-
-    Mult(tmp, mat, *this);
-}
-
-/// *this = mat * *this
-void MAT::MultRight(const MAT& mat) {
-    MAT tmp;
-    tmp = *this;
-
-    Mult(mat, tmp, *this);
 }
 
 #endif

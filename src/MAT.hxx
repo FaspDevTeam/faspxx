@@ -106,8 +106,9 @@ public:
     /// Get the diagonal entries of *this and save them in a VEC object.
     void GetDiag(VEC& v) const;
 
-    /// Get the diagonal entries of *this and save them in a MAT object.
-    void GetDiag(MAT& m) const;
+    /// Get the diagonal entries 's reciprocal of *this and save them in a MAT
+    /// object.
+    void GetDiagInv(MAT& m) const;
 
     // Get the lower triangular matrix
     void GetLowerTri(MAT& lTri) const;
@@ -144,6 +145,12 @@ public:
 
     /// *this = matl * matr
     void Mult(const MAT& matl, const MAT& matr);
+
+    /// *this = *this * mat
+    void MultLeft(const MAT& mat);
+
+    /// *this = mat * *this
+    void MultRight(const MAT& mat);
 
     /// Write an MAT matrix to a disk file in CSR format.
     friend void WriteCSR(char *filename, MAT mat);
