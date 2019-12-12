@@ -12,8 +12,10 @@
 #ifndef __ITER_HEADER__      /*-- allow multiple inclusions --*/
 #define __ITER_HEADER__      /**< indicate Iter.hxx has been included before */
 
+#include <vector>
 #include "faspxx.hxx"
 #include "SOL.hxx"
+#include "MAT.hxx"
 
 /*! \class Identity
  *  \brief Identity operator.
@@ -37,17 +39,22 @@ public:
 class Jacobi : public SOL{
 
 public :
-    VEC diagInv;   ///< Diagonal of inverse of diagonal
+    MAT tmpMat;
+    VEC tmpVec;
+    const VEC *tmpb;
+    VEC tmp;
+    VEC rk;
+    VEC xTmp;
 
 public:
     /// Default constructor.
-    Jacobi() : diagInv(0) { };
+    Jacobi(){};
 
     /// Default destructor.
     ~Jacobi(){};
 
     /// Standard constructor.
-    explicit Jacobi(std::vector<DBL> diag);
+    explicit Jacobi(const MAT &A, const VEC &b);
 
     /// Solve Ax=b using the Jacobi method.
     virtual FaspRetCode Solve(const VEC& x, VEC& y);
