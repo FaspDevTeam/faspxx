@@ -1,5 +1,5 @@
-/*! \file    testBiCGStab.hxx
- *  \brief   Test performance of BiCGStab method
+/*! \file    testJacobi.cxx
+ *  \brief   Test performance of Jacobi method
  *  \author  Kailei Zhang
  *  \date    Dec/12/2019
  *
