@@ -9,6 +9,7 @@
  *-----------------------------------------------------------------------------------
  */
 
+
 #include <iostream>
 #include "Timing.hxx"
 #include "ReadData.hxx"
@@ -40,7 +41,7 @@ int main(int argc, char *args[]) {
     params.AddParam("-maxIter", "Maximum iteration steps", &maxIter);
     params.AddParam("-minIter", "Minimum iteration steps", &minIter);
     params.Parse();
-    params.Print();
+    //params.Print();
 
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     GetWallTime timer;
@@ -51,7 +52,8 @@ int main(int argc, char *args[]) {
     if ( (retCode = ReadMat(mat_file, mat)) < 0 ) return retCode;
     const INT nrow = mat.GetRowSize();
     const INT mcol = mat.GetColSize();
-
+    std::cout<<"nrow : "<<nrow<<std::endl;
+    std::cout<<"mcol : "<<mcol<<std::endl;
     // Read or generate right-hand side
     VEC b;
     if ( strcmp(vec_file, "") != 0 )
@@ -66,25 +68,31 @@ int main(int argc, char *args[]) {
     else
         x.SetValues(mcol, 1.0);
 
-    VEC y(b.GetSize());
-
+    VEC y(mcol);
     // Print problem size information
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
+    // Setup preconditioner
+    Identity pc;
+
     // Setup PCG class
-    Jacobi jac(mat,b);
+    Jacobi jac(mat,b,1.0);
+    jac.SetOutput(verbose);
     jac.SetMaxIter(maxIter);
+    jac.SetMinIter(minIter);
     jac.SetRelTol(resrel);
     jac.SetAbsTol(resabs);
-    jac.Setup(mat);
+    jac.SetRestart(restart);
 
     // PCG solve
     timer.Start();
+
     retCode = jac.Solve(x, y);
     std::cout << "Solving linear system costs " << std::fixed
               << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
-    std::cout<<"Norm2 : "<<jac.GetNorm2()<<std::endl;
+
     std::cout<<"NormInf : "<<jac.GetInfNorm()<<std::endl;
+    std::cout<<"Norm2   : "<<jac.GetNorm2()<<std::endl;
 
     return retCode;
 }
