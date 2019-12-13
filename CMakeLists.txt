@@ -77,6 +77,10 @@ target_link_libraries(testBiCGStab faspxx)
 add_executable(testMatFree example/testMatFree.cxx)
 target_link_libraries(testMatFree faspxx)
 
+# Test Jacobi class
+add_executable(testJacobi example/testJacobi.cxx)
+target_link_libraries(testJacobi faspxx)
+
 # GoogleTest, default "OFF" (enable by "-DGTEST=ON")
 option(GTEST "Enable GoogleTest" OFF)
 if ("${GTEST}" STREQUAL ON)
