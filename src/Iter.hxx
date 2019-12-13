@@ -12,7 +12,7 @@
 #ifndef __ITER_HEADER__      /*-- allow multiple inclusions --*/
 #define __ITER_HEADER__      /**< indicate Iter.hxx has been included before */
 
-#include <vector>
+#include <cmath>
 #include "faspxx.hxx"
 #include "SOL.hxx"
 #include "MAT.hxx"
@@ -24,40 +24,38 @@ class Identity : public SOL {
 
 public:
     /// default constructor
-    Identity(){};
+    Identity() {};
 
     /// destructor
-    ~Identity(){};
+    ~Identity() {};
 
     /// Iterator
-    virtual FaspRetCode Solve(const VEC& x, VEC& y);
+    virtual FaspRetCode Solve(const VEC &x, VEC &y);
 };
 
 /*! \class Jacobi
  *  \brief Jacobi iterator.
  */
-class Jacobi : public SOL{
+class Jacobi : public SOL {
 
 public :
-    MAT tmpMat;
-    VEC tmpVec;
-    const VEC *tmpb;
+    VEC diagInv;
+    VEC b;
+    double alpha;
     VEC tmp;
-    VEC rk;
-    VEC xTmp;
 
 public:
     /// Default constructor.
-    Jacobi(){};
+    Jacobi() : alpha(0) {};
 
     /// Default destructor.
-    ~Jacobi(){};
+    ~Jacobi() {};
 
     /// Standard constructor.
-    explicit Jacobi(const MAT &A, const VEC &b);
+    explicit Jacobi(const MAT &A, const VEC &b, double alpha);
 
     /// Solve Ax=b using the Jacobi method.
-    virtual FaspRetCode Solve(const VEC& x, VEC& y);
+    virtual FaspRetCode Solve(const VEC &x, VEC &y);
 };
 
 #endif /* end if for __ITER_HEADER__ */
