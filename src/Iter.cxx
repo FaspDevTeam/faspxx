@@ -142,6 +142,7 @@ FaspRetCode Jacobi::Solve(const VEC &x, VEC &y) {
             if (verbose >= PRINT_MORE) {
                 WarnCompRes(resRelOld);
                 WarnRealRes(resRel);
+                std::cout<<_FASPXX_LOCATION_<<std::endl;
             }
 
             if (moreStep >= restart) { // Note: restart has different meaning here

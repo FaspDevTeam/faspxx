@@ -154,7 +154,10 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
                 this->rj.XPAY(-1.0, b);
                 resAbs = this->rj.Norm2();
                 resRel = resAbs / denAbs;
-                if ( verbose > PRINT_SOME ) WarnRealRes(resRel);
+                if ( verbose > PRINT_SOME ){
+                    WarnRealRes(resRel);
+                    std::cout<<_FASPXX_LOCATION_<<std::endl;
+                }
 
                 if ( resRel < relTol ) break; // already converged
                 else {
@@ -190,6 +193,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
             if ( verbose >= PRINT_MORE ) {
                 WarnCompRes(resRelOld);
                 WarnRealRes(resRel);
+                std::cout<<_FASPXX_LOCATION_<<std::endl;
             }
 
             if ( moreStep >= restart ) { // Note: restart has different meaning here
