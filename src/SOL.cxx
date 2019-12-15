@@ -12,6 +12,7 @@
 #include <sstream>
 #include <cstring>
 #include "SOL.hxx"
+#include "utils.hxx"
 
 //! Warning for actual relative residual
 void SOL::WarnRealRes(double relres) const
@@ -171,23 +172,6 @@ void SOL::PrintParam(std::ostream& out) const
         << "  Output level:         " << verbose << '\n'
         << "-----------------------------------\n";
 };
-
-/// Process a line. Return false if the line is a comment or empty.
-static bool ProcessLine(std::string& line, std::string& param, std::string& value)
-{
-    // Remove spaces in the beginning and end of each line
-    line.erase(0, line.find_first_not_of(' '));
-    line.erase(line.find_last_not_of(' ') + 1);
-
-    if ( line.empty()   ) return false; // Skip empty lines
-    if ( line[0] == '#' ) return false; // Skip comments
-    if ( line[0] == '%' ) return false; // Skip comments
-
-    std::string buff;
-    std::stringstream ss(line);
-    ss >> param >> value >> buff;
-    return true;
-}
 
 /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
 void SOL::SetSolFromFile(const char *file, const char *prefix) 

@@ -13,137 +13,152 @@
 #include <iostream>
 #include <iomanip>
 #include "Param.hxx"
+#include "ErrorLog.hxx"
 
-void Parameters::AddParam(const char * name, const char * help, bool * ptr)
+void Parameters::ReadCommandLineParams()
 {
-    params.push_back(ParamHolder(BoolType, name, help, ptr));
-}
+    if (argc == 1) return;
 
-void Parameters::AddParam(const char * name, const char * help, int * ptr)
-{
-    params.push_back(ParamHolder(IntType, name, help, ptr));
-}
-
-void Parameters::AddParam(const char * name, const char * help, double * ptr)
-{
-    params.push_back(ParamHolder(DoubleType, name, help, ptr));
-}
-
-void Parameters::AddParam(const char * name, const char * help, const char ** ptr)
-{
-    params.push_back(ParamHolder(StringType, name, help, ptr));
-}
-
-void Parameters::AddParam(const char * name, const char * help, Output * ptr)
-{
-    params.push_back(ParamHolder(OutputType, name, help, ptr));
-}
-
-void Parameters::Parse()
-{
-    char *tmp;
-    int len;
-    for ( int i = 1; i < argc; i++ ) {
+    for (int i = 1; i < argc; ++i) {
+        // -h, --help will trigger program terminate
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
-            PrintHelp(std::cout);
-            return;
+            PrintHelp();
+            FASPXX_ABORT("-h, --help trigger abort");
         }
 
-        for ( size_t j = 0; j < params.size(); ++j ) {
-            if (strcmp(argv[i], params[j].paramName) == 0) {
-                switch (params[j].paramType) {
-                    case BoolType:
-                        tmp = new char[strlen(argv[i + 1])];
-                        len = strlen(argv[i + 1]);
-                        for (int j = 0; j < len; ++j) {
-                            if ('A' <= argv[i + 1][j] && argv[i + 1][j] <= 'Z')
-                                tmp[j] = (char) (argv[i + 1][j] - 'A' + 'a');
-                            else
-                                tmp[j] = argv[i + 1][j];
-                        }
-                        if (!strcmp(tmp, "true"))
-                            *((bool *) (params[j].paramPtr)) = 1;
-                        else if (!strcmp(tmp, "false"))
-                            *((bool *) (params[j].paramPtr)) = 0;
-                        else // 其余情况就是int型整数拿来给bool类型赋值
-                            *((bool *) (params[j].paramPtr)) = (bool) (std::stoi(
-                                    argv[i + 1]));
-                        delete[] tmp;
-                        break;
-                    case IntType:
-                        *((int *) (params[j].paramPtr)) = std::stoi(argv[i + 1]);
-                        break;
-                    case DoubleType:
-                        *((double *) (params[j].paramPtr)) = std::stod(argv[i + 1]);
-                        break;
-                    case StringType:
-                        *((char **) (params[j].paramPtr)) = argv[i + 1];
-                        break;
-                    case OutputType:
-                        int n = strlen(argv[i + 1]);
-                        int k = 0;
-                        while (k < n && '0' <= argv[i + 1][k] &&
-                               argv[i + 1][k] <= '9') { k++; }
-                        if (k == n) {
-                            *((int *) (params[j].paramPtr)) =
-                                    std::stoi(argv[i + 1]);
-                            break;
-                        }
-                        std::cout<<"Print_level : "<<argv[i+1]<<std::endl;
-                        tmp = new char[strlen(argv[i + 1])];
-                        len = strlen(argv[i + 1]);
-                        for (int j = 0; j < len; ++j){
-                            if('a'<=argv[i+1][j] && argv[i+1][j]<='z')
-                                tmp[j]=(char)(argv[i+1][j]-'a'+'A');
-                            else
-                                tmp[j]=argv[i+1][j];
-                        }
-                        std::cout<<"Output Type : "<<tmp<<std::endl;
-                        if (strcmp(tmp, "PRINT_NONE") == 0)
-                            *((Output *) (params[j].paramPtr)) = PRINT_NONE;
-                        else if (strcmp(tmp, "PRINT_MIN") == 0)
-                            *((Output *) (params[j].paramPtr)) = PRINT_MIN;
-                        else if (strcmp(tmp, "PRINT_SOME") == 0)
-                            *((Output *) (params[j].paramPtr)) = PRINT_SOME;
-                        else if (strcmp(tmp, "PRINT_MORE") == 0)
-                            *((Output *) (params[j].paramPtr)) = PRINT_MORE;
-                        else if (strcmp(tmp, "PRINT_MAX") == 0)
-                            *((Output *) (params[j].paramPtr)) = PRINT_MAX;
-                        else if (strcmp(tmp, "PRINT_ALL") == 0)
-                            *((Output *) (params[j].paramPtr)) = PRINT_ALL;
-                        delete[] tmp;
-                        break;
-                }
-                break;
+        // each param is a key-value pair of a Dictionary
+        params_command.insert(std::pair<std::string, std::string>(argv[i], argv[i+1]));
+        ++i;
+    }
+}
+
+void Parameters::ReadFileParams()
+{
+    for (auto& itm: params_user) {
+        if (itm.paramMarker == 2)
+        {
+            std::ifstream file;
+
+            // first try to find param_file from command line params
+            if (params_command.find(itm.paramName) != params_command.end()) {
+                file.open(params_command.find(itm.paramName)->second);
             }
+            else {
+                file.open(*((std::string*)itm.paramPtr)); // second try to find param_file from user program
+            }
+
+            if (!file.is_open()) FASPXX_WARNING("Not found file");
+
+            std::string line, name, value;
+            while (std::getline(file, line)) {
+                if (ProcessLine(line, name, value)) {
+                    // each param is a key-value pair of a Dictionary
+                    params_file.insert(std::pair<std::string, std::string>(name, value));
+                }
+            }
+            file.close();
+            break; // at most 1 param_file
         }
     }
 }
 
-void Parameters::Print(std::ostream &out) const
+void Parameters::MergeParams()
 {
-    static const char *indent = "   ";
+    std::map<std::string, std::string>::iterator iter;
+    for (auto& prm: params_user) {
+        iter = params_file.find(prm.paramName);
+        if (iter != params_file.end()) UpdateParamValue(iter, prm);
+
+        iter = params_command.find(prm.paramName);
+        if (iter != params_command.end()) UpdateParamValue(iter, prm);
+    }
+}
+
+void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& iter, ParamHolder& prm)
+{
+    switch (prm.paramType) {
+        case BoolType:
+            *(bool*) prm.paramPtr = JudgeBool(iter->second);
+            break;
+        case IntType:
+            *(int*) prm.paramPtr = std::stoi(iter->second);
+            break;
+        case DoubleType:
+            *(double*) prm.paramPtr = std::stod(iter->second);
+            break;
+        case StringType:
+            *(std::string*) prm.paramPtr = iter->second;
+            break;
+        case OutputType:
+            *(Output*) prm.paramPtr = (Output) std::stoi(iter->second);
+    }
+}
+
+void Parameters::AddParam(const std::string& name, const std::string& help, bool * ptr, int marker) {
+    params_user.push_back(ParamHolder(BoolType, name, help, ptr, marker));
+}
+
+void Parameters::AddParam(const std::string& name, const std::string& help, int * ptr, int marker) {
+    params_user.push_back(ParamHolder(IntType, name, help,
+                                      ptr, marker));
+}
+
+void Parameters::AddParam(const std::string& name, const std::string& help, double * ptr, int marker) {
+    params_user.push_back(ParamHolder(DoubleType, name, help,
+                                      ptr, marker));
+}
+
+void Parameters::AddParam(const std::string& name, const std::string& help, std::string * ptr, int marker) {
+    params_user.push_back(ParamHolder(StringType, name, help,
+                                      ptr, marker));
+}
+
+void Parameters::AddParam(const std::string& name, const std::string& help, Output * ptr, int marker) {
+    params_user.push_back(ParamHolder(OutputType, name, help, ptr, marker));
+}
+
+void Parameters::Parse()
+{
+    ReadCommandLineParams();
+    ReadFileParams();
+    MergeParams();
+}
+
+void Parameters::PrintFileParams(std::ostream& out) {
+    for (auto& itm: params_file) {
+        out << itm.first << ", " << itm.second << '\n';
+    }
+}
+
+void Parameters::PrintCommandLineParams(std::ostream& out) {
+    for (auto& itm: params_command) {
+        out << itm.first << ", " << itm.second << '\n';
+    }
+}
+
+void Parameters::Print(std::ostream &out) const {
+    static std::string indent = "   ";
     out << "\nInput Parameters:\n";
     out << "---------------------------------------------------\n";
-    for ( size_t i = 0; i < params.size(); ++i ) {
-        out << indent << std::setw(10) << std::left << params[i].paramName;
-        out << " : ";
-        switch (params[i].paramType) {
+
+    for (auto& itm: params_user) {
+        out << indent << std::setw(20) << std::left << itm.paramName << " : ";
+        switch (itm.paramType) {
             case BoolType:
-                out << std::boolalpha << *((bool *) (params[i].paramPtr))
+                out << std::boolalpha << *((bool *) (itm.paramPtr))
                     << std::resetiosflags(out.flags());
                 break;
             case IntType:
-                out << *((int *) (params[i].paramPtr));
+                out << *((int*) itm.paramPtr);
                 break;
             case DoubleType:
-                out << *((double *) (params[i].paramPtr));
+                out << *((double*) itm.paramPtr);
                 break;
             case StringType:
-                out << *((char **) (params[i].paramPtr));
+                out << *((std::string*) itm.paramPtr);
                 break;
             case OutputType:
-                out << *((Output *) (params[i].paramPtr));
+                out << *((Output *) (itm.paramPtr));
                 break;
         }
         out << '\n';
@@ -159,31 +174,34 @@ void Parameters::PrintHelp(std::ostream &out) const
     out << "Usage: " << argv[0] << " [options] ...\n"
         << "Options:\n";
     out << indent << std::setw(21) << std::left
-        << "-h, --help" << " : Print help information and exit.\n";
+        << "-h, --help" << "              : print help information and exit\n";
 
-    for ( size_t i = 0; i < params.size(); ++i ) {
-        ParamType type = params[i].paramType;
-        out << indent << std::setw(12) << std::left << params[i].paramName
+    for (const auto& prm: params_user ) {
+        ParamType type = prm.paramType;
+        out << indent << std::setw(12) << std::left << prm.paramName
             << " " << std::setw(8) << types[type];
-        if ( params[i].paramHelp ) out << " : " << params[i].paramHelp;
+        if ( prm.paramMarker == 0)      out << ", optional   ";
+        else if ( prm.paramMarker == 1) out << ", required   ";
+        else                                  out << ", params file";
+        if ( !prm.paramHelp.empty() ) out << " : " << prm.paramHelp;
 
         out << ", default = [";
         switch ( type ) {
             case BoolType:
-                out << std::boolalpha << *(bool *) (params[i].paramPtr)
+                out << std::boolalpha << *(bool *) (prm.paramPtr)
                     << std::setiosflags(out.flags());
                 break;
             case IntType:
-                out << *(int *) (params[i].paramPtr);
+                out << *(int *) (prm.paramPtr);
                 break;
             case DoubleType:
-                out << *(double *) (params[i].paramPtr);
+                out << *(double *) (prm.paramPtr);
                 break;
             case StringType:
-                out << *(char **) (params[i].paramPtr);
+                out << *(char **) (prm.paramPtr);
                 break;
             case OutputType:
-                out << *(Output *) (params[i].paramPtr);
+                out << *(Output *) (prm.paramPtr);
                 break;
         }
         out << "]\n";

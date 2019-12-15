@@ -11,21 +11,78 @@
 
 #include <gtest/gtest.h>
 #include <iostream>
-//#include "Param.hxx"
+#include <string>
+#include "Param.hxx"
 
 /*---------------------------------*/
 /*--     Beginning of TEST       --*/
 /*---------------------------------*/
 
-//TEST(IterParam_Default, Default_Values)
-//{
-//    InitParam inparam;
-//    EXPECT_EQ(inparam.param.GetMaxIter(), 100);
-//    EXPECT_DOUBLE_EQ(inparam.param.GetRelTol(), 1e-6);
-//    EXPECT_DOUBLE_EQ(inparam.param.GetAbsTol(), 1e-10);
-//}
+TEST(Parameters_Class, Parameters)
+{
+    // ---------------- 3种输入参数的优先级: 命令行参数 > 运行时参数 > 文件参数? -------------------
+    // 模拟 parameters in user program
+    bool bool_param = false;
+    int int_param = 11;
+    double double_param = 3.14159;
+    std::string char_param = "user params";
+    Output output_lvl = static_cast<Output>(4);
 
-// TODO: add gtest for class Parameters.hxx
+    // 模拟 parameters in command line
+    const int _argc = 11;
+    char *_argv[_argc] = {"program name",
+                          "-bool_param", "TruE",
+                          "-int_param", "22",
+                          "-double_param", "1.41414",
+                          "-char_param", "commandline_parameters",
+                          "-faspxx_opts", "./data_for_test/single_sol.opts"};
+
+    // 模拟 parameters in file
+    std::string params_file = "./data_for_test/multiple_sol.opts";
+    bool view_param = false; // from file
+    int level_param = 0; // from file
+    double resrel_param = 0.0; // from file
+    std::string vec_param = ""; // from file
+
+    EXPECT_EQ(bool_param,  false);
+    EXPECT_EQ(int_param, 11);
+    EXPECT_EQ(double_param, 3.14159);
+    EXPECT_EQ(char_param, "user params");
+    EXPECT_EQ(params_file, "./data_for_test/multiple_sol.opts");
+    EXPECT_EQ(view_param, false);
+    EXPECT_EQ(level_param, 0);
+    EXPECT_EQ(resrel_param, 0.0);
+    EXPECT_EQ(vec_param, "");
+    EXPECT_EQ(output_lvl, 4);
+
+    Parameters params(_argc, _argv);
+    params.AddParam("-bool_param", "bool param help", &bool_param);
+    params.AddParam("-int_param", "INT param help", &int_param);
+    params.AddParam("-double_param", "DBL param help", &double_param);
+    params.AddParam("-char_param", "char* param help", &char_param);
+    params.AddParam("-faspxx_opts", "additional parameter file", &params_file, 2);
+    params.AddParam("-view", "view from file", &view_param);
+    params.AddParam("-level", "level from file", &level_param);
+    params.AddParam("-resrel", "resrel from file", &resrel_param);
+    params.AddParam("-vec", "vec from file", &vec_param);
+    params.AddParam("-out_put", "output param help", &output_lvl);
+    params.Parse();
+
+
+    EXPECT_EQ(bool_param, true); // modified by command line
+    EXPECT_EQ(int_param, 22); // modified by command line
+    EXPECT_EQ(double_param, 1.41414); // modified by command line
+    EXPECT_EQ(char_param, "commandline_parameters"); // modified by command line
+    EXPECT_EQ(params_file, "./data_for_test/single_sol.opts"); // modified by command line
+
+    EXPECT_EQ(view_param, true); // modified from file
+    EXPECT_EQ(level_param, 4); // modified from file
+    EXPECT_DOUBLE_EQ(resrel_param, 1.234e-6); // modified from file
+    EXPECT_EQ(vec_param, "../data/ffffffffffff"); // modified from file
+    EXPECT_EQ(output_lvl, 6); // modified from file
+}
+
+
 
 /*---------------------------------*/
 /*--        End of File          --*/

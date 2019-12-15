@@ -46,7 +46,7 @@ include_directories(${PROJECT_SOURCE_DIR}/example/)
 file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
 
 # Build faspxx library
-add_library(faspxx ${SRC_FILES})
+add_library(faspxx ${SRC_FILES} src/utils.hxx)
 
 set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
 install(TARGETS faspxx
@@ -82,7 +82,4 @@ add_executable(testJacobi example/testJacobi.cxx)
 target_link_libraries(testJacobi faspxx)
 
 # GoogleTest, default "OFF" (enable by "-DGTEST=ON")
-option(GTEST "Enable GoogleTest" OFF)
-if ("${GTEST}" STREQUAL ON)
-    add_subdirectory(utest)
-endif()
+add_subdirectory(utest)

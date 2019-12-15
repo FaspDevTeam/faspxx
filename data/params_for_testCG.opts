@@ -1,0 +1,11 @@
+
+   # 以#开始的为注释内容
+-mat ../data/fem_small.csr
+-verbose 4
+-resrel 1E-5
+-resabs 1e-7
+-maxIter 150
+-minIter 10
+-restart 5
+
+-bool_for_test TRue

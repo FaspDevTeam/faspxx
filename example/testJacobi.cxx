@@ -11,6 +11,7 @@
 
 
 #include <iostream>
+#include <string>
 #include "Timing.hxx"
 #include "ReadData.hxx"
 #include "Param.hxx"
@@ -18,12 +19,12 @@
 #include "Iter.hxx"
 
 int main(int argc, char *args[]) {
-    const char *mat_file = "../data/fdm_10X10.csr";
-    const char *vec_file = "";
-    const char *initial_guess = "";
+    std::string mat_file = "../data/fdm_10X10.csr";
+    std::string vec_file = "";
+    std::string initial_guess = "";
     Output verbose = PRINT_NONE;
-    const char *opts = "../data/multiple_sol.opts";
-    const char *prefix = "-solver1";
+    std::string opts = "../data/multiple_sol.opts";
+    std::string prefix = "-solver1";
     double resrel = 1e-6, resabs = 1e-8;
     int restart = 20, maxIter = 100, minIter = 0;
 
@@ -49,22 +50,22 @@ int main(int argc, char *args[]) {
 
     // Read matrix data file
     MAT mat;
-    if ( (retCode = ReadMat(mat_file, mat)) < 0 ) return retCode;
+    if ( (retCode = ReadMat(mat_file.c_str(), mat)) < 0 ) return retCode;
     const INT nrow = mat.GetRowSize();
     const INT mcol = mat.GetColSize();
     std::cout<<"nrow : "<<nrow<<std::endl;
     std::cout<<"mcol : "<<mcol<<std::endl;
     // Read or generate right-hand side
     VEC b;
-    if ( strcmp(vec_file, "") != 0 )
-        ReadVEC(vec_file, b);
+    if ( strcmp(vec_file.c_str(), "") != 0 )
+        ReadVEC(vec_file.c_str(), b);
     else
         b.SetValues(nrow, 0.0);
 
     // Read or generate initial guess
     VEC x;
-    if ( strcmp(initial_guess, "") != 0 )
-        ReadVEC(initial_guess, x);
+    if ( strcmp(initial_guess.c_str(), "") != 0 )
+        ReadVEC(initial_guess.c_str(), x);
     else
         x.SetValues(mcol, 1.0);
 

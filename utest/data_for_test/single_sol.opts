@@ -1,7 +1,6 @@
 
+
    # 以#开始的为注释内容
--mat ../data/fem_small.csr
--verbose 8
 
 -sol_type cg       # 迭代法类型
   -sol_rtol 1.23E-8
