@@ -10,7 +10,6 @@
  */
 
 #include <gtest/gtest.h>
-#include <iostream>
 #include <string>
 #include "Param.hxx"
 
@@ -48,12 +47,12 @@ TEST(Parameters_Class, Parameters)
     EXPECT_EQ(int_param, 11);
     EXPECT_EQ(double_param, 3.14159);
     EXPECT_EQ(char_param, "user params");
+    EXPECT_EQ(output_lvl, 4);
     EXPECT_EQ(params_file, "./data_for_test/multiple_sol.opts");
     EXPECT_EQ(view_param, false);
     EXPECT_EQ(level_param, 0);
     EXPECT_EQ(resrel_param, 0.0);
     EXPECT_EQ(vec_param, "");
-    EXPECT_EQ(output_lvl, 4);
 
     Parameters params(_argc, _argv);
     params.AddParam("-bool_param", "bool param help", &bool_param);
@@ -61,6 +60,7 @@ TEST(Parameters_Class, Parameters)
     params.AddParam("-double_param", "DBL param help", &double_param);
     params.AddParam("-char_param", "char* param help", &char_param);
     params.AddParam("-faspxx_opts", "additional parameter file", &params_file, 2);
+
     params.AddParam("-view", "view from file", &view_param);
     params.AddParam("-level", "level from file", &level_param);
     params.AddParam("-resrel", "resrel from file", &resrel_param);

@@ -1,7 +1,9 @@
 
+# command line params example: -opts_file ../data/params_for_testCG.opts -verbose 8 -resrel 1e-8 -maxIter 200 -bool_param 1
+
    # 以#开始的为注释内容
 -mat ../data/fem_small.csr
--verbose 4
+-verbose 8
 -resrel 1E-5
 -resabs 1e-7
 -maxIter 150

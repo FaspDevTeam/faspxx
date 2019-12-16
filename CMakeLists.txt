@@ -82,4 +82,5 @@ add_executable(testJacobi example/testJacobi.cxx)
 target_link_libraries(testJacobi faspxx)
 
 # GoogleTest, default "OFF" (enable by "-DGTEST=ON")
+option(utest "Google Test" ON)
 add_subdirectory(utest)

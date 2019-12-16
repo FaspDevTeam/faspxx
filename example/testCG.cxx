@@ -41,7 +41,10 @@ int main(int argc, char *args[]) {
     params.AddParam("-minIter", "Minimum iteration steps", &minIter);
     params.AddParam("-bool_for_test", "bool parameter help", &bool_param);
     params.Parse();
-    params.Print();
+    params.Print(std::cout);
+    params.PrintFileParams(std::cout);
+    params.PrintCommandLineParams(std::cout);
+    params.PrintUserParams(std::cout);
 
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     GetWallTime timer;

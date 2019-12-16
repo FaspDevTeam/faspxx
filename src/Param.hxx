@@ -58,6 +58,7 @@ private:
     // parameters priority: params in command line > params in file > params in user program
     std::map<std::string, std::string> params_command, params_file;
     std::vector<ParamHolder> params_user; // params in user program, like defined in main()
+    std::string original_params_user; // params in user program before merge
 
     int      argc;                   ///< number of command-line arguments
     char   **argv;                   ///< command-line arguments
@@ -91,6 +92,9 @@ private:
      * */
     void MergeParams();
 
+    // save original user params for visualize.
+    void SaveOriginalUserParams(std::string& save) const;
+
     /* If there is parameter in command line or file which is same name with parameter in user program,
      * we update its value.
      * */
@@ -121,12 +125,15 @@ public:
     void Parse();
 
     // Only print parameters in file
-    void PrintFileParams(std::ostream& out);
+    void PrintFileParams(std::ostream& out) const;
 
     // Only print parameters in command line
-    void PrintCommandLineParams(std::ostream& out);
+    void PrintCommandLineParams(std::ostream& out) const;
 
-    // Only print parameters in user program
+    // Only print original params (before merge or parse) in user program
+    void PrintUserParams(std::ostream &out) const;
+
+    // Only print parameters finally used in user program (after merge or parse)
     void Print(std::ostream& out = std::cout) const;
 
     void PrintHelp(std::ostream &out = std::cout) const;

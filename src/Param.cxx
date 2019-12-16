@@ -15,6 +15,43 @@
 #include "Param.hxx"
 #include "ErrorLog.hxx"
 
+void Parameters::SaveOriginalUserParams(std::string& save) const {
+    int max_len = 0;
+    for (const auto& itm: params_user) {
+        if (itm.paramName.length() > max_len) max_len = itm.paramName.length();
+    }
+
+    std::ostringstream out;
+    static std::string indent = "   ";
+    out << "\nOriginal user parameters in program:\n";
+    out << "---------------------------------------------------\n";
+
+    for (auto& itm: params_user) {
+        out << indent << std::setw(max_len) << std::left << itm.paramName << " : ";
+        switch (itm.paramType) {
+            case BoolType:
+                out << std::boolalpha << *((bool *) (itm.paramPtr))
+                    << std::resetiosflags(out.flags());
+                break;
+            case IntType:
+                out << *((int*) itm.paramPtr);
+                break;
+            case DoubleType:
+                out << *((double*) itm.paramPtr);
+                break;
+            case StringType:
+                out << *((std::string*) itm.paramPtr);
+                break;
+            case OutputType:
+                out << *((Output *) (itm.paramPtr));
+                break;
+        }
+        out << '\n';
+    }
+    out << '\n';
+    save = out.str();
+}
+
 void Parameters::ReadCommandLineParams()
 {
     if (argc == 1) return;
@@ -121,28 +158,63 @@ void Parameters::Parse()
 {
     ReadCommandLineParams();
     ReadFileParams();
+    SaveOriginalUserParams(original_params_user);
     MergeParams();
 }
 
-void Parameters::PrintFileParams(std::ostream& out) {
-    for (auto& itm: params_file) {
-        out << itm.first << ", " << itm.second << '\n';
+void Parameters::PrintFileParams(std::ostream& out) const {
+    int max_len = 0;
+    for (const auto& itm: params_file) {
+        if (itm.first.length() > max_len) max_len = itm.first.length();
     }
+
+    std::string options_file;
+    for (const auto& itm: params_user) {
+        if (itm.paramMarker == 2) options_file = *(std::string * )itm.paramPtr;
+    }
+
+    static std::string indent = "   ";
+    out << "\nParameters from file: " << options_file << '\n';
+    out << "---------------------------------------------------\n";
+    for (const auto& itm: params_file) {
+        out << indent << std::setw(max_len) << std::left
+            << itm.first << " : " << itm.second << '\n';
+    }
+    out << std::endl;
 }
 
-void Parameters::PrintCommandLineParams(std::ostream& out) {
-    for (auto& itm: params_command) {
-        out << itm.first << ", " << itm.second << '\n';
+void Parameters::PrintCommandLineParams(std::ostream& out) const {
+    int max_len = 0;
+    for (const auto& itm: params_command) {
+        if (itm.first.length() > max_len) max_len = itm.first.length();
     }
+
+    static std::string indent = "   ";
+    out << "\nParameters from command line:\n";
+    out << "---------------------------------------------------\n";
+    for (const auto& itm: params_command) {
+        out << indent << std::setw(max_len) << std::left
+            << itm.first << " : " << itm.second << '\n';
+    }
+    out << std::endl;
+}
+
+void Parameters::PrintUserParams(std::ostream &out) const {
+    out << original_params_user << std::endl;
 }
 
 void Parameters::Print(std::ostream &out) const {
+    int max_len = 0;
+    for (const auto& itm: params_user) {
+        if (itm.paramName.length() > max_len) max_len = itm.paramName.length();
+    }
+
     static std::string indent = "   ";
-    out << "\nInput Parameters:\n";
+    out << "\nUsed parameters in program:\n";
     out << "---------------------------------------------------\n";
 
     for (auto& itm: params_user) {
-        out << indent << std::setw(20) << std::left << itm.paramName << " : ";
+        out << indent << std::setw(max_len) << std::left << itm.paramName << " : ";
         switch (itm.paramType) {
             case BoolType:
                 out << std::boolalpha << *((bool *) (itm.paramPtr))
