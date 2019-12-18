@@ -49,7 +49,6 @@ void BiCGStab::Clean() {
     if (!withPC) delete pc;
 }
 
-// Todo: Add comments and modify it as CG. -zcs
 /// Using the Preconditioned Bi-Conjugate Gradient Stabilized method.
 FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
@@ -226,7 +225,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
 
     } // End of main PCG loop
 
-    FINISHED: // Finish iterative method
+FINISHED: // Finish iterative method
     this->norm2 = resAbs;
     this->normInf = rj.NormInf();
     if ( verbose > PRINT_NONE ) PrintFinal();
