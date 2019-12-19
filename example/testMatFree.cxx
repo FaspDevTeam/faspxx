@@ -8,86 +8,88 @@
 #include "Timing.hxx"
 #include "Param.hxx"
 #include "LOP.hxx"
-#include "CG.hxx"
 #include "Iter.hxx"
+#include "CG.hxx"
 #include "Poisson2D.hxx"
 
-/// Locate position of (x,y) in the global index
-#define locate(row, column) (((row) - 1) * (dimen - 1) + (column) - 1)
+/// Locate the global index of (x,y)
+#define locate(row, column) (((row) - 1) * (dim - 1) + (column) - 1)
 
 const int numTotalMesh = 4; // number of meshes in total
-INT dimen = 16; // number of partitions in X and Y directions
 
-// Todo: Add detailed comments in this example! -zcs
+int dim = 16; // number of partitions in X and Y directions: 16x16 grid
 
-/// Matrix-free linear operator object
+/// Matrix-free linear operator object.
 class MatFree : public LOP {
 
 public:
-    /// Default constructor
+    /// Default constructor.
     MatFree(const INT row, const INT col){
         nrow = row;
         mcol = col;
     }
 
-    /// Matrix-free matrix-vector multiplication
+    /// Matrix-free matrix-vector multiplication.
     void Apply(const VEC& x, VEC& y) const;
 };
 
-// generate rhs
-static void Rhs(INT dimen, DBL *ptr) {
+/// Assemble the right-hand side.
+static void AssembleRHS(INT dim, DBL *ptr)
+{
+    const DBL h = 1.0 / dim;  // mesh size
+    const DBL h2 = h * h;     // mesh size squared
+    const int dim1 = dim - 1; // DOF in each direction
 
-    const DBL h = 1.0 / dimen;
-    const INT dimen1 = dimen - 1;
-
-    for ( INT j = 0; j < dimen1 * dimen1; ++j ) ptr[j] = 0.0;
+    for ( INT j = 0; j < dim1 * dim1; ++j ) ptr[j] = 0.0;
 
     // interior points
-    for ( INT k = 2; k < dimen1; ++k ) {
-        for ( INT j = 2; j < dimen1; ++j )
-            ptr[locate(k, j)] = h * h * Load(k * h, j * h);
-    }
+    for ( int k = 2; k < dim1; ++k )
+        for ( int j = 2; j < dim1; ++j )
+            ptr[locate(k, j)] = h2 * Load(k * h, j * h);
 
     // left boundary
-    for ( INT j = 2; j < dimen1; ++j )
-        ptr[locate(1, j)] = LeftBdyCond(0, j * h) + h * h * Load(1 * h, j * h);
+    for ( int j = 2; j < dim1; ++j )
+        ptr[locate(1, j)]
+            = LeftBdyCond(0, j * h) + h2 * Load(h, j * h);
 
     // right boundary
-    for ( INT j = 2; j < dimen1; ++j )
-        ptr[locate(dimen - 1, j)] =
-                RightBdyCond(1.0, j * h) + h * h * Load(dimen1 * h, j * h);
+    for ( int j = 2; j < dim1; ++j )
+        ptr[locate(dim - 1, j)]
+            = RightBdyCond(1.0, j * h) + h2 * Load(dim1 * h, j * h);
 
     // lower boundary
-    for ( INT j = 2; j < dimen1; ++j )
-        ptr[locate(j, 1)] = LowerBdyCond(j * h, 0) + h * h * Load(j * h, 1 * h);
+    for ( int j = 2; j < dim1; ++j )
+        ptr[locate(j, 1)]
+            = LowerBdyCond(j * h, 0) + h2 * Load(j * h, h);
 
     // upper boundary
-    for ( INT j = 2; j < dimen1; ++j )
-        ptr[locate(j, dimen1)] =
-            UpperBdyCond(j * h, 1.0) + h * h * Load(j * h, dimen1 * h);
+    for ( int j = 2; j < dim1; ++j )
+        ptr[locate(j, dim1)] =
+            UpperBdyCond(j * h, 1.0) + h2 * Load(j * h, dim1 * h);
 
     // left lower corner
     ptr[locate(1, 1)] =
-        LeftBdyCond(0, h) + LowerBdyCond(h, 0) + h * h * Load(1 * h, 1 * h);
+        LeftBdyCond(0, h) + LowerBdyCond(h, 0) + h2 * Load(h, h);
 
     // left upper corner
-    ptr[locate(1, dimen1)] =
-        LeftBdyCond(0, h * dimen1) + UpperBdyCond(h, 1.0)
-        + h * h * Load(1 * h, dimen1 * h);
+    ptr[locate(1, dim1)] =
+        LeftBdyCond(0, h * dim1) + UpperBdyCond(h, 1.0)
+                                       + h2 * Load(h, dim1 * h);
 
     // right lower corner
-    ptr[locate(dimen1, 1)] =
-        LowerBdyCond(dimen1 * h, 0) + RightBdyCond(1.0, h)
-        + h * h * Load(dimen1 * h, 1 * h);
+    ptr[locate(dim1, 1)] =
+        LowerBdyCond(dim1 * h, 0) + RightBdyCond(1.0, h)
+                                        + h2 * Load(dim1 * h, h);
 
     // right upper corner
-    ptr[locate(dimen1, dimen1)] =
-        UpperBdyCond(dimen1 * h, 1.0) + RightBdyCond(1.0, dimen1 * h)
-        + h * h * Load(dimen1 * h,dimen1 * h);
+    ptr[locate(dim1, dim1)] =
+        UpperBdyCond(dim1 * h, 1.0) + RightBdyCond(1.0, dim1 * h)
+                                          + h2 * Load(dim1 * h,dim1 * h);
 }
 
-// free-matrix 's operator : acting on a VEC object
-void MatFree::Apply(const VEC& x, VEC& y) const {
+/// Matrix-free action on a VEC object.
+void MatFree::Apply(const VEC& x, VEC& y) const
+{
     const DBL *x_val;
     x.GetArray(&x_val);
 
@@ -95,60 +97,60 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
     DBL *y_val;
     y.GetArray(&y_val);
 
-    const INT dimen1 = dimen - 1;
-    INT lower, left, center, right, upper;
+    const int dim1 = dim - 1;
+    int lower, left, center, right, upper;
 
     // interior points
-    for ( INT k = 2; k < dimen - 1; ++k ) {
-        for ( INT j = 2; j < dimen - 1; ++j ) {
-            center = (k - 1) * dimen1 + j - 1;
-            lower  = center - dimen1;
+    for ( int k = 2; k < dim - 1; ++k ) {
+        for ( int j = 2; j < dim - 1; ++j ) {
+            center = (k - 1) * dim1 + j - 1;
+            lower  = center - dim1;
             left   = center - 1;
             right  = center + 1;
-            upper  = center + dimen1;
-            y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center]
-                            -x_val[right] - x_val[upper];
+            upper  = center + dim1;
+            y_val[center] = - x_val[lower] - x_val[left] + 4.0 * x_val[center]
+                            - x_val[right] - x_val[upper];
         }
     }
 
     // lower boundary
-    for ( INT j = 2; j < dimen - 1; ++j ) {
+    for ( int j = 2; j < dim - 1; ++j ) {
         center = j - 1;
         left   = center - 1;
         right  = center + 1;
-        upper  = center + dimen1;
-        y_val[center] = -x_val[left] + 4.0 * x_val[center] - x_val[right] 
-                        -x_val[upper];
+        upper  = center + dim1;
+        y_val[center] = - x_val[left] + 4.0 * x_val[center] - x_val[right]
+                        - x_val[upper];
     }
 
     // upper boundary
-    for ( INT j = 2; j < dimen - 1; ++j ) {
-        center = (dimen - 2) * dimen1 + j - 1;
-        lower  = center - dimen1;
+    for ( int j = 2; j < dim - 1; ++j ) {
+        center = (dim - 2) * dim1 + j - 1;
+        lower  = center - dim1;
         left   = center - 1;
         right  = center + 1;
-        y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center] 
-                        -x_val[right];
+        y_val[center] = - x_val[lower] - x_val[left] + 4.0 * x_val[center]
+                        - x_val[right];
     }
 
     // left boundary
-    for ( INT k = 2; k < dimen - 1; ++k ) {
-        center = (k - 1) * dimen1;
-        lower  = center - dimen1;
+    for ( int k = 2; k < dim - 1; ++k ) {
+        center = (k - 1) * dim1;
+        lower  = center - dim1;
         right  = center + 1;
-        upper  = center + dimen1;
-        y_val[center] = -x_val[lower] + 4.0 * x_val[center] - x_val[right]
-                        -x_val[upper];
+        upper  = center + dim1;
+        y_val[center] = - x_val[lower] + 4.0 * x_val[center] - x_val[right]
+                        - x_val[upper];
     }
 
     // right boundary
-    for ( INT k = 2; k < dimen - 1; ++k ) {
-        center = (k - 1) * dimen1 + dimen - 2;
-        lower  = center - dimen1;
+    for ( int k = 2; k < dim - 1; ++k ) {
+        center = (k - 1) * dim1 + dim - 2;
+        lower  = center - dim1;
         left   = center - 1;
-        upper  = center + dimen1;
-        y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center]
-                        -x_val[upper];
+        upper  = center + dim1;
+        y_val[center] = - x_val[lower] - x_val[left] + 4.0 * x_val[center]
+                        - x_val[upper];
     }
 
     // left lower corner
@@ -158,27 +160,27 @@ void MatFree::Apply(const VEC& x, VEC& y) const {
     y_val[center] = 4.0 * x_val[center] - x_val[right] - x_val[upper];
 
     // left upper corner
-    left   = locate(1, dimen - 2);
-    center = locate(1, dimen - 1);
-    right  = locate(2, dimen - 1);
-    y_val[center] = -x_val[left] + 4.0 * x_val[center] - x_val[right];
+    left   = locate(1, dim - 2);
+    center = locate(1, dim - 1);
+    right  = locate(2, dim - 1);
+    y_val[center] = - x_val[left] + 4.0 * x_val[center] - x_val[right];
 
     // right lower corner
-    lower  = locate(dimen - 2, 1);
-    center = locate(dimen - 1, 1);
-    right  = locate(dimen - 1, 2);
-    y_val[center] = -x_val[lower] + 4.0 * x_val[center] - x_val[right];
+    lower  = locate(dim - 2, 1);
+    center = locate(dim - 1, 1);
+    right  = locate(dim - 1, 2);
+    y_val[center] = - x_val[lower] + 4.0 * x_val[center] - x_val[right];
 
     // right upper corner
-    lower  = locate(dimen - 2, dimen - 1);
-    left   = locate(dimen - 1, dimen - 2);
-    center = locate(dimen - 1, dimen - 1);
-    y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center];
+    lower  = locate(dim - 2, dim - 1);
+    left   = locate(dim - 1, dim - 2);
+    center = locate(dim - 1, dim - 1);
+    y_val[center] = - x_val[lower] - x_val[left] + 4.0 * x_val[center];
 }
 
-int main(int argc, char *args[]) {
-
-    INT mesh = 1; // number of mesh refinement cycles
+int main(int argc, char *args[])
+{
+    int mesh = 1; // number of mesh refinement cycles
     DBL h = 0.0; // mesh size in X and Y directions
     GetWallTime timer;
 
@@ -189,33 +191,32 @@ int main(int argc, char *args[]) {
 
     while ( mesh < numTotalMesh ) {
 
-        h = 1.0 / dimen;
-        std::cout << "(dimen-1)*(dimen-1) : " << (dimen - 1) * (dimen - 1)
-                  << std::endl;
+        h = 1.0 / dim;
+
+        std::cout << "(dim-1)*(dim-1) : " << (dim - 1) * (dim - 1) << std::endl;
 
         // apply for new memory space and try to catch error
-        if (ptr != nullptr) delete[] ptr;
+        if ( ptr != nullptr ) delete[] ptr;
         try {
-            ptr = new DBL[(dimen - 1) * (dimen - 1)];
+            ptr = new DBL[(dim - 1) * (dim - 1)];
         } catch (std::bad_alloc &ex) {
             markAllocDone = false;
-            std::cout << "bad allocation" << std::endl;
+            std::cout << "Bad allocation" << std::endl;
             break;
         }
 
-        // compute rhs
-        Rhs(dimen, ptr);
+        // compute AssembleRHS
+        AssembleRHS(dim, ptr);
 
         // create b and x and assign values to them
-        b.SetValues((dimen - 1) * (dimen - 1), ptr);
-        x.SetValues((dimen - 1) * (dimen - 1), 0.25);
+        b.SetValues((dim - 1) * (dim - 1), ptr);
+        x.SetValues((dim - 1) * (dim - 1), 0.25);
 
         // create free-matrix object
-        MatFree matfree((dimen-1)*(dimen-1), (dimen-1)*(dimen-1));
+        MatFree matfree((dim-1)*(dim-1), (dim-1)*(dim-1));
 
         // create PCG object
         CG cg;
-        // convergence parameter setting
         cg.SetOutput(PRINT_NONE);
         cg.SetMaxIter(100000);
         cg.SetRestart(20);
@@ -227,9 +228,9 @@ int main(int argc, char *args[]) {
         Identity pc;
         cg.SetPC(&pc);
 
-        // time
+        // call CG method to solve Ax=b
         timer.Start();
-        cg.Solve(b, x); // solve by free-matrix method
+        cg.Solve(b, x);
         std::cout << "Solving Ax=b costs "
                   << std::fixed << std::setprecision(3)
                   << timer.Stop() << "ms" << std::endl;
@@ -245,17 +246,18 @@ int main(int argc, char *args[]) {
         DBL norm2; // L2-norm of error
         DBL norm2Last; // L2-norm of error in previous step
 
+        // apply quadrature rule to compute L2-norm!
         norm2 = 0.0;
-        for (INT j = 1; j <= dimen - 1; ++j) {
-            for (INT k = 1; k <= dimen - 1; ++k) {
+        for ( int j = 1; j <= dim - 1; ++j ) {
+            for ( int k = 1; k <= dim - 1; ++k ) {
                 norm2 += pow(fabs(x[locate(j, k)] - ExactSolu(j * h, k * h)), 2.0);
             }
         }
-        norm2 *= h * h; // use quadrature rule to compute L2-norm!
+        norm2 *= h * h;
 
         std::cout << "L2 norm of error : "
                   << std::scientific << std::setprecision(4) << sqrt(norm2);
-        if (mesh == 1) {
+        if ( mesh == 1 ) {
             std::cout << std::endl;
         } else {
             std::cout << ", Convergence rate : "
@@ -263,8 +265,9 @@ int main(int argc, char *args[]) {
                       << log(sqrt(norm2Last) / sqrt(norm2)) / log(2) << std::endl;
         }
 
+        // prepare a refined mesh
         norm2Last = norm2; // store the previous error in L2-norm
-        dimen *= 2; // refine the grid
+        dim *= 2; // refine the grid
         ++mesh;
     } // end while
 
