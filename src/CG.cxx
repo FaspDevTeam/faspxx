@@ -116,7 +116,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
         resAbs1 = resAbs2;
         resAbs2 = rk.Norm2();
         if(resAbs1 > resAbs2 && (numIter == sumvalue + randvalue
-                                || numIter == maxIter -1 )) {
+                                || numIter == maxIter )) {
             randvalue = rand() % total + 1;
             sumvalue += total;
             safe_guard = x;
