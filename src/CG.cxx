@@ -25,6 +25,7 @@ FaspRetCode CG::Setup(const LOP &A)
         pk.SetValues(len, 0.0);
         rk.SetValues(len, 0.0);
         ax.SetValues(len, 0.0);
+        safe_guard.SetValues(len,0.0);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
@@ -63,24 +64,25 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     const double solStagTol = 1e-4 * relTol; // solution stagnation tolerance
     const double solZeroTol = 1e-20; // solution close to zero tolerance
     unsigned stagStep = 0, moreStep = 0;
-    double resAbs, tmpAbs, resRel, denAbs;
+    double resAbs1,resAbs2, tmpAbs, resRel, denAbs;
     double factor, alpha, beta, tmpa, tmpb;
 
     // Initialize iterative method
     numIter = 0;
+    safe_guard = x;
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
     pc->Solve(rk, zk); // preconditioning: B(r_k) -> z_k
 
     // Compute initial residual
-    resAbs = rk.Norm2();
-    denAbs = (1e-20 > resAbs) ? 1e-20 : resAbs;
-    resRel = resAbs / denAbs;
-    tmpAbs = resAbs; // save residual for the next iteration
+    resAbs2 = rk.Norm2();
+    denAbs = (1e-20 > resAbs2) ? 1e-20 : resAbs2;
+    resRel = resAbs2 / denAbs;
+    tmpAbs = resAbs2; // save residual for the next iteration
 
     // If initial residual is very small, no need to iterate
-    PrintInfo(numIter, resRel, resAbs, 0.0);
-    if ( resRel < relTol || resAbs < absTol ) goto FINISHED;
+    PrintInfo(numIter, resRel, resAbs2, 0.0);
+    if ( resRel < relTol || resAbs2 < absTol ) goto FINISHED;
 
     // Prepare for the main loop
     pk = zk;
@@ -107,10 +109,12 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
         rk.AXPY(-alpha, ax); // r_k = r_{k-1} - alpha_k*A*p_{k-1}
 
         // Compute norm of residual and output iteration information if needed
-        resAbs = rk.Norm2();
-        resRel = resAbs / denAbs;
-        factor = resAbs / tmpAbs;
-        PrintInfo(numIter, resRel, resAbs, factor);
+        resAbs1 = resAbs2;
+        resAbs2 = rk.Norm2();
+        if(resAbs1>resAbs2) safe_guard=x;
+        resRel = resAbs2 / denAbs;
+        factor = resAbs2 / tmpAbs;
+        PrintInfo(numIter, resRel, resAbs2, factor);
 
         // Apply stagnation checks if it converges slowly
         if ( factor > 0.95 && numIter > minIter ) {
@@ -129,8 +133,8 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
                 // Compute and update the residual before restart
                 A->Apply(x, this->rk);
                 this->rk.XPAY(-1.0, b);
-                resAbs = this->rk.Norm2();
-                resRel = resAbs / denAbs;
+                resAbs2 = this->rk.Norm2();
+                resRel = resAbs2 / denAbs;
                 if ( verbose > PRINT_SOME ){
                     WarnRealRes(resRel);
                     std::cout<<_FASPXX_LOCATION_<<std::endl;
@@ -163,8 +167,8 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 
             // Compute residual norms and check convergence
             double resRelOld = resRel;
-            resAbs = rk.Norm2();
-            resRel = resAbs / denAbs;
+            resAbs2 = rk.Norm2();
+            resRel = resAbs2 / denAbs;
             if ( resRel < relTol ) break;
 
             // If false converged, print out warning messages
@@ -189,7 +193,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
         // Prepare for the next iteration
         if ( numIter < maxIter ) {
             // Save residual for next iteration
-            tmpAbs = resAbs;
+            tmpAbs = resAbs2;
 
             // Apply preconditioner z_k = B(r_k)
             pc->Solve(rk, zk);
@@ -206,9 +210,10 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     } // End of main CG loop
 
 FINISHED: // Finish iterative method
-    this->norm2   = resAbs;
+    this->norm2   = resAbs2;
     this->normInf = rk.NormInf();
     if ( verbose > PRINT_NONE ) PrintFinal();
+    x=safe_guard;
 
     return errorCode;
 }

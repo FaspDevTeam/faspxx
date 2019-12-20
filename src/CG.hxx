@@ -25,14 +25,15 @@ class CG: public SOL
 {
 
 private:
-    VEC rk; ///< work vector for residual
-    VEC pk; ///< work vector for preconditioned residual
-    VEC zk; ///< work vector for search direction
-    VEC ax; ///< work vector for A * pk
+    VEC rk;           ///< work vector for residual
+    VEC pk;           ///< work vector for preconditioned residual
+    VEC zk;           ///< work vector for search direction
+    VEC ax;           ///< work vector for A * pk
+    VEC safe_guard;   ///< safe solver
 
 public:
     /// Default constructor.
-    CG() : rk(0), pk(0), zk(0), ax(0){};
+    CG() : rk(0), pk(0), zk(0), ax(0),safe_guard(0){};
 
     /// Default destructor.
     ~CG(){};

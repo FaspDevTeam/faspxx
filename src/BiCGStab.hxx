@@ -35,12 +35,13 @@ private:
     VEC stmp;
     VEC mp;
     VEC ms;
+    VEC safe_guard;
 
 public:
     /// Default constructor。
     BiCGStab() : r0star(0), tmp(0), apj(0), asj(0), pj(0),
                  rj(0), sj(0), ptmp(0), stmp(0), mp(0),
-                 ms(0) { };
+                 ms(0),safe_guard(0) { };
 
     /// Default destructor。
     ~BiCGStab() {};

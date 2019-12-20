@@ -28,6 +28,9 @@ FaspRetCode BiCGStab::Setup(const LOP &A) {
         sj.SetValues(len, 0.0);
         ptmp.SetValues(len, 0.0);
         stmp.SetValues(len, 0.0);
+        ms.SetValues(len,0.0);
+        mp.SetValues(len,0.0);
+        safe_guard.SetValues(len,0.0);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
@@ -63,25 +66,26 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
     const double solStagTol = 1e-4 * relTol; // solution stagnation tolerance
     const double solZeroTol = 1e-20; // solution close to zero tolerance
     unsigned stagStep = 0, moreStep = 0;
-    double resAbs, tmpAbs, resRel, denAbs;
+    double resAbs1, resAbs2, tmpAbs, resRel, denAbs;
     double alphaj, betaj, rjr0star, rjr0startmp, omegaj;
     double tmp12, factor;
 
     // Initialize iterative method
     numIter = 0;
+    safe_guard = x;
     // r0 = b - A * x_{0}
     A->Apply(x, this->tmp);
     this->rj.WAXPBY(1.0, b, -1.0, this->tmp);
 
     // Compute initial residual
-    resAbs = this->rj.Norm2();
-    denAbs = (1e-20 > resAbs) ? 1e-20 : resAbs;
-    resRel = resAbs / denAbs;
-    tmpAbs = resAbs; // save residual for the next iteration
+    resAbs2 = this->rj.Norm2();
+    denAbs = (1e-20 > resAbs2) ? 1e-20 : resAbs2;
+    resRel = resAbs2 / denAbs;
+    tmpAbs = resAbs2; // save residual for the next iteration
 
     // If initial residual is very small, no need to iterate
     PrintInfo(numIter, resRel, tmpAbs, 0.0);
-    if ( resRel < relTol || resAbs < absTol ) goto FINISHED;
+    if ( resRel < relTol || resAbs2 < absTol ) goto FINISHED;
 
     // Prepare for the main loop
     // r0_{*} = r0c
@@ -129,10 +133,12 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
         this->rj.WAXPBY(1.0, this->sj, -omegaj, this->stmp);
 
         // Compute norm of residual and output iteration information if needed
-        resAbs = this->rj.Norm2();
-        resRel = resAbs / denAbs;
-        factor = resAbs / tmpAbs;
-        PrintInfo(numIter, resRel, resAbs, factor);
+        resAbs1 = resAbs2;
+        resAbs2 = this->rj.Norm2();
+        if(resAbs1 > resAbs2) safe_guard=x;
+        resRel = resAbs2 / denAbs;
+        factor = resAbs2 / tmpAbs;
+        PrintInfo(numIter, resRel, resAbs2, factor);
 
         // Apply stagnation checks if it converges slowly
         if ( factor > 0.95 && numIter > minIter ) {
@@ -151,8 +157,8 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
                 // Compute and update the residual before restart
                 A->Apply(x, this->rj);
                 this->rj.XPAY(-1.0, b);
-                resAbs = this->rj.Norm2();
-                resRel = resAbs / denAbs;
+                resAbs2 = this->rj.Norm2();
+                resRel = resAbs2 / denAbs;
                 if ( verbose > PRINT_SOME ){
                     WarnRealRes(resRel);
                     std::cout<<_FASPXX_LOCATION_<<std::endl;
@@ -185,8 +191,8 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
 
             // Compute residual norms and check convergence
             double resRelOld = resRel;
-            resAbs = rj.Norm2();
-            resRel = resAbs / denAbs;
+            resAbs2 = rj.Norm2();
+            resRel = resAbs2 / denAbs;
             if ( resRel < relTol ) break;
 
             if ( verbose >= PRINT_MORE ) {
@@ -210,7 +216,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
         // Prepare for the next iteration
         if ( numIter < maxIter ) {
             // Save residual for next iteration
-            tmpAbs = resAbs;
+            tmpAbs = resAbs2;
 
             // Compute betaj = (r_{j+1},r0^{*})/(r_{j},r0^{*}) *
             // \frac{alpha_{j}}{omega_{j}}
@@ -226,9 +232,10 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
     } // End of main PCG loop
 
 FINISHED: // Finish iterative method
-    this->norm2 = resAbs;
+    this->norm2 = resAbs2;
     this->normInf = rj.NormInf();
     if ( verbose > PRINT_NONE ) PrintFinal();
+    safe_guard=x;
 
     return errorCode;
 }
