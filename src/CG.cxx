@@ -115,7 +115,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
         // Compute norm of residual and output iteration information if needed
         resAbs1 = resAbs2;
         resAbs2 = rk.Norm2();
-        if(resAbs1 > resAbs2 && (numIter == sumvalue + randvalue
+        if(numIter > minIter && resAbs1 > resAbs2 && (numIter == sumvalue + randvalue
                                 || numIter == maxIter )) {
             randvalue = rand() % total + 1;
             sumvalue += total;
