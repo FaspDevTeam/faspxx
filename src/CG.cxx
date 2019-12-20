@@ -66,10 +66,14 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     unsigned stagStep = 0, moreStep = 0;
     double resAbs1,resAbs2, tmpAbs, resRel, denAbs;
     double factor, alpha, beta, tmpa, tmpb;
+    int randvalue, sumvalue;
 
     // Initialize iterative method
     numIter = 0;
+    randvalue = rand() % total + 1;
+    sumvalue = 0;
     safe_guard = x;
+
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
     pc->Solve(rk, zk); // preconditioning: B(r_k) -> z_k
@@ -111,7 +115,12 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
         // Compute norm of residual and output iteration information if needed
         resAbs1 = resAbs2;
         resAbs2 = rk.Norm2();
-        if(resAbs1>resAbs2) safe_guard=x;
+        if(resAbs1 > resAbs2 && (numIter == sumvalue + randvalue
+                                || numIter == maxIter -1 )) {
+            randvalue = rand() % total + 1;
+            sumvalue += total;
+            safe_guard = x;
+        }
         resRel = resAbs2 / denAbs;
         factor = resAbs2 / tmpAbs;
         PrintInfo(numIter, resRel, resAbs2, factor);

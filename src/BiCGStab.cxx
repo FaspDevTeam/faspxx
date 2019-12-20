@@ -69,10 +69,12 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
     double resAbs1, resAbs2, tmpAbs, resRel, denAbs;
     double alphaj, betaj, rjr0star, rjr0startmp, omegaj;
     double tmp12, factor;
+    int sumvalue, randvalue;
 
     // Initialize iterative method
     numIter = 0;
     safe_guard = x;
+    randvalue = rand() % total + 1;
     // r0 = b - A * x_{0}
     A->Apply(x, this->tmp);
     this->rj.WAXPBY(1.0, b, -1.0, this->tmp);
@@ -135,7 +137,12 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
         // Compute norm of residual and output iteration information if needed
         resAbs1 = resAbs2;
         resAbs2 = this->rj.Norm2();
-        if(resAbs1 > resAbs2) safe_guard=x;
+        if(resAbs1 > resAbs2 && (numIter == sumvalue + randvalue
+                                 || numIter == maxIter -1 )) {
+            randvalue = rand() % total + 1;
+            sumvalue += total;
+            safe_guard = x;
+        }
         resRel = resAbs2 / denAbs;
         factor = resAbs2 / tmpAbs;
         PrintInfo(numIter, resRel, resAbs2, factor);

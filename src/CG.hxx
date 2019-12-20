@@ -30,10 +30,12 @@ private:
     VEC zk;           ///< work vector for search direction
     VEC ax;           ///< work vector for A * pk
     VEC safe_guard;   ///< safe solver
+    int total;
 
 public:
     /// Default constructor.
-    CG() : rk(0), pk(0), zk(0), ax(0),safe_guard(0){};
+    CG() : rk(0), pk(0), zk(0), ax(0),safe_guard(0),
+        total(6){};
 
     /// Default destructor.
     ~CG(){};
