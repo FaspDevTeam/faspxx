@@ -16,27 +16,15 @@ Development
 [ 0.1.0 ] Add basic data classes: LOP, MAT, VEC
 [ 0.1.0 ] Add basic iterative method: PCG
 [ 0.1.1 ] Add basic preconditioner class: PCD
-[ 0.1.1 ] Add basic preconditioners: Id, Diag
-[ 0.1.2 ] Add triangular solvers and GS
-[ 0.1.3 ] Add more preconditioners: SGS, SSOR
-[ 0.1.4 ] Add parameters for solvers: ParamIter, ParamKrylov, ParamPCG
-[ 0.1.5 ] Add more iterative method: BiCGstab
-[ 0.1.6 ] Add more iterative method: GMRES, FGMRES, vFGMRES
-[ 0.1.7 ] Add more iterative method: MinRes
-[ 0.1.8 ] Add more iterative method: GCR
-[ 0.2.0 ] Add parallel data classes: MAP, ParLOP, ParMAT, ...
-[ 0.2.1 ] Add parallel iterative method: PCG
-[ 0.2.1 ] Add parallel preconditioner class: PCD
-[ 0.2.1 ] Add parallel preconditioners: Id, Diag
-[ 0.2.2 ] Add parallel triangular solvers and GS
-[ 0.2.3 ] Add more parallel preconditioners: SGS, SSOR
-[ 0.2.5 ] Add more parallel iterative method: BiCGstab
-[ 0.2.6 ] Add more parallel iterative method: GMRES, FGMRES, vFGMRES
-[ 0.2.7 ] Add more parallel iterative method: MinRes
-[ 0.2.8 ] Add more parallel iterative method: GCR
+[ 0.1.5 ] Add more iterative method: BiCGStab
+[       ] Add parallel information class: MAP
+[       ] Add parallel basic data classes: ParLOP, ParMAT, ...
+[       ] Add parallel iterative method: PCG
+[       ] Add parallel preconditioner class: PCD
 
 ========================
 Documentation
 ========================
 
 [ 0.1.0 ] Add Doxygen setting file
+[ 0.2.0 ] Fix Doxygen comments
