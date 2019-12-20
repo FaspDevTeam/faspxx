@@ -35,7 +35,7 @@ private:
 public:
     /// Default constructor.
     CG() : rk(0), pk(0), zk(0), ax(0),safe_guard(0),
-        total(6){};
+        total(10){};
 
     /// Default destructor.
     ~CG(){};
