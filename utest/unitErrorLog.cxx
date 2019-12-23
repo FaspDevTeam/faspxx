@@ -9,23 +9,24 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include "ErrorLog.hxx"
 #include <gtest/gtest.h>
+#include "ErrorLog.hxx"
 
 /// Test three functions for error logging
-TEST(ErrorLog, ErrorLog_E_Test)
+TEST(ErrorLog, ABORT)
 {
-    int* tmp = NULL;
-    if ( tmp == NULL )
-        FASPXX_ASSERT(1==2, "This is an assert test!");
-
-    if ( tmp == NULL )
-    FASPXX_WARNING("This is a warning test!");
-
-    if ( tmp == NULL )
-    FASPXX_ABORT("This is an abort test!");
+    ASSERT_DEATH({FASPXX_ABORT("This is an abort test!");}, "");
 }
 
+TEST(ErrorLog, ASSERT)
+{
+    FASPXX_ASSERT(1==2, "This is an assert test!");
+}
+
+TEST(ErrorLog, WARNING)
+{
+    FASPXX_WARNING("This is a warning test!");
+}
 
 /*---------------------------------*/
 /*--        End of File          --*/
