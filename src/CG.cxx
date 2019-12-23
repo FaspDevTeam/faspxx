@@ -124,7 +124,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
             if ( numIter >= safeIter && resAbs < resAbsOld ) safe = x;
 
             // Apply stagnation checks if it converges slowly
-            if ( ratio > 0.95 ) {
+            if ( ratio > KSM_CHK_RATIO ) {
                 // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
                 double xNormInf = x.NormInf();
                 if ( xNormInf < solZeroTol ) {
