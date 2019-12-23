@@ -65,6 +65,10 @@ target_link_libraries(testReadData faspxx)
 add_executable(testErrorLog example/testErrorLog.cxx)
 target_link_libraries(testErrorLog faspxx)
 
+# Test Krylov methods
+add_executable(testKrylov example/testKrylov.cxx)
+target_link_libraries(testKrylov faspxx)
+
 # Test CG class
 add_executable(testCG example/testCG.cxx)
 target_link_libraries(testCG faspxx)
