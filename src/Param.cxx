@@ -17,18 +17,18 @@
 
 void Parameters::SaveOriginalUserParams(std::string& save) const {
     int max_len = 0;
-    for (const auto& itm: params_user) {
-        if (itm.paramName.length() > max_len) max_len = itm.paramName.length();
+    for ( const auto& itm: paramsUser ) {
+        if ( itm.paramName.length() > max_len ) max_len = itm.paramName.length();
     }
 
     std::ostringstream out;
     static std::string indent = "   ";
-    out << "\nOriginal user parameters in program:\n";
-    out << "---------------------------------------------------\n";
+    out << "Original parameters in user program:\n"
+        << "---------------------------------------------\n";
 
-    for (auto& itm: params_user) {
-        out << indent << std::setw(max_len) << std::left << itm.paramName << " : ";
-        switch (itm.paramType) {
+    for ( auto& itm: paramsUser ) {
+        out << indent << std::setw(max_len) << std::left << itm.paramName << " [";
+        switch ( itm.paramType ) {
             case BoolType:
                 out << std::boolalpha << *((bool *) (itm.paramPtr))
                     << std::resetiosflags(out.flags());
@@ -46,7 +46,7 @@ void Parameters::SaveOriginalUserParams(std::string& save) const {
                 out << *((Output *) (itm.paramPtr));
                 break;
         }
-        out << '\n';
+        out << "]\n";
     }
     out << '\n';
     save = out.str();
@@ -64,21 +64,21 @@ void Parameters::ReadCommandLineParams()
         }
 
         // each param is a key-value pair of a Dictionary
-        params_command.insert(std::pair<std::string, std::string>(argv[i], argv[i+1]));
+        paramsCML.insert(std::pair<std::string, std::string>(argv[i], argv[i+1]));
         ++i;
     }
 }
 
 void Parameters::ReadFileParams()
 {
-    for (auto& itm: params_user) {
+    for (auto& itm: paramsUser) {
         if (itm.paramMarker == 2)
         {
             std::ifstream file;
 
             // first try to find param_file from command line params
-            if (params_command.find(itm.paramName) != params_command.end()) {
-                file.open(params_command.find(itm.paramName)->second);
+            if (paramsCML.find(itm.paramName) != paramsCML.end()) {
+                file.open(paramsCML.find(itm.paramName)->second);
             }
             else {
                 file.open(*((std::string*)itm.paramPtr)); // second try to find param_file from user program
@@ -90,7 +90,7 @@ void Parameters::ReadFileParams()
             while (std::getline(file, line)) {
                 if (ProcessLine(line, name, value)) {
                     // each param is a key-value pair of a Dictionary
-                    params_file.insert(std::pair<std::string, std::string>(name, value));
+                    paramsFile.insert(std::pair<std::string, std::string>(name, value));
                 }
             }
             file.close();
@@ -102,12 +102,12 @@ void Parameters::ReadFileParams()
 void Parameters::MergeParams()
 {
     std::map<std::string, std::string>::iterator iter;
-    for (auto& prm: params_user) {
-        iter = params_file.find(prm.paramName);
-        if (iter != params_file.end()) UpdateParamValue(iter, prm);
+    for (auto& prm: paramsUser) {
+        iter = paramsFile.find(prm.paramName);
+        if (iter != paramsFile.end()) UpdateParamValue(iter, prm);
 
-        iter = params_command.find(prm.paramName);
-        if (iter != params_command.end()) UpdateParamValue(iter, prm);
+        iter = paramsCML.find(prm.paramName);
+        if (iter != paramsCML.end()) UpdateParamValue(iter, prm);
     }
 }
 
@@ -132,89 +132,89 @@ void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& 
 }
 
 void Parameters::AddParam(const std::string& name, const std::string& help, bool * ptr, int marker) {
-    params_user.push_back(ParamHolder(BoolType, name, help, ptr, marker));
+    paramsUser.push_back(ParamHolder(BoolType, name, help, ptr, marker));
 }
 
 void Parameters::AddParam(const std::string& name, const std::string& help, int * ptr, int marker) {
-    params_user.push_back(ParamHolder(IntType, name, help,
+    paramsUser.push_back(ParamHolder(IntType, name, help,
                                       ptr, marker));
 }
 
 void Parameters::AddParam(const std::string& name, const std::string& help, double * ptr, int marker) {
-    params_user.push_back(ParamHolder(DoubleType, name, help,
+    paramsUser.push_back(ParamHolder(DoubleType, name, help,
                                       ptr, marker));
 }
 
 void Parameters::AddParam(const std::string& name, const std::string& help, std::string * ptr, int marker) {
-    params_user.push_back(ParamHolder(StringType, name, help,
+    paramsUser.push_back(ParamHolder(StringType, name, help,
                                       ptr, marker));
 }
 
 void Parameters::AddParam(const std::string& name, const std::string& help, Output * ptr, int marker) {
-    params_user.push_back(ParamHolder(OutputType, name, help, ptr, marker));
+    paramsUser.push_back(ParamHolder(OutputType, name, help, ptr, marker));
 }
 
 void Parameters::Parse()
 {
     ReadCommandLineParams();
     ReadFileParams();
-    SaveOriginalUserParams(original_params_user);
+    SaveOriginalUserParams(paramsUserOrg);
     MergeParams();
 }
 
 void Parameters::PrintFileParams(std::ostream& out) const {
     int max_len = 0;
-    for (const auto& itm: params_file) {
+    for ( const auto& itm: paramsFile ) {
         if (itm.first.length() > max_len) max_len = itm.first.length();
     }
 
     std::string options_file;
-    for (const auto& itm: params_user) {
-        if (itm.paramMarker == 2) options_file = *(std::string * )itm.paramPtr;
+    for ( const auto& itm: paramsUser ) {
+        if ( itm.paramMarker == 2 ) options_file = *(std::string * )itm.paramPtr;
     }
 
     static std::string indent = "   ";
-    out << "\nParameters from file: " << options_file << '\n';
-    out << "---------------------------------------------------\n";
-    for (const auto& itm: params_file) {
+    out << "Parameters from file " << options_file << ":\n"
+        << "---------------------------------------------\n";
+    for ( const auto& itm: paramsFile ) {
         out << indent << std::setw(max_len) << std::left
-            << itm.first << " : " << itm.second << '\n';
+            << itm.first << " [" << itm.second << "]\n";
     }
     out << std::endl;
 }
 
 void Parameters::PrintCommandLineParams(std::ostream& out) const {
     int max_len = 0;
-    for (const auto& itm: params_command) {
+    for ( const auto& itm: paramsCML ) {
         if (itm.first.length() > max_len) max_len = itm.first.length();
     }
 
     static std::string indent = "   ";
-    out << "\nParameters from command line:\n";
-    out << "---------------------------------------------------\n";
-    for (const auto& itm: params_command) {
+    out << "Parameters from the command line input:\n"
+        << "---------------------------------------------\n";
+    for (const auto& itm: paramsCML) {
         out << indent << std::setw(max_len) << std::left
-            << itm.first << " : " << itm.second << '\n';
+            << itm.first << " [" << itm.second << "]\n";
     }
     out << std::endl;
 }
 
 void Parameters::PrintUserParams(std::ostream &out) const {
-    out << original_params_user << std::endl;
+    out << paramsUserOrg << std::endl;
 }
 
 void Parameters::Print(std::ostream &out) const {
     int max_len = 0;
-    for (const auto& itm: params_user) {
-        if (itm.paramName.length() > max_len) max_len = itm.paramName.length();
+    for ( const auto& itm: paramsUser ) {
+        if ( itm.paramName.length() > max_len ) max_len = itm.paramName.length();
     }
 
     static std::string indent = "   ";
-    out << "\nUsed parameters in program:\n";
-    out << "---------------------------------------------------\n";
+    out << "Parameters used in program:\n"
+        << "---------------------------------------------\n";
 
-    for (auto& itm: params_user) {
-        out << indent << std::setw(max_len) << std::left << itm.paramName << " : ";
+    for ( auto& itm: paramsUser ) {
+        out << indent << std::setw(max_len) << std::left << itm.paramName << " [";
         switch (itm.paramType) {
             case BoolType:
                 out << std::boolalpha << *((bool *) (itm.paramPtr))
@@ -233,7 +233,7 @@ void Parameters::Print(std::ostream &out) const {
                 out << *((Output *) (itm.paramPtr));
                 break;
         }
-        out << '\n';
+        out << "]\n";
     }
     out << '\n';
 }
@@ -248,7 +248,7 @@ void Parameters::PrintHelp(std::ostream &out) const
     out << indent << std::setw(21) << std::left
         << "-h, --help" << "              : print help information and exit\n";
 
-    for (const auto& prm: params_user ) {
+    for (const auto& prm: paramsUser ) {
         ParamType type = prm.paramType;
         out << indent << std::setw(12) << std::left << prm.paramName
             << " " << std::setw(8) << types[type];

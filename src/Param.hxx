@@ -31,8 +31,10 @@ enum Output {
     PRINT_ALL  = 10  // all possible output
 };
 
-/// Command line parameters
+/// Solver parameters
 class Parameters {
+    // parameter priority: command line > param file > user program
+
 private:
     /// Possible parameter types
     enum ParamType {
@@ -45,30 +47,32 @@ private:
 
     /// Each parameter is stored in a holder
     struct ParamHolder {
-        ParamType paramType;    ///< Type of parameter
-        std::string    paramName;    ///< Name of parameter
-        std::string    paramHelp;    ///< Help message
-        void *    paramPtr;     ///< Pointer to parameter data todo: change to string?
-        int       paramMarker=0;  ///< default 0 for optional, 1 for required, 2 for indicating params file
+        ParamType    paramType;      ///< Type of parameter
+        std::string  paramName;      ///< Name of parameter
+        std::string  paramHelp;      ///< Help message
+        void *       paramPtr;       ///< Pointer to parameter data
+        int          paramMarker=0;  ///< 0: optional, 1: required, 2: params file
 
-        ParamHolder(ParamType type, std::string name, std::string help, void * ptr, int marker)
-                : paramType(type), paramName(name), paramHelp(help), paramPtr(ptr), paramMarker(marker) {}
+        ParamHolder(ParamType type, std::string name, std::string help,
+                    void * ptr, int marker)
+                   :paramType(type), paramName(name), paramHelp(help),
+                    paramPtr(ptr), paramMarker(marker) {}
     };
 
-    // parameters priority: params in command line > params in file > params in user program
-    std::map<std::string, std::string> params_command, params_file;
-    std::vector<ParamHolder> params_user; // params in user program, like defined in main()
-    std::string original_params_user; // params in user program before merge
+    std::map<std::string, std::string>   paramsCML;     ///< Params from command line
+    std::map<std::string, std::string>   paramsFile;    ///< Params from file
+    std::vector<ParamHolder>             paramsUser;    ///< Params in user code
+    std::string                          paramsUserOrg; ///< Old params in user code
 
-    int      argc;                   ///< number of command-line arguments
-    char   **argv;                   ///< command-line arguments
+    int      argc;    ///< number of command-line arguments
+    char   **argv;    ///< command-line arguments
 
 private:
     /* Read all parameters from command line and save them into a Dictionary.
      * For each param, it becomes a key-value pair of the Dictionary.
      * e.g.:
      *  in command line: -mat /home/temp1/a.csr
-     *  key == string("-mat"), value == string("/home/temp1/a.csr"), add into Dictionary params_command
+     *  key == string("-mat"), value == string("/home/temp1/a.csr"), add into Dictionary paramsCML
      * */
     void ReadCommandLineParams();
 
@@ -76,7 +80,7 @@ private:
      * For each param, it becomes a key-value pair of the Dictionary.
      * e.g.:
      *  in file: -mat /home/temp1/a.csr
-     *  key == string("-mat"), value == string("/home/temp1/a.csr"), add into Dictionary params_file
+     *  key == string("-mat"), value == string("/home/temp1/a.csr"), add into Dictionary paramsFile
      * */
     void ReadFileParams();
 
