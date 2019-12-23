@@ -18,7 +18,6 @@
 #include "unitVEC.cxx"
 #include "unitMAT.cxx"
 #include "unitParam.cxx"
-#include "unitErrorLog.cxx"
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/

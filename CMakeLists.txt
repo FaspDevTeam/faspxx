@@ -61,10 +61,6 @@ target_link_libraries(testVecSpeed faspxx)
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
 
-# Test ErrorLog message
-add_executable(testErrorLog example/testErrorLog.cxx)
-target_link_libraries(testErrorLog faspxx)
-
 # Test CG class
 add_executable(testCG example/testCG.cxx)
 target_link_libraries(testCG faspxx)
