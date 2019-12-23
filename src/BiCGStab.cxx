@@ -17,6 +17,8 @@
 FaspRetCode BiCGStab::Setup(const LOP &A) {
     const INT len = A.GetColSize();
 
+    this->SetSolType(SOLType::BICGSTAB);
+
     // Allocate memory for temporary vectors
     try {
         r0star.SetValues(len, 0.0);

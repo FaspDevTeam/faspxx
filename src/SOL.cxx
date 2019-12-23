@@ -162,15 +162,15 @@ int SOL::GetIterations() const
 /// Print parameters
 void SOL::PrintParam(std::ostream& out) const
 {
-    out << "\nParameters for iterative method: \n"
-        << "-----------------------------------\n"
-        << "  Max num of iteration: " << maxIter << '\n'
-        << "  Min num of iteration: " << minIter << '\n'
-        << "  Relative tolerance:   " << relTol  << '\n'
-        << "  Absolute tolerance:   " << absTol  << '\n'
-        << "  Restart number:       " << restart << '\n'
-        << "  Output level:         " << verbose << '\n'
-        << "-----------------------------------\n";
+    out << "\nParameters for " << GetSolType(type) << " method\n"
+        << "---------------------------------------------\n"
+        << "    Max num of iteration: " << maxIter  << '\n'
+        << "    Min num of iteration: " << minIter  << '\n'
+        << "    Safe-guard iteration: " << safeIter << '\n'
+        << "    Relative tolerance:   " << relTol   << '\n'
+        << "    Absolute tolerance:   " << absTol   << '\n'
+        << "    Restart number:       " << restart  << '\n'
+        << "    Output level:         " << verbose  << '\n' << "\n";
 };
 
 /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file

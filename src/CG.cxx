@@ -19,13 +19,15 @@ FaspRetCode CG::Setup(const LOP &A)
 {
     const INT len = A.GetColSize();
 
+    this->SetSolType(SOLType::CG);
+
     // Allocate memory for temporary vectors
     try {
         zk.SetValues(len, 0.0);
         pk.SetValues(len, 0.0);
         rk.SetValues(len, 0.0);
         ax.SetValues(len, 0.0);
-        safe_guard.SetValues(len,0.0);
+        safe.SetValues(len,0.0);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
@@ -67,12 +69,13 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     double resAbs1,resAbs2, tmpAbs, resRel, denAbs;
     double factor, alpha, beta, tmpa, tmpb;
     int randvalue, sumvalue;
+    const int total = 10;
 
     // Initialize iterative method
     numIter = 0;
     randvalue = rand() % total + 1;
     sumvalue = 0;
-    safe_guard = x;
+    safe = x;
 
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
@@ -119,7 +122,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
                                 || numIter == maxIter )) {
             randvalue = rand() % total + 1;
             sumvalue += total;
-            safe_guard = x;
+            safe = x;
         }
         resRel = resAbs2 / denAbs;
         factor = resAbs2 / tmpAbs;
@@ -222,7 +225,7 @@ FINISHED: // Finish iterative method
     this->norm2   = resAbs2;
     this->normInf = rk.NormInf();
     if ( verbose > PRINT_NONE ) PrintFinal();
-    x=safe_guard;
+    x = safe;
 
     return errorCode;
 }

@@ -28,7 +28,7 @@
  */
 class SOL {
 
-private:
+public:
     enum SOLType {
         CG        = 1,       ///< Conjugate Gradient
         BICGSTAB  = 2,       ///< Bi-Conjugate Gradient Stabilized
@@ -45,6 +45,7 @@ protected:
     SOLType      type;       ///< Algorithm type
     int          maxIter;    ///< Maximal number of iterations
     int          minIter;    ///< Minimal number of iterations
+    int          safeIter;   ///< Minimal number of iterations before safe-guard
     double       relTol;     ///< Tolerance for relative residual
     double       absTol;     ///< Tolerance for absolute residual
     int          restart;    ///< Restart number
@@ -68,70 +69,70 @@ protected:
 
 public:
 
-    /// Default constructor
+    /// Default constructor.
     SOL() : A(nullptr), pc(nullptr), withPC(false), type(SOLType::CG), maxIter(100),
-            minIter(0), relTol(1e-6), absTol(1e-8), restart(25), norm2(1.0),
-            normInf(1.0), numIter(0), verbose(PRINT_NONE) {};
+            minIter(0), safeIter(500), relTol(1e-6), absTol(1e-8), restart(25),
+            norm2(1.0), normInf(1.0), numIter(0), verbose(PRINT_NONE) {};
 
-    /// Default destructor
+    /// Default destructor.
     ~SOL();
 
-    /// Set 'verbose' 's value
+    /// Set output level.
     void SetOutput(Output verbose);
 
-    /// Set 'maxIter' 's value
+    /// Set max number of iterations.
     void SetMaxIter(int maxIter);
 
-    /// Set 'minIter' 's value
+    /// Set min number of iterations.
     void SetMinIter(int minIter);
 
-    /// Set 'relTol' 's value
+    /// Set tolerance for relative residual.
     void SetRelTol(double relTol);
 
-    /// Set 'absTol' 's value
+    /// Set tolerance for absolute residual.
     void SetAbsTol(double absTol);
 
-    /// Set 'restart' 's value
+    /// Set restart number for Krylov methods.
     void SetRestart(int restart);
 
-    /// Set 'solver' type
+    /// Set solver type.
     void SetSolType(SOLType solver);
 
-    /// Get solver type
+    /// Get solver type.
     const char * GetSolType(SOLType type) const;
 
-    /// Get residual 's Euclidean norm
+    /// Get Euclidean norm of residual.
     double GetNorm2() const;
 
-    /// Get residual 's infinity norm
+    /// Get infinity norm of residual.
     double GetInfNorm() const;
 
-    /// Get iterations
+    /// Get number of iterations.
     int GetIterations() const;
 
-    /// Print parameters
+    /// Print parameters.
     void PrintParam(std::ostream& out = std::cout) const;
 
-    /// Print out final status of an iterative method
+    /// Print out final status of an iterative method.
     void PrintFinal(std::ostream& out = std::cout) const;
 
-    /// Set parameters from a disk file
+    /// Set parameters from a disk file.
     void SetSolFromFile(const char *file = nullptr, const char *prefix = nullptr);
 
-    /// Setup preconditioner operator
+    /// Setup preconditioner operator.
     virtual void SetPC(SOL *pc);
 
-    /// Setup the iterative method
+    /// Setup the iterative method.
     virtual FaspRetCode Setup(const LOP& _A) {
         FASPXX_ABORT("Not supported!");
     }
 
-    /// Release temporary memory and clean up
+    /// Release temporary memory and clean up.
     virtual void Clean() {
         FASPXX_ABORT("Not supported!");
     }
 
-    /// Solve Ax=b using the iterative method
+    /// Solve Ax=b using the iterative method.
     virtual FaspRetCode Solve(const VEC& b, VEC& x) {
         FASPXX_ABORT("Not supported!");
     }
