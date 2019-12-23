@@ -16,6 +16,10 @@
 #include <iomanip>
 #include <iostream>
 
+// TODO(fan): need combine below levels with FASPXX_WARNING, FASPXX_ABORT, FASPXX_ASSERT?
+enum LogLevel {_INFO, _WARNING, _ERROR, _FATAL, _NumLevels};
+
+
 /// Print out location at (file, line) and function name
 #define _FASPXX_LOCATION_                                 \
     "\n    --> function: " << __PRETTY_FUNCTION__ <<      \

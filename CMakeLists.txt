@@ -61,10 +61,6 @@ target_link_libraries(testVecSpeed faspxx)
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
 
-# Test ErrorLog message
-add_executable(testErrorLog example/testErrorLog.cxx)
-target_link_libraries(testErrorLog faspxx)
-
 # Test Krylov methods
 add_executable(testKrylov example/testKrylov.cxx)
 target_link_libraries(testKrylov faspxx)
@@ -86,5 +82,5 @@ add_executable(testJacobi example/testJacobi.cxx)
 target_link_libraries(testJacobi faspxx)
 
 # GoogleTest, default "OFF" (enable by "-DGTEST=ON")
-option(utest "Google Test" OFF)
+option(GTEST "Google Test" OFF)
 add_subdirectory(utest)
