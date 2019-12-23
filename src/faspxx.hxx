@@ -15,9 +15,13 @@
 typedef unsigned int INT;            ///< Index type: Must be non-negative!
 typedef double       DBL;            ///< Double precision numbers
 
-const DBL      SMALL_TOL =  1e-14;   ///< Small positive real for tolerance
-const DBL      LARGE     =  1e+60;   ///< Largest double number
-const DBL      SMALL     = -1e+60;   ///< Smallest double number
+const DBL  SMALL_TOL     =  1e-14;   ///< Small positive real for tolerance
+const DBL  LARGE         =  1e+60;   ///< Largest double number
+const DBL  SMALL         = -1e+60;   ///< Smallest double number
+const DBL  CLOSE_ZERO    =  1e-20;   ///< Tolerance for closeness to zero
+
+const int  MAX_STAG_NUM  =  20;      ///< Maximal number of stagnation checks
+const int  PRT_STEP_NUM  =  20;      ///< Print iteration info every N steps
 
 #endif /* end if for __FASPXX_HEADER__ */
 

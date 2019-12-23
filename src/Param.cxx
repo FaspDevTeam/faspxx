@@ -15,7 +15,7 @@
 #include "Param.hxx"
 #include "ErrorLog.hxx"
 
-void Parameters::SaveOriginalUserParams(std::string& save) const {
+void Parameters::SaveUserParams(std::string& save) const {
     int max_len = 0;
     for ( const auto& itm: paramsUser ) {
         if ( itm.paramName.length() > max_len ) max_len = itm.paramName.length();
@@ -52,7 +52,7 @@ void Parameters::SaveOriginalUserParams(std::string& save) const {
     save = out.str();
 }
 
-void Parameters::ReadCommandLineParams()
+void Parameters::ReadFromCommandLine()
 {
     if (argc == 1) return;
 
@@ -69,7 +69,7 @@ void Parameters::ReadCommandLineParams()
     }
 }
 
-void Parameters::ReadFileParams()
+void Parameters::ReadFromFile()
 {
     for (auto& itm: paramsUser) {
         if (itm.paramMarker == 2)
@@ -156,9 +156,12 @@ void Parameters::AddParam(const std::string& name, const std::string& help, Outp
 
 void Parameters::Parse()
 {
-    ReadCommandLineParams();
-    ReadFileParams();
-    SaveOriginalUserParams(paramsUserOrg);
+    // Read parameters
+    ReadFromCommandLine();
+    ReadFromFile();
+
+    // Save the original and then merge
+    SaveUserParams(paramsUserOrg);
     MergeParams();
 }
 

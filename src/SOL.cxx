@@ -38,12 +38,12 @@ void SOL::WarnDiffRes(double reldiff, double relres) const
 void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
                     const double& ratio, std::ostream& out) const
 {
-    if ( verbose > PRINT_SOME || (verbose > PRINT_NONE && iter%20 == 0) ) {
+    if ( verbose > PRINT_SOME || (verbose > PRINT_NONE && iter%PRT_STEP_NUM == 0) ) {
         out.precision(4);
         std::setiosflags(std::ios::scientific);
         if ( iter == 0 ) { // Initial iteration
             out << "---------------------------------------------\n";
-            out << " It Num | ||r||/||b|| |    ||r||    | Ratio \n";
+            out << " It Num | ||r||/||b|| |    ||r||    |  Ratio \n";
             out << "---------------------------------------------\n";
             out << std::setw(7) << std::right << iter << " | "
                 << std::scientific << std::setprecision(5) << resRel << " | "
@@ -60,7 +60,7 @@ void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
 /// Print out final status of an iterative method
 void SOL::PrintFinal(std::ostream& out) const
 {
-    if ( verbose > PRINT_NONE ) {
+    if ( verbose > PRINT_MIN ) {
         out << "---------------------------------------------\n";
         if ( numIter >= maxIter ) {
             std::cout << "### WARNING: maxIter = " << maxIter << " reached!" << '\n';
@@ -69,6 +69,11 @@ void SOL::PrintFinal(std::ostream& out) const
         out << "Number of iterations : " << numIter << '\n';
         out << "Norm2 of residual    : " << norm2   << '\n';
         out << "NormInf of residual  : " << normInf << '\n';
+    } else if ( verbose > PRINT_NONE ) {
+        out << "---------------------------------------------\n";
+        out << std::scientific << std::setprecision(5);
+        out << GetSolType(type) << " takes " << numIter << " iterations ";
+        out << "to reach residual of level " << norm2 << '\n';
     }
 }
 

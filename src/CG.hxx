@@ -36,7 +36,7 @@ public:
     CG() : rk(0), pk(0), zk(0), ax(0), safe(0) {};
 
     /// Default destructor.
-    ~CG(){};
+    ~CG() {};
 
     /// Setup the CG method.
     FaspRetCode Setup(const LOP& A);

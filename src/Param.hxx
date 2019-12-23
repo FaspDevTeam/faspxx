@@ -59,33 +59,35 @@ private:
                     paramPtr(ptr), paramMarker(marker) {}
     };
 
-    std::map<std::string, std::string>   paramsCML;     ///< Params from command line
-    std::map<std::string, std::string>   paramsFile;    ///< Params from file
-    std::vector<ParamHolder>             paramsUser;    ///< Params in user code
-    std::string                          paramsUserOrg; ///< Old params in user code
+    std::map<std::string, std::string>  paramsCML;     ///< Params from command line
+    std::map<std::string, std::string>  paramsFile;    ///< Params from file
+    std::vector<ParamHolder>            paramsUser;    ///< Params in user code
+    std::string                         paramsUserOrg; ///< Old params in user code
 
     int      argc;    ///< number of command-line arguments
     char   **argv;    ///< command-line arguments
 
 private:
-    /* Read all parameters from command line and save them into a Dictionary.
-     * For each param, it becomes a key-value pair of the Dictionary.
+    /// Read all parameters from command line and save them into a Dictionary.
+    /* For each param, it becomes a key-value pair of the Dictionary.
      * e.g.:
-     *  in command line: -mat /home/temp1/a.csr
-     *  key == string("-mat"), value == string("/home/temp1/a.csr"), add into Dictionary paramsCML
+     *   in command line: -mat /home/temp1/a.csr
+     *   key == string("-mat"), value == string("/home/temp1/a.csr") will be added
+     *   into the dictionary paramsCML.
      * */
-    void ReadCommandLineParams();
+    void ReadFromCommandLine();
 
-    /* Read all parameters from file and save them into a Dictionary.
-     * For each param, it becomes a key-value pair of the Dictionary.
+    /// Read all parameters from file and save them into a Dictionary.
+    /* For each param, it becomes a key-value pair of the Dictionary.
      * e.g.:
-     *  in file: -mat /home/temp1/a.csr
-     *  key == string("-mat"), value == string("/home/temp1/a.csr"), add into Dictionary paramsFile
+     *   in file: -mat /home/temp1/a.csr
+     *   key == string("-mat"), value == string("/home/temp1/a.csr") will be added
+     *   into the dictionary paramsFile.
      * */
-    void ReadFileParams();
+    void ReadFromFile();
 
-    /* merge and update the same parameters in terms of priority:
-     * params in command line > params in file > params in user program.
+    /// Merge and update the same parameters in terms of priority.
+    /* params from command line > from file > in user program.
      * e.g.:
      *  in command line: -mat /home/temp1/a.csr
      *  in file: -mat /home/temp2/b.csr
@@ -96,53 +98,56 @@ private:
      * */
     void MergeParams();
 
-    // save original user params for visualize.
-    void SaveOriginalUserParams(std::string& save) const;
+    /// Save the original user parameters for later record.
+    void SaveUserParams(std::string& save) const;
 
-    /* If there is parameter in command line or file which is same name with parameter in user program,
-     * we update its value.
+    /// Update the value of a user-defined parameter.
+    /* If there is a parameter in command line or file which has the same name as
+     * parameter in user program, we update its value.
      * */
-    void UpdateParamValue(std::map<std::string, std::string>::iterator& iter, ParamHolder& prm);
+    void UpdateParamValue(std::map<std::string, std::string>::iterator& iter,
+                          ParamHolder& prm);
 
 public:
-    /// Default constructor
+    /// Default constructor.
     Parameters(int _argc, char * _argv[]) : argc(_argc), argv(_argv) {}
 
-    /// Default destructor
+    /// Default destructor.
     ~Parameters() {}
 
-    /// Add a bool type parameter
+    /// Add a bool type parameter.
     void AddParam(const std::string& name, const std::string& help, bool * ptr, int marker=0);
 
-    /// Add an int type parameter
+    /// Add an int type parameter.
     void AddParam(const std::string& name, const std::string& help, int * ptr, int marker=0);
 
-    /// Add a double type parameter
+    /// Add a double type parameter.
     void AddParam(const std::string& name, const std::string& help, double * ptr, int marker=0);
 
-    /// Add a string type parameter
+    /// Add a string type parameter.
     void AddParam(const std::string& name, const std::string& help, std::string * ptr, int marker=0);
 
-    /// Add a Output type parameter
+    /// Add a Output type parameter.
     void AddParam(const std::string& name, const std::string& help, Output * ptr, int marker=0);
 
+    /// Parse the parameters.
     void Parse();
 
-    // Only print parameters in file
-    void PrintFileParams(std::ostream& out) const;
-
-    // Only print parameters in command line
-    void PrintCommandLineParams(std::ostream& out) const;
-
-    // Only print original params (before merge or parse) in user program
+    /// Print original params (before merge or parse) in user program.
     void PrintUserParams(std::ostream &out) const;
 
-    // Only print parameters finally used in user program (after merge or parse)
+    /// Print parameters coming from an option file.
+    void PrintFileParams(std::ostream& out) const;
+
+    /// Print parameters coming from command line input.
+    void PrintCommandLineParams(std::ostream& out) const;
+
+    /// Print parameters used in user code (after merge or parse).
     void Print(std::ostream& out = std::cout) const;
 
+    /// Print the help messages for Param.
     void PrintHelp(std::ostream &out = std::cout) const;
 };
-
 
 #endif /* end if for __PARAM_HEADER__ */
 
