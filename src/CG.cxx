@@ -63,7 +63,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     // Local variables
     const INT len = b.GetSize();
     const unsigned maxStag  = MAX_STAG_NUM; // max number of stagnation checks
-    const double solStagTol = 1e-4 * relTol; // solution stagnation tolerance
+    const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
     const double solZeroTol = CLOSE_ZERO; // solution close to zero tolerance
 
     unsigned stagStep = 0, moreStep = 0;
@@ -85,14 +85,14 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 
     // If the initial residual is very small, no need to iterate
     PrintInfo(numIter, resRel, resAbs, 0.0);
-    if ( resRel < relTol || resAbs < absTol ) goto FINISHED;
+    if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
 
     // Prepare for the main loop
     pk = zk;
     tmpa = zk.Dot(rk);
 
     // Main CG loop
-    while ( numIter < maxIter ) {
+    while ( numIter < params.maxIter ) {
 
         ++numIter; // iteration count
 
@@ -112,7 +112,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
         rk.AXPY(-alpha, ax); // r_k = r_{k-1} - alpha_k*A*p_{k-1}
 
         // Apply several checks for safety
-        if ( numIter >= minIter ) {
+        if ( numIter >= params.minIter ) {
             // Compute norm of residual and output iteration information if needed
             resAbsOld = resAbs;
             resAbs = rk.Norm2();
@@ -121,14 +121,14 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
             PrintInfo(numIter, resRel, resAbs, ratio);
 
             // Save the best solution so far
-            if ( numIter >= safeIter && resAbs < resAbsOld ) safe = x;
+            if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
 
             // Apply stagnation checks if it converges slowly
             if ( ratio > KSM_CHK_RATIO ) {
                 // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
                 double xNormInf = x.NormInf();
                 if ( xNormInf < solZeroTol ) {
-                    if ( verbose > PRINT_MIN )
+                    if ( params.verbose > PRINT_MIN )
                     FASPXX_WARNING("Iteration stopped due to x almost zero!");
                     errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                     break;
@@ -142,15 +142,15 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
                     this->rk.XPAY(-1.0, b);
                     resAbs = this->rk.Norm2();
                     resRel = resAbs / denAbs;
-                    if ( verbose > PRINT_SOME ){
+                    if ( params.verbose > PRINT_SOME ){
                         FASPXX_WARNING("Iteration stagnate!");
                         WarnRealRes(resRel);
                     }
 
-                    if ( resRel < relTol ) break; // already converged
+                    if ( resRel < params.relTol ) break; // already converged
                     else {
                         if ( stagStep >= maxStag ) {
-                            if ( verbose > PRINT_MIN ) FASPXX_WARNING(
+                            if ( params.verbose > PRINT_MIN ) FASPXX_WARNING(
                                     "Iteration stopped due to stagnation!");
                             errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                             break;
@@ -159,7 +159,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
                         ++stagStep;
                     }
 
-                    if ( verbose > PRINT_SOME ) {
+                    if ( params.verbose > PRINT_SOME ) {
                         WarnDiffRes(xRelDiff, resRel);
                         FASPXX_WARNING("Iteration restarted due to stagnation!");
                     }
@@ -167,7 +167,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
             } // End of check I and II
 
             // Check III: prevent false convergence!!!
-            if ( resRel < relTol ) {
+            if ( resRel < params.relTol ) {
                 // Compute and update the true residual r = b - Ax
                 A->Apply(x, this->rk);
                 this->rk.XPAY(-1.0, b);
@@ -176,17 +176,18 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
                 double resRelOld = resRel;
                 resAbs = rk.Norm2();
                 resRel = resAbs / denAbs;
-                if ( resRel < relTol ) break;
+                if ( resRel < params.relTol ) break;
 
                 // If false converged, print out warning messages
-                if ( verbose >= PRINT_MORE ) {
+                if ( params.verbose >= PRINT_MORE ) {
                     FASPXX_WARNING("False convergence!");
                     WarnCompRes(resRelOld);
                     WarnRealRes(resRel);
                 }
 
-                if ( moreStep >= restart ) { // Note: restart has different meaning here
-                    if ( verbose > PRINT_MIN )
+                if ( moreStep >= params.restart ) { // Note: restart has different
+                    // meaning here
+                    if ( params.verbose > PRINT_MIN )
                         FASPXX_WARNING("The tolerance might be too small!");
                     errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                     break;
@@ -199,7 +200,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
         }
 
         // Prepare for the next iteration
-        if ( numIter < maxIter ) {
+        if ( numIter < params.maxIter ) {
             // Save residual for next iteration
             tmpAbs = resAbs;
 
@@ -220,10 +221,10 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 FINISHED: // Finish iterative method
     this->norm2   = resAbs;
     this->normInf = rk.NormInf();
-    if ( verbose > PRINT_NONE ) PrintFinal();
+    if ( params.verbose > PRINT_NONE ) PrintFinal();
 
     // Restore the saved best iteration if needed
-    if ( numIter > safeIter ) x = safe;
+    if ( numIter > params.safeIter ) x = safe;
 
     return errorCode;
 }
