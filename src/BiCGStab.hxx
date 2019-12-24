@@ -22,7 +22,9 @@
 /*! \class BiCGStab
  *  \brief Preconditioned BiCGStab method.
  */
-class BiCGStab:public SOL{
+class BiCGStab:public SOL
+{
+
 private:
     VEC r0star;
     VEC tmp;
@@ -35,14 +37,13 @@ private:
     VEC stmp;
     VEC mp;
     VEC ms;
-    VEC safe_guard;
-    int total;
+    VEC safe;
 
 public:
     /// Default constructor。
     BiCGStab() : r0star(0), tmp(0), apj(0), asj(0), pj(0),
                  rj(0), sj(0), ptmp(0), stmp(0), mp(0),
-                 ms(0),safe_guard(0), total(10) { };
+                 ms(0),safe(0) { };
 
     /// Default destructor。
     ~BiCGStab() {};
