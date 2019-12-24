@@ -36,20 +36,14 @@ Jacobi::Jacobi(const MAT &A, const VEC &b, double alpha) {
 
 /// Solve Ax=b using the Jacobi method.
 FaspRetCode Jacobi::Solve(const VEC &x, VEC &y) {
-    if (x.GetSize() != A->GetColSize() || A->GetRowSize() != b.GetSize() ||
-        x.GetSize() != y.GetSize() || A->GetRowSize() != A->GetColSize())
+    if ( x.GetSize() != A->GetColSize() || A->GetRowSize() != b.GetSize() ||
+        x.GetSize() != y.GetSize() || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables
-    const INT len = b.GetSize();
-    const unsigned maxStag = 20; // maximum number of stagnation before quit
-    const double solStagTol = 1e-4 * relTol; // solution stagnation tolerance
-    const double solZeroTol = 1e-20; // solution close to zero tolerance
-    unsigned stagStep = 0, moreStep = 0;
-    double resAbs, tmpAbs, resRel, denAbs;
-    double factor;
+    double resAbs, tmpAbs, resRel, denAbs, ratio;
 
     // Initialize iterative method
     numIter = 0;
@@ -61,16 +55,16 @@ FaspRetCode Jacobi::Solve(const VEC &x, VEC &y) {
 
     // Compute initial residual
     resAbs = tmp.Norm2();
-    denAbs = (1e-20 > resAbs) ? 1e-20 : resAbs;
+    denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
     resRel = resAbs / denAbs;
     tmpAbs = resAbs; // Save residual for the next iteration
 
     // If initial residual is very small, no need to iterate
     PrintInfo(numIter, resRel, resAbs, 0.0);
-    if (resRel < relTol || resAbs < absTol) goto FINISHED;
+    if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
 
     // Main Jacobi loop
-    while (numIter < maxIter) {
+    while ( numIter < params.maxIter ) {
 
         ++numIter; // iteration count
 
@@ -84,11 +78,11 @@ FaspRetCode Jacobi::Solve(const VEC &x, VEC &y) {
         // Compute norm of residual and output iteration information if needed
         resAbs = tmp.Norm2();
         resRel = resAbs / denAbs;
-        factor = resAbs / tmpAbs;
-        PrintInfo(numIter, resRel, resAbs, factor);
+        ratio = resAbs / tmpAbs;
+        PrintInfo(numIter, resRel, resAbs, ratio);
 
         // Prepare for the next iteration
-        if(numIter<maxIter){
+        if( numIter < params.maxIter ){
             // Save residual for next iteration
             tmpAbs=resAbs;
 
@@ -100,7 +94,7 @@ FaspRetCode Jacobi::Solve(const VEC &x, VEC &y) {
     FINISHED: // Finish iterative method
     this->norm2=resAbs;
     this->normInf=tmp.NormInf();
-    if(verbose>PRINT_NONE) PrintFinal();
+    if( params.verbose > PRINT_NONE ) PrintFinal();
 
     return FaspRetCode::SUCCESS;
 }
