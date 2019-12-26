@@ -23,25 +23,18 @@
 #include "LOP.hxx"
 #include "VEC.hxx"
 
-/*! \class SOL
- *  \brief Base class for iterative solvers.
- */
-class SOL {
+/* solver type */
+enum SOLType {
+    CG        = 1,       ///< Conjugate Gradient
+    BICGSTAB  = 2,       ///< Bi-Conjugate Gradient Stabilized
+    MINRES    = 3,       ///< Minimal Residual
+    GMRES     = 4,       ///< Generalized Minimal Residual
+    FGMRES    = 5,       ///< Flexible GMRES
+    VFGMRES   = 6,       ///< Variable-restarting FGMRES
+};
 
-public:
-    enum SOLType {
-        CG        = 1,       ///< Conjugate Gradient
-        BICGSTAB  = 2,       ///< Bi-Conjugate Gradient Stabilized
-        MINRES    = 3,       ///< Minimal Residual
-        GMRES     = 4,       ///< Generalized Minimal Residual
-        FGMRES    = 5,       ///< Flexible GMRES
-        VFGMRES   = 6,       ///< Variable-restarting FGMRES
-    };
-
-protected:
-    const LOP *  A;          ///< Coefficient matrix in Ax=b
-    SOL *        pc;         ///< Preconditioner for this solver
-    bool         withPC;     ///< Given a PC or not
+/* Parameter */
+struct Params{
     SOLType      type;       ///< Algorithm type
     int          maxIter;    ///< Maximal number of iterations
     int          minIter;    ///< Minimal number of iterations
@@ -49,10 +42,25 @@ protected:
     double       relTol;     ///< Tolerance for relative residual
     double       absTol;     ///< Tolerance for absolute residual
     int          restart;    ///< Restart number
+    Output       verbose;    ///< Output verbosity level
+
+    Params():type(SOLType::CG), maxIter(100), minIter(0), safeIter(500),
+        relTol(1e-6), absTol(1e-8), restart(25), verbose(PRINT_NONE){}
+};
+
+/*! \class SOL
+ *  \brief Base class for iterative solvers.
+ */
+class SOL {
+
+protected:
+    const LOP *  A;          ///< Coefficient matrix in Ax=b
+    SOL *        pc;         ///< Preconditioner for this solver
+    bool         withPC;     ///< Given a PC or not
     double       norm2;      ///< Euclidean norm
     double       normInf;    ///< Infinity norm
     int          numIter;    ///< Number of iterations when exit
-    Output       verbose;    ///< Output verbosity level
+    Params       params;     ///< solver parameters
 
     /// Warning for actual relative residual
     void WarnRealRes(double relres) const;
@@ -70,9 +78,8 @@ protected:
 public:
 
     /// Default constructor.
-    SOL() : A(nullptr), pc(nullptr), withPC(false), type(SOLType::CG), maxIter(100),
-            minIter(0), safeIter(500), relTol(1e-6), absTol(1e-8), restart(25),
-            norm2(1.0), normInf(1.0), numIter(0), verbose(PRINT_NONE) {};
+    SOL() : A(nullptr), pc(nullptr), withPC(false),
+            norm2(1.0), normInf(1.0), numIter(0) {};
 
     /// Default destructor.
     ~SOL();
