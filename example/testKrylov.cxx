@@ -32,7 +32,7 @@ int main(int argc, char *args[])
     std::string rhsFile = "";
     std::string x0File  = "";
     std::string solAlgm = "CG";
-    Parameter param;
+    Params param;
     Identity pc; // no preconditioner
 
     // Command-line parameters
@@ -90,7 +90,7 @@ int main(int argc, char *args[])
         param.type=SOLType::BICGSTAB;
 
     timer.Start();
-    retCode = Krylov(mat,b,x,param);
+    retCode = Krylov(mat,b,x,pc,param);
     std::cout << "Solving linear system costs " << std::fixed
               << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
 
