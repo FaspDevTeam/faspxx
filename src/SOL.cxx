@@ -38,7 +38,8 @@ void SOL::WarnDiffRes(double reldiff, double relres) const
 void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
                     const double& ratio, std::ostream& out) const
 {
-    if ( verbose > PRINT_SOME || (verbose > PRINT_NONE && iter%PRT_STEP_NUM == 0) ) {
+    if ( params.verbose > PRINT_SOME || (params.verbose > PRINT_NONE &&
+        iter%PRT_STEP_NUM == 0) ) {
         out.precision(4);
         std::setiosflags(std::ios::scientific);
         if ( iter == 0 ) { // Initial iteration
@@ -60,19 +61,20 @@ void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
 /// Print out final status of an iterative method
 void SOL::PrintFinal(std::ostream& out) const
 {
-    if ( verbose > PRINT_MIN ) {
+    if ( params.verbose > PRINT_MIN ) {
         out << "---------------------------------------------\n";
-        if ( numIter >= maxIter ) {
-            std::cout << "### WARNING: maxIter = " << maxIter << " reached!" << '\n';
+        if ( numIter >= params.maxIter ) {
+            std::cout << "### WARNING: maxIter = " << params.maxIter << " reached!"
+            << '\n';
         }
         out << std::scientific << std::setprecision(5);
         out << "Number of iterations : " << numIter << '\n';
         out << "Norm2 of residual    : " << norm2   << '\n';
         out << "NormInf of residual  : " << normInf << '\n';
-    } else if ( verbose > PRINT_NONE ) {
+    } else if ( params.verbose > PRINT_NONE ) {
         out << "---------------------------------------------\n";
         out << std::scientific << std::setprecision(5);
-        out << GetSolType(type) << " takes " << numIter << " iterations ";
+        out << GetSolType(params.type) << " takes " << numIter << " iterations ";
         out << "to reach residual of level " << norm2 << '\n';
     }
 }
@@ -86,44 +88,51 @@ SOL::~SOL()
 /// Set 'verbose' 's value
 void SOL::SetOutput(Output verbose) 
 {
-    this->verbose = verbose;
+    params.verbose = verbose;
 }
 
 /// Set 'maxIter' 's value
 void SOL::SetMaxIter(int maxIter)
 {
-    this->maxIter = maxIter;
+    params.maxIter = maxIter;
 }
 
 /// Set 'minIter' 's value
 void SOL::SetMinIter(int minIter)
 {
-    this->minIter = minIter;
+    params.minIter = minIter;
 }
 
 /// Set 'relTol' 's value
 void SOL::SetRelTol(double relTol)
 {
-    this->relTol = relTol;
+    params.relTol = relTol;
 }
 
 /// Set 'absTol' 's value
 void SOL::SetAbsTol(double absTol)
 {
-    this->absTol = absTol;
+    params.absTol = absTol;
 }
 
 /// Set 'restart' 's value
 void SOL::SetRestart(int restart)
 {
-    this->restart = restart;
+    params.restart = restart;
 }
 
 /// Set 'solver' type
 void SOL::SetSolType(SOLType type) 
 {
-    this->type = type;
+    params.type = type;
 }
+
+/// Set safe iteration
+void SOL::SetSafeIteration(int safeIter){
+    params.safeIter=safeIter;
+}
+
+
 
 /// Select solver
 const char *SOL::GetSolType(SOLType type) const
@@ -167,15 +176,15 @@ int SOL::GetIterations() const
 /// Print parameters
 void SOL::PrintParam(std::ostream& out) const
 {
-    out << "\nParameters for " << GetSolType(type) << " method\n"
+    out << "\nParameters for " << GetSolType(params.type) << " method\n"
         << "---------------------------------------------\n"
-        << "    Max num of iteration: " << maxIter  << '\n'
-        << "    Min num of iteration: " << minIter  << '\n'
-        << "    Safe-guard iteration: " << safeIter << '\n'
-        << "    Relative tolerance:   " << relTol   << '\n'
-        << "    Absolute tolerance:   " << absTol   << '\n'
-        << "    Restart number:       " << restart  << '\n'
-        << "    Output level:         " << verbose  << '\n' << "\n";
+        << "    Max num of iteration: " << params.maxIter  << '\n'
+        << "    Min num of iteration: " << params.minIter  << '\n'
+        << "    Safe-guard iteration: " << params.safeIter << '\n'
+        << "    Relative tolerance:   " << params.relTol   << '\n'
+        << "    Absolute tolerance:   " << params.absTol   << '\n'
+        << "    Restart number:       " << params.restart  << '\n'
+        << "    Output level:         " << params.verbose  << '\n' << "\n";
 };
 
 /// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
@@ -184,7 +193,7 @@ void SOL::SetSolFromFile(const char *file, const char *prefix)
 
     std::ifstream input(file);
     if ( !input.is_open() ) FASPXX_WARNING("Not found sol option file!");
-    if ( verbose > PRINT_MIN )
+    if ( params.verbose > PRINT_MIN )
         std::cout << "Reading SOL parameters from disk file " << file << std::endl;
 
     std::string line, param, value;
@@ -204,41 +213,41 @@ void SOL::SetSolFromFile(const char *file, const char *prefix)
         }
 
         if ( param == "_sol_type" ) {
-            if (value == "cg") type = CG;
-            else if (value == "gmres") type = GMRES;
-            else if (value == "none") type = CG;
-            else type = CG;
+            if (value == "cg") params.type = CG;
+            else if (value == "gmres") params.type = GMRES;
+            else if (value == "none") params.type = CG;
+            else params.type = CG;
         } else if (param == "_sol_rtol") {
-            relTol = std::stod(value);
+            params.relTol = std::stod(value);
         } else if (param == "_sol_atol") {
-            absTol = std::stod(value);
+            params.absTol = std::stod(value);
         } else if (param == "_sol_maxiter") {
-            maxIter = std::stoi(value);
+            params.maxIter = std::stoi(value);
         } else if (param == "_sol_printlvl") {
             //verbose = std::stoi(value);
             if (value == "PRINT_NONE")
-                verbose = PRINT_NONE;
+                params.verbose = PRINT_NONE;
             else if (value == "PRINT_MIN")
-                verbose = PRINT_MIN;
+                params.verbose = PRINT_MIN;
             else if (value == "PRINT_SOME")
-                verbose = PRINT_SOME;
+                params.verbose = PRINT_SOME;
             else if (value == "PRINT_MORE")
-                verbose = PRINT_MORE;
+                params.verbose = PRINT_MORE;
             else if (value == "PRINT_MAX")
-                verbose = PRINT_MAX;
+                params.verbose = PRINT_MAX;
             else if (value == "PRINT_ALL")
-                verbose = PRINT_ALL;
+                params.verbose = PRINT_ALL;
         } else if (param == "_sol_restart") {
-            restart = std::stoi(value);
+            params.restart = std::stoi(value);
         }
     }
     input.close();
-    if ( verbose > PRINT_MIN ) {
+    if ( params.verbose > PRINT_MIN ) {
         std::cout << "Parameters for sol "
-                  << "Krylov method type: " << type << '\n'
-                  << "relative tolerance: " << relTol << '\n'
-                  << "absolute tolerance: " << absTol << '\n'
-                  << "maximum iterations: " << maxIter << '\n';
+                  << "Krylov method type: " << params.type << '\n'
+                  << "relative tolerance: " << params.relTol << '\n'
+                  << "absolute tolerance: " << params.absTol << '\n'
+                  << "maximum iterations: " << params.maxIter << '\n';
     }
 
 }
