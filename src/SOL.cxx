@@ -132,8 +132,6 @@ void SOL::SetSafeIteration(int safeIter){
     params.safeIter=safeIter;
 }
 
-
-
 /// Select solver
 const char *SOL::GetSolType(SOLType type) const
 {

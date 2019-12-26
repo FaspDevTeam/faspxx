@@ -105,6 +105,9 @@ public:
     /// Set solver type.
     void SetSolType(SOLType solver);
 
+    /// Set safe iteration
+    void SetSafeIteration(int safeIter);
+
     /// Get solver type.
     const char * GetSolType(SOLType type) const;
 
