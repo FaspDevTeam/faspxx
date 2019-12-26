@@ -3,60 +3,40 @@
  */
 
 #include "Krylov.hxx"
+#include "SOL.hxx"
 
-FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, Parameter params){
+FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, Params params){
+    FaspRetCode retCode;
+    SOL *sol;
     switch(params.type) {
         case SOLType::CG:
-            class CG cg;
-            cg.SetOutput(params.verbose);
-            cg.SetMaxIter(params.maxIter);
-            cg.SetMinIter(params.minIter);
-            cg.SetRestart(params.restart);
-            cg.SetRelTol(params.relTol);
-            cg.SetAbsTol(params.absTol);
-            cg.SetSafeIter(params.safeIter);
-            cg.Setup(A);
-            return cg.Solve(b, x);
+            sol=new class CG();
+            sol->SetOutput(params.verbose);
+            sol->SetMaxIter(params.maxIter);
+            sol->SetMinIter(params.minIter);
+            sol->SetRestart(params.restart);
+            sol->SetRelTol(params.relTol);
+            sol->SetAbsTol(params.absTol);
+            sol->SetSafeIteration(params.safeIter);
+            sol->Setup(A);
+            sol->SetPC(&pc);
+            retCode=sol->Solve(b, x);
+            break;
         case SOLType::BICGSTAB:
-            class BiCGStab bicg;
-            bicg.SetOutput(params.verbose);
-            bicg.SetMaxIter(params.maxIter);
-            bicg.SetMinIter(params.minIter);
-            bicg.SetRestart(params.restart);
-            bicg.SetRelTol(params.relTol);
-            bicg.SetAbsTol(params.absTol);
-            bicg.SetSafeIter(params.safeIter);
-            bicg.Setup(A);
-            return bicg.Solve(b, x);
+            sol=new class BiCGStab();
+            sol->SetOutput(params.verbose);
+            sol->SetMaxIter(params.maxIter);
+            sol->SetMinIter(params.minIter);
+            sol->SetRestart(params.restart);
+            sol->SetRelTol(params.relTol);
+            sol->SetAbsTol(params.absTol);
+            sol->SetSafeIteration(params.safeIter);
+            sol->Setup(A);
+            sol->SetPC(&pc);
+            retCode=sol->Solve(b, x);
+            break;
     }
 
-}
-
-FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, Parameter params){
-    switch(params.type) {
-        case SOLType::CG:
-            class CG cg;
-            cg.SetOutput(params.verbose);
-            cg.SetMaxIter(params.maxIter);
-            cg.SetMinIter(params.minIter);
-            cg.SetRestart(params.restart);
-            cg.SetRelTol(params.relTol);
-            cg.SetAbsTol(params.absTol);
-            cg.SetSafeIter(params.safeIter);
-            cg.Setup(A);
-            cg.SetPC(&pc);
-            return cg.Solve(b, x);
-        case SOLType::BICGSTAB:
-            class BiCGStab bicg;
-            bicg.SetOutput(params.verbose);
-            bicg.SetMaxIter(params.maxIter);
-            bicg.SetMinIter(params.minIter);
-            bicg.SetRestart(params.restart);
-            bicg.SetRelTol(params.relTol);
-            bicg.SetAbsTol(params.absTol);
-            bicg.SetSafeIter(params.safeIter);
-            bicg.Setup(A);
-            bicg.SetPC(&pc);
-            return bicg.Solve(b, x);
-    }
+    delete sol;
+    return retCode;
 }

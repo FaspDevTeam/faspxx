@@ -11,8 +11,6 @@
 #include "Iter.hxx"
 #include "RetCode.hxx"
 
-FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, Parameter params);
-
-FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, Parameter params);
+FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, Params params);
 
 #endif //FASPXX_KRYLOV_HXX
