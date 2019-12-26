@@ -77,7 +77,7 @@ int main(int argc, char *args[]) {
     Identity pc;
 
     // Setup PCG class
-    CG solver;
+    class CG solver;
     solver.SetOutput(verbose);
     solver.SetMaxIter(maxIter);
     solver.SetMinIter(minIter);

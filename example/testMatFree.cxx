@@ -216,7 +216,7 @@ int main(int argc, char *args[])
         MatFree matfree((dim-1)*(dim-1), (dim-1)*(dim-1));
 
         // create PCG object
-        CG cg;
+        class CG cg;
         cg.SetOutput(PRINT_NONE);
         cg.SetMaxIter(100000);
         cg.SetRestart(20);

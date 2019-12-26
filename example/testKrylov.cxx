@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <string>
+#include <Krylov.hxx>
 #include "CG.hxx"
 #include "BiCGStab.hxx"
 #include "Timing.hxx"
@@ -31,8 +32,7 @@ int main(int argc, char *args[])
     std::string rhsFile = "";
     std::string x0File  = "";
     std::string solAlgm = "CG";
-    double resRel = 1e-6, resAbs = 1e-8;
-    int maxIter = 100, minIter = 0, restart = 20;
+    Parameter param;
     Identity pc; // no preconditioner
 
     // Command-line parameters
@@ -42,12 +42,13 @@ int main(int argc, char *args[])
     params.AddParam("-rhs", "Right hand side of linear system", &rhsFile);
     params.AddParam("-x0", "Initial guess of solution", &x0File);
     params.AddParam("-solAlgm", "Iterative solver type", &solAlgm);
-    params.AddParam("-maxIter", "Maximum iteration steps", &maxIter);
-    params.AddParam("-minIter", "Minimum iteration steps", &minIter);
-    params.AddParam("-restart", "Iteration restart number", &restart);
-    params.AddParam("-resRel", "Relative residual tolerance", &resRel);
-    params.AddParam("-resAbs", "Absolute residual tolerance", &resAbs);
-    params.AddParam("-verbose", "Verbose level", &verbose);
+    params.AddParam("-maxIter", "Maximum iteration steps", &param.maxIter);
+    params.AddParam("-minIter", "Minimum iteration steps", &param.minIter);
+    params.AddParam("-restart", "Iteration restart number", &param.restart);
+    params.AddParam("-resRel", "Relative residual tolerance", &param.relTol);
+    params.AddParam("-resAbs", "Absolute residual tolerance", &param.absTol);
+    params.AddParam("-verbose", "Verbose level", &param.verbose);
+    params.AddParam("-safeIter","Safe iteration",&param.safeIter);
     params.Parse();
 
     params.Print();
@@ -83,44 +84,15 @@ int main(int argc, char *args[])
     // Change all letters of a string to lowercase
     for ( char & c : solAlgm ) c = tolower(c);
 
-    if ( solAlgm == "cg" ) {
-        // Setup PCG method
-        CG solver;
-        solver.SetOutput(verbose);
-        solver.SetMaxIter(maxIter);
-        solver.SetMinIter(minIter);
-        solver.SetRestart(restart);
-        solver.SetRelTol(resRel);
-        solver.SetAbsTol(resAbs);
-        solver.SetPC(&pc);
-        solver.Setup(mat);
-        solver.PrintParam();
+    if(solAlgm=="cg")
+        param.type=SOLType::CG;
+    else if(solAlgm=="bicgstab")
+        param.type=SOLType::BICGSTAB;
 
-        // PCG solve
-        timer.Start();
-        retCode = solver.Solve(b, x);
-        std::cout << "Solving linear system costs " << std::fixed
-                  << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
-    }
-    else if ( solAlgm == "bicgstab" ) {
-        // Setup BiCGStab method
-        BiCGStab solver;
-        solver.SetOutput(verbose);
-        solver.SetMaxIter(maxIter);
-        solver.SetMinIter(minIter);
-        solver.SetRestart(restart);
-        solver.SetRelTol(resRel);
-        solver.SetAbsTol(resAbs);
-        solver.SetPC(&pc);
-        solver.Setup(mat);
-        solver.PrintParam();
-
-        // BiCGStab solve
-        timer.Start();
-        retCode = solver.Solve(b, x);
-        std::cout << "Solving linear system costs " << std::fixed
-                  << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
-    }
+    timer.Start();
+    retCode = Krylov(mat,b,x,param);
+    std::cout << "Solving linear system costs " << std::fixed
+              << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
 
     return retCode;
 }
