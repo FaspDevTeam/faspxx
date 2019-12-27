@@ -60,8 +60,9 @@ void BiCGStab::Clean()
 /// Using the Preconditioned Bi-Conjugate Gradient Stabilized method.
 FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 {
+    // Check whether vector space sizes
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
-        || A->GetRowSize() != A->GetColSize() )
+                                        || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
@@ -71,29 +72,27 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
     const unsigned maxStag = MAX_STAG_NUM; // maximum number of stagnation before quit
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
     unsigned stagStep = 0, moreStep = 0;
-    double resAbsOld, resAbs, tmpAbs, resRel, denAbs;
-    double alphaj, betaj, rjr0star, rjr0startmp, omegaj;
-    double tmp12, ratio;
+    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld;
+    double alphaj, betaj, rjr0star, rjr0startmp, omegaj, tmp12;
 
     if ( params.verbose > PRINT_NONE ) std::cout << "Use BiCGStab to solve Ax=b ...\n";
 
+    PrintHead();
+
     // Initialize iterative method
     numIter = 0;
-
-    // r0 = b - A * x_{0}
-    A->Apply(x, this->tmp);
-    this->rj.WAXPBY(1.0, b, -1.0, this->tmp);
+    A->Apply(x, this->tmp); // A * x -> tmp
+    this->rj.WAXPBY(1.0, b, -1.0, this->tmp); // Todo: Why not using XPAY like CG? --zcs
 
     // Compute initial residual
-    resAbs = this->rj.Norm2();
-    denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
-    resRel = resAbs / denAbs;
-    tmpAbs = resAbs; // save residual for the next iteration
+    if ( numIter >= params.minIter ) {
+        resAbs = this->rj.Norm2();
+        denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
+        resRel = resAbs / denAbs;
 
-    // If initial residual is very small, no need to iterate
-    PrintHead();
-    PrintInfo(numIter, resRel, resAbs, 0.0);
-    if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
+        // If initial residual is very small, no need to iterate
+        if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
+    }
 
     // Prepare for the main loop
     this->r0star = this->rj;  // r0_{*} = r0c
@@ -102,7 +101,21 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
     // Main CG loop
     while ( numIter < params.maxIter ) {
 
+        // Start from minIter instead of 0
+        if ( numIter == params.minIter && params.minIter > 0 ) {
+            resAbs = rj.Norm2();
+            denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
+            resRel = resAbs / denAbs;
+        }
+
+        if ( numIter >= params.minIter )
+            PrintInfo(numIter, resRel, resAbs, ratio);
+
         ++numIter; // iteration count
+
+        //---------------------------------------------
+        // BiCGStab iteration starts from here
+        //---------------------------------------------
 
         /* alpha_{j} = (rj,r0star)/(P * A * pj,r0star) */
         rjr0star = this->rj.Dot(this->r0star);
@@ -137,14 +150,17 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         // r_{j+1} = sj - omegaj * P * A * sj
         this->rj.WAXPBY(1.0, this->sj, -omegaj, this->stmp);
 
+        //---------------------------------------------
+        // One step of BiCGStab iteration ends here
+        //---------------------------------------------
+
         // Apply several checks for safety
         if ( numIter >= params.minIter ) {
             // Compute norm of residual and output iteration information if needed
             resAbsOld = resAbs;
             resAbs = rj.Norm2();
             resRel = resAbs / denAbs;
-            ratio = resAbs / tmpAbs;
-            PrintInfo(numIter, resRel, resAbs, ratio);
+            ratio = resAbs / resAbsOld;
 
             // Save the best solution so far
             if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
@@ -227,7 +243,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         // Prepare for the next iteration
         if ( numIter < params.maxIter ) {
             // Save residual for next iteration
-            tmpAbs = resAbs;
+            resAbsOld = resAbs;
 
             // Compute betaj = (r_{j+1},r0^{*})/(r_{j},r0^{*}) *
             // \frac{alpha_{j}}{omega_{j}}
@@ -242,10 +258,10 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
     } // End of main PCG loop
 
-    FINISHED: // Finish iterative method
+FINISHED: // Finish iterative method
     this->norm2 = resAbs;
     this->normInf = rj.NormInf();
-    if ( params.verbose > PRINT_NONE ) PrintFinal();
+    PrintFinal(numIter, resRel, resAbs, ratio);
 
     // Restore the saved best iteration if needed
     if ( numIter > params.safeIter ) x = safe;

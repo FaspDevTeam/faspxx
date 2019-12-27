@@ -252,7 +252,7 @@ void VEC::Abs()
     for ( i = len; i < this->size; ++i ) this->values[i] = fabs(this->values[i]);
 }
 
-/// y = y + a * x, unroll long for loops.
+/// y = a * x + y, unroll long for loops.
 void VEC::AXPY(const DBL& a, const VEC& x)
 {
     INT i;
@@ -278,55 +278,55 @@ void VEC::XPAY(const DBL& a, const VEC& x)
         this->values[i + 3] = a * this->values[i + 3] + x.values[i + 3];
     }
     for ( i = len; i < this->size; ++i )
-        this->values[i] = a * this->values[i] + x.values[i];
+        this->values[i] = x.values[i] + a * this->values[i];
 }
 
-/// *this = a * *this + b * v, unroll long for loops.
-void VEC::AXPBY(const DBL& a, const DBL& b, const VEC& v)
+/// x = a * x + b * y, unroll long for loops.
+void VEC::AXPBY(const DBL& a, const DBL& b, const VEC& y)
 {
     INT i;
     const INT len = this->size - this->size % 4;
     switch ( (a == 1.0) + 2 * (b == 1.0) ) {
         case 0:
             for ( i = 0; i < len; i += 4 ) {
-                this->values[i]     = a * this->values[i]     + b * v.values[i];
-                this->values[i + 1] = a * this->values[i + 1] + b * v.values[i + 1];
-                this->values[i + 2] = a * this->values[i + 2] + b * v.values[i + 2];
-                this->values[i + 3] = a * this->values[i + 3] + b * v.values[i + 3];
+                this->values[i]     = a * this->values[i]     + b * y.values[i];
+                this->values[i + 1] = a * this->values[i + 1] + b * y.values[i + 1];
+                this->values[i + 2] = a * this->values[i + 2] + b * y.values[i + 2];
+                this->values[i + 3] = a * this->values[i + 3] + b * y.values[i + 3];
             }
             for ( i = len; i < this->size; ++i )
-                this->values[i] = a * this->values[i] + b * v.values[i];
+                this->values[i] = a * this->values[i] + b * y.values[i];
             break;
 
         case 1:
             for ( i = 0; i < len; i += 4 ) {
-                this->values[i]     += b * v.values[i];
-                this->values[i + 1] += b * v.values[i + 1];
-                this->values[i + 2] += b * v.values[i + 2];
-                this->values[i + 3] += b * v.values[i + 3];
+                this->values[i]     += b * y.values[i];
+                this->values[i + 1] += b * y.values[i + 1];
+                this->values[i + 2] += b * y.values[i + 2];
+                this->values[i + 3] += b * y.values[i + 3];
             }
-            for ( i = len; i < this->size; ++i ) this->values[i] += b * v.values[i];
+            for ( i = len; i < this->size; ++i ) this->values[i] += b * y.values[i];
             break;
 
         case 2:
             for ( i = 0; i < len; i += 4 ) {
-                this->values[i]     = a * this->values[i]     + v.values[i];
-                this->values[i + 1] = a * this->values[i + 1] + v.values[i + 1];
-                this->values[i + 2] = a * this->values[i + 2] + v.values[i + 2];
-                this->values[i + 3] = a * this->values[i + 3] + v.values[i + 3];
+                this->values[i]     = a * this->values[i]     + y.values[i];
+                this->values[i + 1] = a * this->values[i + 1] + y.values[i + 1];
+                this->values[i + 2] = a * this->values[i + 2] + y.values[i + 2];
+                this->values[i + 3] = a * this->values[i + 3] + y.values[i + 3];
             }
             for ( i = len; i < this->size; ++i )
-                this->values[i] = a * this->values[i] + v.values[i];
+                this->values[i] = a * this->values[i] + y.values[i];
             break;
 
         case 3:
             for ( i = 0; i < len; i += 4 ) {
-                this->values[i]     += v.values[i];
-                this->values[i + 1] += v.values[i + 1];
-                this->values[i + 2] += v.values[i + 2];
-                this->values[i + 3] += v.values[i + 3];
+                this->values[i]     += y.values[i];
+                this->values[i + 1] += y.values[i + 1];
+                this->values[i + 2] += y.values[i + 2];
+                this->values[i + 3] += y.values[i + 3];
             }
-            for ( i = len; i < this->size; ++i ) this->values[i] += v.values[i];
+            for ( i = len; i < this->size; ++i ) this->values[i] += y.values[i];
     }
 }
 

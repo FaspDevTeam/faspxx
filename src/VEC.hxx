@@ -110,11 +110,11 @@ public:
     /// Compute absolute values pointwise.
     void Abs();
 
-    /// x = x + a * y.
-    void AXPY(const DBL& a, const VEC& y);
+    /// y = a * x + y.
+    void AXPY(const DBL& a, const VEC& x);
 
-    /// x = y + a * x.
-    void XPAY(const DBL& a, const VEC& y);
+    /// y = x + a * y.
+    void XPAY(const DBL& a, const VEC& x);
 
     /// x = a * x + b * y.
     void AXPBY(const DBL& a, const DBL& b, const VEC& y);

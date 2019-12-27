@@ -43,7 +43,7 @@ int main(int argc, char *args[])
     params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
     params.AddParam("-verbose", "Verbose level", &solParam.verbose);
     params.Parse();
-    params.Print(std::cout);
+    params.Print();
 
     GetWallTime timer;
     timer.Start();
@@ -71,7 +71,6 @@ int main(int argc, char *args[])
 
     // Setup PCG parameters
     class CG solver;
-    solParam.algName = "CG"; solver.SetSolTypeFromName(solParam);
     solver.SetMaxIter(solParam.maxIter);
     solver.SetMinIter(solParam.minIter);
     solver.SetSafeIter(solParam.safeIter);

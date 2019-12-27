@@ -53,7 +53,7 @@ void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
     || ( params.verbose >= PRINT_MIN && iter == params.maxIter) ) {
         out.precision(4);
         std::setiosflags(std::ios::scientific);
-        if ( iter == 0 ) { // Initial iteration
+        if ( iter == params.minIter ) { // Initial iteration
             out << std::setw(7) << std::right << iter << " | "
                 << std::scientific << std::setprecision(5) << resRel << " | "
                 << std::setw(11) << resAbs << " | " << std::endl;
@@ -67,8 +67,22 @@ void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
 }
 
 /// Print out final status of an iterative method.
-void SOL::PrintFinal(std::ostream& out) const
+void SOL::PrintFinal(const int& iter, const double& resRel, const double& resAbs,
+                     const double& ratio, std::ostream& out) const
 {
+    if ( params.verbose >= PRINT_MIN ) {
+        if ( iter > params.minIter ) {
+            out << std::setw(7) << std::right << iter << " | "
+                << std::scientific << std::setprecision(5) << resRel << " | "
+                << std::setw(11) << resAbs << " | "
+                << std::fixed << std::setprecision(4) << ratio << std::endl;
+        } else {
+            out << std::setw(7) << std::right << iter << " | "
+                << std::scientific << std::setprecision(5) << resRel << " | "
+                << std::setw(11) << resAbs << " | " << std::endl;
+        }
+    }
+
     if ( params.verbose >= PRINT_MIN ) {
         out << "---------------------------------------------\n";
         if ( numIter >= params.maxIter )
@@ -108,6 +122,18 @@ void SOL::SetMinIter(int minIter)
     params.minIter = minIter;
 }
 
+/// Set safe iteration
+void SOL::SetSafeIter(int safeIter)
+{
+    params.safeIter = safeIter;
+}
+
+/// Set 'restart' 's value
+void SOL::SetRestart(int restart)
+{
+    params.restart = restart;
+}
+
 /// Set 'relTol' 's value
 void SOL::SetRelTol(double relTol)
 {
@@ -118,12 +144,6 @@ void SOL::SetRelTol(double relTol)
 void SOL::SetAbsTol(double absTol)
 {
     params.absTol = absTol;
-}
-
-/// Set 'restart' 's value
-void SOL::SetRestart(int restart)
-{
-    params.restart = restart;
 }
 
 /// Set 'solver' type
@@ -141,11 +161,6 @@ void SOL::SetSolTypeFromName(SOLParams& params)
     }
 }
 
-/// Set safe iteration
-void SOL::SetSafeIter(int safeIter)
-{
-    params.safeIter = safeIter;
-}
 
 /// Select solver
 const char *SOL::GetSolType(SOLType type) const

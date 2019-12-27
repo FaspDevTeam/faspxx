@@ -68,28 +68,28 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     const double solZeroTol = CLOSE_ZERO; // solution close to zero tolerance
 
     unsigned stagStep = 0, moreStep = 0;
-    double resAbsOld,resAbs, tmpAbs, resRel, denAbs;
-    double ratio, alpha, beta, tmpa, tmpb;
+    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld;
+    double alpha, beta, tmpa, tmpb;
 
     if ( params.verbose > PRINT_NONE ) std::cout << "Use CG to solve Ax=b ...\n";
 
+    PrintHead();
+
     // Initialize iterative method
     numIter = 0;
-
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
     pc->Solve(rk, zk); // preconditioning: B(r_k) -> z_k
 
     // Compute the initial residual
-    resAbs = rk.Norm2();
-    denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
-    resRel = resAbs / denAbs;
-    tmpAbs = resAbs; // save residual for the next iteration
+    if ( numIter >= params.minIter ) {
+        resAbs = rk.Norm2();
+        denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
+        resRel = resAbs / denAbs;
 
-    // If the initial residual is very small, no need to iterate
-    PrintHead();
-    PrintInfo(numIter, resRel, resAbs, 0.0);
-    if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
+        // If the initial residual is very small, no need to iterate
+        if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
+    }
 
     // Prepare for the main loop
     pk = zk;
@@ -98,7 +98,21 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     // Main CG loop
     while ( numIter < params.maxIter ) {
 
+        // Start from minIter instead of 0
+        if ( numIter == params.minIter && params.minIter > 0 ) {
+            resAbs = rk.Norm2();
+            denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
+            resRel = resAbs / denAbs;
+        }
+
+        if ( numIter >= params.minIter )
+            PrintInfo(numIter, resRel, resAbs, ratio);
+
         ++numIter; // iteration count
+
+        //---------------------------------------------
+        // CG iteration starts from here
+        //---------------------------------------------
 
         A->Apply(pk, ax); // ax = A * p_k, main computational work
 
@@ -115,14 +129,16 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
         x.AXPY(alpha, pk); // x_k = x_{k-1} + alpha_k*p_{k-1}
         rk.AXPY(-alpha, ax); // r_k = r_{k-1} - alpha_k*A*p_{k-1}
 
-        // Apply several checks for safety
+        //---------------------------------------------
+        // One step of CG iteration ends here
+        //---------------------------------------------
+
+        // Apply several checks for robustness
         if ( numIter >= params.minIter ) {
             // Compute norm of residual and output iteration information if needed
-            resAbsOld = resAbs;
             resAbs = rk.Norm2();
             resRel = resAbs / denAbs;
-            ratio  = resAbs / tmpAbs; // convergence ratio between two steps
-            PrintInfo(numIter, resRel, resAbs, ratio);
+            ratio  = resAbs / resAbsOld; // convergence ratio between two steps
 
             // Save the best solution so far
             if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
@@ -205,13 +221,13 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
 
         // Prepare for the next iteration
         if ( numIter < params.maxIter ) {
-            // Save residual for next iteration
-            tmpAbs = resAbs;
+            // Save the residual for next iteration
+            resAbsOld = resAbs;
 
             // Apply preconditioner z_k = B(r_k)
             pc->Solve(rk, zk);
 
-            // Compute beta_k = (z_k, r_k)/(z_{k-1}, r_{k-1})
+            // Compute beta_k = (z_k, r_k) / (z_{k-1}, r_{k-1})
             tmpb = zk.Dot(rk);
             beta = tmpb / tmpa;
             tmpa = tmpb;
@@ -225,7 +241,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
 FINISHED: // Finish iterative method
     this->norm2   = resAbs;
     this->normInf = rk.NormInf();
-    if ( params.verbose > PRINT_NONE ) PrintFinal();
+    PrintFinal(numIter, resRel, resAbs, ratio);
 
     // Restore the saved best iteration if needed
     if ( numIter > params.safeIter ) x = safe;

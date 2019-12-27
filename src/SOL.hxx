@@ -92,20 +92,21 @@ public:
     /// Set min number of iterations.
     void SetMinIter(int minIter);
 
+    /// Set number of safe-guard iterations.
+    void SetSafeIter(int safeIter);
+
+    /// Set restart number for Krylov methods.
+    void SetRestart(int restart);
+
     /// Set tolerance for relative residual.
     void SetRelTol(double relTol);
 
     /// Set tolerance for absolute residual.
     void SetAbsTol(double absTol);
 
-    /// Set restart number for Krylov methods.
-    void SetRestart(int restart);
-
     /// Set solver type from the name.
     void SetSolTypeFromName(SOLParams& params);
 
-    /// Set number of safe-guard iterations.
-    void SetSafeIter(int safeIter);
 
     /// Get solver type.
     const char * GetSolType(SOLType type) const;
@@ -130,7 +131,8 @@ public:
                    const double& factor, std::ostream& out = std::cout) const;
 
     /// Print out final status of an iterative method.
-    void PrintFinal(std::ostream& out = std::cout) const;
+    void PrintFinal(const int& iter, const double& resRel, const double& resAbs,
+                    const double& ratio, std::ostream& out = std::cout) const;
 
     /// Setup preconditioner operator.
     virtual void SetPC(SOL *pc);

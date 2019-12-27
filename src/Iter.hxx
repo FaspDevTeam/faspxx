@@ -30,7 +30,7 @@ public:
     ~Identity() {};
 
     /// Iterator
-    virtual FaspRetCode Solve(const VEC &x, VEC &y);
+    virtual FaspRetCode Solve(const VEC &b, VEC &x);
 };
 
 /*! \class Jacobi
@@ -39,23 +39,22 @@ public:
 class Jacobi : public SOL {
 
 public :
-    VEC diagInv;
-    VEC b;
-    double alpha;
-    VEC tmp;
+    double   alpha;     ///< weight for weighted Jacobi
+    VEC      diagInv;
+    VEC      rk;
 
 public:
     /// Default constructor.
-    Jacobi() : alpha(0) {};
+    Jacobi() : alpha(1.0) {};
 
     /// Default destructor.
     ~Jacobi() {};
 
     /// Standard constructor.
-    explicit Jacobi(const MAT &A, const VEC &b, double alpha);
+    explicit Jacobi(const MAT &A, double alpha);
 
     /// Solve Ax=b using the Jacobi method.
-    virtual FaspRetCode Solve(const VEC &x, VEC &y);
+    virtual FaspRetCode Solve(const VEC &b, VEC &x);
 };
 
 #endif /* end if for __ITER_HEADER__ */
