@@ -23,7 +23,7 @@ int main(int argc, const char *args[])
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
 
     // User default parameters
-    std::string parFile = "../data/multiple_sol.param";
+    std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
     std::string rhsFile, x0File;
     Identity    pc; // no preconditioning

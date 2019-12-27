@@ -1,0 +1,11 @@
+# Parameters File
+# Name: input.param
+
+# command line params example: -mat ../data/fem_small.csr -verbose 8 -resRel 1e-5 -resAbs 1e-7 -maxIter 150 -minIter 10
+
+-mat ../data/fem_small.csr
+-verbose 8
+-resRel 1E-5
+-resAbs 1e-7
+-maxIter 150
+-minIter 10
