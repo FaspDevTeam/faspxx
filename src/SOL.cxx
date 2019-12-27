@@ -151,7 +151,7 @@ void SOL::SetAbsTol(double absTol)
 /// Set value for SOLType using algName.
 void SOL::SetSolTypeFromName(SOLParams& params)
 {
-    for ( char & c : params.algName ) c = tolower(c); // Change to lowercase
+    for ( char & c : params.algName ) c = std::tolower(c); // Change to lowercase
     if ( params.algName == "cg" )
         params.type = SOLType::CG;
     else if ( params.algName == "bicgstab" )

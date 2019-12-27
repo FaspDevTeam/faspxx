@@ -103,7 +103,7 @@ public:
     void SetAbsTol(double absTol);
 
     /// Set solver type from its name.
-    void SetSolTypeFromName(SOLParams& params);
+    static void SetSolTypeFromName(SOLParams& params);
 
     /// Get solver type.
     const char * GetSolType(SOLType type) const;

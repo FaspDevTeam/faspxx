@@ -88,7 +88,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
     this->r0star = this->rj;  // r0_{*} = r0c
     this->pj     = this->rj;  // p0 = r0
 
-    // Main CG loop
+    // Main BiCGStab loop
     while ( numIter < params.maxIter ) {
 
         // Start from minIter instead of 0
@@ -160,8 +160,8 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                 // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
                 double xNorminf = x.NormInf();
                 if ( xNorminf < solStagTol ) {
-                    if ( params.verbose > PRINT_MIN ) FASPXX_WARNING(
-                            "Iteration stopped -- solution almost zero!");
+                    if ( params.verbose > PRINT_MIN )
+                        FASPXX_WARNING("Iteration stopped due to x vanishes!");
                     errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                     break;
                 }
@@ -175,7 +175,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                     resAbs = this->rj.Norm2();
                     resRel = resAbs / denAbs;
                     if ( params.verbose > PRINT_SOME ) {
-                        FASPXX_WARNING("Iteration stagnate!");
+                        FASPXX_WARNING("Possible iteration stagnate!");
                         WarnRealRes(resRel);
                     }
 
@@ -193,7 +193,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
                     if ( params.verbose > PRINT_SOME ) {
                         WarnDiffRes(xRelDiff, resRel);
-                        FASPXX_WARNING("Iteration restarted -- stagnation!");
+                        FASPXX_WARNING("Iteration restarted due to stagnation!");
                     }
                 } // End of stagnation check!
             } // End of check I and II
@@ -218,8 +218,8 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
                 if ( moreStep >= params.restart ) { // Note: restart has different
                     // meaning here
-                    if ( params.verbose > PRINT_MIN ) FASPXX_WARNING(
-                            "The tolerance might be too small!");
+                    if ( params.verbose > PRINT_MIN )
+                        FASPXX_WARNING("The tolerance might be too small!");
                     errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                     break;
                 }
@@ -235,8 +235,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
             // Save residual for next iteration
             resAbsOld = resAbs;
 
-            // Compute betaj = (r_{j+1},r0^{*})/(r_{j},r0^{*}) *
-            // \frac{alpha_{j}}{omega_{j}}
+            // betaj = (r_{j+1},r0^{*}) / (r_{j},r0^{*}) * alpha_j / omega_j
             rjr0startmp = rjr0star;
             rjr0star = this->rj.Dot(this->r0star);
             betaj = rjr0star / rjr0startmp * alphaj / omegaj;
@@ -246,7 +245,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
             this->pj.WAXPBY(1.0, this->rj, betaj, this->tmp);
         }
 
-    } // End of main PCG loop
+    } // End of main BiCGStab loop
 
     // Finish iterative method
     this->norm2 = resAbs;

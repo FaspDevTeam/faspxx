@@ -141,7 +141,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
                 double xNormInf = x.NormInf();
                 if ( xNormInf < solZeroTol ) {
                     if ( params.verbose > PRINT_MIN )
-                    FASPXX_WARNING("Iteration stopped due to x almost zero!");
+                        FASPXX_WARNING("Iteration stopped due to x vanishes!");
                     errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                     break;
                 }
@@ -155,7 +155,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
                     resAbs = this->rk.Norm2();
                     resRel = resAbs / denAbs;
                     if ( params.verbose > PRINT_SOME ){
-                        FASPXX_WARNING("Iteration stagnate!");
+                        FASPXX_WARNING("Possible iteration stagnate!");
                         WarnRealRes(resRel);
                     }
 
@@ -200,7 +200,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
                 if ( moreStep >= params.restart ) { // Note: restart has different
                     // meaning here
                     if ( params.verbose > PRINT_MIN )
-                        FASPXX_WARNING("The tolerance might be too small!");
+                        FASPXX_WARNING("The tolerance is too small!");
                     errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                     break;
                 }
