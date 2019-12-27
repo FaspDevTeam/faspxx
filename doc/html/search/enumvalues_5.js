@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['minres_442',['MINRES',['../class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a18ae9fce509b39f21435374c2c29911f',1,'SOL']]]
+  ['minres_469',['MINRES',['../_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973',1,'SOL.hxx']]]
 ];

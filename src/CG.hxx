@@ -25,11 +25,11 @@ class CG: public SOL
 {
 
 private:
-    VEC rk;      ///< work vector for residual
-    VEC pk;      ///< work vector for preconditioned residual
-    VEC zk;      ///< work vector for search direction
-    VEC ax;      ///< work vector for A * pk
-    VEC safe;    ///< work vector for safe-guard
+    VEC rk;      ///< Work vector for residual
+    VEC pk;      ///< Work vector for preconditioned residual
+    VEC zk;      ///< Work vector for search direction
+    VEC ax;      ///< Work vector for A * pk
+    VEC safe;    ///< Work vector for safe-guard
 
 public:
     /// Default constructor.

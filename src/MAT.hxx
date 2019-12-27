@@ -106,14 +106,13 @@ public:
     /// Get the diagonal entries of *this and save them in a VEC object.
     void GetDiag(VEC& v) const;
 
-    /// Get the diagonal entries 's reciprocal of *this and save them in a MAT
-    /// object.
+    /// Get reciprocal diagonal entries and save them in a MAT object.
     void GetDiagInv(MAT& m) const;
 
-    // Get the lower triangular matrix
+    /// Get the lower triangular matrix.
     void GetLowerTri(MAT& lTri) const;
 
-    // Get the upper triangular matrix
+    /// Get the upper triangular matrix.
     void GetUpperTri(MAT& uTri) const;
 
     /// Copy the matrix to another MAT object.

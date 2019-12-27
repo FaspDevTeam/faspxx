@@ -20,13 +20,12 @@
 #include "SOL.hxx"
 
 /*! \class BiCGStab
- *  \brief Preconditioned BiCGStab method.
+ *  \brief Preconditioned bi-conjugate gradient stabilized method.
  */
 class BiCGStab:public SOL
 {
-
-private:
-    VEC r0star;
+private:  // Todo: Check whether we need so many temp vectors! Add Doxygen. --zcs
+    VEC r0star;  ///< Work vector for r0*
     VEC tmp;
     VEC apj;
     VEC asj;
@@ -37,7 +36,7 @@ private:
     VEC stmp;
     VEC mp;
     VEC ms;
-    VEC safe;
+    VEC safe;    ///< Work vector for safe-guard
 
 public:
     /// Default constructor。

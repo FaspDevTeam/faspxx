@@ -1,9 +1,16 @@
 var searchData=
 [
-  ['readcsr_338',['ReadCSR',['../_read_data_8cxx.html#ad3c3aff3c5da77f28132a010ba3ca9d7',1,'ReadCSR(const char *fileName, INT &amp;row, INT &amp;col, INT &amp;nnz, std::vector&lt; INT &gt; &amp;rowPtr, std::vector&lt; INT &gt; &amp;colInd, std::vector&lt; DBL &gt; &amp;values):&#160;ReadData.cxx'],['../_read_data_8hxx.html#a00ccf534a7add57c626460d5191d29cb',1,'ReadCSR(const char *filename, INT &amp;row, INT &amp;col, INT &amp;nnz, std::vector&lt; INT &gt; &amp;rowPtr, std::vector&lt; INT &gt; &amp;colInd, std::vector&lt; DBL &gt; &amp;values):&#160;ReadData.cxx']]],
-  ['readmat_339',['ReadMat',['../_read_data_8cxx.html#aabb9b3709c28b28a84604fdfb2e6c00c',1,'ReadMat(const char *fileName, MAT &amp;dst):&#160;ReadData.cxx'],['../_read_data_8hxx.html#af65496227abacba10c4a2e092fb6ea53',1,'ReadMat(const char *filename, MAT &amp;dst):&#160;ReadData.cxx']]],
-  ['readmtx_340',['ReadMTX',['../_read_data_8cxx.html#aa90ba25aadaa365f01799f638a5be120',1,'ReadMTX(const char *fileName, INT &amp;row, INT &amp;col, INT &amp;nnz, std::vector&lt; INT &gt; &amp;rowInd, std::vector&lt; INT &gt; &amp;colInd, std::vector&lt; DBL &gt; &amp;values):&#160;ReadData.cxx'],['../_read_data_8hxx.html#ad04872c2fcc556cd9c0d636cb8540a76',1,'ReadMTX(const char *filename, INT &amp;row, INT &amp;col, INT &amp;nnz, std::vector&lt; INT &gt; &amp;rowInd, std::vector&lt; INT &gt; &amp;colInd, std::vector&lt; DBL &gt; &amp;values):&#160;ReadData.cxx']]],
-  ['readvec_341',['ReadVEC',['../_read_data_8cxx.html#a9b9ff914e0db4bc89e2f53d4ab3272b7',1,'ReadVEC(const char *fileName, VEC &amp;dst):&#160;ReadData.cxx'],['../_read_data_8hxx.html#a28ed14c7e504718ca67ec2e5b0d37e4b',1,'ReadVEC(const char *filename, VEC &amp;dst):&#160;ReadData.cxx']]],
-  ['reciprocal_342',['Reciprocal',['../class_v_e_c.html#a77866ca316ae6c9755743133f29b2009',1,'VEC']]],
-  ['reserve_343',['Reserve',['../class_v_e_c.html#a6964bb6c728fccdce73bf696937348b9',1,'VEC']]]
+  ['parameters_346',['Parameters',['../class_parameters.html#a5a3bca0c54addd14f8b04a210c3a6ffb',1,'Parameters']]],
+  ['parse_347',['Parse',['../class_parameters.html#af714e7650f23ea2287060a515f661ac9',1,'Parameters']]],
+  ['pointwisedivide_348',['PointwiseDivide',['../class_v_e_c.html#a72c9a77985beffe9eba16f2e51166715',1,'VEC']]],
+  ['pointwisemult_349',['PointwiseMult',['../class_v_e_c.html#aceb2d07eb6506218f8ad78ea4c884899',1,'VEC']]],
+  ['print_350',['Print',['../class_parameters.html#afeb00ef8233304aed03952f6973ef0bb',1,'Parameters']]],
+  ['printcommandlineparams_351',['PrintCommandLineParams',['../class_parameters.html#a846cc8500906a16127f8425c2f7328a1',1,'Parameters']]],
+  ['printfileparams_352',['PrintFileParams',['../class_parameters.html#a37398bd43e2c5662cedcf68d527a2473',1,'Parameters']]],
+  ['printfinal_353',['PrintFinal',['../class_s_o_l.html#ad19901eb68a47c238247514a9d9e88b3',1,'SOL']]],
+  ['printhead_354',['PrintHead',['../class_s_o_l.html#ad6d67412a7eaa80248f6e4d64fe8f81b',1,'SOL']]],
+  ['printhelp_355',['PrintHelp',['../class_parameters.html#ade851d63cbca4254ec8a0599aead8490',1,'Parameters']]],
+  ['printinfo_356',['PrintInfo',['../class_s_o_l.html#aa9229551b41f9576ebca17de098e099c',1,'SOL']]],
+  ['printparam_357',['PrintParam',['../class_s_o_l.html#a370fa587c28e987a35fc3da59676b6d6',1,'SOL']]],
+  ['printuserparams_358',['PrintUserParams',['../class_parameters.html#adaf95dab05f8b4b5fceb8e69c053178f',1,'Parameters']]]
 ];

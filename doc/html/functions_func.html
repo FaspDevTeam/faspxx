@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">FASP++
-   &#160;<span id="projectnumber">0.2.4 Dec/23/2019</span>
+   &#160;<span id="projectnumber">0.3.0 Dec/27/2019</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -83,7 +83,7 @@ $(function() {
 : <a class="el" href="class_v_e_c.html#aed405b5f3f4e7a6df1494e45818df069">VEC</a>
 </li>
 <li>AXPY()
-: <a class="el" href="class_v_e_c.html#afe1bbb8954790fc77e62d87bd2b9dfe9">VEC</a>
+: <a class="el" href="class_v_e_c.html#ae64c962e2f18573b259a2ccbb028633c">VEC</a>
 </li>
 </ul>
 
@@ -159,6 +159,9 @@ $(function() {
 : <a class="el" href="class_fasp_bad_alloc.html#ae01846999fe087ced13ed07f705818f7">FaspBadAlloc</a>
 , <a class="el" href="class_fasp_run_time.html#a448bc4f406ab556a8a4abbecebac0f26">FaspRunTime</a>
 </li>
+<li>GetLowerTri()
+: <a class="el" href="class_m_a_t.html#a1919fafad88b2233beea7f869bc2f869">MAT</a>
+</li>
 <li>GetNNZ()
 : <a class="el" href="class_m_a_t.html#a12a6413f9922b716bc63d1b42400f551">MAT</a>
 </li>
@@ -173,6 +176,9 @@ $(function() {
 </li>
 <li>GetSolType()
 : <a class="el" href="class_s_o_l.html#a402a9c7642afdf679e6b0e1eba245c83">SOL</a>
+</li>
+<li>GetUpperTri()
+: <a class="el" href="class_m_a_t.html#ab661b216f58b78921751ee4985b68f8d">MAT</a>
 </li>
 <li>GetValue()
 : <a class="el" href="class_m_a_t.html#af0a9a3045d481cb6fa987ff3e21e6fcf">MAT</a>
@@ -264,7 +270,7 @@ $(function() {
 
 <h3><a id="index_p"></a>- p -</h3><ul>
 <li>Parameters()
-: <a class="el" href="class_parameters.html#aa7f3705c02358210bc84b27df99c4993">Parameters</a>
+: <a class="el" href="class_parameters.html#a5a3bca0c54addd14f8b04a210c3a6ffb">Parameters</a>
 </li>
 <li>Parse()
 : <a class="el" href="class_parameters.html#af714e7650f23ea2287060a515f661ac9">Parameters</a>
@@ -285,7 +291,10 @@ $(function() {
 : <a class="el" href="class_parameters.html#a37398bd43e2c5662cedcf68d527a2473">Parameters</a>
 </li>
 <li>PrintFinal()
-: <a class="el" href="class_s_o_l.html#af6a9f64817849eecedb9efbc1d64d71a">SOL</a>
+: <a class="el" href="class_s_o_l.html#ad19901eb68a47c238247514a9d9e88b3">SOL</a>
+</li>
+<li>PrintHead()
+: <a class="el" href="class_s_o_l.html#ad6d67412a7eaa80248f6e4d64fe8f81b">SOL</a>
 </li>
 <li>PrintHelp()
 : <a class="el" href="class_parameters.html#ade851d63cbca4254ec8a0599aead8490">Parameters</a>
@@ -338,16 +347,16 @@ $(function() {
 <li>SetRestart()
 : <a class="el" href="class_s_o_l.html#aabd4ce20909487473b8651743e7940c2">SOL</a>
 </li>
-<li>SetSolFromFile()
-: <a class="el" href="class_s_o_l.html#aabb5529b27e12597a12dc93909452e22">SOL</a>
+<li>SetSafeIter()
+: <a class="el" href="class_s_o_l.html#a54c5b76ede7b18f03b109b27c72801bb">SOL</a>
 </li>
-<li>SetSolType()
-: <a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SOL</a>
+<li>SetSolTypeFromName()
+: <a class="el" href="class_s_o_l.html#a03cc0269ea99838cf3089ff0f789cf78">SOL</a>
 </li>
 <li>Setup()
 : <a class="el" href="class_bi_c_g_stab.html#acb021381ea607904f9b4aac6e1688fac">BiCGStab</a>
 , <a class="el" href="class_c_g.html#a457c362df6c041fd99ea232838ef60c5">CG</a>
-, <a class="el" href="class_s_o_l.html#adb8c813a82f0d07653788cdb39c1fa55">SOL</a>
+, <a class="el" href="class_s_o_l.html#a24c24fa6860e8860902557d2f89f4218">SOL</a>
 </li>
 <li>SetValues()
 : <a class="el" href="class_m_a_t.html#adecbda015d58a8326db860f0fde1290c">MAT</a>
@@ -363,8 +372,8 @@ $(function() {
 <li>Solve()
 : <a class="el" href="class_bi_c_g_stab.html#aabcb88112893a2d0663c4c4538fd9c32">BiCGStab</a>
 , <a class="el" href="class_c_g.html#a77c14d079edace8720916d20e261e021">CG</a>
-, <a class="el" href="class_identity.html#ad2d8e4f015b8b80f17e2327959642546">Identity</a>
-, <a class="el" href="class_jacobi.html#aa07513ef2e2336893a677180e5840608">Jacobi</a>
+, <a class="el" href="class_identity.html#abbb3161e4808bdb826d863c43382d896">Identity</a>
+, <a class="el" href="class_jacobi.html#a2eede4ecdd0731bac5f2971ca35a4874">Jacobi</a>
 , <a class="el" href="class_s_o_l.html#a4eb927a6f22c892343c59a7b7df243a4">SOL</a>
 </li>
 <li>Start()
@@ -410,7 +419,7 @@ $(function() {
 
 <h3><a id="index_x"></a>- x -</h3><ul>
 <li>XPAY()
-: <a class="el" href="class_v_e_c.html#ac1c9b9fe0fafb4ade868151f5f9086f1">VEC</a>
+: <a class="el" href="class_v_e_c.html#a801ce6e4a4873d587ccbbd2a6925317d">VEC</a>
 </li>
 </ul>
 
@@ -442,7 +451,7 @@ $(function() {
 : <a class="el" href="class_m_a_t.html#a4af5edb1c8d961267d37d8d64e6f05da">MAT</a>
 </li>
 <li>~Parameters()
-: <a class="el" href="class_parameters.html#a640a1a349975a8cb023696f25e563a5c">Parameters</a>
+: <a class="el" href="class_parameters.html#ac98709c00479386d18d1759965d7d00d">Parameters</a>
 </li>
 <li>~SOL()
 : <a class="el" href="class_s_o_l.html#a6bfc626f9d10d1ed65cfdbd5ba1345f2">SOL</a>

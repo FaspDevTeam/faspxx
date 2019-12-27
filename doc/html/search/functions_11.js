@@ -1,9 +1,4 @@
 var searchData=
 [
-  ['warncompres_364',['WarnCompRes',['../class_s_o_l.html#a8d907df82563be7ba18189461a56e740',1,'SOL']]],
-  ['warndiffres_365',['WarnDiffRes',['../class_s_o_l.html#a315e130b347ebb2b2ba2cc43344e7c5f',1,'SOL']]],
-  ['warnrealres_366',['WarnRealRes',['../class_s_o_l.html#aea7d4730870f463eecb830ebb0c7c0d7',1,'SOL']]],
-  ['waxpby_367',['WAXPBY',['../class_v_e_c.html#a127baa0df56f7a49c2951e13faf36f30',1,'VEC']]],
-  ['writecsr_368',['WriteCSR',['../_m_a_t_8cxx.html#a195103bba878ee446f9ecefebc00ddf7',1,'MAT.cxx']]],
-  ['writemtx_369',['WriteMTX',['../_m_a_t_8cxx.html#acda3057f226d59aa2ad882348b67e4d9',1,'MAT.cxx']]]
+  ['vec_384',['VEC',['../class_v_e_c.html#aef3593c0566156a6473eb4f5315d9434',1,'VEC::VEC()'],['../class_v_e_c.html#ab4b86b4f80da4072606fcdeb14a9164b',1,'VEC::VEC(const INT &amp;size, const DBL &amp;value=0.0)'],['../class_v_e_c.html#a23e0ceadb3c66cea62741beb06da0575',1,'VEC::VEC(const std::vector&lt; DBL &gt; &amp;src)'],['../class_v_e_c.html#a3630293784f5e656275a9d4a7710ef47',1,'VEC::VEC(const VEC &amp;src)'],['../class_v_e_c.html#a106b656ca551d2677287442b59870b43',1,'VEC::VEC(const INT &amp;size, const DBL *src)']]]
 ];

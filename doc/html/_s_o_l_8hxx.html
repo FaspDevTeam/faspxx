@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">FASP++
-   &#160;<span id="projectnumber">0.2.4 Dec/23/2019</span>
+   &#160;<span id="projectnumber">0.3.0 Dec/27/2019</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -69,7 +69,8 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">SOL.hxx File Reference</div>  </div>
 </div><!--header-->
@@ -92,6 +93,9 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_s_o_l_params.html">SOLParams</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterative solver parameters.  <a href="struct_s_o_l_params.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html">SOL</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for iterative solvers.  <a href="class_s_o_l.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -100,6 +104,21 @@ Classes</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:af5b0e790b528b6e5cb23457b520b6f8f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_o_l_8hxx.html#af5b0e790b528b6e5cb23457b520b6f8f">__SOL_HEADER__</a></td></tr>
 <tr class="separator:af5b0e790b528b6e5cb23457b520b6f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a211350976404ebcc6715299193cc2ea7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> { <br />
+&#160;&#160;<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">CG</a> = 1, 
+<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a> = 2, 
+<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a> = 3, 
+<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2">GMRES</a> = 4, 
+<br />
+&#160;&#160;<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646">FGMRES</a> = 5, 
+<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a> = 6
+<br />
+ }</td></tr>
+<tr class="memdesc:a211350976404ebcc6715299193cc2ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterative solver type.  <a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7">More...</a><br /></td></tr>
+<tr class="separator:a211350976404ebcc6715299193cc2ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Iterative solver class declaration. </p>
@@ -107,7 +126,7 @@ Macros</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>Nov/25/2019</dd></dl>
 <hr  />
 <p> Copyright (C) 2019&ndash;present by the FASP++ team. All rights reserved. </p>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 Released under the terms of the GNU Lesser General Public License 3.0 or later.</h2>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="af5b0e790b528b6e5cb23457b520b6f8f"></a>
@@ -125,7 +144,52 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 
 </div>
 </div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a211350976404ebcc6715299193cc2ea7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a211350976404ebcc6715299193cc2ea7">&#9670;&nbsp;</a></span>SOLType</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Iterative solver type. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60"></a>CG&#160;</td><td class="fielddoc"><p>Conjugate Gradient. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0"></a>BICGSTAB&#160;</td><td class="fielddoc"><p>Bi-Conjugate Gradient Stabilized. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973"></a>MINRES&#160;</td><td class="fielddoc"><p>Minimal Residual. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2"></a>GMRES&#160;</td><td class="fielddoc"><p>Generalized Minimal Residual. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646"></a>FGMRES&#160;</td><td class="fielddoc"><p>Flexible GMRES. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c"></a>VFGMRES&#160;</td><td class="fielddoc"><p>Variable-restarting FGMRES. </p>
+</td></tr>
+</table>
+<div class="fragment"><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;             {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="class_c_g.html">CG</a>        = 1,   </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a>  = 2,   </div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a>    = 3,   </div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2">GMRES</a>     = 4,   </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646">FGMRES</a>    = 5,   </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a>   = 6,   </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;};</div>
+</div><!-- fragment -->
+</div>
+</div>
 </div><!-- contents -->
+<div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646">FGMRES</a></div><div class="ttdoc">Flexible GMRES.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:34</div></div>
+<div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a></div><div class="ttdoc">Minimal Residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:32</div></div>
+<div class="ttc" id="aclass_c_g_html"><div class="ttname"><a href="class_c_g.html">CG</a></div><div class="ttdoc">Preconditioned conjugate gradient method.</div><div class="ttdef"><b>Definition:</b> CG.hxx:24</div></div>
+<div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a></div><div class="ttdoc">Bi-Conjugate Gradient Stabilized.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:31</div></div>
+<div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2">GMRES</a></div><div class="ttdoc">Generalized Minimal Residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:33</div></div>
+<div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a></div><div class="ttdoc">Variable-restarting FGMRES.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:35</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

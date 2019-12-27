@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['withpc_404',['withPC',['../class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4',1,'SOL']]]
+  ['verbose_429',['verbose',['../struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b',1,'SOLParams']]]
 ];

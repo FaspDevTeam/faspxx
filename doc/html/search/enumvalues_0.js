@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bicgstab_411',['BICGSTAB',['../class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a3825782144dc75fc47ffb7af7062421d',1,'SOL']]]
+  ['bicgstab_438',['BICGSTAB',['../_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0',1,'SOL.hxx']]]
 ];

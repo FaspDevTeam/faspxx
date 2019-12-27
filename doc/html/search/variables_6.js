@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['norm2_391',['norm2',['../class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05',1,'SOL']]],
-  ['norminf_392',['normInf',['../class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7',1,'SOL']]],
-  ['nrow_393',['nrow',['../class_l_o_p.html#a041656000dab81274b9c852e7413f887',1,'LOP']]],
-  ['numiter_394',['numIter',['../class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2',1,'SOL']]]
+  ['max_5fstag_5fnum_411',['MAX_STAG_NUM',['../faspxx_8hxx.html#ad639e6443dc09bf2c8fb32fb416e70b2',1,'faspxx.hxx']]],
+  ['maxiter_412',['maxIter',['../struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756',1,'SOLParams']]],
+  ['mcol_413',['mcol',['../class_l_o_p.html#a300365edbf5682562c60fdba857e769f',1,'LOP']]],
+  ['miniter_414',['minIter',['../struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7',1,'SOLParams']]]
 ];

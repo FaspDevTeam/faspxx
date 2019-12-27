@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cg_412',['CG',['../class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18',1,'SOL']]]
+  ['cg_439',['CG',['../_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60',1,'SOL.hxx']]]
 ];

@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">FASP++
-   &#160;<span id="projectnumber">0.2.4 Dec/23/2019</span>
+   &#160;<span id="projectnumber">0.3.0 Dec/27/2019</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -64,7 +64,6 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
@@ -84,59 +83,50 @@ Inheritance diagram for SOL:</div>
  <div class="center">
   <img src="class_s_o_l.png" usemap="#SOL_map" alt=""/>
   <map id="SOL_map" name="SOL_map">
-<area href="class_bi_c_g_stab.html" title="Preconditioned BiCGStab method." alt="BiCGStab" shape="rect" coords="0,56,66,80"/>
+<area href="class_bi_c_g_stab.html" title="Preconditioned bi-conjugate gradient stabilized method." alt="BiCGStab" shape="rect" coords="0,56,66,80"/>
 <area href="class_c_g.html" title="Preconditioned conjugate gradient method." alt="CG" shape="rect" coords="76,56,142,80"/>
 <area href="class_identity.html" title="Identity operator." alt="Identity" shape="rect" coords="152,56,218,80"/>
 <area href="class_jacobi.html" title="Jacobi iterator." alt="Jacobi" shape="rect" coords="228,56,294,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a6f367b11f23657c467a0182b1866ba59"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59">SOLType</a> { <br />
-&#160;&#160;<a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18">CG</a> = 1, 
-<a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a3825782144dc75fc47ffb7af7062421d">BICGSTAB</a> = 2, 
-<a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a18ae9fce509b39f21435374c2c29911f">MINRES</a> = 3, 
-<a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a52e0db590e169738ce8bdd4e16d70440">GMRES</a> = 4, 
-<br />
-&#160;&#160;<a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a0e8810eb16385098593ce85e42a48134">FGMRES</a> = 5, 
-<a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a731e638d7e02a6c84be99dbb359529ac">VFGMRES</a> = 6
-<br />
- }</td></tr>
-<tr class="separator:a6f367b11f23657c467a0182b1866ba59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac6a8c3742d0e13589722d93556120aa4"><td class="memItemLeft" align="right" valign="top"><a id="ac6a8c3742d0e13589722d93556120aa4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#ac6a8c3742d0e13589722d93556120aa4">SOL</a> ()</td></tr>
 <tr class="memdesc:ac6a8c3742d0e13589722d93556120aa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br /></td></tr>
 <tr class="separator:ac6a8c3742d0e13589722d93556120aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bfc626f9d10d1ed65cfdbd5ba1345f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a6bfc626f9d10d1ed65cfdbd5ba1345f2">~SOL</a> ()</td></tr>
-<tr class="memdesc:a6bfc626f9d10d1ed65cfdbd5ba1345f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default destructor.  <a href="class_s_o_l.html#a6bfc626f9d10d1ed65cfdbd5ba1345f2">More...</a><br /></td></tr>
+<tr class="memitem:a6bfc626f9d10d1ed65cfdbd5ba1345f2"><td class="memItemLeft" align="right" valign="top"><a id="a6bfc626f9d10d1ed65cfdbd5ba1345f2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a6bfc626f9d10d1ed65cfdbd5ba1345f2">~SOL</a> ()</td></tr>
+<tr class="memdesc:a6bfc626f9d10d1ed65cfdbd5ba1345f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default destructor. <br /></td></tr>
 <tr class="separator:a6bfc626f9d10d1ed65cfdbd5ba1345f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc657acf5e225b97cb5858634a7dad59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#abc657acf5e225b97cb5858634a7dad59">SetOutput</a> (<a class="el" href="_param_8hxx.html#a53dd77e01e0e3b0f0f2f26a2498a5442">Output</a> <a class="el" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a>)</td></tr>
+<tr class="memitem:abc657acf5e225b97cb5858634a7dad59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#abc657acf5e225b97cb5858634a7dad59">SetOutput</a> (<a class="el" href="_param_8hxx.html#a53dd77e01e0e3b0f0f2f26a2498a5442">Output</a> verbose)</td></tr>
 <tr class="memdesc:abc657acf5e225b97cb5858634a7dad59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output level.  <a href="class_s_o_l.html#abc657acf5e225b97cb5858634a7dad59">More...</a><br /></td></tr>
 <tr class="separator:abc657acf5e225b97cb5858634a7dad59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a573cc184cb2eb2852d0ff54ca0e90cb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a573cc184cb2eb2852d0ff54ca0e90cb9">SetMaxIter</a> (int <a class="el" href="class_s_o_l.html#a9218fae64cd9b0a2f8ea20764282cdbe">maxIter</a>)</td></tr>
+<tr class="memitem:a573cc184cb2eb2852d0ff54ca0e90cb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a573cc184cb2eb2852d0ff54ca0e90cb9">SetMaxIter</a> (int maxIter)</td></tr>
 <tr class="memdesc:a573cc184cb2eb2852d0ff54ca0e90cb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set max number of iterations.  <a href="class_s_o_l.html#a573cc184cb2eb2852d0ff54ca0e90cb9">More...</a><br /></td></tr>
 <tr class="separator:a573cc184cb2eb2852d0ff54ca0e90cb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaa2d6da6c4d5c8ee4a99444c63acfb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#adaa2d6da6c4d5c8ee4a99444c63acfb3">SetMinIter</a> (int <a class="el" href="class_s_o_l.html#af28ac6fb7dafbe1fac5c233362ceb5c7">minIter</a>)</td></tr>
+<tr class="memitem:adaa2d6da6c4d5c8ee4a99444c63acfb3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#adaa2d6da6c4d5c8ee4a99444c63acfb3">SetMinIter</a> (int minIter)</td></tr>
 <tr class="memdesc:adaa2d6da6c4d5c8ee4a99444c63acfb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set min number of iterations.  <a href="class_s_o_l.html#adaa2d6da6c4d5c8ee4a99444c63acfb3">More...</a><br /></td></tr>
 <tr class="separator:adaa2d6da6c4d5c8ee4a99444c63acfb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b9363e587994fe08a73f7aad8731387"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a7b9363e587994fe08a73f7aad8731387">SetRelTol</a> (double <a class="el" href="class_s_o_l.html#a3f59d22caba491b4c849261c39d6b10a">relTol</a>)</td></tr>
-<tr class="memdesc:a7b9363e587994fe08a73f7aad8731387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set tolerance for relative residual.  <a href="class_s_o_l.html#a7b9363e587994fe08a73f7aad8731387">More...</a><br /></td></tr>
-<tr class="separator:a7b9363e587994fe08a73f7aad8731387"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae051a04e2385e6d4120d9e619f52a4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aae051a04e2385e6d4120d9e619f52a4e">SetAbsTol</a> (double <a class="el" href="class_s_o_l.html#ad14b25244df4b9f2cd81c6706181aad4">absTol</a>)</td></tr>
-<tr class="memdesc:aae051a04e2385e6d4120d9e619f52a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set tolerance for absolute residual.  <a href="class_s_o_l.html#aae051a04e2385e6d4120d9e619f52a4e">More...</a><br /></td></tr>
-<tr class="separator:aae051a04e2385e6d4120d9e619f52a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabd4ce20909487473b8651743e7940c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aabd4ce20909487473b8651743e7940c2">SetRestart</a> (int <a class="el" href="class_s_o_l.html#ad737edcb929982011d3927f6206f46bf">restart</a>)</td></tr>
+<tr class="memitem:a54c5b76ede7b18f03b109b27c72801bb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a54c5b76ede7b18f03b109b27c72801bb">SetSafeIter</a> (int safeIter)</td></tr>
+<tr class="memdesc:a54c5b76ede7b18f03b109b27c72801bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set number of safe-guard iterations.  <a href="class_s_o_l.html#a54c5b76ede7b18f03b109b27c72801bb">More...</a><br /></td></tr>
+<tr class="separator:a54c5b76ede7b18f03b109b27c72801bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabd4ce20909487473b8651743e7940c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aabd4ce20909487473b8651743e7940c2">SetRestart</a> (int restart)</td></tr>
 <tr class="memdesc:aabd4ce20909487473b8651743e7940c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set restart number for Krylov methods.  <a href="class_s_o_l.html#aabd4ce20909487473b8651743e7940c2">More...</a><br /></td></tr>
 <tr class="separator:aabd4ce20909487473b8651743e7940c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72bb6330814ea7ea832f5823285d18c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a> (<a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59">SOLType</a> solver)</td></tr>
-<tr class="memdesc:a72bb6330814ea7ea832f5823285d18c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set solver type.  <a href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">More...</a><br /></td></tr>
-<tr class="separator:a72bb6330814ea7ea832f5823285d18c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a402a9c7642afdf679e6b0e1eba245c83"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a402a9c7642afdf679e6b0e1eba245c83">GetSolType</a> (<a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59">SOLType</a> <a class="el" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a>) const</td></tr>
-<tr class="memdesc:a402a9c7642afdf679e6b0e1eba245c83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get solver type.  <a href="class_s_o_l.html#a402a9c7642afdf679e6b0e1eba245c83">More...</a><br /></td></tr>
+<tr class="memitem:a7b9363e587994fe08a73f7aad8731387"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a7b9363e587994fe08a73f7aad8731387">SetRelTol</a> (double relTol)</td></tr>
+<tr class="memdesc:a7b9363e587994fe08a73f7aad8731387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set tolerance for relative residual.  <a href="class_s_o_l.html#a7b9363e587994fe08a73f7aad8731387">More...</a><br /></td></tr>
+<tr class="separator:a7b9363e587994fe08a73f7aad8731387"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae051a04e2385e6d4120d9e619f52a4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aae051a04e2385e6d4120d9e619f52a4e">SetAbsTol</a> (double absTol)</td></tr>
+<tr class="memdesc:aae051a04e2385e6d4120d9e619f52a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set tolerance for absolute residual.  <a href="class_s_o_l.html#aae051a04e2385e6d4120d9e619f52a4e">More...</a><br /></td></tr>
+<tr class="separator:aae051a04e2385e6d4120d9e619f52a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03cc0269ea99838cf3089ff0f789cf78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a03cc0269ea99838cf3089ff0f789cf78">SetSolTypeFromName</a> (<a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;<a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>)</td></tr>
+<tr class="memdesc:a03cc0269ea99838cf3089ff0f789cf78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set solver type from its name.  <a href="class_s_o_l.html#a03cc0269ea99838cf3089ff0f789cf78">More...</a><br /></td></tr>
+<tr class="separator:a03cc0269ea99838cf3089ff0f789cf78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a402a9c7642afdf679e6b0e1eba245c83"><td class="memItemLeft" align="right" valign="top"><a id="a402a9c7642afdf679e6b0e1eba245c83"></a>
+const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a402a9c7642afdf679e6b0e1eba245c83">GetSolType</a> (<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> type) const</td></tr>
+<tr class="memdesc:a402a9c7642afdf679e6b0e1eba245c83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get solver type. <br /></td></tr>
 <tr class="separator:a402a9c7642afdf679e6b0e1eba245c83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06ff2eaf57fea0445a4dee844a87156d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a06ff2eaf57fea0445a4dee844a87156d">GetNorm2</a> () const</td></tr>
 <tr class="memdesc:a06ff2eaf57fea0445a4dee844a87156d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Euclidean norm of residual.  <a href="class_s_o_l.html#a06ff2eaf57fea0445a4dee844a87156d">More...</a><br /></td></tr>
@@ -151,20 +141,24 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a370fa587c28e987a35fc3da59676b6d6">PrintParam</a> (std::ostream &amp;out=std::cout) const</td></tr>
 <tr class="memdesc:a370fa587c28e987a35fc3da59676b6d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print parameters. <br /></td></tr>
 <tr class="separator:a370fa587c28e987a35fc3da59676b6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6a9f64817849eecedb9efbc1d64d71a"><td class="memItemLeft" align="right" valign="top"><a id="af6a9f64817849eecedb9efbc1d64d71a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#af6a9f64817849eecedb9efbc1d64d71a">PrintFinal</a> (std::ostream &amp;out=std::cout) const</td></tr>
-<tr class="memdesc:af6a9f64817849eecedb9efbc1d64d71a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print out final status of an iterative method. <br /></td></tr>
-<tr class="separator:af6a9f64817849eecedb9efbc1d64d71a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabb5529b27e12597a12dc93909452e22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aabb5529b27e12597a12dc93909452e22">SetSolFromFile</a> (const char *file=nullptr, const char *prefix=nullptr)</td></tr>
-<tr class="memdesc:aabb5529b27e12597a12dc93909452e22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set parameters from a disk file.  <a href="class_s_o_l.html#aabb5529b27e12597a12dc93909452e22">More...</a><br /></td></tr>
-<tr class="separator:aabb5529b27e12597a12dc93909452e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6d67412a7eaa80248f6e4d64fe8f81b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#ad6d67412a7eaa80248f6e4d64fe8f81b">PrintHead</a> (std::ostream &amp;out=std::cout) const</td></tr>
+<tr class="memdesc:ad6d67412a7eaa80248f6e4d64fe8f81b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print out iteration information table header.  <a href="class_s_o_l.html#ad6d67412a7eaa80248f6e4d64fe8f81b">More...</a><br /></td></tr>
+<tr class="separator:ad6d67412a7eaa80248f6e4d64fe8f81b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9229551b41f9576ebca17de098e099c"><td class="memItemLeft" align="right" valign="top"><a id="aa9229551b41f9576ebca17de098e099c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aa9229551b41f9576ebca17de098e099c">PrintInfo</a> (const int &amp;iter, const double &amp;resRel, const double &amp;resAbs, const double &amp;factor, std::ostream &amp;out=std::cout) const</td></tr>
+<tr class="memdesc:aa9229551b41f9576ebca17de098e099c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print out iteration information for iterative solvers. <br /></td></tr>
+<tr class="separator:aa9229551b41f9576ebca17de098e099c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad19901eb68a47c238247514a9d9e88b3"><td class="memItemLeft" align="right" valign="top"><a id="ad19901eb68a47c238247514a9d9e88b3"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#ad19901eb68a47c238247514a9d9e88b3">PrintFinal</a> (const int &amp;iter, const double &amp;resRel, const double &amp;resAbs, const double &amp;ratio, std::ostream &amp;out=std::cout) const</td></tr>
+<tr class="memdesc:ad19901eb68a47c238247514a9d9e88b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print out final status of an iterative method. <br /></td></tr>
+<tr class="separator:ad19901eb68a47c238247514a9d9e88b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ae3b7b226f098142c37bd0190e08d53"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a8ae3b7b226f098142c37bd0190e08d53">SetPC</a> (<a class="el" href="class_s_o_l.html">SOL</a> *<a class="el" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>)</td></tr>
 <tr class="memdesc:a8ae3b7b226f098142c37bd0190e08d53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup preconditioner operator.  <a href="class_s_o_l.html#a8ae3b7b226f098142c37bd0190e08d53">More...</a><br /></td></tr>
 <tr class="separator:a8ae3b7b226f098142c37bd0190e08d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb8c813a82f0d07653788cdb39c1fa55"><td class="memItemLeft" align="right" valign="top"><a id="adb8c813a82f0d07653788cdb39c1fa55"></a>
-virtual <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#adb8c813a82f0d07653788cdb39c1fa55">Setup</a> (const <a class="el" href="class_l_o_p.html">LOP</a> &amp;_A)</td></tr>
-<tr class="memdesc:adb8c813a82f0d07653788cdb39c1fa55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the iterative method. <br /></td></tr>
-<tr class="separator:adb8c813a82f0d07653788cdb39c1fa55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24c24fa6860e8860902557d2f89f4218"><td class="memItemLeft" align="right" valign="top"><a id="a24c24fa6860e8860902557d2f89f4218"></a>
+virtual <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a24c24fa6860e8860902557d2f89f4218">Setup</a> (const <a class="el" href="class_l_o_p.html">LOP</a> &amp;<a class="el" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>)</td></tr>
+<tr class="memdesc:a24c24fa6860e8860902557d2f89f4218"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the iterative method. <br /></td></tr>
+<tr class="separator:a24c24fa6860e8860902557d2f89f4218"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7c6642799a621964e005557ed79ed6d"><td class="memItemLeft" align="right" valign="top"><a id="aa7c6642799a621964e005557ed79ed6d"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aa7c6642799a621964e005557ed79ed6d">Clean</a> ()</td></tr>
 <tr class="memdesc:aa7c6642799a621964e005557ed79ed6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release temporary memory and clean up. <br /></td></tr>
@@ -188,10 +182,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a315e130b347ebb2b2ba2cc43344e7c5f">WarnDiffRes</a> (double reldiff, double relres) const</td></tr>
 <tr class="memdesc:a315e130b347ebb2b2ba2cc43344e7c5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output relative difference and residual. <br /></td></tr>
 <tr class="separator:a315e130b347ebb2b2ba2cc43344e7c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9229551b41f9576ebca17de098e099c"><td class="memItemLeft" align="right" valign="top"><a id="aa9229551b41f9576ebca17de098e099c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aa9229551b41f9576ebca17de098e099c">PrintInfo</a> (const int &amp;iter, const double &amp;resRel, const double &amp;resAbs, const double &amp;factor, std::ostream &amp;out=std::cout) const</td></tr>
-<tr class="memdesc:aa9229551b41f9576ebca17de098e099c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print out iteration information for iterative solvers. <br /></td></tr>
-<tr class="separator:aa9229551b41f9576ebca17de098e099c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -207,34 +197,6 @@ const <a class="el" href="class_l_o_p.html">LOP</a> *&#160;</td><td class="memIt
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">withPC</a></td></tr>
 <tr class="memdesc:a6deb18ce28ff246f336c621958ca58c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a PC or not. <br /></td></tr>
 <tr class="separator:a6deb18ce28ff246f336c621958ca58c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adeab3461041bfb5018056b34c7a3b56c"><td class="memItemLeft" align="right" valign="top"><a id="adeab3461041bfb5018056b34c7a3b56c"></a>
-<a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59">SOLType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a></td></tr>
-<tr class="memdesc:adeab3461041bfb5018056b34c7a3b56c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Algorithm type. <br /></td></tr>
-<tr class="separator:adeab3461041bfb5018056b34c7a3b56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9218fae64cd9b0a2f8ea20764282cdbe"><td class="memItemLeft" align="right" valign="top"><a id="a9218fae64cd9b0a2f8ea20764282cdbe"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a9218fae64cd9b0a2f8ea20764282cdbe">maxIter</a></td></tr>
-<tr class="memdesc:a9218fae64cd9b0a2f8ea20764282cdbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximal number of iterations. <br /></td></tr>
-<tr class="separator:a9218fae64cd9b0a2f8ea20764282cdbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af28ac6fb7dafbe1fac5c233362ceb5c7"><td class="memItemLeft" align="right" valign="top"><a id="af28ac6fb7dafbe1fac5c233362ceb5c7"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#af28ac6fb7dafbe1fac5c233362ceb5c7">minIter</a></td></tr>
-<tr class="memdesc:af28ac6fb7dafbe1fac5c233362ceb5c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimal number of iterations. <br /></td></tr>
-<tr class="separator:af28ac6fb7dafbe1fac5c233362ceb5c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af74ea9a9e260722d752dea6b4436a2e8"><td class="memItemLeft" align="right" valign="top"><a id="af74ea9a9e260722d752dea6b4436a2e8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#af74ea9a9e260722d752dea6b4436a2e8">safeIter</a></td></tr>
-<tr class="memdesc:af74ea9a9e260722d752dea6b4436a2e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimal number of iterations before safe-guard. <br /></td></tr>
-<tr class="separator:af74ea9a9e260722d752dea6b4436a2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f59d22caba491b4c849261c39d6b10a"><td class="memItemLeft" align="right" valign="top"><a id="a3f59d22caba491b4c849261c39d6b10a"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a3f59d22caba491b4c849261c39d6b10a">relTol</a></td></tr>
-<tr class="memdesc:a3f59d22caba491b4c849261c39d6b10a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tolerance for relative residual. <br /></td></tr>
-<tr class="separator:a3f59d22caba491b4c849261c39d6b10a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad14b25244df4b9f2cd81c6706181aad4"><td class="memItemLeft" align="right" valign="top"><a id="ad14b25244df4b9f2cd81c6706181aad4"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#ad14b25244df4b9f2cd81c6706181aad4">absTol</a></td></tr>
-<tr class="memdesc:ad14b25244df4b9f2cd81c6706181aad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tolerance for absolute residual. <br /></td></tr>
-<tr class="separator:ad14b25244df4b9f2cd81c6706181aad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad737edcb929982011d3927f6206f46bf"><td class="memItemLeft" align="right" valign="top"><a id="ad737edcb929982011d3927f6206f46bf"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#ad737edcb929982011d3927f6206f46bf">restart</a></td></tr>
-<tr class="memdesc:ad737edcb929982011d3927f6206f46bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restart number. <br /></td></tr>
-<tr class="separator:ad737edcb929982011d3927f6206f46bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e74012c98efc558ff96ea4819f6cc05"><td class="memItemLeft" align="right" valign="top"><a id="a8e74012c98efc558ff96ea4819f6cc05"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a></td></tr>
 <tr class="memdesc:a8e74012c98efc558ff96ea4819f6cc05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Euclidean norm. <br /></td></tr>
@@ -247,77 +209,14 @@ double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a></td></tr>
 <tr class="memdesc:a02d87f5a8e29f07e1de03ff7ea3cbfc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of iterations when exit. <br /></td></tr>
 <tr class="separator:a02d87f5a8e29f07e1de03ff7ea3cbfc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a2a2f2f3348465e0c0f433fbe50648b"><td class="memItemLeft" align="right" valign="top"><a id="a5a2a2f2f3348465e0c0f433fbe50648b"></a>
-<a class="el" href="_param_8hxx.html#a53dd77e01e0e3b0f0f2f26a2498a5442">Output</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a></td></tr>
-<tr class="memdesc:a5a2a2f2f3348465e0c0f433fbe50648b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output verbosity level. <br /></td></tr>
-<tr class="separator:a5a2a2f2f3348465e0c0f433fbe50648b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bc2a6d1e11250089c09235bfe6ae917"><td class="memItemLeft" align="right" valign="top"><a id="a9bc2a6d1e11250089c09235bfe6ae917"></a>
+<a class="el" href="struct_s_o_l_params.html">SOLParams</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a></td></tr>
+<tr class="memdesc:a9bc2a6d1e11250089c09235bfe6ae917"><td class="mdescLeft">&#160;</td><td class="mdescRight">solver parameters <br /></td></tr>
+<tr class="separator:a9bc2a6d1e11250089c09235bfe6ae917"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for iterative solvers. </p>
-</div><h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a6f367b11f23657c467a0182b1866ba59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f367b11f23657c467a0182b1866ba59">&#9670;&nbsp;</a></span>SOLType</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59">SOL::SOLType</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18"></a>CG&#160;</td><td class="fielddoc"><p>Conjugate Gradient. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6f367b11f23657c467a0182b1866ba59a3825782144dc75fc47ffb7af7062421d"></a>BICGSTAB&#160;</td><td class="fielddoc"><p>Bi-Conjugate Gradient Stabilized. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6f367b11f23657c467a0182b1866ba59a18ae9fce509b39f21435374c2c29911f"></a>MINRES&#160;</td><td class="fielddoc"><p>Minimal Residual. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6f367b11f23657c467a0182b1866ba59a52e0db590e169738ce8bdd4e16d70440"></a>GMRES&#160;</td><td class="fielddoc"><p>Generalized Minimal Residual. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6f367b11f23657c467a0182b1866ba59a0e8810eb16385098593ce85e42a48134"></a>FGMRES&#160;</td><td class="fielddoc"><p>Flexible GMRES. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6f367b11f23657c467a0182b1866ba59a731e638d7e02a6c84be99dbb359529ac"></a>VFGMRES&#160;</td><td class="fielddoc"><p>Variable-restarting FGMRES. </p>
-</td></tr>
-</table>
-<div class="fragment"><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;                 {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <a class="code" href="class_c_g.html">CG</a>        = 1,       </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a3825782144dc75fc47ffb7af7062421d">BICGSTAB</a>  = 2,       </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a18ae9fce509b39f21435374c2c29911f">MINRES</a>    = 3,       </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a52e0db590e169738ce8bdd4e16d70440">GMRES</a>     = 4,       </div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a0e8810eb16385098593ce85e42a48134">FGMRES</a>    = 5,       </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a731e638d7e02a6c84be99dbb359529ac">VFGMRES</a>   = 6,       </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    };</div>
-</div><!-- fragment -->
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6bfc626f9d10d1ed65cfdbd5ba1345f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6bfc626f9d10d1ed65cfdbd5ba1345f2">&#9670;&nbsp;</a></span>~SOL()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">SOL::~SOL </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Default destructor. </p>
-<p>destructor </p>
-<div class="fragment"><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a> = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-</div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a4b919b0465941b62afc904e20abc2f83"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4b919b0465941b62afc904e20abc2f83">&#9670;&nbsp;</a></span>GetInfNorm()</h2>
 
@@ -334,10 +233,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Get infinity norm of residual. </p>
-<p>Get residual 's 'infty-norm'. </p>
-<div class="fragment"><div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;{</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">normInf</a>;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;}</div>
+<p>Get Inf norm of the residual vector. </p>
+<div class="fragment"><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;{</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">normInf</a>;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">normInf</a>.</p>
 
@@ -359,10 +258,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Get number of iterations. </p>
-<p>Get iterations. </p>
-<div class="fragment"><div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;{</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a>;</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;}</div>
+<p>Get the value of numIter. </p>
+<div class="fragment"><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;{</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a>;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a>.</p>
 
@@ -384,53 +283,42 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Get Euclidean norm of residual. </p>
-<p>Get residual 's 'l2-norm'. </p>
-<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;{</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a>;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
+<p>Get L2 norm of the residual vector. </p>
+<div class="fragment"><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;{</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a>;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a>.</p>
 
 </div>
 </div>
-<a id="a402a9c7642afdf679e6b0e1eba245c83"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a402a9c7642afdf679e6b0e1eba245c83">&#9670;&nbsp;</a></span>GetSolType()</h2>
+<a id="ad6d67412a7eaa80248f6e4d64fe8f81b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6d67412a7eaa80248f6e4d64fe8f81b">&#9670;&nbsp;</a></span>PrintHead()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char * SOL::GetSolType </td>
+          <td class="memname">void SOL::PrintHead </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59">SOLType</a>&#160;</td>
-          <td class="paramname"><em>type</em></td><td>)</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>out</em> = <code>std::cout</code></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get solver type. </p>
-<p>Select solver. </p>
-<div class="fragment"><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;{</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordflow">switch</span> (<a class="code" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a>) {</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18">CG</a>:</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;CG&quot;</span>;</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a3825782144dc75fc47ffb7af7062421d">BICGSTAB</a>:</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;BiCGStab&quot;</span>;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a18ae9fce509b39f21435374c2c29911f">MINRES</a>:</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;MinRes&quot;</span>;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a52e0db590e169738ce8bdd4e16d70440">GMRES</a>:</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;GMRES&quot;</span>;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a0e8810eb16385098593ce85e42a48134">FGMRES</a>:</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;FGMRES&quot;</span>;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;        <span class="keywordflow">case</span> <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a731e638d7e02a6c84be99dbb359529ac">VFGMRES</a>:</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;VFGMRES&quot;</span>;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        <span class="keywordflow">default</span>:</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;            <span class="keywordflow">return</span> <span class="stringliteral">&quot;Unknown solver type!&quot;</span>;</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    }</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
+<p>Print out iteration information table header. </p>
+<p>Print out iteration information table head. </p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt;= PRINT_MIN &amp;&amp; <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7">minIter</a> &lt; <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">maxIter</a> ) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;---------------------------------------------\n&quot;</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot; It Num | ||r||/||b|| |    ||r||    |  Ratio \n&quot;</span>;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;---------------------------------------------\n&quot;</span>;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a3825782144dc75fc47ffb7af7062421d">BICGSTAB</a>, <a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18">CG</a>, <a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a0e8810eb16385098593ce85e42a48134">FGMRES</a>, <a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a52e0db590e169738ce8bdd4e16d70440">GMRES</a>, <a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a18ae9fce509b39f21435374c2c29911f">MINRES</a>, <a class="el" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a>, and <a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a731e638d7e02a6c84be99dbb359529ac">VFGMRES</a>.</p>
+<p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a>.</p>
 
 </div>
 </div>
@@ -451,12 +339,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Set tolerance for absolute residual. </p>
-<p>Set 'absTol' 's value. </p>
-<div class="fragment"><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;{</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    this-&gt;<a class="code" href="class_s_o_l.html#ad14b25244df4b9f2cd81c6706181aad4">absTol</a> = <a class="code" href="class_s_o_l.html#ad14b25244df4b9f2cd81c6706181aad4">absTol</a>;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;}</div>
+<p>Set value for absTol. </p>
+<div class="fragment"><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;{</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7c7dfefa3e9f1735fada6cea88824618">absTol</a> = absTol;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#ad14b25244df4b9f2cd81c6706181aad4">absTol</a>.</p>
+<p class="reference">References <a class="el" href="struct_s_o_l_params.html#a7c7dfefa3e9f1735fada6cea88824618">SOLParams::absTol</a>, and <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.</p>
 
 </div>
 </div>
@@ -477,12 +365,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Set max number of iterations. </p>
-<p>Set 'maxIter' 's value. </p>
-<div class="fragment"><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;{</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    this-&gt;<a class="code" href="class_s_o_l.html#a9218fae64cd9b0a2f8ea20764282cdbe">maxIter</a> = <a class="code" href="class_s_o_l.html#a9218fae64cd9b0a2f8ea20764282cdbe">maxIter</a>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
+<p>Set value for maxIter. </p>
+<div class="fragment"><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;{</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">maxIter</a> = maxIter;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#a9218fae64cd9b0a2f8ea20764282cdbe">maxIter</a>.</p>
+<p class="reference">References <a class="el" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">SOLParams::maxIter</a>, and <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.</p>
 
 </div>
 </div>
@@ -503,12 +391,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Set min number of iterations. </p>
-<p>Set 'minIter' 's value. </p>
-<div class="fragment"><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    this-&gt;<a class="code" href="class_s_o_l.html#af28ac6fb7dafbe1fac5c233362ceb5c7">minIter</a> = <a class="code" href="class_s_o_l.html#af28ac6fb7dafbe1fac5c233362ceb5c7">minIter</a>;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;}</div>
+<p>Set value for minIter. </p>
+<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;{</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7">minIter</a> = minIter;</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#af28ac6fb7dafbe1fac5c233362ceb5c7">minIter</a>.</p>
+<p class="reference">References <a class="el" href="struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7">SOLParams::minIter</a>, and <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.</p>
 
 </div>
 </div>
@@ -529,12 +417,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Set output level. </p>
-<p>Set 'verbose' 's value. </p>
-<div class="fragment"><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;{</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    this-&gt;<a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a> = <a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a>;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
+<p>Set output level verbose. </p>
+<div class="fragment"><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;{</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> = verbose;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a>.</p>
+<p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a>.</p>
 
 </div>
 </div>
@@ -563,11 +451,11 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Setup preconditioner operator. </p>
-<p>build preconditioner operator </p>
-<div class="fragment"><div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;{</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    this-&gt;pc = <a class="code" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    <a class="code" href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">withPC</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;}</div>
+<p>Build preconditioner operator. </p>
+<div class="fragment"><div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;{</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    this-&gt;pc = <a class="code" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <a class="code" href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">withPC</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>, and <a class="el" href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">withPC</a>.</p>
 
@@ -590,12 +478,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Set tolerance for relative residual. </p>
-<p>Set 'relTol' 's value. </p>
-<div class="fragment"><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;{</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    this-&gt;<a class="code" href="class_s_o_l.html#a3f59d22caba491b4c849261c39d6b10a">relTol</a> = <a class="code" href="class_s_o_l.html#a3f59d22caba491b4c849261c39d6b10a">relTol</a>;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
+<p>Set value for relTol. </p>
+<div class="fragment"><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;{</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a4c49319d1f1ded022df46fb70bdd6077">relTol</a> = relTol;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#a3f59d22caba491b4c849261c39d6b10a">relTol</a>.</p>
+<p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a4c49319d1f1ded022df46fb70bdd6077">SOLParams::relTol</a>.</p>
 
 </div>
 </div>
@@ -616,133 +504,73 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </div><div class="memdoc">
 
 <p>Set restart number for Krylov methods. </p>
-<p>Set 'restart' 's value. </p>
-<div class="fragment"><div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;{</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    this-&gt;<a class="code" href="class_s_o_l.html#ad737edcb929982011d3927f6206f46bf">restart</a> = <a class="code" href="class_s_o_l.html#ad737edcb929982011d3927f6206f46bf">restart</a>;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;}</div>
+<p>Set value for restart. </p>
+<div class="fragment"><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;{</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a0d6813849e79fb8997058847d2b635a3">restart</a> = restart;</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#ad737edcb929982011d3927f6206f46bf">restart</a>.</p>
+<p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a0d6813849e79fb8997058847d2b635a3">SOLParams::restart</a>.</p>
 
 </div>
 </div>
-<a id="aabb5529b27e12597a12dc93909452e22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabb5529b27e12597a12dc93909452e22">&#9670;&nbsp;</a></span>SetSolFromFile()</h2>
+<a id="a54c5b76ede7b18f03b109b27c72801bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54c5b76ede7b18f03b109b27c72801bb">&#9670;&nbsp;</a></span>SetSafeIter()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SOL::SetSolFromFile </td>
+          <td class="memname">void SOL::SetSafeIter </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>file</em> = <code>nullptr</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>safeIter</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>prefix</em> = <code>nullptr</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set parameters from a disk file. </p>
-<p>Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file. </p>
-<div class="fragment"><div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;{</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    std::ifstream input(file);</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordflow">if</span> ( !input.is_open() ) <a class="code" href="_error_log_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac">FASPXX_WARNING</a>(<span class="stringliteral">&quot;Not found sol option file!&quot;</span>);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a> &gt; PRINT_MIN )</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;Reading SOL parameters from disk file &quot;</span> &lt;&lt; file &lt;&lt; std::endl;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    std::string line, param, value;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <span class="keywordflow">while</span> (std::getline(input, line)) {</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        <span class="keywordflow">if</span> ( !ProcessLine(line, param, value) ) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;        <span class="keywordflow">if</span> ( prefix ) {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            <span class="keywordflow">if</span> ( param.find(prefix) == param.npos ) <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keywordflow">if</span> ( prefix ) {</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;            std::string prefix_(prefix);</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;            <span class="keywordtype">size_t</span> pos = param.find(prefix_);</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;            <span class="keywordflow">if</span> ( pos != std::string::npos ) param.erase(pos, prefix_.length());</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            param[0] = <span class="charliteral">&#39;_&#39;</span>; <span class="comment">// 把-sol改成_sol,方便下面的赋值</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;        }</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="keywordflow">if</span> ( param == <span class="stringliteral">&quot;_sol_type&quot;</span> ) {</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <span class="keywordflow">if</span> (value == <span class="stringliteral">&quot;cg&quot;</span>) <a class="code" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a> = <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18">CG</a>;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (value == <span class="stringliteral">&quot;gmres&quot;</span>) <a class="code" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a> = <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a52e0db590e169738ce8bdd4e16d70440">GMRES</a>;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (value == <span class="stringliteral">&quot;none&quot;</span>) <a class="code" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a> = <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18">CG</a>;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;            <span class="keywordflow">else</span> <a class="code" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a> = <a class="code" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18">CG</a>;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (param == <span class="stringliteral">&quot;_sol_rtol&quot;</span>) {</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            <a class="code" href="class_s_o_l.html#a3f59d22caba491b4c849261c39d6b10a">relTol</a> = std::stod(value);</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (param == <span class="stringliteral">&quot;_sol_atol&quot;</span>) {</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <a class="code" href="class_s_o_l.html#ad14b25244df4b9f2cd81c6706181aad4">absTol</a> = std::stod(value);</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (param == <span class="stringliteral">&quot;_sol_maxiter&quot;</span>) {</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <a class="code" href="class_s_o_l.html#a9218fae64cd9b0a2f8ea20764282cdbe">maxIter</a> = std::stoi(value);</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (param == <span class="stringliteral">&quot;_sol_printlvl&quot;</span>) {</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;            <span class="comment">//verbose = std::stoi(value);</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            <span class="keywordflow">if</span> (value == <span class="stringliteral">&quot;PRINT_NONE&quot;</span>)</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;                <a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a> = PRINT_NONE;</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (value == <span class="stringliteral">&quot;PRINT_MIN&quot;</span>)</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;                <a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a> = PRINT_MIN;</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (value == <span class="stringliteral">&quot;PRINT_SOME&quot;</span>)</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;                <a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a> = PRINT_SOME;</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (value == <span class="stringliteral">&quot;PRINT_MORE&quot;</span>)</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;                <a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a> = PRINT_MORE;</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (value == <span class="stringliteral">&quot;PRINT_MAX&quot;</span>)</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;                <a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a> = PRINT_MAX;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (value == <span class="stringliteral">&quot;PRINT_ALL&quot;</span>)</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;                <a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a> = PRINT_ALL;</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (param == <span class="stringliteral">&quot;_sol_restart&quot;</span>) {</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;            <a class="code" href="class_s_o_l.html#ad737edcb929982011d3927f6206f46bf">restart</a> = std::stoi(value);</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        }</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    }</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    input.close();</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a> &gt; PRINT_MIN ) {</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        std::cout &lt;&lt; <span class="stringliteral">&quot;Parameters for sol &quot;</span></div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;Krylov method type: &quot;</span> &lt;&lt; <a class="code" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span></div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;relative tolerance: &quot;</span> &lt;&lt; <a class="code" href="class_s_o_l.html#a3f59d22caba491b4c849261c39d6b10a">relTol</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;absolute tolerance: &quot;</span> &lt;&lt; <a class="code" href="class_s_o_l.html#ad14b25244df4b9f2cd81c6706181aad4">absTol</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span></div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot;maximum iterations: &quot;</span> &lt;&lt; <a class="code" href="class_s_o_l.html#a9218fae64cd9b0a2f8ea20764282cdbe">maxIter</a> &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    }</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;}</div>
+<p>Set number of safe-guard iterations. </p>
+<p>Set value for safeIter. </p>
+<div class="fragment"><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;{</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6a60d7ec7bdabed68e8fb17bd693a3fd">safeIter</a> = safeIter;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="_error_log_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac">FASPXX_WARNING</a>, and <a class="el" href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">verbose</a>.</p>
+<p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a6a60d7ec7bdabed68e8fb17bd693a3fd">SOLParams::safeIter</a>.</p>
 
 </div>
 </div>
-<a id="a72bb6330814ea7ea832f5823285d18c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72bb6330814ea7ea832f5823285d18c3">&#9670;&nbsp;</a></span>SetSolType()</h2>
+<a id="a03cc0269ea99838cf3089ff0f789cf78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03cc0269ea99838cf3089ff0f789cf78">&#9670;&nbsp;</a></span>SetSolTypeFromName()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void SOL::SetSolType </td>
+          <td class="memname">void SOL::SetSolTypeFromName </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59">SOLType</a>&#160;</td>
-          <td class="paramname"><em>solver</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;&#160;</td>
+          <td class="paramname"><em>params</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set solver type. </p>
-<p>Set 'solver' type. </p>
-<div class="fragment"><div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;{</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    this-&gt;<a class="code" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a> = <a class="code" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;}</div>
+<p>Set solver type from its name. </p>
+<p>Set value for SOLType using algName. </p>
+<div class="fragment"><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;{</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">char</span> &amp; c : <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">algName</a> ) c = tolower(c); <span class="comment">// Change to lowercase</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">algName</a> == <span class="stringliteral">&quot;cg&quot;</span> )</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">SOLType::CG</a>;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">algName</a> == <span class="stringliteral">&quot;bicgstab&quot;</span> )</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">SOLType::BICGSTAB</a>;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordflow">else</span> { <span class="comment">// default solver type</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">SOLType::CG</a>;</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt; PRINT_NONE )</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <a class="code" href="_error_log_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac">FASPXX_WARNING</a>(<span class="stringliteral">&quot;Unknown solver type. Using CG instead!&quot;</span>);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;}</div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">type</a>.</p>
+<p class="reference">References <a class="el" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">SOLParams::algName</a>, <a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a>, <a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">CG</a>, <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, <a class="el" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">SOLParams::type</a>, and <a class="el" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a>.</p>
 
 </div>
 </div>
@@ -751,27 +579,24 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <li><a class="el" href="_s_o_l_8cxx.html">SOL.cxx</a></li>
 </ul>
 </div><!-- contents -->
-<div class="ttc" id="aclass_s_o_l_html_a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18"><div class="ttname"><a href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a89afd011870865dba03df9c072f08e18">SOL::CG</a></div><div class="ttdoc">Conjugate Gradient.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:33</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a6deb18ce28ff246f336c621958ca58c4"><div class="ttname"><a href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">SOL::withPC</a></div><div class="ttdeci">bool withPC</div><div class="ttdoc">Given a PC or not.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:44</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a627b490fa36929f82adba0e525fee10d"><div class="ttname"><a href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">SOL::A</a></div><div class="ttdeci">const LOP * A</div><div class="ttdoc">Coefficient matrix in Ax=b.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:42</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a9218fae64cd9b0a2f8ea20764282cdbe"><div class="ttname"><a href="class_s_o_l.html#a9218fae64cd9b0a2f8ea20764282cdbe">SOL::maxIter</a></div><div class="ttdeci">int maxIter</div><div class="ttdoc">Maximal number of iterations.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:46</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a5a2a2f2f3348465e0c0f433fbe50648b"><div class="ttname"><a href="class_s_o_l.html#a5a2a2f2f3348465e0c0f433fbe50648b">SOL::verbose</a></div><div class="ttdeci">Output verbose</div><div class="ttdoc">Output verbosity level.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:55</div></div>
-<div class="ttc" id="aclass_c_g_html"><div class="ttname"><a href="class_c_g.html">CG</a></div><div class="ttdoc">Preconditioned conjugate gradient method.</div><div class="ttdef"><b>Definition:</b> CG.hxx:24</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a7c7dfefa3e9f1735fada6cea88824618"><div class="ttname"><a href="struct_s_o_l_params.html#a7c7dfefa3e9f1735fada6cea88824618">SOLParams::absTol</a></div><div class="ttdeci">double absTol</div><div class="ttdoc">Tolerance for absolute residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:47</div></div>
+<div class="ttc" id="aclass_s_o_l_html_a6deb18ce28ff246f336c621958ca58c4"><div class="ttname"><a href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">SOL::withPC</a></div><div class="ttdeci">bool withPC</div><div class="ttdoc">Given a PC or not.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:60</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a6669dbb8b999387f627457762944670a"><div class="ttname"><a href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">SOLParams::type</a></div><div class="ttdeci">SOLType type</div><div class="ttdoc">Algorithm type.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:40</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a7546f71bcb93fc16f19cfd588908c46b"><div class="ttname"><a href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a></div><div class="ttdeci">Output verbose</div><div class="ttdoc">Output verbosity level.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:48</div></div>
 <div class="ttc" id="a_error_log_8hxx_html_a020ddf6943d94778b6ebeff22d0f0cac"><div class="ttname"><a href="_error_log_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac">FASPXX_WARNING</a></div><div class="ttdeci">#define FASPXX_WARNING(msg)</div><div class="ttdoc">Log warning messages.</div><div class="ttdef"><b>Definition:</b> ErrorLog.hxx:40</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a8e74012c98efc558ff96ea4819f6cc05"><div class="ttname"><a href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">SOL::norm2</a></div><div class="ttdeci">double norm2</div><div class="ttdoc">Euclidean norm.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:52</div></div>
-<div class="ttc" id="aclass_s_o_l_html_ad14b25244df4b9f2cd81c6706181aad4"><div class="ttname"><a href="class_s_o_l.html#ad14b25244df4b9f2cd81c6706181aad4">SOL::absTol</a></div><div class="ttdeci">double absTol</div><div class="ttdoc">Tolerance for absolute residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:50</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a02d87f5a8e29f07e1de03ff7ea3cbfc2"><div class="ttname"><a href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">SOL::numIter</a></div><div class="ttdeci">int numIter</div><div class="ttdoc">Number of iterations when exit.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:54</div></div>
-<div class="ttc" id="aclass_s_o_l_html_af28ac6fb7dafbe1fac5c233362ceb5c7"><div class="ttname"><a href="class_s_o_l.html#af28ac6fb7dafbe1fac5c233362ceb5c7">SOL::minIter</a></div><div class="ttdeci">int minIter</div><div class="ttdoc">Minimal number of iterations.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:47</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a6f367b11f23657c467a0182b1866ba59a0e8810eb16385098593ce85e42a48134"><div class="ttname"><a href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a0e8810eb16385098593ce85e42a48134">SOL::FGMRES</a></div><div class="ttdoc">Flexible GMRES.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:37</div></div>
-<div class="ttc" id="aclass_s_o_l_html_ad737edcb929982011d3927f6206f46bf"><div class="ttname"><a href="class_s_o_l.html#ad737edcb929982011d3927f6206f46bf">SOL::restart</a></div><div class="ttdeci">int restart</div><div class="ttdoc">Restart number.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:51</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a6f367b11f23657c467a0182b1866ba59a731e638d7e02a6c84be99dbb359529ac"><div class="ttname"><a href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a731e638d7e02a6c84be99dbb359529ac">SOL::VFGMRES</a></div><div class="ttdoc">Variable-restarting FGMRES.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:38</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a3f59d22caba491b4c849261c39d6b10a"><div class="ttname"><a href="class_s_o_l.html#a3f59d22caba491b4c849261c39d6b10a">SOL::relTol</a></div><div class="ttdeci">double relTol</div><div class="ttdoc">Tolerance for relative residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:49</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a6f367b11f23657c467a0182b1866ba59a3825782144dc75fc47ffb7af7062421d"><div class="ttname"><a href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a3825782144dc75fc47ffb7af7062421d">SOL::BICGSTAB</a></div><div class="ttdoc">Bi-Conjugate Gradient Stabilized.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:34</div></div>
-<div class="ttc" id="aclass_s_o_l_html_adeab3461041bfb5018056b34c7a3b56c"><div class="ttname"><a href="class_s_o_l.html#adeab3461041bfb5018056b34c7a3b56c">SOL::type</a></div><div class="ttdeci">SOLType type</div><div class="ttdoc">Algorithm type.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:45</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a6f367b11f23657c467a0182b1866ba59a52e0db590e169738ce8bdd4e16d70440"><div class="ttname"><a href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a52e0db590e169738ce8bdd4e16d70440">SOL::GMRES</a></div><div class="ttdoc">Generalized Minimal Residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:36</div></div>
-<div class="ttc" id="aclass_s_o_l_html_a6f367b11f23657c467a0182b1866ba59a18ae9fce509b39f21435374c2c29911f"><div class="ttname"><a href="class_s_o_l.html#a6f367b11f23657c467a0182b1866ba59a18ae9fce509b39f21435374c2c29911f">SOL::MINRES</a></div><div class="ttdoc">Minimal Residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:35</div></div>
-<div class="ttc" id="aclass_s_o_l_html_af1f116f6dd0dc05bc3cdc14c5f9feee7"><div class="ttname"><a href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">SOL::normInf</a></div><div class="ttdeci">double normInf</div><div class="ttdoc">Infinity norm.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:53</div></div>
-<div class="ttc" id="aclass_s_o_l_html_ad44fa09bb5bbba4f7d9a13c45c49cdb0"><div class="ttname"><a href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">SOL::pc</a></div><div class="ttdeci">SOL * pc</div><div class="ttdoc">Preconditioner for this solver.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:43</div></div>
+<div class="ttc" id="aclass_s_o_l_html_a8e74012c98efc558ff96ea4819f6cc05"><div class="ttname"><a href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">SOL::norm2</a></div><div class="ttdeci">double norm2</div><div class="ttdoc">Euclidean norm.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:61</div></div>
+<div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">CG</a></div><div class="ttdoc">Conjugate Gradient.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:30</div></div>
+<div class="ttc" id="aclass_s_o_l_html_a02d87f5a8e29f07e1de03ff7ea3cbfc2"><div class="ttname"><a href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">SOL::numIter</a></div><div class="ttdeci">int numIter</div><div class="ttdoc">Number of iterations when exit.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:63</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a4c49319d1f1ded022df46fb70bdd6077"><div class="ttname"><a href="struct_s_o_l_params.html#a4c49319d1f1ded022df46fb70bdd6077">SOLParams::relTol</a></div><div class="ttdeci">double relTol</div><div class="ttdoc">Tolerance for relative residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:46</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_ab7c9313d2ab03a1decaf566996904756"><div class="ttname"><a href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">SOLParams::maxIter</a></div><div class="ttdeci">int maxIter</div><div class="ttdoc">Maximal number of iterations.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:42</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a6a60d7ec7bdabed68e8fb17bd693a3fd"><div class="ttname"><a href="struct_s_o_l_params.html#a6a60d7ec7bdabed68e8fb17bd693a3fd">SOLParams::safeIter</a></div><div class="ttdeci">int safeIter</div><div class="ttdoc">Minimal number of iterations before safe-guard.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:44</div></div>
+<div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a></div><div class="ttdoc">Bi-Conjugate Gradient Stabilized.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:31</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a52df36265b22d4dafe941c624b3f56c7"><div class="ttname"><a href="struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7">SOLParams::minIter</a></div><div class="ttdeci">int minIter</div><div class="ttdoc">Minimal number of iterations.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:43</div></div>
+<div class="ttc" id="aclass_s_o_l_html_a9bc2a6d1e11250089c09235bfe6ae917"><div class="ttname"><a href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">SOL::params</a></div><div class="ttdeci">SOLParams params</div><div class="ttdoc">solver parameters</div><div class="ttdef"><b>Definition:</b> SOL.hxx:64</div></div>
+<div class="ttc" id="aclass_s_o_l_html_af1f116f6dd0dc05bc3cdc14c5f9feee7"><div class="ttname"><a href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">SOL::normInf</a></div><div class="ttdeci">double normInf</div><div class="ttdoc">Infinity norm.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:62</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a0d6813849e79fb8997058847d2b635a3"><div class="ttname"><a href="struct_s_o_l_params.html#a0d6813849e79fb8997058847d2b635a3">SOLParams::restart</a></div><div class="ttdeci">int restart</div><div class="ttdoc">Restart number.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:45</div></div>
+<div class="ttc" id="aclass_s_o_l_html_ad44fa09bb5bbba4f7d9a13c45c49cdb0"><div class="ttname"><a href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">SOL::pc</a></div><div class="ttdeci">SOL * pc</div><div class="ttdoc">Preconditioner for this solver.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:59</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a6034885f92dfe34fd34389482734f377"><div class="ttname"><a href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">SOLParams::algName</a></div><div class="ttdeci">string algName</div><div class="ttdoc">Algorithm name.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:41</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">

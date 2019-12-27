@@ -39,9 +39,9 @@ public:
 class Jacobi : public SOL {
 
 public :
-    double   alpha;     ///< weight for weighted Jacobi
-    VEC      diagInv;
-    VEC      rk;
+    double   alpha;     ///< Weight for damped or weighted Jacobi
+    VEC      diagInv;   ///< Inverse of diagonal entries
+    VEC      rk;        ///< Work array for the residual
 
 public:
     /// Default constructor.
