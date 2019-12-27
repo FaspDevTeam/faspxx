@@ -60,6 +60,8 @@ void BiCGStab::Clean()
 /// Using the Preconditioned Bi-Conjugate Gradient Stabilized method.
 FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 {
+    if ( params.verbose > PRINT_NONE ) std::cout << "Use BiCGStab to solve Ax=b ...\n";
+
     // Check whether vector space sizes
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
                                         || A->GetRowSize() != A->GetColSize() )
@@ -72,10 +74,8 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
     const unsigned maxStag = MAX_STAG_NUM; // maximum number of stagnation before quit
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
     unsigned stagStep = 0, moreStep = 0;
-    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld;
+    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
     double alphaj, betaj, rjr0star, rjr0startmp, omegaj, tmp12;
-
-    if ( params.verbose > PRINT_NONE ) std::cout << "Use BiCGStab to solve Ax=b ...\n";
 
     PrintHead();
 
@@ -148,7 +148,6 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         // Apply several checks for safety
         if ( numIter >= params.minIter ) {
             // Compute norm of residual and output iteration information if needed
-            resAbsOld = resAbs;
             resAbs = rj.Norm2();
             resRel = resAbs / denAbs;
             ratio = resAbs / resAbsOld;
