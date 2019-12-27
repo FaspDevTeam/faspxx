@@ -3,8 +3,8 @@
 #define FASPXX_UTILS_HXX
 
 #include <string>
-#include <algorithm>
 #include <sstream>
+#include <algorithm>
 
 /// Process a line. Return false if the line is a comment or empty.
 static bool ProcessLine(std::string& line, std::string& param, std::string& value)
@@ -23,30 +23,16 @@ static bool ProcessLine(std::string& line, std::string& param, std::string& valu
     return true;
 }
 
-static char ToLower(char in)
-{
-    if (in <= 'Z' && in >= 'A')
-        return in - ('Z' - 'z');
-    return in;
-}
-
-static char ToUpper(char in)
-{
-    if (in <= 'z' && in >= 'a')
-        return in - ('a' - 'A');
-    return in;
-}
-
 static bool JudgeBool(const std::string& value)
 {
     std::string copy(value);
     std::transform(value.begin(), value.end(), copy.begin(),
                    [](unsigned char c){ return std::tolower(c);});
 
-    if (copy == "true") {
+    if ( copy == "true" ) {
         return true;
     }
-    else if (copy == "false") {
+    else if ( copy == "false" ) {
         return false;
     }
     else { // 其余情况就是int型整数

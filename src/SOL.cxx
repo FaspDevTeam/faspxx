@@ -14,38 +14,46 @@
 #include "SOL.hxx"
 #include "utils.hxx"
 
-//! Warning for actual relative residual
+/// Warning for actual relative residual.
 void SOL::WarnRealRes(double relres) const
 {
     std::cout << "### WARNING: The actual relative residual = " << relres << '\n';
 }
 
-//! Warning for computed relative residual
+/// Warning for computed relative residual.
 void SOL::WarnCompRes(double relres) const
 {
     std::cout << "### WARNING: The computed relative residual = "
               << relres << std::endl;
 }
 
-//! Output relative difference and residual
+/// Output relative difference and residual.
 void SOL::WarnDiffRes(double reldiff, double relres) const
 {
     std::cout << "### WARNING: ||u-u'|| = " << reldiff
               << " and the comp. rel. res. = " << relres << std::endl;
 }
 
+/// Print out iteration information table head.
+void SOL::PrintHead(std::ostream& out) const
+{
+    if ( params.verbose >= PRINT_MIN ) {
+        out << "---------------------------------------------\n";
+        out << " It Num | ||r||/||b|| |    ||r||    |  Ratio \n";
+        out << "---------------------------------------------\n";
+    }
+}
+
 /// Print out iteration information for iterative solvers
 void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
                     const double& ratio, std::ostream& out) const
 {
-    if ( params.verbose > PRINT_SOME || (params.verbose > PRINT_NONE &&
-        iter%PRT_STEP_NUM == 0) ) {
+    if ( params.verbose > PRINT_SOME
+    || ( params.verbose >= PRINT_MIN && iter%PRT_STEP_NUM == 0)
+    || ( params.verbose >= PRINT_MIN && iter == params.maxIter) ) {
         out.precision(4);
         std::setiosflags(std::ios::scientific);
         if ( iter == 0 ) { // Initial iteration
-            out << "---------------------------------------------\n";
-            out << " It Num | ||r||/||b|| |    ||r||    |  Ratio \n";
-            out << "---------------------------------------------\n";
             out << std::setw(7) << std::right << iter << " | "
                 << std::scientific << std::setprecision(5) << resRel << " | "
                 << std::setw(11) << resAbs << " | " << std::endl;
@@ -58,28 +66,25 @@ void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
     }
 }
 
-/// Print out final status of an iterative method
+/// Print out final status of an iterative method.
 void SOL::PrintFinal(std::ostream& out) const
 {
-    if ( params.verbose > PRINT_MIN ) {
+    if ( params.verbose >= PRINT_MIN ) {
         out << "---------------------------------------------\n";
-        if ( numIter >= params.maxIter ) {
-            std::cout << "### WARNING: maxIter = " << params.maxIter << " reached!"
-            << '\n';
-        }
+        if ( numIter >= params.maxIter )
+            std::cout << "### WARNING: maxIter = " << params.maxIter << " reached!\n";
         out << std::scientific << std::setprecision(5);
         out << "Number of iterations : " << numIter << '\n';
         out << "Norm2 of residual    : " << norm2   << '\n';
         out << "NormInf of residual  : " << normInf << '\n';
     } else if ( params.verbose > PRINT_NONE ) {
-        out << "---------------------------------------------\n";
         out << std::scientific << std::setprecision(5);
-        out << GetSolType(params.type) << " takes " << numIter << " iterations ";
-        out << "to reach residual of level " << norm2 << '\n';
+        out << GetSolType(params.type) << " takes " << numIter << " iterations";
+        out << " to reach L2-norm of residual " << norm2 << '\n';
     }
 }
 
-/// destructor
+/// Default destructor.
 SOL::~SOL()
 {
     A = nullptr;
@@ -137,8 +142,9 @@ void SOL::SetSolTypeFromName(SOLParams& params)
 }
 
 /// Set safe iteration
-void SOL::SetSafeIter(int safeIter){
-    params.safeIter=safeIter;
+void SOL::SetSafeIter(int safeIter)
+{
+    params.safeIter = safeIter;
 }
 
 /// Select solver

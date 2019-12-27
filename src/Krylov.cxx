@@ -22,7 +22,6 @@ FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, SOLParams& params)
 
     switch (params.type) {
         case SOLType::CG :
-            std::cout << "Calling CG to solve Ax=b ...\n";
             sol = new class CG();
             sol->SetOutput(params.verbose);
             sol->SetMaxIter(params.maxIter);
@@ -36,7 +35,6 @@ FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, SOLParams& params)
             retCode = sol->Solve(b, x);
             break;
         case SOLType::BICGSTAB :
-            std::cout << "Calling BiCGStab to solve Ax=b ...\n";
             sol = new class BiCGStab();
             sol->SetOutput(params.verbose);
             sol->SetMaxIter(params.maxIter);

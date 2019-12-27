@@ -15,7 +15,7 @@
 #include "CG.hxx"
 
 /// Allocate memory, setup coefficient matrix of the linear system.
-FaspRetCode CG::Setup(const LOP &A)
+FaspRetCode CG::Setup(const LOP& A)
 {
     const INT len = A.GetColSize();
 
@@ -52,7 +52,7 @@ void CG::Clean()
 }
 
 /// Using the Preconditioned Conjugate Gradient method.
-FaspRetCode CG::Solve(const VEC &b, VEC &x)
+FaspRetCode CG::Solve(const VEC& b, VEC& x)
 {
     // Check whether vector space sizes
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
@@ -71,6 +71,8 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     double resAbsOld,resAbs, tmpAbs, resRel, denAbs;
     double ratio, alpha, beta, tmpa, tmpb;
 
+    if ( params.verbose > PRINT_NONE ) std::cout << "Use CG to solve Ax=b ...\n";
+
     // Initialize iterative method
     numIter = 0;
 
@@ -85,6 +87,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     tmpAbs = resAbs; // save residual for the next iteration
 
     // If the initial residual is very small, no need to iterate
+    PrintHead();
     PrintInfo(numIter, resRel, resAbs, 0.0);
     if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
 

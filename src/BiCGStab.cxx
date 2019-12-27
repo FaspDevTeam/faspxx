@@ -14,7 +14,8 @@
 #include "BiCGStab.hxx"
 
 /// Allocate memory, assign param to this->param.
-FaspRetCode BiCGStab::Setup(const LOP &A) {
+FaspRetCode BiCGStab::Setup(const LOP &A)
+{
     const INT len = A.GetColSize();
 
     // Allocate memory for temporary vectors
@@ -51,12 +52,14 @@ FaspRetCode BiCGStab::Setup(const LOP &A) {
 }
 
 /// Release memory.
-void BiCGStab::Clean() {
+void BiCGStab::Clean()
+{
     if ( !withPC ) delete pc;
 }
 
 /// Using the Preconditioned Bi-Conjugate Gradient Stabilized method.
-FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
+FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
+{
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
         || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
@@ -67,11 +70,12 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
     const INT len = b.GetSize();
     const unsigned maxStag = MAX_STAG_NUM; // maximum number of stagnation before quit
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
-    const double solZeroTol = CLOSE_ZERO; // solution close to zero tolerance
     unsigned stagStep = 0, moreStep = 0;
     double resAbsOld, resAbs, tmpAbs, resRel, denAbs;
     double alphaj, betaj, rjr0star, rjr0startmp, omegaj;
     double tmp12, ratio;
+
+    if ( params.verbose > PRINT_NONE ) std::cout << "Use BiCGStab to solve Ax=b ...\n";
 
     // Initialize iterative method
     numIter = 0;
@@ -87,15 +91,13 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
     tmpAbs = resAbs; // save residual for the next iteration
 
     // If initial residual is very small, no need to iterate
+    PrintHead();
     PrintInfo(numIter, resRel, resAbs, 0.0);
     if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
 
     // Prepare for the main loop
-    // r0_{*} = r0c
-    this->r0star = this->rj;
-
-    // p0 = r0
-    this->pj = this->rj;
+    this->r0star = this->rj;  // r0_{*} = r0c
+    this->pj     = this->rj;  // p0 = r0
 
     // Main CG loop
     while ( numIter < params.maxIter ) {

@@ -27,8 +27,8 @@ int main(int argc, char *args[])
     std::string matFile = "../data/fdm_10X10.csr";
     std::string rhsFile, x0File;
     std::string algName = "CG";
-    SOLParams param;
-    Identity pc; // no preconditioner
+    Identity    pc; // no preconditioning
+    SOLParams   solParam;
 
     // Read in parameters
     Parameters params(argc, args);
@@ -36,14 +36,14 @@ int main(int argc, char *args[])
     params.AddParam("-rhs", "Right hand side of linear system", &rhsFile);
     params.AddParam("-x0", "Initial guess of solution", &x0File);
     params.AddParam("-par", "Solver parameter file", &parFile);
-    params.AddParam("-algName", "Iterative solver type", &param.algName);
-    params.AddParam("-maxIter", "Maximum iteration steps", &param.maxIter);
-    params.AddParam("-minIter", "Minimum iteration steps", &param.minIter);
-    params.AddParam("-safeIter", "Safe iteration", &param.safeIter);
-    params.AddParam("-restart", "Iteration restart number", &param.restart);
-    params.AddParam("-resRel", "Relative residual tolerance", &param.relTol);
-    params.AddParam("-resAbs", "Absolute residual tolerance", &param.absTol);
-    params.AddParam("-verbose", "Verbose level", &param.verbose);
+    params.AddParam("-algName", "Iterative solver type", &solParam.algName);
+    params.AddParam("-maxIter", "Maximum iteration steps", &solParam.maxIter);
+    params.AddParam("-minIter", "Minimum iteration steps", &solParam.minIter);
+    params.AddParam("-safeIter", "Safe-guard iteration", &solParam.safeIter);
+    params.AddParam("-restart", "Iteration restart number", &solParam.restart);
+    params.AddParam("-resRel", "Relative residual tolerance", &solParam.relTol);
+    params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
+    params.AddParam("-verbose", "Verbose level", &solParam.verbose);
     params.Parse();
     params.Print();
 
@@ -78,7 +78,7 @@ int main(int argc, char *args[])
 
     // Solve the linear system using a Krylov method
     timer.Start();
-    retCode = Krylov(mat, b, x, pc, param);
+    retCode = Krylov(mat, b, x, pc, solParam);
     std::cout << "Solving linear system costs " << std::fixed
               << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
 

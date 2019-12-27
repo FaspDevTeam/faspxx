@@ -74,10 +74,6 @@ protected:
     /// Output relative difference and residual
     void WarnDiffRes(double reldiff, double relres) const;
 
-    /// Print out iteration information for iterative solvers
-    void PrintInfo(const int& iter, const double& resRel, const double& resAbs,
-                   const double& factor, std::ostream& out = std::cout) const;
-
 public:
 
     /// Default constructor.
@@ -125,6 +121,13 @@ public:
 
     /// Print parameters.
     void PrintParam(std::ostream& out = std::cout) const;
+
+    /// Print out iteration information table header
+    void PrintHead(std::ostream& out = std::cout) const;
+
+    /// Print out iteration information for iterative solvers
+    void PrintInfo(const int& iter, const double& resRel, const double& resAbs,
+                   const double& factor, std::ostream& out = std::cout) const;
 
     /// Print out final status of an iterative method.
     void PrintFinal(std::ostream& out = std::cout) const;
