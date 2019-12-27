@@ -60,19 +60,15 @@ int main(int argc, char *args[])
     const INT mcol = mat.GetColSize();
     std::cout << "nrow: " << nrow << ", mcol: " << mcol << std::endl;
 
-    // Read the right-hand side b; if not specified, use b = 0
+    // Read the right-hand side b; if not specified, use b = 0.0
     VEC b;
-    if ( strcmp(rhsFile.c_str(), "") != 0 )
-        ReadVEC(rhsFile.c_str(), b);
-    else
-        b.SetValues(nrow, 0.0);
+    b.SetValues(nrow, 0.0);
+    if ( strcmp(rhsFile.c_str(), "") != 0 ) ReadVEC(rhsFile.c_str(), b);
 
-    // Read the initial guess x0; if not specified, use x0 = 0
+    // Read the initial guess x0; if not specified, use x0 = 1.0
     VEC x;
-    if ( strcmp(x0File.c_str(), "") != 0 )
-        ReadVEC(x0File.c_str(), x);
-    else
-        x.SetValues(mcol, 1.0);
+    x.SetValues(mcol, 1.0);
+    if ( strcmp(x0File.c_str(), "") != 0 ) ReadVEC(x0File.c_str(), x);
 
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
