@@ -106,49 +106,49 @@ SOL::~SOL()
     A = nullptr;
 }
 
-/// Set 'verbose' 's value
+/// Set output level verbose.
 void SOL::SetOutput(Output verbose) 
 {
     params.verbose = verbose;
 }
 
-/// Set 'maxIter' 's value
+/// Set value for maxIter.
 void SOL::SetMaxIter(int maxIter)
 {
     params.maxIter = maxIter;
 }
 
-/// Set 'minIter' 's value
+/// Set value for minIter.
 void SOL::SetMinIter(int minIter)
 {
     params.minIter = minIter;
 }
 
-/// Set safe iteration
+/// Set value for safeIter.
 void SOL::SetSafeIter(int safeIter)
 {
     params.safeIter = safeIter;
 }
 
-/// Set 'restart' 's value
+/// Set value for restart.
 void SOL::SetRestart(int restart)
 {
     params.restart = restart;
 }
 
-/// Set 'relTol' 's value
+/// Set value for relTol.
 void SOL::SetRelTol(double relTol)
 {
     params.relTol = relTol;
 }
 
-/// Set 'absTol' 's value
+/// Set value for absTol.
 void SOL::SetAbsTol(double absTol)
 {
     params.absTol = absTol;
 }
 
-/// Set 'solver' type
+/// Set value for SOLType using algName.
 void SOL::SetSolTypeFromName(SOLParams& params)
 {
     for ( char & c : params.algName ) c = tolower(c); // Change to lowercase
@@ -163,8 +163,7 @@ void SOL::SetSolTypeFromName(SOLParams& params)
     }
 }
 
-
-/// Select solver
+/// Get solver type.
 const char *SOL::GetSolType(SOLType type) const
 {
     switch (type) {
@@ -185,25 +184,25 @@ const char *SOL::GetSolType(SOLType type) const
     }
 }
 
-/// Get residual 's 'l2-norm'
+/// Get L2 norm of the residual vector.
 double SOL::GetNorm2() const
 {
     return this->norm2;
 }
 
-/// Get residual 's 'infty-norm'
+/// Get Inf norm of the residual vector.
 double SOL::GetInfNorm() const
 {
     return this->normInf;
 }
 
-/// Get iterations
+/// Get the value of numIter.
 int SOL::GetIterations() const
 {
     return this->numIter;
 }
 
-/// Print parameters
+/// Print parameters.
 void SOL::PrintParam(std::ostream& out) const
 {
     out << "\nParameters for " << GetSolType(params.type) << " method\n"
@@ -217,14 +216,14 @@ void SOL::PrintParam(std::ostream& out) const
         << "    Output level:         " << params.verbose  << '\n' << "\n";
 };
 
-/// Build preconditioner operator
+/// Build preconditioner operator.
 void SOL::SetPC(SOL *pc)
 {
     this->pc = pc;
     withPC = true;
 }
 
-/// Set 'solver' type
+/// Set SOLType.
 void SOL::SetSolType(SOLType type)
 {
     params.type = type;

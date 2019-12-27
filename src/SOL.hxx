@@ -25,17 +25,17 @@
 
 using namespace std;
 
-/* Solver type */
+/// Iterative solver type.
 enum SOLType {
-    CG        = 1,       ///< Conjugate Gradient
-    BICGSTAB  = 2,       ///< Bi-Conjugate Gradient Stabilized
-    MINRES    = 3,       ///< Minimal Residual
-    GMRES     = 4,       ///< Generalized Minimal Residual
-    FGMRES    = 5,       ///< Flexible GMRES
-    VFGMRES   = 6,       ///< Variable-restarting FGMRES
+    CG        = 1,   ///< Conjugate Gradient
+    BICGSTAB  = 2,   ///< Bi-Conjugate Gradient Stabilized
+    MINRES    = 3,   ///< Minimal Residual
+    GMRES     = 4,   ///< Generalized Minimal Residual
+    FGMRES    = 5,   ///< Flexible GMRES
+    VFGMRES   = 6,   ///< Variable-restarting FGMRES
 };
 
-/* Solver parameters */
+/// Iterative solver parameters.
 struct SOLParams {
     SOLType   type;       ///< Algorithm type
     string    algName;    ///< Algorithm name
@@ -48,12 +48,10 @@ struct SOLParams {
     Output    verbose;    ///< Output verbosity level
 
     SOLParams() : type(SOLType::CG), maxIter(100), minIter(0), safeIter(500),
-                  restart(25), relTol(1e-6), absTol(1e-10), verbose(PRINT_NONE) {}
+                  restart(20), relTol(1e-6), absTol(1e-8), verbose(PRINT_NONE) {}
 };
 
-/*! \class SOL
- *  \brief Base class for iterative solvers.
- */
+/// Base class for iterative solvers.
 class SOL {
 
 protected:
@@ -104,9 +102,8 @@ public:
     /// Set tolerance for absolute residual.
     void SetAbsTol(double absTol);
 
-    /// Set solver type from the name.
+    /// Set solver type from its name.
     void SetSolTypeFromName(SOLParams& params);
-
 
     /// Get solver type.
     const char * GetSolType(SOLType type) const;
@@ -123,10 +120,10 @@ public:
     /// Print parameters.
     void PrintParam(std::ostream& out = std::cout) const;
 
-    /// Print out iteration information table header
+    /// Print out iteration information table header.
     void PrintHead(std::ostream& out = std::cout) const;
 
-    /// Print out iteration information for iterative solvers
+    /// Print out iteration information for iterative solvers.
     void PrintInfo(const int& iter, const double& resRel, const double& resAbs,
                    const double& factor, std::ostream& out = std::cout) const;
 
