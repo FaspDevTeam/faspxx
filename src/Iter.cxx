@@ -30,7 +30,7 @@ Jacobi::Jacobi(const MAT &A, double alpha)
     try {
         rk.SetValues(A.GetColSize(), 0.0);
     } catch (std::bad_alloc &ex) {
-        throw ("Insufficient memory!");
+        throw( FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__) );
     }
 }
 

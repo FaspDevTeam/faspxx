@@ -19,7 +19,6 @@
 #include <fstream>
 #include <map>
 #include "faspxx.hxx"
-#include "utils.hxx"
 
 /// Level of output
 enum Output {

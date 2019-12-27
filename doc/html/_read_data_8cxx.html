@@ -361,7 +361,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;                retCode = <a class="code" href="_read_data_8cxx.html#ad3c3aff3c5da77f28132a010ba3ca9d7">ReadCSR</a>(fileName, row, col, nnz,</div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;                                  rowPtr, colInd, values);</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;                <span class="keywordflow">if</span> ( retCode &lt; 0 )</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                    <span class="keywordflow">throw</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;                    <span class="keywordflow">throw</span>( <a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__) );</div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            }</div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;            <span class="keywordflow">catch</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a> &amp;ex) {</div>
 <div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;                ex.<a class="code" href="class_fasp_run_time.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
@@ -372,7 +372,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;            <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;                retCode = <a class="code" href="_m_a_t_util_8cxx.html#a5c19d923cc85471207d8fdd969950418">SortCSRRow</a>(row, col, nnz, rowPtr, colInd, values);</div>
 <div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;                <span class="keywordflow">if</span> ( retCode &lt; 0 )</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                    <span class="keywordflow">throw</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;                    <span class="keywordflow">throw</span>( <a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__) );</div>
 <div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;            }</div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            <span class="keywordflow">catch</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a> &amp;ex) {</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;                ex.<a class="code" href="class_fasp_run_time.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
@@ -383,7 +383,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;            <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                retCode = <a class="code" href="_m_a_t_util_8cxx.html#af875442f94023d6a822663d180a6e544">CSRtoMAT</a>(row, col, nnz, values, colInd, rowPtr, dst);</div>
 <div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;                <span class="keywordflow">if</span> ( retCode &lt; 0 )</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                    <span class="keywordflow">throw</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                    <span class="keywordflow">throw</span>( <a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__) );</div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;            }</div>
 <div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;            <span class="keywordflow">catch</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a> &amp;ex) {</div>
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;                ex.<a class="code" href="class_fasp_run_time.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
@@ -396,7 +396,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;                retCode = <a class="code" href="_read_data_8cxx.html#aa90ba25aadaa365f01799f638a5be120">ReadMTX</a>(fileName, row, col, nnz, rowInd,</div>
 <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;                                  colInd, values);</div>
 <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;                <span class="keywordflow">if</span> ( retCode &lt; 0 )</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;                    <span class="keywordflow">throw</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;                    <span class="keywordflow">throw</span>( <a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__) );</div>
 <div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;            }</div>
 <div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;            <span class="keywordflow">catch</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a> &amp;ex) {</div>
 <div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;                ex.<a class="code" href="class_fasp_run_time.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
@@ -407,7 +407,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;            <span class="keywordflow">try</span> {</div>
 <div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;                retCode = <a class="code" href="_m_a_t_util_8cxx.html#a28c0f3936e34986fe1fed08d0186f5e0">MTXtoMAT</a>(row, col, nnz, rowInd, colInd, values, dst);</div>
 <div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                <span class="keywordflow">if</span> ( retCode &lt; 0 )</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                    <span class="keywordflow">throw</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;                    <span class="keywordflow">throw</span>( <a class="code" href="class_fasp_run_time.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__) );</div>
 <div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;            }</div>
 <div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;            <span class="keywordflow">catch</span> (<a class="code" href="class_fasp_run_time.html">FaspRunTime</a> &amp;ex) {</div>
 <div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;                ex.<a class="code" href="class_fasp_run_time.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
@@ -520,7 +520,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keywordtype">int</span> count = 0; <span class="comment">// number of bytes in the decimal</span></div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordtype">int</span> mark = 0; <span class="comment">// which number of integer is reading</span></div>
 <div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">while</span> ( <span class="keyword">true</span> ) { <span class="comment">// read matrix &#39;s row, column, nnz</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">if</span> (buffer[position] != <span class="charliteral">&#39; &#39;</span> &amp;&amp; buffer[position] != <span class="charliteral">&#39;\n&#39;</span>) {</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        <span class="keywordflow">if</span> ( buffer[position] != <span class="charliteral">&#39; &#39;</span> &amp;&amp; buffer[position] != <span class="charliteral">&#39;\n&#39;</span> ) {</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;            decimal[count] = buffer[position];</div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;            ++count;</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;            ++position;</div>

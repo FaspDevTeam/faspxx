@@ -10,9 +10,7 @@
  */
 
 #include <sstream>
-#include <cstring>
 #include "SOL.hxx"
-#include "utils.hxx"
 
 /// Warning for actual relative residual.
 void SOL::WarnRealRes(double relres) const

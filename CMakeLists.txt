@@ -46,7 +46,7 @@ include_directories(${PROJECT_SOURCE_DIR}/example/)
 file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
 
 # Build faspxx library
-add_library(faspxx ${SRC_FILES} src/utils.hxx)
+add_library(faspxx ${SRC_FILES})
 
 set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
 install(TARGETS faspxx

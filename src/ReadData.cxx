@@ -365,7 +365,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
                 retCode = ReadCSR(fileName, row, col, nnz,
                                   rowPtr, colInd, values);
                 if ( retCode < 0 )
-                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
             }
             catch (FaspRunTime &ex) {
                 ex.LogExcep();
@@ -376,7 +376,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
             try {
                 retCode = SortCSRRow(row, col, nnz, rowPtr, colInd, values);
                 if ( retCode < 0 )
-                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
             }
             catch (FaspRunTime &ex) {
                 ex.LogExcep();
@@ -387,7 +387,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
             try {
                 retCode = CSRtoMAT(row, col, nnz, values, colInd, rowPtr, dst);
                 if ( retCode < 0 )
-                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
             }
             catch (FaspRunTime &ex) {
                 ex.LogExcep();
@@ -400,7 +400,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
                 retCode = ReadMTX(fileName, row, col, nnz, rowInd,
                                   colInd, values);
                 if ( retCode < 0 )
-                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
             }
             catch (FaspRunTime &ex) {
                 ex.LogExcep();
@@ -411,7 +411,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
             try {
                 retCode = MTXtoMAT(row, col, nnz, rowInd, colInd, values, dst);
                 if ( retCode < 0 )
-                    throw (FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
             }
             catch (FaspRunTime &ex) {
                 ex.LogExcep();

@@ -65,6 +65,7 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="class_s_o_l-members.html">List of all members</a>  </div>
@@ -121,9 +122,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae051a04e2385e6d4120d9e619f52a4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aae051a04e2385e6d4120d9e619f52a4e">SetAbsTol</a> (double absTol)</td></tr>
 <tr class="memdesc:aae051a04e2385e6d4120d9e619f52a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set tolerance for absolute residual.  <a href="class_s_o_l.html#aae051a04e2385e6d4120d9e619f52a4e">More...</a><br /></td></tr>
 <tr class="separator:aae051a04e2385e6d4120d9e619f52a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03cc0269ea99838cf3089ff0f789cf78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a03cc0269ea99838cf3089ff0f789cf78">SetSolTypeFromName</a> (<a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;<a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>)</td></tr>
-<tr class="memdesc:a03cc0269ea99838cf3089ff0f789cf78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set solver type from its name.  <a href="class_s_o_l.html#a03cc0269ea99838cf3089ff0f789cf78">More...</a><br /></td></tr>
-<tr class="separator:a03cc0269ea99838cf3089ff0f789cf78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a402a9c7642afdf679e6b0e1eba245c83"><td class="memItemLeft" align="right" valign="top"><a id="a402a9c7642afdf679e6b0e1eba245c83"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a402a9c7642afdf679e6b0e1eba245c83">GetSolType</a> (<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> type) const</td></tr>
 <tr class="memdesc:a402a9c7642afdf679e6b0e1eba245c83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get solver type. <br /></td></tr>
@@ -167,6 +165,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a4eb927a6f22c892343c59a7b7df243a4">Solve</a> (const <a class="el" href="class_v_e_c.html">VEC</a> &amp;b, <a class="el" href="class_v_e_c.html">VEC</a> &amp;x)</td></tr>
 <tr class="memdesc:a4eb927a6f22c892343c59a7b7df243a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve Ax=b using the iterative method. <br /></td></tr>
 <tr class="separator:a4eb927a6f22c892343c59a7b7df243a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a03cc0269ea99838cf3089ff0f789cf78"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a03cc0269ea99838cf3089ff0f789cf78">SetSolTypeFromName</a> (<a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;<a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>)</td></tr>
+<tr class="memdesc:a03cc0269ea99838cf3089ff0f789cf78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set solver type from its name.  <a href="class_s_o_l.html#a03cc0269ea99838cf3089ff0f789cf78">More...</a><br /></td></tr>
+<tr class="separator:a03cc0269ea99838cf3089ff0f789cf78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -234,9 +238,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Get infinity norm of residual. </p>
 <p>Get Inf norm of the residual vector. </p>
-<div class="fragment"><div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;{</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">normInf</a>;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;{</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">normInf</a>;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">normInf</a>.</p>
 
@@ -259,9 +263,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Get number of iterations. </p>
 <p>Get the value of numIter. </p>
-<div class="fragment"><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;{</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a>;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;{</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a>;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a>.</p>
 
@@ -284,9 +288,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Get Euclidean norm of residual. </p>
 <p>Get L2 norm of the residual vector. </p>
-<div class="fragment"><div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;{</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a>;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;{</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordflow">return</span> this-&gt;<a class="code" href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a>;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a>.</p>
 
@@ -310,13 +314,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Print out iteration information table header. </p>
 <p>Print out iteration information table head. </p>
-<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt;= PRINT_MIN &amp;&amp; <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7">minIter</a> &lt; <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">maxIter</a> ) {</div>
+<div class="fragment"><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt;= PRINT_MIN &amp;&amp; <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7">minIter</a> &lt; <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">maxIter</a> ) {</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;---------------------------------------------\n&quot;</span>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot; It Num | ||r||/||b|| |    ||r||    |  Ratio \n&quot;</span>;</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;---------------------------------------------\n&quot;</span>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot; It Num | ||r||/||b|| |    ||r||    |  Ratio \n&quot;</span>;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        out &lt;&lt; <span class="stringliteral">&quot;---------------------------------------------\n&quot;</span>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;}</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    }</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a>.</p>
 
@@ -340,9 +344,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Set tolerance for absolute residual. </p>
 <p>Set value for absTol. </p>
-<div class="fragment"><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;{</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7c7dfefa3e9f1735fada6cea88824618">absTol</a> = absTol;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;{</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7c7dfefa3e9f1735fada6cea88824618">absTol</a> = absTol;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="struct_s_o_l_params.html#a7c7dfefa3e9f1735fada6cea88824618">SOLParams::absTol</a>, and <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.</p>
 
@@ -366,9 +370,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Set max number of iterations. </p>
 <p>Set value for maxIter. </p>
-<div class="fragment"><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;{</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">maxIter</a> = maxIter;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;{</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">maxIter</a> = maxIter;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">SOLParams::maxIter</a>, and <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.</p>
 
@@ -392,9 +396,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Set min number of iterations. </p>
 <p>Set value for minIter. </p>
-<div class="fragment"><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;{</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7">minIter</a> = minIter;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;{</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7">minIter</a> = minIter;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="struct_s_o_l_params.html#a52df36265b22d4dafe941c624b3f56c7">SOLParams::minIter</a>, and <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.</p>
 
@@ -418,9 +422,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Set output level. </p>
 <p>Set output level verbose. </p>
-<div class="fragment"><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;{</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> = verbose;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> = verbose;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a>.</p>
 
@@ -452,10 +456,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Setup preconditioner operator. </p>
 <p>Build preconditioner operator. </p>
-<div class="fragment"><div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;{</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    this-&gt;pc = <a class="code" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>;</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;    <a class="code" href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">withPC</a> = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;{</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    this-&gt;pc = <a class="code" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>;</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <a class="code" href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">withPC</a> = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>, and <a class="el" href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">withPC</a>.</p>
 
@@ -479,9 +483,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Set tolerance for relative residual. </p>
 <p>Set value for relTol. </p>
-<div class="fragment"><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;{</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a4c49319d1f1ded022df46fb70bdd6077">relTol</a> = relTol;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;{</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a4c49319d1f1ded022df46fb70bdd6077">relTol</a> = relTol;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a4c49319d1f1ded022df46fb70bdd6077">SOLParams::relTol</a>.</p>
 
@@ -505,9 +509,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Set restart number for Krylov methods. </p>
 <p>Set value for restart. </p>
-<div class="fragment"><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;{</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a0d6813849e79fb8997058847d2b635a3">restart</a> = restart;</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;{</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a0d6813849e79fb8997058847d2b635a3">restart</a> = restart;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a0d6813849e79fb8997058847d2b635a3">SOLParams::restart</a>.</p>
 
@@ -531,9 +535,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <p>Set number of safe-guard iterations. </p>
 <p>Set value for safeIter. </p>
-<div class="fragment"><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;{</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6a60d7ec7bdabed68e8fb17bd693a3fd">safeIter</a> = safeIter;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;{</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6a60d7ec7bdabed68e8fb17bd693a3fd">safeIter</a> = safeIter;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, and <a class="el" href="struct_s_o_l_params.html#a6a60d7ec7bdabed68e8fb17bd693a3fd">SOLParams::safeIter</a>.</p>
 
@@ -544,6 +548,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void SOL::SetSolTypeFromName </td>
@@ -553,22 +560,27 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Set solver type from its name. </p>
 <p>Set value for SOLType using algName. </p>
-<div class="fragment"><div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;{</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">char</span> &amp; c : <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">algName</a> ) c = tolower(c); <span class="comment">// Change to lowercase</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">algName</a> == <span class="stringliteral">&quot;cg&quot;</span> )</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">SOLType::CG</a>;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">algName</a> == <span class="stringliteral">&quot;bicgstab&quot;</span> )</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">SOLType::BICGSTAB</a>;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordflow">else</span> { <span class="comment">// default solver type</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">SOLType::CG</a>;</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt; PRINT_NONE )</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            <a class="code" href="_error_log_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac">FASPXX_WARNING</a>(<span class="stringliteral">&quot;Unknown solver type. Using CG instead!&quot;</span>);</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;}</div>
+<div class="fragment"><div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;{</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordflow">for</span> ( <span class="keywordtype">char</span> &amp; c : <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">algName</a> ) c = std::tolower(c); <span class="comment">// Change to lowercase</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">algName</a> == <span class="stringliteral">&quot;cg&quot;</span> )</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">SOLType::CG</a>;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordflow">else</span> <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">algName</a> == <span class="stringliteral">&quot;bicgstab&quot;</span> )</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">SOLType::BICGSTAB</a>;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keywordflow">else</span> { <span class="comment">// default solver type</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">SOLType::CG</a>;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt; PRINT_NONE )</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;            <a class="code" href="_error_log_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac">FASPXX_WARNING</a>(<span class="stringliteral">&quot;Unknown solver type. Using CG instead!&quot;</span>);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    }</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">SOLParams::algName</a>, <a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a>, <a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">CG</a>, <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>, <a class="el" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">SOLParams::type</a>, and <a class="el" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a>.</p>
 
