@@ -19,24 +19,21 @@
 
 TEST(Parameters_Class, Parameters)
 {
-    // ---------------- 3种输入参数的优先级: 命令行参数 > 运行时参数 > 文件参数? -------------------
-    // 模拟 parameters in user program
+    // parameters in user program
     bool bool_param = false;
     int int_param = 11;
     double double_param = 3.14159;
     std::string char_param = "user params";
     Output output_lvl = static_cast<Output>(4);
 
-    // 模拟 parameters in command line
+    // parameters in command line
     const int _argc = 11;
-    char *_argv[_argc] = {"program name",
-                          "-bool_param", "TruE",
-                          "-int_param", "22",
-                          "-double_param", "1.41414",
-                          "-char_param", "commandline_parameters",
-                          "-faspxx_opts", "./data_for_test/single_sol.opts"};
+    const char *_argv[_argc] = {"program name", "-bool_param", "TruE", "-int_param",
+                                "22", "-double_param", "1.41414", "-char_param",
+                                "commandline_parameters", "-faspxx_opts",
+                                "./data_for_test/single_sol.opts"};
 
-    // 模拟 parameters in file
+    // parameters in file
     std::string params_file = "./data_for_test/multiple_sol.opts";
     bool view_param = false; // from file
     int level_param = 0; // from file
@@ -68,7 +65,6 @@ TEST(Parameters_Class, Parameters)
     params.AddParam("-out_put", "output param help", &output_lvl);
     params.Parse();
 
-
     EXPECT_EQ(bool_param, true); // modified by command line
     EXPECT_EQ(int_param, 22); // modified by command line
     EXPECT_EQ(double_param, 1.41414); // modified by command line
@@ -81,8 +77,6 @@ TEST(Parameters_Class, Parameters)
     EXPECT_EQ(vec_param, "../data/ffffffffffff"); // modified from file
     EXPECT_EQ(output_lvl, 6); // modified from file
 }
-
-
 
 /*---------------------------------*/
 /*--        End of File          --*/

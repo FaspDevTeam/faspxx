@@ -10,7 +10,8 @@ if ("${GTEST}" STREQUAL "ON")
     file(COPY "./data_for_test" DESTINATION ".")
 
     # Build unit tests
-    add_executable(testAll unitGTestAll.cxx unitErrorLog.cxx)
+    add_executable(testAll unitGTestAll.cxx)
+    #add_executable(testAll unitGTestAll.cxx unitErrorLog.cxx)
     target_link_libraries(testAll "${GTEST_LIBRARIES}" pthread faspxx)
 
 else("${GTEST}" STREQUAL "OFF")

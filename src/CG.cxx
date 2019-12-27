@@ -54,6 +54,8 @@ void CG::Clean()
 /// Using the Preconditioned Conjugate Gradient method.
 FaspRetCode CG::Solve(const VEC& b, VEC& x)
 {
+    if ( params.verbose > PRINT_NONE ) std::cout << "Use CG to solve Ax=b ...\n";
+
     // Check whether vector space sizes
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
                                         || A->GetRowSize() != A->GetColSize() )
@@ -68,10 +70,8 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     const double solZeroTol = CLOSE_ZERO; // solution close to zero tolerance
 
     unsigned stagStep = 0, moreStep = 0;
-    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld;
+    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
     double alpha, beta, tmpa, tmpb;
-
-    if ( params.verbose > PRINT_NONE ) std::cout << "Use CG to solve Ax=b ...\n";
 
     PrintHead();
 
@@ -81,16 +81,6 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     rk.XPAY(-1.0, b); // b - rk -> rk
     pc->Solve(rk, zk); // preconditioning: B(r_k) -> z_k
 
-    // Compute the initial residual
-    if ( numIter >= params.minIter ) {
-        resAbs = rk.Norm2();
-        denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
-        resRel = resAbs / denAbs;
-
-        // If the initial residual is very small, no need to iterate
-        if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
-    }
-
     // Prepare for the main loop
     pk = zk;
     tmpa = zk.Dot(rk);
@@ -99,10 +89,11 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     while ( numIter < params.maxIter ) {
 
         // Start from minIter instead of 0
-        if ( numIter == params.minIter && params.minIter > 0 ) {
+        if ( numIter == params.minIter ) {
             resAbs = rk.Norm2();
             denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
+            if ( resRel < params.relTol || resAbs < params.absTol ) break;
         }
 
         if ( numIter >= params.minIter )
@@ -118,11 +109,12 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
 
         // alpha_k = (z_{k-1}, r_{k-1})/(A*p_{k-1},p_{k-1})
         tmpb = ax.Dot(pk);
-        if ( fabs(tmpb) > CLOSE_ZERO * CLOSE_ZERO ) alpha = tmpa / tmpb;
+        if ( fabs(tmpb) > CLOSE_ZERO * CLOSE_ZERO )
+            alpha = tmpa / tmpb;
         else {
             FASPXX_WARNING("Divided by zero!");
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
-            goto FINISHED;
+            break;
         }
 
         // Update solution and residual
@@ -238,7 +230,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
 
     } // End of main CG loop
 
-FINISHED: // Finish iterative method
+    // Finish iterative method
     this->norm2   = resAbs;
     this->normInf = rk.NormInf();
     PrintFinal(numIter, resRel, resAbs, ratio);

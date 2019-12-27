@@ -18,7 +18,7 @@
 #include "Iter.hxx"
 #include "Krylov.hxx"
 
-int main(int argc, char *args[])
+int main(int argc, const char *args[])
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
 

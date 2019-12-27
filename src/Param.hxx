@@ -27,8 +27,6 @@ enum Output {
     PRINT_MIN  = 2,  // minimal output
     PRINT_SOME = 4,  // some output
     PRINT_MORE = 6,  // more output
-    PRINT_MAX  = 8,  // even more output
-    PRINT_ALL  = 10  // all possible output
 };
 
 /// Solver parameters
@@ -53,7 +51,7 @@ private:
         void *       paramPtr;       ///< Pointer to parameter data
         int          paramMarker=0;  ///< 0: optional, 1: required, 2: params file
 
-        ParamHolder(ParamType type, std::string name, std::string help,
+        ParamHolder(ParamType type, const std::string& name, const std::string& help,
                     void * ptr, int marker)
                    :paramType(type), paramName(name), paramHelp(help),
                     paramPtr(ptr), paramMarker(marker) {}
@@ -64,29 +62,30 @@ private:
     std::vector<ParamHolder>            paramsUser;    ///< Params in user code
     std::string                         paramsUserOrg; ///< Old params in user code
 
-    int      argc;    ///< number of command-line arguments
-    char   **argv;    ///< command-line arguments
+    int      argc;    ///< Number of command-line arguments
+    const char   **argv;    ///< Command-line arguments
 
 private:
-    /// Read all parameters from command line and save them into a Dictionary.
-    /* For each param, it becomes a key-value pair of the Dictionary.
-     * e.g.:
-     *   in command line: -mat /home/temp1/a.csr
-     *   key == string("-mat"), value == string("/home/temp1/a.csr") will be added
-     *   into the dictionary paramsCML.
-     * */
+    /// Read all parameters from command-line and save them into a Dictionary.
     void ReadFromCommandLine();
+    /* For each param, it becomes a key-value pair of the Dictionary.
+      * e.g.:
+      *   in command line: -mat /home/temp1/a.csr
+      *   key == string("-mat"), value == string("/home/temp1/a.csr") will be added
+      *   into the dictionary paramsCML.
+      * */
 
     /// Read all parameters from file and save them into a Dictionary.
+    void ReadFromFile();
     /* For each param, it becomes a key-value pair of the Dictionary.
      * e.g.:
      *   in file: -mat /home/temp1/a.csr
      *   key == string("-mat"), value == string("/home/temp1/a.csr") will be added
      *   into the dictionary paramsFile.
      * */
-    void ReadFromFile();
 
     /// Merge and update the same parameters in terms of priority.
+    void MergeParams();
     /* params from command line > from file > in user program.
      * e.g.:
      *  in command line: -mat /home/temp1/a.csr
@@ -96,24 +95,23 @@ private:
      * After this operation,
      *  mat_file == "/home/temp1/a.csr"
      * */
-    void MergeParams();
 
     /// Save the original user parameters for later record.
     void SaveUserParams(std::string& save) const;
 
     /// Update the value of a user-defined parameter.
+    void UpdateParamValue(std::map<std::string, std::string>::iterator& iter,
+                          ParamHolder& prm);
     /* If there is a parameter in command line or file which has the same name as
      * parameter in user program, we update its value.
      * */
-    void UpdateParamValue(std::map<std::string, std::string>::iterator& iter,
-                          ParamHolder& prm);
 
 public:
     /// Default constructor.
-    Parameters(int _argc, char * _argv[]) : argc(_argc), argv(_argv) {}
+    Parameters(int _argc, const char * _argv[]) : argc(_argc), argv(_argv) {}
 
     /// Default destructor.
-    ~Parameters() {}
+    ~Parameters() = default;
 
     /// Add a bool type parameter.
     void AddParam(const std::string& name, const std::string& help, bool * ptr, int marker=0);

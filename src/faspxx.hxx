@@ -19,7 +19,6 @@ const DBL  SMALL_TOL     =  1e-14;   ///< Small positive real for tolerance
 const DBL  LARGE         =  1e+60;   ///< Largest double number
 const DBL  SMALL         = -1e+60;   ///< Smallest double number
 const DBL  CLOSE_ZERO    =  1e-20;   ///< Tolerance for closeness to zero
-
 const DBL  KSM_CHK_RATIO =  0.95;    ///< Check ratio for Krylov space methods
 
 const int  MAX_STAG_NUM  =  20;      ///< Maximal number of stagnation checks

@@ -15,8 +15,10 @@
 #include "Param.hxx"
 #include "ErrorLog.hxx"
 
-void Parameters::SaveUserParams(std::string& save) const {
+void Parameters::SaveUserParams(std::string& save) const
+{
     int max_len = 0;
+
     for ( const auto& itm: paramsUser ) {
         if ( itm.paramName.length() > max_len ) max_len = itm.paramName.length();
     }
@@ -131,27 +133,29 @@ void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& 
     }
 }
 
-void Parameters::AddParam(const std::string& name, const std::string& help, bool * ptr, int marker) {
-    paramsUser.push_back(ParamHolder(BoolType, name, help, ptr, marker));
+void Parameters::AddParam(const std::string& name, const std::string& help, bool * ptr, int marker)
+{
+    paramsUser.emplace_back(BoolType, name, help, ptr, marker);
 }
 
-void Parameters::AddParam(const std::string& name, const std::string& help, int * ptr, int marker) {
-    paramsUser.push_back(ParamHolder(IntType, name, help,
-                                      ptr, marker));
+void Parameters::AddParam(const std::string& name, const std::string& help, int * ptr, int marker)
+{
+    paramsUser.emplace_back(IntType, name, help, ptr, marker);
 }
 
-void Parameters::AddParam(const std::string& name, const std::string& help, double * ptr, int marker) {
-    paramsUser.push_back(ParamHolder(DoubleType, name, help,
-                                      ptr, marker));
+void Parameters::AddParam(const std::string& name, const std::string& help, double * ptr, int marker)
+{
+    paramsUser.emplace_back(DoubleType, name, help, ptr, marker);
 }
 
-void Parameters::AddParam(const std::string& name, const std::string& help, std::string * ptr, int marker) {
-    paramsUser.push_back(ParamHolder(StringType, name, help,
-                                      ptr, marker));
+void Parameters::AddParam(const std::string& name, const std::string& help, std::string * ptr, int marker)
+{
+    paramsUser.emplace_back(StringType, name, help, ptr, marker);
 }
 
-void Parameters::AddParam(const std::string& name, const std::string& help, Output * ptr, int marker) {
-    paramsUser.push_back(ParamHolder(OutputType, name, help, ptr, marker));
+void Parameters::AddParam(const std::string& name, const std::string& help, Output * ptr, int marker)
+{
+    paramsUser.emplace_back(OutputType, name, help, ptr, marker);
 }
 
 void Parameters::Parse()
@@ -165,10 +169,11 @@ void Parameters::Parse()
     MergeParams();
 }
 
-void Parameters::PrintFileParams(std::ostream& out) const {
+void Parameters::PrintFileParams(std::ostream& out) const
+{
     int max_len = 0;
     for ( const auto& itm: paramsFile ) {
-        if (itm.first.length() > max_len) max_len = itm.first.length();
+        if ( itm.first.length() > max_len ) max_len = itm.first.length();
     }
 
     std::string options_file;
@@ -186,7 +191,8 @@ void Parameters::PrintFileParams(std::ostream& out) const {
     out << std::endl;
 }
 
-void Parameters::PrintCommandLineParams(std::ostream& out) const {
+void Parameters::PrintCommandLineParams(std::ostream& out) const
+{
     int max_len = 0;
     for ( const auto& itm: paramsCML ) {
         if (itm.first.length() > max_len) max_len = itm.first.length();
@@ -202,11 +208,13 @@ void Parameters::PrintCommandLineParams(std::ostream& out) const {
     out << std::endl;
 }
 
-void Parameters::PrintUserParams(std::ostream &out) const {
+void Parameters::PrintUserParams(std::ostream &out) const
+{
     out << paramsUserOrg << std::endl;
 }
 
-void Parameters::Print(std::ostream &out) const {
+void Parameters::Print(std::ostream &out) const
+{
     int max_len = 0;
     for ( const auto& itm: paramsUser ) {
         if ( itm.paramName.length() > max_len ) max_len = itm.paramName.length();
@@ -247,17 +255,16 @@ void Parameters::PrintHelp(std::ostream &out) const
     static const char *types[] = {"<bool>", "<int>", "<double>", "<string>", "<Output>"};
 
     out << "Usage: " << argv[0] << " [options] ...\n"
-        << "Options:\n";
-    out << indent << std::setw(21) << std::left
+        << "Options:\n" << indent << std::setw(21) << std::left
         << "-h, --help" << "              : print help information and exit\n";
 
-    for (const auto& prm: paramsUser ) {
+    for ( const auto& prm: paramsUser ) {
         ParamType type = prm.paramType;
         out << indent << std::setw(12) << std::left << prm.paramName
             << " " << std::setw(8) << types[type];
         if ( prm.paramMarker == 0)      out << ", optional   ";
         else if ( prm.paramMarker == 1) out << ", required   ";
-        else                                  out << ", params file";
+        else                            out << ", params file";
         if ( !prm.paramHelp.empty() ) out << " : " << prm.paramHelp;
 
         out << ", default = [";

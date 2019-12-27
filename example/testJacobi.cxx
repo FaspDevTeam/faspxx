@@ -17,7 +17,7 @@
 #include "LOP.hxx"
 #include "Iter.hxx"
 
-int main(int argc, char *args[]) {
+int main(int argc, const char *args[]) {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
 
     // User default parameters

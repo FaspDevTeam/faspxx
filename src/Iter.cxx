@@ -41,13 +41,13 @@ FaspRetCode Jacobi::Solve(const VEC &b, VEC &x)
 
     // Check whether vector space sizes
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
-         || A->GetRowSize() != A->GetColSize() )
+                                        || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables
-    double resAbs = 1.0, resAbsOld = 1.0, resRel = 1.0, ratio = 0.0, denAbs;
+    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
 
     PrintHead();
 
@@ -56,24 +56,15 @@ FaspRetCode Jacobi::Solve(const VEC &b, VEC &x)
     A->Apply(x, rk); // rk = A * x
     rk.XPAY(-1.0, b); // rk = b - rk
 
-    // Compute the initial residual
-    if ( numIter >= params.minIter ) {
-        resAbs = rk.Norm2();
-        denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
-        resRel = resAbs / denAbs;
-
-        // If initial residual is very small, no need to iterate
-        if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
-    }
-
     // Main Jacobi loop
     while ( numIter < params.maxIter ) {
 
-        // Start from minIter instead of 0
-        if ( numIter == params.minIter && params.minIter > 0 ) {
+        // Compute residual norm from minIter
+        if ( numIter == params.minIter ) {
             resAbs = rk.Norm2();
             denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
+            if ( resRel < params.relTol || resAbs < params.absTol ) break;
         }
 
         // Print iteration information if verbose > 0
@@ -86,7 +77,7 @@ FaspRetCode Jacobi::Solve(const VEC &b, VEC &x)
         // Jacobi iteration starts from here
         //---------------------------------------------
 
-        rk.PointwiseMult(diagInv);
+        rk.PointwiseMult(diagInv); // rk = rk ./ dk
         x.AXPY(alpha, rk); // x = x + alpha * rk
 
         //---------------------------------------------
@@ -99,25 +90,24 @@ FaspRetCode Jacobi::Solve(const VEC &b, VEC &x)
             A->Apply(x, rk); // rk = A * x
             rk.XPAY(-1.0, b); // rk = b - rk
 
-            // Compute norm of residual and output iteration information if needed
+            // Compute norm of residual and check whether it converges
             if ( numIter >= params.minIter ) {
                 resAbs = rk.Norm2();
                 resRel = resAbs / denAbs;
-                ratio = resAbs / resAbsOld;
-
                 if ( resRel < params.relTol || resAbs < params.absTol ) break;
 
+                ratio = resAbs / resAbsOld;
                 resAbsOld = resAbs;
             }
         }
     } // End of main Jacobi loop
 
-FINISHED: // Finish iterative method
+    // Finish iterative method
     this->norm2 = resAbs;
     this->normInf = rk.NormInf();
     PrintFinal(numIter, resRel, resAbs, ratio);
 
-    return FaspRetCode::SUCCESS;
+    return errorCode;
 }
 
 /*---------------------------------*/

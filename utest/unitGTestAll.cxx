@@ -1,7 +1,7 @@
-/** \file testGTestAll.cxx
- *  \brief GTest unit-test suite
- *  \author Ronghong Fan
- *  \date Oct/24/2019
+/** \file    testGTestAll.cxx
+ *  \brief   GTest unit-test suite
+ *  \author  Ronghong Fan
+ *  \date    Oct/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.

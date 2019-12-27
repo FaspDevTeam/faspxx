@@ -84,16 +84,6 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
     A->Apply(x, this->tmp); // A * x -> tmp
     this->rj.WAXPBY(1.0, b, -1.0, this->tmp); // Todo: Why not using XPAY like CG? --zcs
 
-    // Compute initial residual
-    if ( numIter >= params.minIter ) {
-        resAbs = this->rj.Norm2();
-        denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
-        resRel = resAbs / denAbs;
-
-        // If initial residual is very small, no need to iterate
-        if ( resRel < params.relTol || resAbs < params.absTol ) goto FINISHED;
-    }
-
     // Prepare for the main loop
     this->r0star = this->rj;  // r0_{*} = r0c
     this->pj     = this->rj;  // p0 = r0
@@ -102,10 +92,11 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
     while ( numIter < params.maxIter ) {
 
         // Start from minIter instead of 0
-        if ( numIter == params.minIter && params.minIter > 0 ) {
+        if ( numIter == params.minIter ) {
             resAbs = rj.Norm2();
             denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
+            if ( resRel < params.relTol || resAbs < params.absTol ) break;
         }
 
         if ( numIter >= params.minIter )
@@ -129,7 +120,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         else {
             FASPXX_WARNING("Divided by zero!"); // Possible breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
-            goto FINISHED;
+            break;
         }
 
         // sj = rj - alpha_{j} * P * A * p_{j}
@@ -258,7 +249,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
     } // End of main PCG loop
 
-FINISHED: // Finish iterative method
+    // Finish iterative method
     this->norm2 = resAbs;
     this->normInf = rj.NormInf();
     PrintFinal(numIter, resRel, resAbs, ratio);

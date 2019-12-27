@@ -12,17 +12,19 @@
 #include <gtest/gtest.h>
 #include "ErrorLog.hxx"
 
-/// Test three functions for error logging
+/// Test FASPXX_ABORT error logging.
 TEST(ErrorLog, ABORT)
 {
     ASSERT_DEATH({FASPXX_ABORT("This is an abort test!");}, "");
 }
 
+/// Test FASPXX_ASSERT error logging.
 TEST(ErrorLog, ASSERT)
 {
     FASPXX_ASSERT(1==2, "This is an assert test!");
 }
 
+/// Test FASPXX_WARNING error logging.
 TEST(ErrorLog, WARNING)
 {
     FASPXX_WARNING("This is a warning test!");

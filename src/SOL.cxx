@@ -37,7 +37,7 @@ void SOL::WarnDiffRes(double reldiff, double relres) const
 /// Print out iteration information table head.
 void SOL::PrintHead(std::ostream& out) const
 {
-    if ( params.verbose >= PRINT_MIN ) {
+    if ( params.verbose >= PRINT_MIN && params.minIter < params.maxIter ) {
         out << "---------------------------------------------\n";
         out << " It Num | ||r||/||b|| |    ||r||    |  Ratio \n";
         out << "---------------------------------------------\n";
@@ -70,6 +70,8 @@ void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
 void SOL::PrintFinal(const int& iter, const double& resRel, const double& resAbs,
                      const double& ratio, std::ostream& out) const
 {
+    if ( params.minIter >= params.maxIter ) return;
+
     if ( params.verbose >= PRINT_MIN ) {
         if ( iter > params.minIter ) {
             out << std::setw(7) << std::right << iter << " | "
@@ -83,7 +85,7 @@ void SOL::PrintFinal(const int& iter, const double& resRel, const double& resAbs
         }
     }
 
-    if ( params.verbose >= PRINT_MIN ) {
+    if ( params.verbose >= PRINT_MIN  ) {
         out << "---------------------------------------------\n";
         if ( numIter >= params.maxIter )
             std::cout << "### WARNING: maxIter = " << params.maxIter << " reached!\n";
