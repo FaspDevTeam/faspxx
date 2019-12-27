@@ -69,17 +69,13 @@ target_link_libraries(testKrylov faspxx)
 add_executable(testCG example/testCG.cxx)
 target_link_libraries(testCG faspxx)
 
-# Test BiCGStab class
-add_executable(testBiCGStab example/testBiCGStab.cxx)
-target_link_libraries(testBiCGStab faspxx)
+# Test Jacobi class
+add_executable(testJacobi example/testJacobi.cxx)
+target_link_libraries(testJacobi faspxx)
 
 # Test MatFree implementation of 2D5P stencil
 add_executable(testMatFree example/testMatFree.cxx)
 target_link_libraries(testMatFree faspxx)
-
-# Test Jacobi class
-add_executable(testJacobi example/testJacobi.cxx)
-target_link_libraries(testJacobi faspxx)
 
 # GoogleTest, default "OFF" (enable by "-DGTEST=ON")
 option(GTEST "Google Test" OFF)

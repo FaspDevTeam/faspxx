@@ -17,8 +17,6 @@
 FaspRetCode BiCGStab::Setup(const LOP &A) {
     const INT len = A.GetColSize();
 
-    this->SetSolType(SOLType::BICGSTAB);
-
     // Allocate memory for temporary vectors
     try {
         r0star.SetValues(len, 0.0);
@@ -45,6 +43,9 @@ FaspRetCode BiCGStab::Setup(const LOP &A) {
         withPC = false;
         pc = new Identity();
     }
+
+    // Print used parameters
+    if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
 }

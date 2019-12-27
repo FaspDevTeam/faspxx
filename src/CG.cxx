@@ -19,8 +19,6 @@ FaspRetCode CG::Setup(const LOP &A)
 {
     const INT len = A.GetColSize();
 
-    this->SetSolType(SOLType::CG);
-
     // Allocate memory for temporary vectors
     try {
         zk.SetValues(len, 0.0);
@@ -40,6 +38,9 @@ FaspRetCode CG::Setup(const LOP &A)
         withPC = false;
         pc = new Identity();
     }
+
+    // Print used parameters
+    if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
 }

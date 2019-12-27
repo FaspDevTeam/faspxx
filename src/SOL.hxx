@@ -23,7 +23,9 @@
 #include "LOP.hxx"
 #include "VEC.hxx"
 
-/* solver type */
+using namespace std;
+
+/* Solver type */
 enum SOLType {
     CG        = 1,       ///< Conjugate Gradient
     BICGSTAB  = 2,       ///< Bi-Conjugate Gradient Stabilized
@@ -33,19 +35,20 @@ enum SOLType {
     VFGMRES   = 6,       ///< Variable-restarting FGMRES
 };
 
-/* Parameter */
-struct Params{
-    SOLType      type;       ///< Algorithm type
-    int          maxIter;    ///< Maximal number of iterations
-    int          minIter;    ///< Minimal number of iterations
-    int          safeIter;   ///< Minimal number of iterations before safe-guard
-    double       relTol;     ///< Tolerance for relative residual
-    double       absTol;     ///< Tolerance for absolute residual
-    int          restart;    ///< Restart number
-    Output       verbose;    ///< Output verbosity level
+/* Solver parameters */
+struct SOLParams {
+    SOLType   type;       ///< Algorithm type
+    string    algName;    ///< Algorithm name
+    int       maxIter;    ///< Maximal number of iterations
+    int       minIter;    ///< Minimal number of iterations
+    int       safeIter;   ///< Minimal number of iterations before safe-guard
+    int       restart;    ///< Restart number
+    double    relTol;     ///< Tolerance for relative residual
+    double    absTol;     ///< Tolerance for absolute residual
+    Output    verbose;    ///< Output verbosity level
 
-    Params():type(SOLType::CG), maxIter(100), minIter(0), safeIter(500),
-        relTol(1e-6), absTol(1e-8), restart(25), verbose(PRINT_NONE){}
+    SOLParams() : type(SOLType::CG), maxIter(100), minIter(0), safeIter(500),
+                  restart(25), relTol(1e-6), absTol(1e-10), verbose(PRINT_NONE) {}
 };
 
 /*! \class SOL
@@ -60,7 +63,7 @@ protected:
     double       norm2;      ///< Euclidean norm
     double       normInf;    ///< Infinity norm
     int          numIter;    ///< Number of iterations when exit
-    Params       params;     ///< solver parameters
+    SOLParams    params;     ///< solver parameters
 
     /// Warning for actual relative residual
     void WarnRealRes(double relres) const;
@@ -102,11 +105,11 @@ public:
     /// Set restart number for Krylov methods.
     void SetRestart(int restart);
 
-    /// Set solver type.
-    void SetSolType(SOLType solver);
+    /// Set solver type from the name.
+    void SetSolTypeFromName(SOLParams& params);
 
-    /// Set safe iteration
-    void SetSafeIteration(int safeIter);
+    /// Set number of safe-guard iterations.
+    void SetSafeIter(int safeIter);
 
     /// Get solver type.
     const char * GetSolType(SOLType type) const;
@@ -126,14 +129,11 @@ public:
     /// Print out final status of an iterative method.
     void PrintFinal(std::ostream& out = std::cout) const;
 
-    /// Set parameters from a disk file.
-    void SetSolFromFile(const char *file = nullptr, const char *prefix = nullptr);
-
     /// Setup preconditioner operator.
     virtual void SetPC(SOL *pc);
 
     /// Setup the iterative method.
-    virtual FaspRetCode Setup(const LOP& _A) {
+    virtual FaspRetCode Setup(const LOP& A) {
         FASPXX_ABORT("Not supported!");
     }
 
@@ -146,6 +146,10 @@ public:
     virtual FaspRetCode Solve(const VEC& b, VEC& x) {
         FASPXX_ABORT("Not supported!");
     }
+
+private:
+    /// Set solver type.
+    void SetSolType(SOLType solver);
 };
 
 #endif /* end if for __SOL_HEADER__ */

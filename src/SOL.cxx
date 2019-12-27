@@ -122,13 +122,22 @@ void SOL::SetRestart(int restart)
 }
 
 /// Set 'solver' type
-void SOL::SetSolType(SOLType type) 
+void SOL::SetSolTypeFromName(SOLParams& params)
 {
-    params.type = type;
+    for ( char & c : params.algName ) c = tolower(c); // Change to lowercase
+    if ( params.algName == "cg" )
+        params.type = SOLType::CG;
+    else if ( params.algName == "bicgstab" )
+        params.type = SOLType::BICGSTAB;
+    else { // default solver type
+        params.type = SOLType::CG;
+        if ( params.verbose > PRINT_NONE )
+            FASPXX_WARNING("Unknown solver type. Using CG instead!");
+    }
 }
 
 /// Set safe iteration
-void SOL::SetSafeIteration(int safeIter){
+void SOL::SetSafeIter(int safeIter){
     params.safeIter=safeIter;
 }
 
@@ -185,76 +194,17 @@ void SOL::PrintParam(std::ostream& out) const
         << "    Output level:         " << params.verbose  << '\n' << "\n";
 };
 
-/// Set 'verbose', 'maxIter', 'relTol', 'absTol', 'restart' 's values from file
-void SOL::SetSolFromFile(const char *file, const char *prefix) 
-{
-
-    std::ifstream input(file);
-    if ( !input.is_open() ) FASPXX_WARNING("Not found sol option file!");
-    if ( params.verbose > PRINT_MIN )
-        std::cout << "Reading SOL parameters from disk file " << file << std::endl;
-
-    std::string line, param, value;
-    while (std::getline(input, line)) {
-        if ( !ProcessLine(line, param, value) ) continue;
-
-        if ( prefix ) {
-            if ( param.find(prefix) == param.npos ) continue;
-        }
-
-        if ( prefix ) {
-            std::string prefix_(prefix);
-            size_t pos = param.find(prefix_);
-            if ( pos != std::string::npos ) param.erase(pos, prefix_.length());
-        } else {
-            param[0] = '_'; // 把-sol改成_sol,方便下面的赋值
-        }
-
-        if ( param == "_sol_type" ) {
-            if (value == "cg") params.type = CG;
-            else if (value == "gmres") params.type = GMRES;
-            else if (value == "none") params.type = CG;
-            else params.type = CG;
-        } else if (param == "_sol_rtol") {
-            params.relTol = std::stod(value);
-        } else if (param == "_sol_atol") {
-            params.absTol = std::stod(value);
-        } else if (param == "_sol_maxiter") {
-            params.maxIter = std::stoi(value);
-        } else if (param == "_sol_printlvl") {
-            //verbose = std::stoi(value);
-            if (value == "PRINT_NONE")
-                params.verbose = PRINT_NONE;
-            else if (value == "PRINT_MIN")
-                params.verbose = PRINT_MIN;
-            else if (value == "PRINT_SOME")
-                params.verbose = PRINT_SOME;
-            else if (value == "PRINT_MORE")
-                params.verbose = PRINT_MORE;
-            else if (value == "PRINT_MAX")
-                params.verbose = PRINT_MAX;
-            else if (value == "PRINT_ALL")
-                params.verbose = PRINT_ALL;
-        } else if (param == "_sol_restart") {
-            params.restart = std::stoi(value);
-        }
-    }
-    input.close();
-    if ( params.verbose > PRINT_MIN ) {
-        std::cout << "Parameters for sol "
-                  << "Krylov method type: " << params.type << '\n'
-                  << "relative tolerance: " << params.relTol << '\n'
-                  << "absolute tolerance: " << params.absTol << '\n'
-                  << "maximum iterations: " << params.maxIter << '\n';
-    }
-
-}
-
-/// build preconditioner operator
+/// Build preconditioner operator
 void SOL::SetPC(SOL *pc)
 {
     this->pc = pc;
     withPC = true;
+}
+
+/// Set 'solver' type
+void SOL::SetSolType(SOLType type)
+{
+    params.type = type;
 }
 
 /*---------------------------------*/
