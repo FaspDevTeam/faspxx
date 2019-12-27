@@ -189,7 +189,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                         WarnRealRes(resRel);
                     }
 
-                    if ( resRel < params.relTol ) break; // already converged
+                    if ( resRel < params.relTol || resAbs < params.absTol ) break;
                     else {
                         if ( stagStep >= maxStag ) {
                             if ( params.verbose > PRINT_MIN ) FASPXX_WARNING(
@@ -218,7 +218,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                 double resRelOld = resRel;
                 resAbs = rj.Norm2();
                 resRel = resAbs / denAbs;
-                if ( resRel < params.relTol ) break;
+                if ( resRel < params.relTol || resAbs < params.absTol ) break;
 
                 if ( params.verbose >= PRINT_MORE ) {
                     FASPXX_WARNING("False convergence!");
