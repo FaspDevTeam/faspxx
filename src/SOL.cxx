@@ -146,6 +146,18 @@ void SOL::SetAbsTol(double absTol)
     params.absTol = absTol;
 }
 
+/// Set value for weight.
+void SOL::SetWeight(double alpha)
+{
+    params.weight = alpha;
+}
+
+/// Set SOLType.
+void SOL::SetSolType(SOLType type)
+{
+    params.type = type;
+}
+
 /// Set value for SOLType using algName.
 void SOL::SetSolTypeFromName(SOLParams& params)
 {
@@ -177,8 +189,10 @@ const char *SOL::GetSolType(SOLType type) const
             return "FGMRES";
         case VFGMRES:
             return "VFGMRES";
+        case Jacobi:
+            return "Jacobi";
         default:
-            return "Unknown solver type!";
+            return "Unknown Solver";
     }
 }
 
@@ -208,9 +222,10 @@ void SOL::PrintParam(std::ostream& out) const
         << "    Max num of iteration: " << params.maxIter  << '\n'
         << "    Min num of iteration: " << params.minIter  << '\n'
         << "    Safe-guard iteration: " << params.safeIter << '\n'
+        << "    Restart number:       " << params.restart  << '\n'
         << "    Relative tolerance:   " << params.relTol   << '\n'
         << "    Absolute tolerance:   " << params.absTol   << '\n'
-        << "    Restart number:       " << params.restart  << '\n'
+        << "    Relaxation weight:    " << params.weight   << '\n'
         << "    Output level:         " << params.verbose  << '\n' << "\n";
 };
 
@@ -219,12 +234,6 @@ void SOL::SetPC(SOL *pc)
 {
     this->pc = pc;
     withPC = true;
-}
-
-/// Set SOLType.
-void SOL::SetSolType(SOLType type)
-{
-    params.type = type;
 }
 
 /*---------------------------------*/

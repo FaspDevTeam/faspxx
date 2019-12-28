@@ -30,6 +30,9 @@ FaspRetCode CG::Setup(const LOP& A)
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
+    // Set method type
+    SetSolType(SOLType::CG);
+
     // Setup the coefficient matrix
     this->A = &A;
 

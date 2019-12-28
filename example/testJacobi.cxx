@@ -38,6 +38,7 @@ int main(int argc, const char *args[]) {
     params.AddParam("-restart", "Iteration restart number", &solParam.restart);
     params.AddParam("-resRel", "Relative residual tolerance", &solParam.relTol);
     params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
+    params.AddParam("-weight", "Weight for Jacobi", &solParam.weight);
     params.AddParam("-verbose", "Verbose level", &solParam.verbose);
     params.Parse();
     params.Print();
@@ -67,12 +68,14 @@ int main(int argc, const char *args[]) {
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
     // Setup PCG class
-    Jacobi solver(mat, 1.0);
+    class Jacobi solver;
+    solver.SetOutput(solParam.verbose);
     solver.SetMaxIter(solParam.maxIter);
     solver.SetMinIter(solParam.minIter);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
-    solver.SetOutput(solParam.verbose);
+    solver.SetWeight(solParam.weight);
+    solver.Setup(mat);
 
     // Solve the linear system using Jacobi iteration
     timer.Start();

@@ -45,13 +45,16 @@ public :
 
 public:
     /// Default constructor.
-    Jacobi() : alpha(1.0) {};
+    Jacobi() : alpha(1.0), diagInv(1.0), rk(0.0) {};
 
     /// Default destructor.
     ~Jacobi() {};
 
-    /// Standard constructor.
-    explicit Jacobi(const MAT &A, double alpha);
+    /// Setup the Jacobi method.
+    FaspRetCode Setup(const MAT &A);
+
+    /// Clean up Jacobi data allocated during Setup.
+    void Clean() {};
 
     /// Solve Ax=b using the Jacobi method.
     virtual FaspRetCode Solve(const VEC &b, VEC &x);

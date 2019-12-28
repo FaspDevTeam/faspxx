@@ -33,6 +33,7 @@ enum SOLType {
     GMRES     = 4,   ///< Generalized Minimal Residual
     FGMRES    = 5,   ///< Flexible GMRES
     VFGMRES   = 6,   ///< Variable-restarting FGMRES
+    Jacobi    = 11,  ///< Jacobi iteration
 };
 
 /// Iterative solver parameters.
@@ -45,10 +46,12 @@ struct SOLParams {
     int       restart;    ///< Restart number
     double    relTol;     ///< Tolerance for relative residual
     double    absTol;     ///< Tolerance for absolute residual
+    double    weight;     ///< Weight for correction schemes
     Output    verbose;    ///< Output verbosity level
 
     SOLParams() : type(SOLType::CG), maxIter(100), minIter(0), safeIter(500),
-                  restart(20), relTol(1e-6), absTol(1e-8), verbose(PRINT_NONE) {}
+                  restart(20), relTol(1e-6), absTol(1e-8), weight(1.0),
+                  verbose(PRINT_NONE) {}
 };
 
 /// Base class for iterative solvers.
@@ -102,6 +105,12 @@ public:
     /// Set tolerance for absolute residual.
     void SetAbsTol(double absTol);
 
+    /// Set weight for correction schemes.
+    void SetWeight(double alpha);
+
+    /// Set solver type.
+    void SetSolType(SOLType solver);
+
     /// Set solver type from its name.
     static void SetSolTypeFromName(SOLParams& params);
 
@@ -149,9 +158,6 @@ public:
         FASPXX_ABORT("Not supported!");
     }
 
-private:
-    /// Set solver type.
-    void SetSolType(SOLType solver);
 };
 
 #endif /* end if for __SOL_HEADER__ */

@@ -12,6 +12,7 @@
 #ifndef __PARAM_HEADER__      /*-- allow multiple inclusions --*/
 #define __PARAM_HEADER__      /**< indicate Param.hxx has been included before */
 
+#include <utility>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -26,6 +27,7 @@ enum Output {
     PRINT_MIN  = 2,  // minimal output
     PRINT_SOME = 4,  // some output
     PRINT_MORE = 6,  // more output
+    PRINT_MAX  = 8,  // maximal output
 };
 
 /// Solver parameters
@@ -50,10 +52,10 @@ private:
         void *       paramPtr;       ///< Pointer to parameter data
         int          paramMarker=0;  ///< 0: optional, 1: required, 2: params file
 
-        ParamHolder(ParamType type, const std::string& name, const std::string& help,
+        ParamHolder(ParamType type, std::string name, std::string help,
                     void * ptr, int marker)
-                   :paramType(type), paramName(name), paramHelp(help),
-                    paramPtr(ptr), paramMarker(marker) {}
+                   :paramType(type), paramName(std::move(name)),
+                    paramHelp(std::move(help)), paramPtr(ptr), paramMarker(marker) {}
     };
 
     std::map<std::string, std::string>  paramsCML;     ///< Params from command line

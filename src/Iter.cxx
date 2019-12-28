@@ -18,20 +18,33 @@ FaspRetCode Identity::Solve(const VEC &b, VEC &x)
     return FaspRetCode::SUCCESS;
 }
 
-/// Standard constructor.
-Jacobi::Jacobi(const MAT &A, double alpha)
+/// Setup Jacobi preconditioner.
+FaspRetCode Jacobi::Setup(const MAT &A)
 {
-    A.GetDiag(diagInv);
-    diagInv.Reciprocal();
+    const INT len = A.GetColSize();
 
-    this->A = &A;
-    this->alpha = alpha;
-
+    // Allocate memory for temporary vectors
     try {
-        rk.SetValues(A.GetColSize(), 0.0);
+        rk.SetValues(len, 0.0);
     } catch (std::bad_alloc &ex) {
-        throw( FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__) );
+        return FaspRetCode::ERROR_ALLOC_MEM;
     }
+
+    // Set method type
+    SetSolType(SOLType::Jacobi);
+
+    // Get diagonal and compute its reciprocal
+    A.GetDiag(diagInv);
+    diagInv.Reciprocal();   // Todo: Why not combine it with Jacobi --zcs
+
+    // Setup the coefficient matrix
+    this->A = &A;
+    this->alpha = params.weight;
+
+    // Print used parameters
+    if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
+
+    return FaspRetCode::SUCCESS;
 }
 
 /// Solve Ax=b using the Jacobi method.

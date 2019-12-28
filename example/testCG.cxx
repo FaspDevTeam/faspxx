@@ -26,15 +26,16 @@ int main(int argc, const char *args[])
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
     std::string rhsFile, x0File;
-    Identity    pc; // no preconditioning
-    SOLParams   solParam;
 
-    // Read in parameters
+    // Read in general parameters
     Parameters params(argc, args);
     params.AddParam("-mat", "Left hand side of linear system", &matFile);
     params.AddParam("-rhs", "Right hand side of linear system", &rhsFile);
     params.AddParam("-x0", "Initial guess of solution", &x0File);
     params.AddParam("-par", "Solver parameter file", &parFile);
+
+    // Read in solver parameters
+    SOLParams solParam;
     params.AddParam("-maxIter", "Maximum iteration steps", &solParam.maxIter);
     params.AddParam("-minIter", "Minimum iteration steps", &solParam.minIter);
     params.AddParam("-safeIter", "Safe-guard iteration", &solParam.safeIter);
@@ -42,6 +43,13 @@ int main(int argc, const char *args[])
     params.AddParam("-resRel", "Relative residual tolerance", &solParam.relTol);
     params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
     params.AddParam("-verbose", "Verbose level", &solParam.verbose);
+
+    // Read in preconditioner parameters
+    SOLParams pcParam;
+    params.AddParam("-pcIter", "Jacobi steps", &pcParam.maxIter);
+    params.AddParam("-pcWeight", "Jacobi weigth", &pcParam.weight);
+
+    // Parse and print used parameters
     params.Parse();
     params.Print();
 
@@ -69,15 +77,23 @@ int main(int argc, const char *args[])
 
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
-    // Setup PCG parameters
+    // Setup preconditioner parameters
+    class Jacobi pc;
+    pc.SetOutput(PRINT_NONE);
+    pc.SetMaxIter(pcParam.maxIter); // set or read number of iterations
+    pc.SetMinIter(pcParam.maxIter); // for preconditioning, use minIter = maxIter!
+    pc.SetWeight(pcParam.weight);
+    pc.Setup(mat); // setup preconditioner: a different matrix could be used!
+
+    // Setup CG parameters
     class CG solver;
+    solver.SetOutput(solParam.verbose);
     solver.SetMaxIter(solParam.maxIter);
     solver.SetMinIter(solParam.minIter);
     solver.SetSafeIter(solParam.safeIter);
     solver.SetRestart(solParam.restart);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
-    solver.SetOutput(solParam.verbose);
     solver.SetPC(&pc);
     solver.Setup(mat);
 

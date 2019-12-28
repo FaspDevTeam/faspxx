@@ -36,6 +36,9 @@ FaspRetCode BiCGStab::Setup(const LOP &A)
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
+    // Set method type
+    SetSolType(SOLType::BICGSTAB);
+
     // Setup the coefficient matrix
     this->A = &A;
 
