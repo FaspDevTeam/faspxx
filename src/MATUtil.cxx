@@ -357,7 +357,7 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
 
     // Add a spot for each zero diagonal entry
     INT nnzNew = nnz + numZeroDiag, count = 0;
-    INT diagLocation, nextEntry, diagZeroAdded = 0;
+    INT nextEntry, diagZeroAdded = 0;
 
     std::vector<INT> colIndNew;
     std::vector<DBL> valuesNew;
@@ -372,16 +372,17 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
     }
 
     rowPtrNew[0] = 0; // Starting index always 0
+    for(INT m=0;m<row+1;++m)
+        rowPtrNew[m]=0;
 
+    INT k,j;
     for ( INT i = 0; i < row; ++i) {
-
         begin = rowPtr[i];
         end   = rowPtr[i+1];
-
         if ( !isZeroDiag[i] ) { // No diagonal entry
             // Lower triangular part
             nextEntry = begin;
-            for ( INT k = begin; k < end; ++k ) {
+            for ( k = begin; k < end; ++k ) {
                 if ( colInd[k] < i ) {
                     valuesNew[count] = values[k];
                     colIndNew[count] = colInd[k];
@@ -391,28 +392,31 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
                     break;
                 }
             }
+
             // Zero diagonal part
             valuesNew[count] = 0.0;
             colIndNew[count] = i;
-            diagLocation = ++count;
+            ++count;
+
+            if ( colInd[end-1] < i )
+                nextEntry = end;
+
             // Upper triangular part
-            for ( INT k = nextEntry; k < end; ++k ) {
-                valuesNew[count] = values[k];
-                colIndNew[count] = colInd[k];
+            for ( j = nextEntry; j < end; ++j ) {
+                valuesNew[count] = values[j];
+                colIndNew[count] = colInd[j];
                 ++count;
             }
             // Update row pointers
-            isZeroDiag[i] = diagLocation;
             ++diagZeroAdded;
         } else { // With diagonal entry, just copy
-            for ( INT k = begin; k < end; ++k ) {
+            for ( k = begin; k < end; ++k ) {
                 valuesNew[count] = values[k];
                 colIndNew[count] = colInd[k];
                 ++count;
             }
         }
         rowPtrNew[i+1] = rowPtr[i+1] + diagZeroAdded;
-
     }
 
     // Set values for MAT matrix
