@@ -15,8 +15,7 @@
 #include "CG.hxx"
 
 /// Allocate memory, setup coefficient matrix of the linear system.
-FaspRetCode CG::Setup(const LOP& A)
-{
+FaspRetCode CG::Setup(const LOP &A) {
     const INT len = A.GetColSize();
 
     // Allocate memory for temporary vectors
@@ -25,7 +24,7 @@ FaspRetCode CG::Setup(const LOP& A)
         pk.SetValues(len, 0.0);
         rk.SetValues(len, 0.0);
         ax.SetValues(len, 0.0);
-        safe.SetValues(len,0.0);
+        safe.SetValues(len, 0.0);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
@@ -49,26 +48,24 @@ FaspRetCode CG::Setup(const LOP& A)
 }
 
 /// Release memory allocated for CG.
-void CG::Clean()
-{
+void CG::Clean() {
     if ( !withPC ) delete pc;
 }
 
 /// Using the Preconditioned Conjugate Gradient method.
-FaspRetCode CG::Solve(const VEC& b, VEC& x)
-{
+FaspRetCode CG::Solve(const VEC &b, VEC &x) {
     if ( params.verbose > PRINT_NONE ) std::cout << "Use CG to solve Ax=b ...\n";
 
     // Check whether vector space sizes
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
-                                        || A->GetRowSize() != A->GetColSize() )
+        || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Local variables
     const INT len = b.GetSize();
-    const unsigned maxStag  = MAX_STAG_NUM; // max number of stagnation checks
+    const unsigned maxStag = MAX_STAG_NUM; // max number of stagnation checks
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
     const double solZeroTol = CLOSE_ZERO; // solution close to zero tolerance
 
@@ -82,6 +79,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     numIter = 0;
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
+    zk.SetValues(len,0.0);
     pc->Solve(rk, zk); // preconditioning: B(r_k) -> z_k
 
     // Prepare for the main loop
@@ -96,7 +94,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
             resAbs = rk.Norm2();
             denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
-            if ( resRel < params.relTol || resAbs < params.absTol ) break;
+            if (resRel < params.relTol || resAbs < params.absTol) break;
         }
 
         if ( numIter >= params.minIter )
@@ -133,7 +131,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
             // Compute norm of residual and output iteration information if needed
             resAbs = rk.Norm2();
             resRel = resAbs / denAbs;
-            ratio  = resAbs / resAbsOld; // convergence ratio between two steps
+            ratio = resAbs / resAbsOld; // convergence ratio between two steps
 
             // Save the best solution so far
             if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
@@ -142,9 +140,9 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
             if ( ratio > KSM_CHK_RATIO ) {
                 // Check I: if solution is close to zero, return ERROR_SOLVER_SOLSTAG
                 double xNormInf = x.NormInf();
-                if ( xNormInf < solZeroTol ) {
-                    if ( params.verbose > PRINT_MIN )
-                        FASPXX_WARNING("Iteration stopped due to x vanishes!");
+                if (xNormInf < solZeroTol) {
+                    if (params.verbose > PRINT_MIN) FASPXX_WARNING(
+                            "Iteration stopped due to x vanishes!");
                     errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                     break;
                 }
@@ -157,7 +155,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
                     this->rk.XPAY(-1.0, b);
                     resAbs = this->rk.Norm2();
                     resRel = resAbs / denAbs;
-                    if ( params.verbose > PRINT_SOME ){
+                    if ( params.verbose > PRINT_SOME ) {
                         FASPXX_WARNING("Possible iteration stagnate!");
                         WarnRealRes(resRel);
                     }
@@ -202,14 +200,14 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
 
                 if ( moreStep >= params.restart ) { // Note: restart has different
                     // meaning here
-                    if ( params.verbose > PRINT_MIN )
-                        FASPXX_WARNING("The tolerance is too small!");
+                    if ( params.verbose > PRINT_MIN ) FASPXX_WARNING(
+                            "The tolerance is too small!");
                     errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                     break;
                 }
 
                 // Prepare for restarting method
-                this->pk.SetValues(len, 0.0);
+                this->pk.SetValues(0.0);
                 ++moreStep;
             } // End of check!
         }
@@ -220,6 +218,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
             resAbsOld = resAbs;
 
             // Apply preconditioner z_k = B(r_k)
+            zk.SetValues(len,0.0);
             pc->Solve(rk, zk);
 
             // Compute beta_k = (z_k, r_k) / (z_{k-1}, r_{k-1})
@@ -234,7 +233,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     } // End of main CG loop
 
     // Finish iterative method
-    this->norm2   = resAbs;
+    this->norm2 = resAbs;
     this->normInf = rk.NormInf();
     PrintFinal(numIter, resRel, resAbs, ratio);
 

@@ -116,6 +116,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
         /* main computational work */
         A->Apply(this->pj, this->apj);
+        ptmp.SetValues(len,0.0);
         pc->Solve(this->apj, this->ptmp);
 
         tmp12 = this->ptmp.Dot(this->r0star);
@@ -131,12 +132,15 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
         // omegaj = (P * A * sj,sj)/(P * A * sj,P * A * sj)
         A->Apply(this->sj, this->asj);
+        stmp.SetValues(len,0.0);
         pc->Solve(this->asj, this->stmp);
         omegaj = this->stmp.Dot(this->sj) / this->stmp.Dot(this->stmp);
 
         /* Update solution and residual */
         // x_{j+1} = x_{j} + alpha_{j} * P * pj + omegaj * P * s_{j}
+        mp.SetValues(len,0.0);
         pc->Solve(this->pj, this->mp);
+        ms.SetValues(len,0.0);
         pc->Solve(this->sj, this->ms);
         this->tmp.WAXPBY(alphaj, this->mp, omegaj, this->ms);
         x.XPAY(1.0, this->tmp);
