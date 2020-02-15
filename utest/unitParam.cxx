@@ -31,10 +31,10 @@ TEST(Parameters_Class, Parameters)
     const char *_argv[_argc] = {"program name", "-bool_param", "TruE", "-int_param",
                                 "22", "-double_param", "1.41414", "-char_param",
                                 "commandline_parameters", "-faspxx_opts",
-                                "./data_for_test/single_sol.opts"};
+                                "./data_for_test/single_sol.param"};
 
     // parameters in file
-    std::string params_file = "./data_for_test/multiple_sol.opts";
+    std::string params_file = "./data_for_test/multiple_sol.param";
     bool view_param = false; // from file
     int level_param = 0; // from file
     double resrel_param = 0.0; // from file
@@ -45,7 +45,7 @@ TEST(Parameters_Class, Parameters)
     EXPECT_EQ(double_param, 3.14159);
     EXPECT_EQ(char_param, "user params");
     EXPECT_EQ(output_lvl, 4);
-    EXPECT_EQ(params_file, "./data_for_test/multiple_sol.opts");
+    EXPECT_EQ(params_file, "./data_for_test/multiple_sol.param");
     EXPECT_EQ(view_param, false);
     EXPECT_EQ(level_param, 0);
     EXPECT_EQ(resrel_param, 0.0);
@@ -69,7 +69,7 @@ TEST(Parameters_Class, Parameters)
     EXPECT_EQ(int_param, 22); // modified by command line
     EXPECT_EQ(double_param, 1.41414); // modified by command line
     EXPECT_EQ(char_param, "commandline_parameters"); // modified by command line
-    EXPECT_EQ(params_file, "./data_for_test/single_sol.opts"); // modified by command line
+    EXPECT_EQ(params_file, "./data_for_test/single_sol.param"); // modified by command line
 
     EXPECT_EQ(view_param, true); // modified from file
     EXPECT_EQ(level_param, 4); // modified from file

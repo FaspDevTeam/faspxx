@@ -1,10 +1,11 @@
 # Main CMake file for FASP++
-# by Chensong Zhang, modified on Sep/26/2019
+# by Chensong Zhang, modified on Feb/15/2020
 #
-# Some smaple usages:
-#   cmake -DCMAKE_VERBOSE_MAKEFILE=ON . // build . dir with verbose
-#   cmake -DCMAKE_BUILD_TYPE=Debug .    // build . in Debug configuration
-#   cmake -DCMAKE_BUILD_TYPE=Release .  // build . in Release configuration
+# Some sample usages:
+#   cmake -DCMAKE_BUILD_TYPE=Release .           // build in Release configuration
+#   cmake -DCMAKE_BUILD_TYPE=Debug .             // build in Debug configuration
+#   cmake -DCMAKE_BUILD_TYPE=Debug . -DGTEST=ON  // build with GTEST support
+#   cmake -DCMAKE_VERBOSE_MAKEFILE=ON .          // build with verbose on
 
 #-----------------------------#
 # General environment setting #
@@ -61,10 +62,6 @@ target_link_libraries(testVecSpeed faspxx)
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
 
-# Test Krylov methods
-add_executable(testKrylov example/testKrylov.cxx)
-target_link_libraries(testKrylov faspxx)
-
 # Test CG class
 add_executable(testCG example/testCG.cxx)
 target_link_libraries(testCG faspxx)
@@ -72,6 +69,10 @@ target_link_libraries(testCG faspxx)
 # Test PCG class
 add_executable(testPCG example/testPCG.cxx)
 target_link_libraries(testPCG faspxx)
+
+# Test Krylov methods
+add_executable(testKrylov example/testKrylov.cxx)
+target_link_libraries(testKrylov faspxx)
 
 # Test Jacobi class
 add_executable(testJacobi example/testJacobi.cxx)
