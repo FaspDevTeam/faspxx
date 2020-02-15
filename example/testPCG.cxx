@@ -20,8 +20,6 @@
 
 int main(int argc, const char *args[])
 {
-    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
-
     // User default parameters
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
@@ -56,9 +54,10 @@ int main(int argc, const char *args[])
     GetWallTime timer;
     timer.Start();
 
-    // Read matrix data file
+    // Read matrix data file and exit if failed
     MAT mat;
-    if ( (retCode = ReadMat(matFile.c_str(), mat)) < 0 ) return retCode;
+    FaspRetCode retCode = ReadMat(matFile.c_str(), mat);
+    if ( retCode < 0 ) return retCode;
 
     // Print problem size information
     const INT nrow = mat.GetRowSize();

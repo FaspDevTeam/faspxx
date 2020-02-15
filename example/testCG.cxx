@@ -20,8 +20,6 @@
 
 int main(int argc, const char *args[])
 {
-    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
-
     // User default parameters
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
@@ -51,16 +49,17 @@ int main(int argc, const char *args[])
     GetWallTime timer;
     timer.Start();
 
-    // Read matrix data file
+    // Read matrix data file and exit if failed
     MAT mat;
-    if ( (retCode = ReadMat(matFile.c_str(), mat)) < 0 ) return retCode;
+    FaspRetCode retCode = ReadMat(matFile.c_str(), mat);
+    if ( retCode < 0 ) return retCode;
 
     // Print problem size information
     const INT nrow = mat.GetRowSize();
     const INT mcol = mat.GetColSize();
     std::cout << "nrow: " << nrow << ", mcol: " << mcol << std::endl;
 
-    // Read the right-hand side b; if not specified, use b = 0.0
+    // Read the right-hand-side b; if not specified, use b = 0.0
     VEC b;
     b.SetValues(nrow, 0.0);
     if ( strcmp(rhsFile.c_str(), "") != 0 ) ReadVEC(rhsFile.c_str(), b);
