@@ -79,6 +79,8 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
     numIter = 0;
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
+
+    // Preconditioned search direction
     zk.SetValues(len,0.0);
     pc->Solve(rk, zk); // preconditioning: B(r_k) -> z_k
 
