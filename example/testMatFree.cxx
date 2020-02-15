@@ -226,7 +226,7 @@ int main(int argc, char *args[])
 
         // create identity preconditioner
         Identity pc;
-        cg.SetPC(&pc);
+        cg.SetPC(pc);
 
         // call CG method to solve Ax=b
         timer.Start();

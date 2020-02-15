@@ -33,7 +33,7 @@ FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, SOLParams& params)
             sol->SetAbsTol(params.absTol);
             sol->SetSafeIter(params.safeIter);
             sol->Setup(A);
-            sol->SetPC(&pc);
+            sol->SetPC(pc);
             retCode = sol->Solve(b, x);
             break;
         case SOLType::BICGSTAB :
@@ -46,7 +46,7 @@ FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, SOLParams& params)
             sol->SetAbsTol(params.absTol);
             sol->SetSafeIter(params.safeIter);
             sol->Setup(A);
-            sol->SetPC(&pc);
+            sol->SetPC(pc);
             retCode = sol->Solve(b, x);
             break;
         default: // should never reach here!!!

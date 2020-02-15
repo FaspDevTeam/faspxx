@@ -139,7 +139,7 @@ public:
                     const double& ratio, std::ostream& out = std::cout) const;
 
     /// Setup preconditioner operator.
-    virtual void SetPC(SOL *pc);
+    virtual void SetPC(SOL& pc);
 
     /// Setup the iterative method.
     virtual FaspRetCode Setup(const LOP& A) {

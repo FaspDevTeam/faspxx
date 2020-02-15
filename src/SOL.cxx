@@ -230,9 +230,9 @@ void SOL::PrintParam(std::ostream& out) const
 };
 
 /// Build preconditioner operator.
-void SOL::SetPC(SOL *pc)
+void SOL::SetPC(SOL& pc)
 {
-    this->pc = pc;
+    this->pc = &pc;
 }
 
 /*---------------------------------*/

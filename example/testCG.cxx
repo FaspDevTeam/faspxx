@@ -1,7 +1,7 @@
-/*! \file    testPCG.hxx
- *  \brief   Test performance of PCG method
- *  \author  Chensong Zhang
- *  \date    Feb/15/2020
+/*! \file    testCG.hxx
+ *  \brief   Test performance of CG method
+ *  \author  Kailei Zhang, Chensong Zhang
+ *  \date    Oct/12/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -44,11 +44,6 @@ int main(int argc, const char *args[])
     params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
     params.AddParam("-verbose", "Verbose level", &solParam.verbose);
 
-    // Read in preconditioner parameters
-    SOLParams pcParam;
-    params.AddParam("-pcIter", "Preconditioner steps", &pcParam.maxIter);
-    params.AddParam("-pcWeight", "Preconditioner weigth", &pcParam.weight);
-
     // Parse and print used parameters
     params.Parse();
     params.Print();
@@ -78,12 +73,7 @@ int main(int argc, const char *args[])
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
     // Setup preconditioner parameters
-    class Jacobi pc;
-    pc.SetOutput(PRINT_NONE);
-    pc.SetMaxIter(pcParam.maxIter); // set or read number of iterations
-    pc.SetMinIter(pcParam.maxIter); // for preconditioning, use minIter = maxIter!
-    pc.SetWeight(pcParam.weight);
-    pc.Setup(mat); // setup preconditioner: a different matrix could be used!
+    Identity pc;  // pc = identity, no preconditioning used
 
     // Setup CG parameters
     class CG solver;
