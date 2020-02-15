@@ -54,8 +54,7 @@ static bool JudgeBool(const std::string& value)
 
 void Parameters::SaveUserParams(std::string& save) const
 {
-    int max_len = 0;
-
+    size_t max_len = 0;
     for ( const auto& itm: paramsUser ) {
         if ( itm.paramName.length() > max_len ) max_len = itm.paramName.length();
     }
@@ -208,7 +207,7 @@ void Parameters::Parse()
 
 void Parameters::PrintFileParams(std::ostream& out) const
 {
-    int max_len = 0;
+    size_t max_len = 0;
     for ( const auto& itm: paramsFile ) {
         if ( itm.first.length() > max_len ) max_len = itm.first.length();
     }
@@ -230,7 +229,7 @@ void Parameters::PrintFileParams(std::ostream& out) const
 
 void Parameters::PrintCommandLineParams(std::ostream& out) const
 {
-    int max_len = 0;
+    size_t max_len = 0;
     for ( const auto& itm: paramsCML ) {
         if (itm.first.length() > max_len) max_len = itm.first.length();
     }
@@ -252,7 +251,7 @@ void Parameters::PrintUserParams(std::ostream &out) const
 
 void Parameters::Print(std::ostream &out) const
 {
-    int max_len = 0;
+    size_t max_len = 0;
     for ( const auto& itm: paramsUser ) {
         if ( itm.paramName.length() > max_len ) max_len = itm.paramName.length();
     }

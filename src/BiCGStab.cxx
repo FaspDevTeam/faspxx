@@ -42,22 +42,16 @@ FaspRetCode BiCGStab::Setup(const LOP &A)
     // Setup the coefficient matrix
     this->A = &A;
 
-    // If pc is null, then use regular BiCGStab without preconditioning
-    if ( pc == nullptr ) {
-        withPC = false;
-        pc = new Identity();
-    }
-
     // Print used parameters
     if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
 }
 
-/// Release memory.
+/// Release additional memory allocated for CG.
 void BiCGStab::Clean()
 {
-    if ( !withPC ) delete pc;
+    // Nothing is needed for the moment!
 }
 
 /// Using the Preconditioned Bi-Conjugate Gradient Stabilized method.
@@ -74,9 +68,10 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
     // Declaration and definition of local variables
     const INT len = b.GetSize();
-    const unsigned maxStag = MAX_STAG_NUM; // maximum number of stagnation before quit
+    const int maxStag = MAX_STAG_NUM; // maximum number of stagnation before quit
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
-    unsigned stagStep = 0, moreStep = 0;
+
+    int stagStep = 0, moreStep = 0;
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
     double alphaj, betaj, rjr0star, rjr0startmp, omegaj, tmp12;
 

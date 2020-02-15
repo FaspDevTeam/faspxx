@@ -16,9 +16,11 @@
 FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, SOLParams& params)
 {
     FaspRetCode retCode;
-    SOL *sol;
 
-    sol->SetSolTypeFromName(params); // set solver type
+    SOL solver;
+    solver.SetSolTypeFromName(params); // set solver type
+
+    auto sol = &solver;
 
     switch (params.type) {
         case SOLType::CG :
@@ -49,11 +51,9 @@ FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, SOLParams& params)
             break;
         default: // should never reach here!!!
             if ( params.verbose > PRINT_NONE )
-                FASPXX_WARNING("Unknown Krylov method type");
+                FASPXX_WARNING("Unknown Krylov method type")
             std::cout << sol->GetSolType(params.type) << "is not supported!\n";
     }
-
-    delete sol;
 
     return retCode;
 }

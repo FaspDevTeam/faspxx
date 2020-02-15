@@ -229,7 +229,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
     in.close(); // close the file stream
 
     // Read number of rows
-    int count = 0;
+    INT count = 0;
     long long int position = 0; // mark the position of file pointer
     while (true) {
         if (buffer[position] != '\n') {
@@ -420,7 +420,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
             break;
 
         default:
-            FASPXX_WARNING("Unknown file format detected!");
+            FASPXX_WARNING("Unknown file format detected!")
             retCode = FaspRetCode::ERROR_INPUT_FILE;
             break;
     }

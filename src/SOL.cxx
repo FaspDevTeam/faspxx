@@ -233,7 +233,6 @@ void SOL::PrintParam(std::ostream& out) const
 void SOL::SetPC(SOL *pc)
 {
     this->pc = pc;
-    withPC = true;
 }
 
 /*---------------------------------*/

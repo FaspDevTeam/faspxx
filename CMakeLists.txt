@@ -66,8 +66,8 @@ add_executable(testKrylov example/testKrylov.cxx)
 target_link_libraries(testKrylov faspxx)
 
 # Test CG class
-add_executable(testCG example/testCG.cxx)
-target_link_libraries(testCG faspxx)
+add_executable(testPCG example/testPCG.cxx)
+target_link_libraries(testPCG faspxx)
 
 # Test Jacobi class
 add_executable(testJacobi example/testJacobi.cxx)

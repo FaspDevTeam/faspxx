@@ -1,5 +1,5 @@
-/*! \file    testCG.hxx
- *  \brief   Test performance of CG method
+/*! \file    testPCG.hxx
+ *  \brief   Test performance of PCG method
  *  \author  Kailei Zhang, Chensong Zhang
  *  \date    Oct/12/2019
  *

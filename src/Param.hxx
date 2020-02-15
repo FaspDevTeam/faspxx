@@ -63,7 +63,7 @@ private:
     std::vector<ParamHolder>            paramsUser;    ///< Params in user code
     std::string                         paramsUserOrg; ///< Old params in user code
 
-    int      argc;    ///< Number of command-line arguments
+    int            argc;    ///< Number of command-line arguments
     const char   **argv;    ///< Command-line arguments
 
 private:

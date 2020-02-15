@@ -15,7 +15,8 @@
 #include "CG.hxx"
 
 /// Allocate memory, setup coefficient matrix of the linear system.
-FaspRetCode CG::Setup(const LOP &A) {
+FaspRetCode CG::Setup(const LOP &A)
+{
     const INT len = A.GetColSize();
 
     // Allocate memory for temporary vectors
@@ -35,25 +36,21 @@ FaspRetCode CG::Setup(const LOP &A) {
     // Setup the coefficient matrix
     this->A = &A;
 
-    // If pc is null, then use regular CG without preconditioning
-    if ( pc == nullptr ) {
-        withPC = false;
-        pc = new Identity();
-    }
-
     // Print used parameters
     if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
 }
 
-/// Release memory allocated for CG.
-void CG::Clean() {
-    if ( !withPC ) delete pc;
+/// Release additional memory allocated for CG.
+void CG::Clean()
+{
+    // Nothing is needed for the moment!
 }
 
 /// Using the Preconditioned Conjugate Gradient method.
-FaspRetCode CG::Solve(const VEC &b, VEC &x) {
+FaspRetCode CG::Solve(const VEC &b, VEC &x)
+{
     if ( params.verbose > PRINT_NONE ) std::cout << "Use CG to solve Ax=b ...\n";
 
     // Check whether vector space sizes
@@ -65,11 +62,11 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x) {
 
     // Local variables
     const INT len = b.GetSize();
-    const unsigned maxStag = MAX_STAG_NUM; // max number of stagnation checks
+    const int maxStag = MAX_STAG_NUM; // max number of stagnation checks
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
     const double solZeroTol = CLOSE_ZERO; // solution close to zero tolerance
 
-    unsigned stagStep = 0, moreStep = 0;
+    int stagStep = 0, moreStep = 0;
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
     double alpha, beta, tmpa, tmpb;
 

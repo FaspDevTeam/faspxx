@@ -49,9 +49,9 @@ struct SOLParams {
     double    weight;     ///< Weight for correction schemes
     Output    verbose;    ///< Output verbosity level
 
-    SOLParams() : type(SOLType::CG), maxIter(100), minIter(0), safeIter(500),
-                  restart(20), relTol(1e-6), absTol(1e-8), weight(1.0),
-                  verbose(PRINT_NONE) {}
+    SOLParams() : type(SOLType::CG), algName("cg"), maxIter(100), minIter(0),
+                  safeIter(500), restart(20), relTol(1e-6), absTol(1e-8),
+                  weight(1.0), verbose(PRINT_NONE) {}
 };
 
 /// Base class for iterative solvers.
@@ -60,7 +60,6 @@ class SOL {
 protected:
     const LOP *  A;          ///< Coefficient matrix in Ax=b
     SOL *        pc;         ///< Preconditioner for this solver
-    bool         withPC;     ///< Given a PC or not
     double       norm2;      ///< Euclidean norm
     double       normInf;    ///< Infinity norm
     int          numIter;    ///< Number of iterations when exit
@@ -78,8 +77,7 @@ protected:
 public:
 
     /// Default constructor.
-    SOL() : A(nullptr), pc(nullptr), withPC(false),
-            norm2(1.0), normInf(1.0), numIter(0) {};
+    SOL() : A(nullptr), pc(nullptr), norm2(1.0), normInf(1.0), numIter(0) {};
 
     /// Default destructor.
     ~SOL();

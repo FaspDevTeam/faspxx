@@ -1,21 +1,23 @@
+# Parameters File
+# Name: multiple.param
+# This is a test parameter file for test various input parameter format
+# Comments started with "#"
 
-   # 以#开始的为注释内容. 故意在某些地方加空格,测试是否正确读取参数
-
-    -sol_type   cg       # 迭代法类型
-  -sol_rtol   1.23E-8
+-sol_type   cg       # iterative method
+-sol_rtol   1.23E-8
 -sol_atol 4.56e-10
-         -sol_maxiter   789  # 测试空格不读取
+         -sol_maxiter   789  # skip spaces in each line
 -sol_printlvl 1
 -sol_view
 
--solver1_sol_type cg      # 迭代法类型
+-solver1_sol_type cg      # multiple solvers could be used
 -solver1_sol_rtol 1E-8
 -solver1_sol_atol 1e-10
 -solver1_sol_maxiter 100
 -solver1_sol_printlvl 1
 -solver1_sol_view
 
--solver2_sol_type gmres
+-solver2_sol_type gmres   # multiple solvers could be used
 -solver2_sol_restart 30
 -solver2_sol_rtol 1E-9
 -solver2_sol_atol 1e-11

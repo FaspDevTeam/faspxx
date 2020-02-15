@@ -26,12 +26,11 @@ int main(int argc, const char *args[])
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
     std::string rhsFile, x0File;
-    std::string algName = "CG";
     Identity    pc; // no preconditioning
-    SOLParams   solParam;
 
     // Read in parameters
     Parameters params(argc, args);
+    SOLParams  solParam;
     params.AddParam("-mat", "Left hand side of linear system", &matFile);
     params.AddParam("-rhs", "Right hand side of linear system", &rhsFile);
     params.AddParam("-x0", "Initial guess of solution", &x0File);
