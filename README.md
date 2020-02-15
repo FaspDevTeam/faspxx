@@ -10,11 +10,11 @@ package are standard Krylov methods, algebraic multigrid methods, geometric
 multigrid methods, Schwarz methods, and incomplete factorization methods.
 
 There is a top level cmake for configuration and building of the FASP++ shared
-library and the test programs suite. You can use a cmake-style way to compile the
-package; see https://cmake.org on how to use cmake for your own operating system.
-The typical command for compiling FASP++ is:
+library and the test programs suite. You can use a cmake-style approach to compile 
+the package; see https://cmake.org on how to use cmake for your own operating 
+system. The typical command for compiling FASP++ is:
 
-  $ mkdir Debug; cd Debug; cmake ..   # configuration using cmake
+  $ mkdir Debug; cd Debug; cmake ..   # configuration for debug using cmake
   
   $ make                              # make the library as well as examples
   
