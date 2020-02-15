@@ -28,9 +28,16 @@ find_program(THE_C NAMES $ENV{CC} gcc icc clang)
 set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
 
 # Set default configuration types and flags
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "Configs" FORCE)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
+set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Configs" FORCE)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
+
+# Set a default build type if none was specified
+set(build_type "Release")
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "${build_type}" CACHE STRING "the build type" FORCE)
+endif()
+message(STATUS "Set build type to '${CMAKE_BUILD_TYPE}'")
 
 #-----------------------------#
 # Project specific parameters #

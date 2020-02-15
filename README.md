@@ -1,6 +1,6 @@
 Fast Auxiliary Space Preconditioning (FASP++) in CPP: README
 
-Last modified on 09/26/2019
+Last modified on Feb/15/2020
 
 =================================================================================
 
@@ -14,7 +14,7 @@ library and the test programs suite. You can use a cmake-style approach to compi
 the package; see https://cmake.org on how to use cmake for your own operating 
 system. The typical command for compiling FASP++ is:
 
-  $ mkdir Debug; cd Debug; cmake ..   # configuration for debug using cmake
+  $ mkdir Build; cd Build; cmake ..   # config for building with cmake
   
   $ make                              # make the library as well as examples
   
