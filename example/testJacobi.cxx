@@ -17,38 +17,39 @@
 #include "LOP.hxx"
 #include "Iter.hxx"
 
-int main(int argc, const char *args[]) {
-    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
-
+int main(int argc, const char *args[])
+{
     // User default parameters
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
     std::string rhsFile, x0File;
-    SOLParams   solParam;
 
-    // Read in parameters
+    // Read in general parameters
     Parameters params(argc, args);
-    params.AddParam("-mat", "Left hand side of linear system", &matFile);
-    params.AddParam("-rhs", "Right hand side of linear system", &rhsFile);
-    params.AddParam("-x0", "Initial guess of solution", &x0File);
+    params.AddParam("-mat", "Coefficient matrix A", &matFile);
+    params.AddParam("-rhs", "Right-hand-side b", &rhsFile);
+    params.AddParam("-x0", "Initial guess for iteration", &x0File);
     params.AddParam("-par", "Solver parameter file", &parFile);
-    params.AddParam("-maxIter", "Maximum iteration steps", &solParam.maxIter);
-    params.AddParam("-minIter", "Minimum iteration steps", &solParam.minIter);
-    params.AddParam("-safeIter", "Safe-guard iteration", &solParam.safeIter);
-    params.AddParam("-restart", "Iteration restart number", &solParam.restart);
+
+    // Read in solver parameters
+    SOLParams solParam;
+    params.AddParam("-maxIter", "Max iteration steps", &solParam.maxIter);
+    params.AddParam("-minIter", "Min iteration steps", &solParam.minIter);
     params.AddParam("-resRel", "Relative residual tolerance", &solParam.relTol);
     params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
-    params.AddParam("-weight", "Weight for Jacobi", &solParam.weight);
     params.AddParam("-verbose", "Verbose level", &solParam.verbose);
+
+    // Parse and print used parameters
     params.Parse();
     params.Print();
 
     GetWallTime timer;
     timer.Start();
 
-    // Read matrix data file
+    // Read matrix data file and exit if failed
     MAT mat;
-    if ( (retCode = ReadMat(matFile.c_str(), mat)) < 0 ) return retCode;
+    FaspRetCode retCode = ReadMat(matFile.c_str(), mat);
+    if ( retCode < 0 ) return retCode;
 
     // Print problem size information
     const INT nrow = mat.GetRowSize();
@@ -67,7 +68,7 @@ int main(int argc, const char *args[]) {
 
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
 
-    // Setup PCG class
+    // Setup solver parameters
     class Jacobi solver;
     solver.SetOutput(solParam.verbose);
     solver.SetMaxIter(solParam.maxIter);

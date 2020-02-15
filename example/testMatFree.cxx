@@ -15,7 +15,7 @@
 /// Locate the global index of (x,y)
 #define locate(row, column) (((row) - 1) * (dim - 1) + (column) - 1)
 
-const int numTotalMesh = 4; // number of meshes in total
+const int numTotalMesh = 7; // number of meshes in total
 
 int dim = 16; // number of partitions in X and Y directions: 16x16 grid
 
@@ -30,11 +30,11 @@ public:
     }
 
     /// Matrix-free matrix-vector multiplication.
-    void Apply(const VEC& x, VEC& y) const;
+    void Apply(const VEC& x, VEC& y) const override;
 };
 
 /// Assemble the right-hand side.
-static void AssembleRHS(INT dim, DBL *ptr)
+static void AssembleRHS(int dim, DBL *ptr)
 {
     const DBL h = 1.0 / dim;  // mesh size
     const DBL h2 = h * h;     // mesh size squared
@@ -180,23 +180,20 @@ void MatFree::Apply(const VEC& x, VEC& y) const
 
 int main(int argc, char *args[])
 {
-    int mesh = 1; // number of mesh refinement cycles
-    DBL h = 0.0; // mesh size in X and Y directions
+    DBL  *ptr = nullptr;
+    bool  markAllocDone = true;
+    VEC   b, x;
+
     GetWallTime timer;
 
-    DBL *ptr = nullptr;
-    bool markAllocDone = true;
+    for ( int mesh = 1; mesh < numTotalMesh; mesh++ ) {
+        std::cout << "dim = " << dim << ", "
+                  << "(dim-1)X(dim-1) : " << (dim-1) * (dim-1) << std::endl;
 
-    VEC b, x;
+        DBL h = 1.0 / dim;  // mesh size in X and Y directions
 
-    while ( mesh < numTotalMesh ) {
-
-        h = 1.0 / dim;
-
-        std::cout << "(dim-1)*(dim-1) : " << (dim - 1) * (dim - 1) << std::endl;
-
-        // apply for new memory space and try to catch error
-        if ( ptr != nullptr ) delete[] ptr;
+        // Apply for temp memory space
+        delete[] ptr;
         try {
             ptr = new DBL[(dim - 1) * (dim - 1)];
         } catch (std::bad_alloc &ex) {
@@ -205,48 +202,45 @@ int main(int argc, char *args[])
             break;
         }
 
-        // compute AssembleRHS
+        // Assemble RHS
         AssembleRHS(dim, ptr);
 
-        // create b and x and assign values to them
+        // Create b and x and assign values to them
         b.SetValues((dim - 1) * (dim - 1), ptr);
         x.SetValues((dim - 1) * (dim - 1), 0.25);
 
-        // create free-matrix object
+        // Create free-matrix object
         MatFree matfree((dim-1)*(dim-1), (dim-1)*(dim-1));
 
-        // create PCG object
+        // Setup preconditioner parameters
+        Identity pc;  // pc = identity, no preconditioning used
+
+        // Setup solver parameters
         class CG cg;
         cg.SetOutput(PRINT_NONE);
-        cg.SetMaxIter(100000);
+        cg.SetMaxIter(10000);
         cg.SetRestart(20);
-        cg.SetAbsTol(1e-10);
-        cg.SetRelTol(1e-6);
+        cg.SetAbsTol(1e-12);
+        cg.SetRelTol(1e-8);
+        cg.SetPC(pc);
         cg.Setup(matfree);
 
-        // create identity preconditioner
-        Identity pc;
-        cg.SetPC(pc);
-
-        // call CG method to solve Ax=b
+        // Call CG method to solve Ax=b
         timer.Start();
         cg.Solve(b, x);
-        std::cout << "Solving Ax=b costs "
-                  << std::fixed << std::setprecision(3)
-                  << timer.Stop() << "ms" << std::endl;
-
-        cg.Clean(); // clean preconditioner
+        std::cout << "Solving linear system costs " << std::fixed
+                  << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
 
         std::cout << std::scientific << std::setprecision(4)
                   << "NumIter : " << cg.GetIterations() << std::endl
                   << "Norm2   : " << cg.GetNorm2() << std::endl
                   << "NormInf : " << cg.GetInfNorm() << std::endl;
 
-        // l2-norm between numerical solution and continuous solution
-        DBL norm2; // L2-norm of error
-        DBL norm2Last; // L2-norm of error in previous step
+        // Compute l2-norm between numerical solution and continuous solution
+        DBL norm2;     // L2-norm of error
+        DBL norm2Old;  // L2-norm of error in previous step
 
-        // apply quadrature rule to compute L2-norm!
+        // Apply quadrature rule to compute L2-norm!
         norm2 = 0.0;
         for ( int j = 1; j <= dim - 1; ++j ) {
             for ( int k = 1; k <= dim - 1; ++k ) {
@@ -255,23 +249,24 @@ int main(int argc, char *args[])
         }
         norm2 *= h * h;
 
-        std::cout << "L2 norm of error : "
-                  << std::scientific << std::setprecision(4) << sqrt(norm2);
-        if ( mesh == 1 ) {
-            std::cout << std::endl;
-        } else {
-            std::cout << ", Convergence rate : "
-                      << std::fixed << std::setprecision(3)
-                      << log(sqrt(norm2Last) / sqrt(norm2)) / log(2) << std::endl;
+        std::cout << "Error in L2-norm : " << std::scientific
+                  << std::setprecision(4) << sqrt(norm2) << std::endl;
+        if ( mesh > 1 ) {
+            std::cout << "Convergence rate : " << std::fixed << std::setprecision(3)
+                      << log(sqrt(norm2Old) / sqrt(norm2)) / log(2) << std::endl;
         }
+        std::cout << std::endl;
 
-        // prepare a refined mesh
-        norm2Last = norm2; // store the previous error in L2-norm
+        // Refine the mesh and continue
+        norm2Old = norm2; // store the previous error in L2-norm
         dim *= 2; // refine the grid
-        ++mesh;
-    } // end while
+    }
 
     if (markAllocDone) delete[] ptr;
 
-    return 0;
+    return FaspRetCode::SUCCESS;
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

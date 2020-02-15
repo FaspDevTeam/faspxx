@@ -9,6 +9,10 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Sample usages:
+//   ./testPCG -maxIter 200 -minIter 0 -pcIter 1
+//   ./testPCG -maxIter 200 -minIter 200 -mat ../data/fdm_1023X1023.csr -pcIter 1
+
 #include <iostream>
 #include <string>
 #include "Param.hxx"
@@ -84,7 +88,7 @@ int main(int argc, const char *args[])
     pc.SetWeight(pcParam.weight);
     pc.Setup(mat); // setup preconditioner: a different matrix could be used!
 
-    // Setup CG parameters
+    // Setup solver parameters
     class CG solver;
     solver.SetOutput(solParam.verbose);
     solver.SetMaxIter(solParam.maxIter);

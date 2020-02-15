@@ -1,6 +1,6 @@
 /*! \file    testKrylov.cxx
  *  \brief   Test performance of Krylov method
- *  \author  Kailei Zhang
+ *  \author  Kailei Zhang, Chensong Zhang
  *  \date    Dec/23/2019
  *
  *-----------------------------------------------------------------------------------
@@ -8,6 +8,10 @@
  *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
  *-----------------------------------------------------------------------------------
  */
+
+// Sample usages:
+//   ./testKrylov -mat ../data/fdm_1023X1023.csr -maxIter 200 -minIter 0 -algName cg
+//   ./testKrylov -mat ../data/fdm_1023X1023.csr -maxIter 200 -algName bicgstab
 
 #include <iostream>
 #include <string>
@@ -20,29 +24,30 @@
 
 int main(int argc, const char *args[])
 {
-    FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
-
     // User default parameters
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
     std::string rhsFile, x0File;
-    Identity    pc; // no preconditioning
 
-    // Read in parameters
+    // Read in general parameters
     Parameters params(argc, args);
-    SOLParams  solParam;
-    params.AddParam("-mat", "Left hand side of linear system", &matFile);
-    params.AddParam("-rhs", "Right hand side of linear system", &rhsFile);
-    params.AddParam("-x0", "Initial guess of solution", &x0File);
+    params.AddParam("-mat", "Coefficient matrix A", &matFile);
+    params.AddParam("-rhs", "Right-hand-side b", &rhsFile);
+    params.AddParam("-x0", "Initial guess for iteration", &x0File);
     params.AddParam("-par", "Solver parameter file", &parFile);
-    params.AddParam("-algName", "Iterative solver type", &solParam.algName);
-    params.AddParam("-maxIter", "Maximum iteration steps", &solParam.maxIter);
-    params.AddParam("-minIter", "Minimum iteration steps", &solParam.minIter);
-    params.AddParam("-safeIter", "Safe-guard iteration", &solParam.safeIter);
-    params.AddParam("-restart", "Iteration restart number", &solParam.restart);
+
+    // Read in solver parameters
+    SOLParams solParam;
+    params.AddParam("-maxIter", "Max iteration steps", &solParam.maxIter);
+    params.AddParam("-minIter", "Min iteration steps", &solParam.minIter);
+    params.AddParam("-safeIter", "Safe-guard steps", &solParam.safeIter);
+    params.AddParam("-restart", "Restart number", &solParam.restart);
     params.AddParam("-resRel", "Relative residual tolerance", &solParam.relTol);
     params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
+    params.AddParam("-algName", "Iterative solver type", &solParam.algName);
     params.AddParam("-verbose", "Verbose level", &solParam.verbose);
+
+    // Parse and print used parameters
     params.Parse();
     params.Print();
 
@@ -50,9 +55,10 @@ int main(int argc, const char *args[])
     GetWallTime timer;
     timer.Start();
 
-    // Read matrix data file
+    // Read matrix data file and exit if failed
     MAT mat;
-    if ( (retCode = ReadMat(matFile.c_str(), mat)) < 0 ) return retCode;
+    FaspRetCode retCode = ReadMat(matFile.c_str(), mat);
+    if ( retCode < 0 ) return retCode;
 
     // Print problem size information
     const INT nrow = mat.GetRowSize();
@@ -70,6 +76,9 @@ int main(int argc, const char *args[])
     if ( strcmp(x0File.c_str(), "") != 0 ) ReadVEC(x0File.c_str(), x);
 
     std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
+
+    // Setup preconditioner parameters
+    Identity pc;  // pc = identity, no preconditioning used
 
     // Solve the linear system using a Krylov method
     timer.Start();

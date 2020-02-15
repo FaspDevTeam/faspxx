@@ -9,6 +9,10 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Sample usages:
+//   ./testCG -maxIter 200 -minIter 100
+//   ./testCG -maxIter 200 -minIter 0 -mat ../data/fdm_1023X1023.csr -verbose 3
+
 #include <iostream>
 #include <string>
 #include "Param.hxx"
@@ -74,7 +78,7 @@ int main(int argc, const char *args[])
     // Setup preconditioner parameters
     Identity pc;  // pc = identity, no preconditioning used
 
-    // Setup CG parameters
+    // Setup solver parameters
     class CG solver;
     solver.SetOutput(solParam.verbose);
     solver.SetMaxIter(solParam.maxIter);
