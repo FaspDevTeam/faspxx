@@ -142,6 +142,8 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
                     col = std::strtol(decimal, &next, 10); break;
                 case 3: // third, integer, number of nonzeros
                     nnz = std::strtol(decimal, &next, 10); break;
+                default:
+                    FASPXX_WARNING("Unknown input value!")
             }
         }
         if ( mark == 3 ) break; // skip the rest

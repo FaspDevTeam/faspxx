@@ -185,58 +185,44 @@ FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
      */
     /*----------------  begin  ----------------*/
     /// basic examinations
-    INT flag=0;
     INT count = 0;
     INT begin, end;
-    if ( row != rowPtr.size() - 1 )
-        goto Return;
 
-    if ( row <= 0 || col <= 0 )
-        goto Return;
+    if ( row != rowPtr.size() - 1 ) goto Return;
 
-    if (((row > col) ? col : row) != diagPtr.size())
-        goto Return;
+    if ( row <= 0 || col <= 0 ) goto Return;
 
-    if ( nnz != colInd.size())
-        goto Return;
+    if (((row > col) ? col : row) != diagPtr.size()) goto Return;
 
-    if ( nnz != values.size())
-        goto Return;
+    if ( nnz != colInd.size()) goto Return;
 
-    if ( nnz != rowPtr[rowPtr.size() - 1] )
-        goto Return;
+    if ( nnz != values.size()) goto Return;
+
+    if ( nnz != rowPtr[rowPtr.size() - 1] ) goto Return;
 
     /// simple examinations
     for ( INT j = 0; j < row; ++j ) {
-        if ( rowPtr[j] >= rowPtr[j + 1] ) {
-            goto Return;
-        }
+        if ( rowPtr[j] >= rowPtr[j + 1] ) goto Return;
     }
 
-    if ( rowPtr[0] < 0 || rowPtr[row] > nnz )
-        goto Return;
+    if ( rowPtr[0] < 0 || rowPtr[row] > nnz ) goto Return;
 
     for ( INT j = 0; j < row; ++j ) {
         begin = rowPtr[j];
         end = rowPtr[j + 1];
-        if ( begin == end )
-            goto Return;
+        if ( begin == end ) goto Return;
 
         if ( end == begin + 1 ) {
-            if ( colInd[begin] != j )
-                goto Return;
+            if ( colInd[begin] != j ) goto Return;
         }
 
         if ( end > begin + 1 ) {
             for ( INT k = begin; k < end - 1; ++k ) {
-                if ( colInd[k] >= colInd[k + 1] )
-                    goto Return;
+                if ( colInd[k] >= colInd[k + 1] ) goto Return;
             }
-            if ( 0 > colInd[begin] )
-                goto Return;
+            if ( 0 > colInd[begin] ) goto Return;
 
-            if ( colInd[end - 1] >= col )
-                goto Return;
+            if ( colInd[end - 1] >= col ) goto Return;
         }
     }
 
@@ -253,16 +239,11 @@ FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
             }
         }
     }
-    if ( count != diagPtr.size())
-        goto Return;
-
-    flag=1;
-    if(flag==0){
-        Return:
-        return FaspRetCode::ERROR_INPUT_PAR;
-    }
+    if ( count != diagPtr.size()) goto Return;
 
     return FaspRetCode::SUCCESS;
+
+    Return: return FaspRetCode::ERROR_INPUT_PAR;
 }
 
 /// Convert MTX data (indices from 0) to CSR data structure (private)
@@ -273,7 +254,7 @@ FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
                      std::vector<DBL>& valuesCSR, std::vector<INT>& colIndCSR,
                      std::vector<INT>& rowPtrCSR)
 {
-    auto retCode = FaspRetCode::SUCCESS;
+    FaspRetCode retCode;
 
     try{
         valuesCSR.assign(nnz,0);
@@ -324,7 +305,7 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
                      const std::vector<INT>& rowPtr, MAT& mat)
 {
-    auto retCode = FaspRetCode::SUCCESS;
+    FaspRetCode retCode;
     INT begin, end, numZeroDiag = 0;
     std::vector<bool> isZeroDiag(row);
 
@@ -372,10 +353,9 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
     }
 
     rowPtrNew[0] = 0; // Starting index always 0
-    for(INT m=0;m<row+1;++m)
-        rowPtrNew[m]=0;
+    for ( INT m = 0; m < row+1; ++m ) rowPtrNew[m] = 0;
 
-    INT k,j;
+    INT k, j;
     for ( INT i = 0; i < row; ++i) {
         begin = rowPtr[i];
         end   = rowPtr[i+1];
@@ -398,8 +378,7 @@ FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
             colIndNew[count] = i;
             ++count;
 
-            if ( colInd[end-1] < i )
-                nextEntry = end;
+            if ( colInd[end-1] < i ) nextEntry = end;
 
             // Upper triangular part
             for ( j = nextEntry; j < end; ++j ) {
@@ -462,7 +441,7 @@ FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
                        const std::vector<INT>& rowPtr,
                        std::vector<INT>& colInd, std::vector<DBL>& values)
 {
-    auto retCode = FaspRetCode::SUCCESS;
+    FaspRetCode retCode;
     INT l, begin, end, index;
     DBL data;
 

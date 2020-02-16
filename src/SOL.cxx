@@ -169,7 +169,7 @@ void SOL::SetSolTypeFromName(SOLParams& params)
     else { // default solver type
         params.type = SOLType::CG;
         if ( params.verbose > PRINT_NONE )
-            FASPXX_WARNING("Unknown solver type. Using CG instead!");
+            FASPXX_WARNING("Unknown solver type. Using CG instead!")
     }
 }
 
@@ -227,12 +227,12 @@ void SOL::PrintParam(std::ostream& out) const
         << "    Absolute tolerance:   " << params.absTol   << '\n'
         << "    Relaxation weight:    " << params.weight   << '\n'
         << "    Output level:         " << params.verbose  << '\n' << "\n";
-};
+}
 
 /// Build preconditioner operator.
-void SOL::SetPC(SOL& pc)
+void SOL::SetPC(SOL& precond)
 {
-    this->pc = &pc;
+    this->pc = &precond;
 }
 
 /*---------------------------------*/

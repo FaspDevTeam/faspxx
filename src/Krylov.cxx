@@ -15,11 +15,10 @@
 /// All supported Krylov methods can be accessed using this interface
 FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, SOLParams& params)
 {
-    FaspRetCode retCode;
+    FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     SOL solver;
-    solver.SetSolTypeFromName(params); // set solver type
-
+    solver.SetSolTypeFromName(params); // get solver type
     auto sol = &solver;
 
     switch (params.type) {

@@ -245,36 +245,31 @@ void MAT::GetDiag(VEC& v) const {
     v.size = len;
     v.values.resize(len);
 
-    if (this->values.size() > 0) {
-        for (INT j = 0; j < len; ++j) v.values[j] = this->values[this->diagPtr[j]];
-    } else {
+    if ( this->values.empty() ) {
         v.values.assign(len, 1.0);
+    } else {
+        for (INT j = 0; j < len; ++j) v.values[j] = this->values[this->diagPtr[j]];
     }
-
 }
 
-/// Get the diagonal entries 's reciprocal of *this and save them in a MAT object.
+/// Get the diagonal entries' reciprocal of *this and save them in a MAT object.
 void MAT::GetDiagInv(MAT& m) const {
     m.nrow = this->nrow;
     m.mcol = this->mcol;
     m.nnz = this->nrow;
 
     m.rowPtr.resize(m.nrow + 1);
-    for (INT j = 0; j < m.nrow + 1; ++j)
-        m.rowPtr[j] = j;
+    for ( INT j = 0; j < m.nrow + 1; ++j ) m.rowPtr[j] = j;
 
     m.diagPtr.resize(m.nrow);
-    for (INT j = 0; j < m.nrow; ++j)
-        m.diagPtr[j] = j;
+    for ( INT j = 0; j < m.nrow; ++j ) m.diagPtr[j] = j;
 
     m.colInd.resize(m.nnz);
-    for (INT j = 0; j < m.nnz; ++j)
-        m.colInd[j] = j;
+    for ( INT j = 0; j < m.nnz; ++j ) m.colInd[j] = j;
 
     m.values.resize(m.nnz);
-    for (INT j = 0; j < m.nnz; ++j)
+    for ( INT j = 0; j < m.nnz; ++j )
         m.values[j] = 1.0 / this->values[this->diagPtr[j]];
-
 }
 
 // Get the lower triangular matrix
@@ -284,20 +279,19 @@ void MAT::GetLowerTri(MAT& lTri) const {
     lTri.rowPtr.resize(this->nrow + 1);
 
     lTri.rowPtr[0] = 0;
-    for (INT j = 1; j < this->nrow + 1; ++j)
+    for ( INT j = 1; j < this->nrow + 1; ++j )
         lTri.rowPtr[j] = this->diagPtr[j - 1] - this->rowPtr[j - 1] + 1;
 
-    for (INT j = 1; j < this->nrow + 1; ++j)
+    for ( INT j = 1; j < this->nrow + 1; ++j )
         lTri.rowPtr[j] += lTri.rowPtr[j - 1];
 
     lTri.nnz = lTri.rowPtr[this->nrow];
-
     lTri.values.resize(lTri.nnz);
     lTri.colInd.resize(lTri.nnz);
 
     INT count = 0;
-    for (INT j = 0; j < this->nrow; ++j) {
-        for (INT k = this->rowPtr[j]; k <= this->diagPtr[j]; ++k) {
+    for ( INT j = 0; j < this->nrow; ++j ) {
+        for ( INT k = this->rowPtr[j]; k <= this->diagPtr[j]; ++k ) {
             lTri.values[count] = this->values[k];
             lTri.colInd[count] = this->colInd[k];
             count++;
@@ -314,20 +308,19 @@ void MAT::GetUpperTri(MAT& uTri) const {
     uTri.rowPtr.resize(this->nrow + 1);
 
     uTri.rowPtr[0] = 0;
-    for (INT j = 1; j < this->nrow + 1; ++j)
+    for ( INT j = 1; j < this->nrow + 1; ++j )
         uTri.rowPtr[j] = this->rowPtr[j] - this->diagPtr[j - 1];
 
-    for (INT j = 1; j < this->nrow + 1; ++j)
+    for ( INT j = 1; j < this->nrow + 1; ++j )
         uTri.rowPtr[j] += uTri.rowPtr[j - 1];
 
     uTri.nnz = uTri.rowPtr[this->nrow];
-
     uTri.values.resize(uTri.nnz);
     uTri.colInd.resize(uTri.nnz);
 
     INT count = 0;
-    for (INT j = 0; j < this->nrow; ++j) {
-        for (INT k = this->diagPtr[j]; k <= this->rowPtr[j + 1] - 1; ++k) {
+    for ( INT j = 0; j < this->nrow; ++j ) {
+        for ( INT k = this->diagPtr[j]; k <= this->rowPtr[j + 1] - 1; ++k ) {
             uTri.values[count] = this->values[k];
             uTri.colInd[count] = this->colInd[k];
             count++;
@@ -344,19 +337,16 @@ void MAT::CopyTo(MAT& mat) const {
 
 /// Scale *this *= a
 void MAT::Scale(const DBL a) {
-    if (this->values.empty()) return; // MAT is a sparse structure!!!
+    if ( this->values.empty() ) return; // MAT is a sparse structure!!!
 
-    for (INT j = 0; j < this->nnz; ++j) this->values[j] *= a;
+    for ( INT j = 0; j < this->nnz; ++j ) this->values[j] *= a;
 }
 
 /// Shift *this += a * I.
 void MAT::Shift(const DBL a) {
-    if (this->values.empty()) {
-        return; // MAT is a sparse structure!!!
-    }
+    if ( this->values.empty() ) return; // MAT is a sparse structure!!!
 
-    for (INT j = 0; j < this->diagPtr.size(); ++j)
-        this->values[this->diagPtr[j]] += a;
+    for ( INT j : this->diagPtr ) this->values[j] += a;
 }
 
 /// Set all the entries to zero, without changing matrix size.
@@ -368,8 +358,8 @@ void MAT::Zero() {
 void MAT::Apply(const VEC& v, VEC& w) const {
     INT begin, i, k;
 
-    if (this->values.size() > 0) { // Regular sparse matrix
-        for (i = 0; i < this->nrow; ++i) {
+    if ( !this->values.empty() ) { // Regular sparse matrix
+        for ( i = 0; i < this->nrow; ++i ) {
             begin = this->rowPtr[i];
             switch (this->rowPtr[i + 1] - begin) {
                 case 4:
@@ -416,7 +406,7 @@ void MAT::Apply(const VEC& v, VEC& w) const {
             }
         }
     } else { // Only sparse structure
-        for (i = 0; i < this->nrow; ++i) {
+        for ( i = 0; i < this->nrow; ++i ) {
             begin = this->rowPtr[i];
             switch (this->rowPtr[i + 1] - begin) {
                 case 4:
@@ -476,17 +466,17 @@ void MAT::Transpose() {
         tmp.values.resize(0);
     }
 
-    for (INT j = 0; j < nnz; ++j) {
+    for ( INT j = 0; j < nnz; ++j ) {
         i = this->colInd[j];
-        if (i < m - 1) ++tmp.rowPtr[i + 2];
+        if ( i < m - 1 ) ++tmp.rowPtr[i + 2];
     }
 
-    for (i = 2; i <= m; ++i) tmp.rowPtr[i] += tmp.rowPtr[i - 1];
+    for ( i = 2; i <= m; ++i ) tmp.rowPtr[i] += tmp.rowPtr[i - 1];
 
-    if (this->values.size()) {
-        for (i = 0; i < n; ++i) {
+    if ( !this->values.empty() ) {
+        for ( i = 0; i < n; ++i ) {
             INT begin = this->rowPtr[i];
-            for (p = begin; p < this->rowPtr[i + 1]; ++p) {
+            for ( p = begin; p < this->rowPtr[i + 1]; ++p ) {
                 j = this->colInd[p] + 1;
                 k = tmp.rowPtr[j];
                 tmp.colInd[k] = i;
@@ -495,9 +485,9 @@ void MAT::Transpose() {
             }
         }
     } else {
-        for (i = 0; i < n; ++i) {
+        for ( i = 0; i < n; ++i ) {
             INT begin = this->rowPtr[i];
-            for (p = begin; p < this->rowPtr[i + 1]; ++p) {
+            for ( p = begin; p < this->rowPtr[i + 1]; ++p ) {
                 j = this->colInd[p] + 1;
                 k = tmp.rowPtr[j];
                 tmp.colInd[k] = i;
@@ -527,7 +517,7 @@ void MAT::MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const {
         throw( FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__) );
     }
 
-    if (this->values.size()) {
+    if ( !this->values.empty() ) {
         try {
             tmp.values.resize(nnz);
         } catch (std::bad_alloc &ex) {
@@ -537,14 +527,14 @@ void MAT::MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const {
         tmp.values.resize(0);
     }
 
-    for (j = 0; j < nnz; ++j) {
+    for ( j = 0; j < nnz; ++j ) {
         i = this->colInd[j];
-        if (i < m - 1) ++tmp.rowPtr[i + 2];
+        if ( i < m - 1 ) ++tmp.rowPtr[i + 2];
     }
 
-    for (i = 2; i <= m; ++i) tmp.rowPtr[i] += tmp.rowPtr[i - 1];
+    for ( i = 2; i <= m; ++i ) tmp.rowPtr[i] += tmp.rowPtr[i - 1];
 
-    if (this->values.size()) {
+    if ( !this->values.empty() ) {
         for (i = 0; i < n; ++i) {
             INT begin = this->rowPtr[i];
             for (p = begin; p < this->rowPtr[i + 1]; ++p) {
@@ -584,10 +574,10 @@ DBL MAT::GetValue(const INT& irow, const INT& jcol) const {
          this->colInd[this->rowPtr[irow + 1] - 1] >= jcol ) {
         for ( INT j = this->rowPtr[irow]; j < this->rowPtr[irow + 1]; ++j ) {
             if ( jcol == this->colInd[j] ) {
-                if ( this->values.size() > 0 )
-                    return this->values[j];
-                else
+                if ( this->values.empty() )
                     return 1.0; // sparse structure indicator
+                else
+                    return this->values[j];
             }
         }
     }
@@ -722,7 +712,6 @@ void MAT::Mult(const MAT& matl, const MAT& matr) {
     }
 
     delete[] tmp;
-    tmp = nullptr;
 
     this->values.resize(this->rowPtr[this->nrow]);
 
@@ -742,7 +731,6 @@ void MAT::Mult(const MAT& matl, const MAT& matr) {
     this->nnz = this->rowPtr[this->nrow] - this->rowPtr[0];
 
     this->FormDiagPtr();
-
 }
 
 /// *this = *this * mat.

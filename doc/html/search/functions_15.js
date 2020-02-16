@@ -1,7 +1,7 @@
 var searchData=
 [
   ['_7ebicgstab_390',['~BiCGStab',['../class_bi_c_g_stab.html#a5ee1b2f1477a9d6c85e4ccdb82e1b083',1,'BiCGStab']]],
-  ['_7ecg_391',['~CG',['../class_c_g.html#a9addb91aa49dd123d8476ddf17ded316',1,'CG']]],
+  ['_7ecg_391',['~CG',['../class_c_g.html#a87760337283e2359af2bdc08a1d61fdc',1,'CG']]],
   ['_7eidentity_392',['~Identity',['../class_identity.html#ae2d2f09e464b093543e398e42669088c',1,'Identity']]],
   ['_7ejacobi_393',['~Jacobi',['../class_jacobi.html#a4251264683f064f8decdd5b35c153a9b',1,'Jacobi']]],
   ['_7elop_394',['~LOP',['../class_l_o_p.html#a73fabf5607a80efecdbfcd58850e4052',1,'LOP']]],

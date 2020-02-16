@@ -100,7 +100,7 @@ void Parameters::ReadFromCommandLine()
         // -h, --help will trigger program terminate
         if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
             PrintHelp();
-            FASPXX_ABORT("-h, --help trigger abort");
+            FASPXX_ABORT("-h, --help trigger abort")
         }
 
         // each param is a key-value pair of a Dictionary
@@ -124,7 +124,7 @@ void Parameters::ReadFromFile()
                 file.open(*((std::string*)itm.paramPtr)); // second try to find param_file from user program
             }
 
-            if (!file.is_open()) FASPXX_WARNING("File not found!");
+            if (!file.is_open()) FASPXX_WARNING("File not found!")
 
             std::string line, name, value;
             while (std::getline(file, line)) {
@@ -153,7 +153,8 @@ void Parameters::MergeParams()
 }
 
 /// Update parameter value and give warning if unknown type is specified.
-void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& iter, ParamHolder& prm)
+void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& iter,
+                                  ParamHolder& prm)
 {
     switch (prm.paramType) {
         case BoolType:
@@ -172,7 +173,7 @@ void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& 
             *(Output*) prm.paramPtr = (Output) std::stoi(iter->second);
             break;
         default:
-            FASPXX_WARNING("Unknown parameter type!");
+            FASPXX_WARNING("Unknown parameter type!")
     }
 }
 

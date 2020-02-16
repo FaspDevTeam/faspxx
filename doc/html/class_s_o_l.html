@@ -459,7 +459,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <p>Setup preconditioner operator. </p>
 <p>Build preconditioner operator. </p>
 <div class="fragment"><div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;{</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    this-&gt;pc = &amp;<a class="code" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>;</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    this-&gt;pc = &amp;precond;</div>
 <div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>.</p>
@@ -605,7 +605,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordflow">else</span> { <span class="comment">// default solver type</span></div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a">type</a> = <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60">SOLType::CG</a>;</div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt; PRINT_NONE )</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <a class="code" href="_error_log_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac">FASPXX_WARNING</a>(<span class="stringliteral">&quot;Unknown solver type. Using CG instead!&quot;</span>);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <a class="code" href="_error_log_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac">FASPXX_WARNING</a>(<span class="stringliteral">&quot;Unknown solver type. Using CG instead!&quot;</span>)</div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    }</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;}</div>
 </div><!-- fragment -->
@@ -660,7 +660,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 <div class="ttc" id="aclass_s_o_l_html_a9bc2a6d1e11250089c09235bfe6ae917"><div class="ttname"><a href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">SOL::params</a></div><div class="ttdeci">SOLParams params</div><div class="ttdoc">solver parameters</div><div class="ttdef"><b>Definition:</b> SOL.hxx:66</div></div>
 <div class="ttc" id="aclass_s_o_l_html_af1f116f6dd0dc05bc3cdc14c5f9feee7"><div class="ttname"><a href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">SOL::normInf</a></div><div class="ttdeci">double normInf</div><div class="ttdoc">Infinity norm.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:64</div></div>
 <div class="ttc" id="astruct_s_o_l_params_html_a0d6813849e79fb8997058847d2b635a3"><div class="ttname"><a href="struct_s_o_l_params.html#a0d6813849e79fb8997058847d2b635a3">SOLParams::restart</a></div><div class="ttdeci">int restart</div><div class="ttdoc">Restart number.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:46</div></div>
-<div class="ttc" id="aclass_s_o_l_html_ad44fa09bb5bbba4f7d9a13c45c49cdb0"><div class="ttname"><a href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">SOL::pc</a></div><div class="ttdeci">SOL * pc</div><div class="ttdoc">Preconditioner for this solver.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:62</div></div>
 <div class="ttc" id="astruct_s_o_l_params_html_a6034885f92dfe34fd34389482734f377"><div class="ttname"><a href="struct_s_o_l_params.html#a6034885f92dfe34fd34389482734f377">SOLParams::algName</a></div><div class="ttdeci">string algName</div><div class="ttdoc">Algorithm name.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:42</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
