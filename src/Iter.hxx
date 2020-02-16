@@ -23,14 +23,14 @@
 class Identity : public SOL {
 
 public:
-    /// default constructor
-    Identity() {};
+    /// Default constructor
+    Identity() = default;
 
-    /// destructor
-    ~Identity() {};
+    /// Default destructor
+    ~Identity() = default;
 
     /// Iterator
-    virtual FaspRetCode Solve(const VEC& b, VEC& x);
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 };
 
 /*! \class Jacobi

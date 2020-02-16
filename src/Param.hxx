@@ -27,7 +27,7 @@ enum Output {
     PRINT_MIN  = 2,  // minimal output
     PRINT_SOME = 4,  // some output
     PRINT_MORE = 6,  // more output
-    PRINT_MAX  = 8,  // maximal output
+    PRINT_MAX  = 8   // maximal output
 };
 
 /// Solver parameters

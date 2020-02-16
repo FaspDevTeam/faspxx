@@ -143,17 +143,17 @@ public:
 
     /// Setup the iterative method.
     virtual FaspRetCode Setup(const LOP& A) {
-        FASPXX_ABORT("Not supported!");
+        FASPXX_ABORT("Not supported!")
     }
 
     /// Release temporary memory and clean up.
     virtual void Clean() {
-        FASPXX_ABORT("Not supported!");
+        FASPXX_ABORT("Not supported!")
     }
 
     /// Solve Ax=b using the iterative method.
     virtual FaspRetCode Solve(const VEC& b, VEC& x) {
-        FASPXX_ABORT("Not supported!");
+        FASPXX_ABORT("Not supported!")
     }
 
 };
