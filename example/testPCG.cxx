@@ -64,8 +64,7 @@ int main(int argc, const char *args[])
     if ( retCode < 0 ) return retCode;
 
     // Print problem size information
-    const INT nrow = mat.GetRowSize();
-    const INT mcol = mat.GetColSize();
+    const INT nrow = mat.GetRowSize(), mcol = mat.GetColSize();
     std::cout << "nrow: " << nrow << ", mcol: " << mcol << std::endl;
 
     // Read the right-hand side b; if not specified, use b = 0.0

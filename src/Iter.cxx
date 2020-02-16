@@ -117,6 +117,7 @@ FaspRetCode Jacobi::Solve(const VEC &b, VEC &x)
 
     // Finish iterative method
     this->norm2 = resAbs;
+    this->normInf = rk.NormInf();
     PrintFinal(numIter, resRel, resAbs, ratio);
 
     return errorCode;
