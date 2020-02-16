@@ -51,7 +51,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 
     // Check whether vector space sizes match
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
-        || A->GetRowSize() != A->GetColSize() )
+                                        || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;

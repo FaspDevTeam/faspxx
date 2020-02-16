@@ -358,7 +358,7 @@ void MAT::Zero() {
 void MAT::Apply(const VEC& v, VEC& w) const {
     INT begin, i, k;
 
-    if ( !this->values.empty() ) { // Regular sparse matrix
+    if ( not this->values.empty() ) { // Regular sparse matrix
         for ( i = 0; i < this->nrow; ++i ) {
             begin = this->rowPtr[i];
             switch (this->rowPtr[i + 1] - begin) {
@@ -401,7 +401,7 @@ void MAT::Apply(const VEC& v, VEC& w) const {
                 default:
                     w.values[i] =
                             this->values[begin] * v.values[this->colInd[begin]];
-                    for (k = begin + 1; k < this->rowPtr[i + 1]; ++k)
+                    for ( k = begin + 1; k < this->rowPtr[i + 1]; ++k )
                         w.values[i] += this->values[k] * v.values[this->colInd[k]];
             }
         }
@@ -432,7 +432,7 @@ void MAT::Apply(const VEC& v, VEC& w) const {
                     break;
                 default:
                     w.values[i] = v.values[this->colInd[begin]];
-                    for (k = begin + 1; k < this->rowPtr[i + 1]; ++k)
+                    for ( k = begin + 1; k < this->rowPtr[i + 1]; ++k )
                         w.values[i] += v.values[this->colInd[k]];
             }
         }
@@ -456,7 +456,7 @@ void MAT::Transpose() {
         throw( FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__) );
     }
 
-    if (!this->values.empty()) {
+    if ( not this->values.empty() ) {
         try {
             tmp.values.resize(nnz);
         } catch (std::bad_alloc &ex) {
@@ -473,7 +473,7 @@ void MAT::Transpose() {
 
     for ( i = 2; i <= m; ++i ) tmp.rowPtr[i] += tmp.rowPtr[i - 1];
 
-    if ( !this->values.empty() ) {
+    if ( not this->values.empty() ) {
         for ( i = 0; i < n; ++i ) {
             INT begin = this->rowPtr[i];
             for ( p = begin; p < this->rowPtr[i + 1]; ++p ) {
@@ -517,7 +517,7 @@ void MAT::MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const {
         throw( FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__) );
     }
 
-    if ( !this->values.empty() ) {
+    if ( not this->values.empty() ) {
         try {
             tmp.values.resize(nnz);
         } catch (std::bad_alloc &ex) {
@@ -534,7 +534,7 @@ void MAT::MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const {
 
     for ( i = 2; i <= m; ++i ) tmp.rowPtr[i] += tmp.rowPtr[i - 1];
 
-    if ( !this->values.empty() ) {
+    if ( not this->values.empty() ) {
         for (i = 0; i < n; ++i) {
             INT begin = this->rowPtr[i];
             for (p = begin; p < this->rowPtr[i + 1]; ++p) {
