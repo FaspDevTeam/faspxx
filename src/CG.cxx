@@ -18,6 +18,7 @@
 FaspRetCode CG::Setup(const LOP &A)
 {
     const INT len = A.GetColSize();
+    SetSolType(SOLType::CG); // method type
 
     // Allocate memory for temporary vectors
     try {
@@ -29,9 +30,6 @@ FaspRetCode CG::Setup(const LOP &A)
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
-
-    // Set method type
-    SetSolType(SOLType::CG);
 
     // Setup the coefficient matrix
     this->A = &A;
@@ -53,7 +51,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 {
     if ( params.verbose > PRINT_NONE ) std::cout << "Use CG to solve Ax=b ...\n";
 
-    // Check whether vector space sizes
+    // Check whether vector space sizes match
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
         || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
@@ -96,14 +94,13 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
             if (resRel < params.relTol || resAbs < params.absTol) break;
         }
 
-        if ( numIter >= params.minIter )
-            PrintInfo(numIter, resRel, resAbs, ratio);
-
-        ++numIter; // iteration count
+        if ( numIter >= params.minIter ) PrintInfo(numIter, resRel, resAbs, ratio);
 
         //---------------------------------------------
         // CG iteration starts from here
         //---------------------------------------------
+
+        ++numIter; // iteration count
 
         A->Apply(pk, ax); // ax = A * p_k, main computational work
 
@@ -118,7 +115,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
         }
 
         // Update solution and residual
-        x.AXPY(alpha, pk); // x_k = x_{k-1} + alpha_k*p_{k-1}
+        x.AXPY(alpha, pk);   // x_k = x_{k-1} + alpha_k*p_{k-1}
         rk.AXPY(-alpha, ax); // r_k = r_{k-1} - alpha_k*A*p_{k-1}
 
         //---------------------------------------------
@@ -130,7 +127,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
             // Compute norm of residual and output iteration information if needed
             resAbs = rk.Norm2();
             resRel = resAbs / denAbs;
-            ratio = resAbs / resAbsOld; // convergence ratio between two steps
+            ratio  = resAbs / resAbsOld; // convergence ratio between two steps
 
             // Save the best solution so far
             if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;

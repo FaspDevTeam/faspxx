@@ -22,7 +22,7 @@ FaspRetCode Identity::Solve(const VEC& b, VEC& x)
 FaspRetCode Jacobi::Setup(const MAT& A)
 {
     const INT len = A.GetColSize();
-    SetSolType(SOLType::Jacobi);
+    SetSolType(SOLType::Jacobi); // method type
 
     // Allocate memory for temporary vectors
     try {
@@ -50,7 +50,7 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
 {
     if ( params.verbose > PRINT_NONE ) std::cout << "Use Jacobi to solve Ax=b ...\n";
 
-    // Check whether vector space sizes
+    // Check whether vector space sizes match
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
                                         || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;

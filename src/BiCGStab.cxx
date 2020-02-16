@@ -59,7 +59,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 {
     if ( params.verbose > PRINT_NONE ) std::cout << "Use BiCGStab to solve Ax=b ...\n";
 
-    // Check whether vector space sizes
+    // Check whether vector space sizes match
     if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
                                         || A->GetRowSize() != A->GetColSize() )
         return FaspRetCode::ERROR_NONMATCH_SIZE;
@@ -73,7 +73,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
     int stagStep = 0, moreStep = 0;
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
-    double alphaj, betaj, rjr0star, rjr0startmp, omegaj, tmp12;
+    double alpha, beta, rjr0star, rjr0startmp, omega, tmp12;
 
     PrintHead();
 
@@ -97,14 +97,13 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
             if ( resRel < params.relTol || resAbs < params.absTol ) break;
         }
 
-        if ( numIter >= params.minIter )
-            PrintInfo(numIter, resRel, resAbs, ratio);
-
-        ++numIter; // iteration count
+        if ( numIter >= params.minIter ) PrintInfo(numIter, resRel, resAbs, ratio);
 
         //---------------------------------------------
         // BiCGStab iteration starts from here
         //---------------------------------------------
+
+        ++numIter; // iteration count
 
         /* alpha_{j} = (rj,r0star)/(P * A * pj,r0star) */
         rjr0star = this->rj.Dot(this->r0star);
@@ -115,7 +114,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         pc->Solve(this->apj, this->ptmp);
 
         tmp12 = this->ptmp.Dot(this->r0star);
-        if ( fabs(tmp12) > 1e-40 ) alphaj = rjr0star / tmp12;
+        if ( fabs(tmp12) > 1e-40 ) alpha = rjr0star / tmp12;
         else {
             FASPXX_WARNING("Divided by zero!") // Possible breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
@@ -123,25 +122,25 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         }
 
         // sj = rj - alpha_{j} * P * A * p_{j}
-        this->sj.WAXPBY(1.0, this->rj, -alphaj, this->ptmp);
+        this->sj.WAXPBY(1.0, this->rj, -alpha, this->ptmp);
 
-        // omegaj = (P * A * sj,sj)/(P * A * sj,P * A * sj)
+        // omega_j = (P * A * sj,sj)/(P * A * sj,P * A * sj)
         A->Apply(this->sj, this->asj);
         stmp.SetValues(len,0.0);
         pc->Solve(this->asj, this->stmp);
-        omegaj = this->stmp.Dot(this->sj) / this->stmp.Dot(this->stmp);
+        omega = this->stmp.Dot(this->sj) / this->stmp.Dot(this->stmp);
 
         /* Update solution and residual */
-        // x_{j+1} = x_{j} + alpha_{j} * P * pj + omegaj * P * s_{j}
+        // x_{j+1} = x_{j} + alpha_{j} * P * pj + omega_j * P * s_{j}
         mp.SetValues(len,0.0);
         pc->Solve(this->pj, this->mp);
         ms.SetValues(len,0.0);
         pc->Solve(this->sj, this->ms);
-        this->tmp.WAXPBY(alphaj, this->mp, omegaj, this->ms);
+        this->tmp.WAXPBY(alpha, this->mp, omega, this->ms);
         x.XPAY(1.0, this->tmp);
 
-        // r_{j+1} = sj - omegaj * P * A * sj
-        this->rj.WAXPBY(1.0, this->sj, -omegaj, this->stmp);
+        // r_{j+1} = sj - omega_j * P * A * sj
+        this->rj.WAXPBY(1.0, this->sj, -omega, this->stmp);
 
         //---------------------------------------------
         // One step of BiCGStab iteration ends here
@@ -152,7 +151,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
             // Compute norm of residual and output iteration information if needed
             resAbs = rj.Norm2();
             resRel = resAbs / denAbs;
-            ratio = resAbs / resAbsOld;
+            ratio  = resAbs / resAbsOld;
 
             // Save the best solution so far
             if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
@@ -169,7 +168,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                 }
 
                 // Check II: if relative difference stagnated, try to restart
-                double xRelDiff = fabs(alphaj) * this->pj.Norm2() / x.Norm2();
+                double xRelDiff = fabs(alpha) * this->pj.Norm2() / x.Norm2();
                 if ( (stagStep <= maxStag) && (xRelDiff < solStagTol) ) {
                     // Compute and update the residual before restart
                     A->Apply(x, this->rj);
@@ -237,14 +236,14 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
             // Save residual for next iteration
             resAbsOld = resAbs;
 
-            // betaj = (r_{j+1},r0^{*}) / (r_{j},r0^{*}) * alpha_j / omega_j
+            // beta_j = (r_{j+1},r0^{*}) / (r_{j},r0^{*}) * alpha_j / omega_j
             rjr0startmp = rjr0star;
             rjr0star = this->rj.Dot(this->r0star);
-            betaj = rjr0star / rjr0startmp * alphaj / omegaj;
+            beta = rjr0star / rjr0startmp * alpha / omega;
 
-            // p_{j+1} = r_{j+1} + betaj * (p_{j} - omegaj * P * A * p_{j})
-            this->tmp.WAXPBY(1.0, this->pj, -omegaj, this->ptmp);
-            this->pj.WAXPBY(1.0, this->rj, betaj, this->tmp);
+            // p_{j+1} = r_{j+1} + beta_j * (p_{j} - omega_j * P * A * p_{j})
+            this->tmp.WAXPBY(1.0, this->pj, -omega, this->ptmp);
+            this->pj.WAXPBY(1.0, this->rj, beta, this->tmp);
         }
 
     } // End of main BiCGStab loop

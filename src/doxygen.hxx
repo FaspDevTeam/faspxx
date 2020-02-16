@@ -22,7 +22,7 @@
  * and preconditioners for PDEs and systems of PDEs. The main components of the
  * package are standard Krylov methods, algebraic multigrid methods, geometric
  * multigrid methods, Schwarz methods, and incomplete factorization methods.
- * 
+ *
  */
  
 /**
@@ -82,4 +82,3 @@
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/
- 
