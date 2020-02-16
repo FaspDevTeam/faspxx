@@ -12,12 +12,10 @@
 #include "CG.hxx"
 #include "Poisson2D.hxx"
 
-/// Locate the global index of (x,y)
-#define locate(row, column) (((row) - 1) * (dim - 1) + (column) - 1)
-
-const int numTotalMesh = 7; // number of meshes in total
-
 int dim = 16; // number of partitions in X and Y directions: 16x16 grid
+
+/// Find the 1-dim global index of (x,y)
+#define locate(row, column) (((row) - 1) * (dim - 1) + (column) - 1)
 
 /// Matrix-free linear operator object.
 class MatFree : public LOP {
@@ -180,11 +178,12 @@ void MatFree::Apply(const VEC& x, VEC& y) const
 
 int main(int argc, char *args[])
 {
-    DBL  *ptr = nullptr;
-    bool  markAllocDone = true;
-    VEC   b, x;
-
-    GetWallTime timer;
+    const int    numTotalMesh = 7; // number of meshes in total
+    GetWallTime  timer;
+    DBL         *ptr = nullptr;
+    bool         markAllocDone = true;
+    VEC          b, x;
+    DBL          norm2, norm2Old = 1.0;
 
     for ( int mesh = 1; mesh < numTotalMesh; mesh++ ) {
         std::cout << "dim = " << dim << ", "
@@ -192,7 +191,7 @@ int main(int argc, char *args[])
 
         DBL h = 1.0 / dim;  // mesh size in X and Y directions
 
-        // Apply for temp memory space
+        // Allocate for temp memory space
         delete[] ptr;
         try {
             ptr = new DBL[(dim - 1) * (dim - 1)];
@@ -237,24 +236,20 @@ int main(int argc, char *args[])
                   << "NormInf : " << cg.GetInfNorm() << std::endl;
 
         // Compute l2-norm between numerical solution and continuous solution
-        DBL norm2;     // L2-norm of error
-        DBL norm2Old;  // L2-norm of error in previous step
-
-        // Apply quadrature rule to compute L2-norm!
         norm2 = 0.0;
         for ( int j = 1; j <= dim - 1; ++j ) {
             for ( int k = 1; k <= dim - 1; ++k ) {
                 norm2 += pow(fabs(x[locate(j, k)] - ExactSolu(j * h, k * h)), 2.0);
             }
         }
-        norm2 *= h * h;
+        norm2 *= h * h; // Apply simple quadrature rule to compute L2-norm!
 
         std::cout << "Error in L2-norm : " << std::scientific
                   << std::setprecision(4) << sqrt(norm2) << std::endl;
-        if ( mesh > 1 ) {
-            std::cout << "Convergence rate : " << std::fixed << std::setprecision(3)
-                      << log(sqrt(norm2Old) / sqrt(norm2)) / log(2) << std::endl;
-        }
+        if ( mesh > 1 ) std::cout << "Convergence rate : " << std::fixed
+                                  << std::setprecision(3)
+                                  << log(sqrt(norm2Old) / sqrt(norm2)) / log(2)
+                                  << std::endl;
         std::cout << std::endl;
 
         // Refine the mesh and continue
