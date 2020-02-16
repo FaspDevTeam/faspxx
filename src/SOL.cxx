@@ -165,10 +165,10 @@ void SOL::SetSolTypeFromName(SOLParams& params)
         params.type = SOLType::CG;
     else if ( params.algName == "bicgstab" )
         params.type = SOLType::BICGSTAB;
-    else { // default solver type
-        params.type = SOLType::CG;
+    else {
+        params.type = SOLType::CG; // default solver type
         if ( params.verbose > PRINT_NONE )
-            FASPXX_WARNING("Unknown solver type. Using CG instead!")
+            FASPXX_WARNING("Unknown solver type. Using default solver!")
     }
 }
 
