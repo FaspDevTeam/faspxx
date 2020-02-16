@@ -15,6 +15,6 @@ if ("${GTEST}" STREQUAL "ON")
 
 else("${GTEST}" STREQUAL "OFF")
 
-    message("-- GoogleTest is disabled")
+    message("-- Google Test is disabled")
 
 endif()
