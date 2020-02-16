@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">FASP++
-   &#160;<span id="projectnumber">0.3.0 Dec/27/2019</span>
+   &#160;<span id="projectnumber">0.4.0 Feb/16/2020</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -364,24 +364,24 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 
 <p>Convert MTX data to <a class="el" href="class_m_a_t.html" title="Sparse matrix class.">MAT</a> data structure. </p>
 <p>Convert MTX data to <a class="el" href="class_m_a_t.html" title="Sparse matrix class.">MAT</a> data structure. </p>
-<div class="fragment"><div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;{</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    <span class="keyword">auto</span> retCode = <a class="code" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160; </div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    std::vector&lt;INT&gt; rowPtrCSR;</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;    std::vector&lt;INT&gt; colIndCSR;</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    std::vector&lt;DBL&gt; valuesCSR;</div>
+<div class="fragment"><div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;{</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    <span class="keyword">auto</span> retCode = <a class="code" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160; </div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    <span class="comment">// Convert data format from MTX to CSR</span></div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    MTXtoCSR(row, col, nnz, rowInd, colInd, values,valuesCSR, colIndCSR,rowPtrCSR);</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160; </div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    <span class="comment">// Sort CSR matrix row by row</span></div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <a class="code" href="_m_a_t_util_8cxx.html#a5c19d923cc85471207d8fdd969950418">SortCSRRow</a>(row, col, nnz, rowPtrCSR, colIndCSR, valuesCSR);</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160; </div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    <span class="comment">// Check whether diagonal is a nonzero position</span></div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    <a class="code" href="_m_a_t_util_8cxx.html#af875442f94023d6a822663d180a6e544">CSRtoMAT</a>(row, col, nnz, valuesCSR, colIndCSR, rowPtrCSR, mat);</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160; </div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    <span class="keywordflow">return</span> retCode;</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;}</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    std::vector&lt;INT&gt; rowPtrCSR;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    std::vector&lt;INT&gt; colIndCSR;</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    std::vector&lt;DBL&gt; valuesCSR;</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160; </div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;    <span class="comment">// Convert data format from MTX to CSR</span></div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    MTXtoCSR(row, col, nnz, rowInd, colInd, values,valuesCSR, colIndCSR,rowPtrCSR);</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160; </div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    <span class="comment">// Sort CSR matrix row by row</span></div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    <a class="code" href="_m_a_t_util_8cxx.html#a5c19d923cc85471207d8fdd969950418">SortCSRRow</a>(row, col, nnz, rowPtrCSR, colIndCSR, valuesCSR);</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160; </div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;    <span class="comment">// Check whether diagonal is a nonzero position</span></div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;    <a class="code" href="_m_a_t_util_8cxx.html#af875442f94023d6a822663d180a6e544">CSRtoMAT</a>(row, col, nnz, valuesCSR, colIndCSR, rowPtrCSR, mat);</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160; </div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;    <span class="keywordflow">return</span> retCode;</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;}</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">SUCCESS</a>.</p>
 
@@ -390,7 +390,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 </div><!-- contents -->
 <div class="ttc" id="a_m_a_t_util_8cxx_html_af875442f94023d6a822663d180a6e544"><div class="ttname"><a href="_m_a_t_util_8cxx.html#af875442f94023d6a822663d180a6e544">CSRtoMAT</a></div><div class="ttdeci">FaspRetCode CSRtoMAT(const INT &amp;row, const INT &amp;col, const INT &amp;nnz, const std::vector&lt; DBL &gt; &amp;values, const std::vector&lt; INT &gt; &amp;colInd, const std::vector&lt; INT &gt; &amp;rowPtr, MAT &amp;mat)</div><div class="ttdoc">Convert a CSR matrix to MAT (private)</div><div class="ttdef"><b>Definition:</b> MATUtil.cxx:323</div></div>
 <div class="ttc" id="a_ret_code_8hxx_html_aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8"><div class="ttname"><a href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">SUCCESS</a></div><div class="ttdoc">Everything is fine.</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:22</div></div>
-<div class="ttc" id="a_m_a_t_util_8cxx_html_a5c19d923cc85471207d8fdd969950418"><div class="ttname"><a href="_m_a_t_util_8cxx.html#a5c19d923cc85471207d8fdd969950418">SortCSRRow</a></div><div class="ttdeci">FaspRetCode SortCSRRow(const INT &amp;row, const INT &amp;col, const INT &amp;nnz, const std::vector&lt; INT &gt; &amp;rowPtr, std::vector&lt; INT &gt; &amp;colInd, std::vector&lt; DBL &gt; &amp;values)</div><div class="ttdoc">Sort &quot;colInd&quot; of each row in ascending order and rearrange &quot;values&quot; accordingly.</div><div class="ttdef"><b>Definition:</b> MATUtil.cxx:457</div></div>
+<div class="ttc" id="a_m_a_t_util_8cxx_html_a5c19d923cc85471207d8fdd969950418"><div class="ttname"><a href="_m_a_t_util_8cxx.html#a5c19d923cc85471207d8fdd969950418">SortCSRRow</a></div><div class="ttdeci">FaspRetCode SortCSRRow(const INT &amp;row, const INT &amp;col, const INT &amp;nnz, const std::vector&lt; INT &gt; &amp;rowPtr, std::vector&lt; INT &gt; &amp;colInd, std::vector&lt; DBL &gt; &amp;values)</div><div class="ttdoc">Sort &quot;colInd&quot; of each row in ascending order and rearrange &quot;values&quot; accordingly.</div><div class="ttdef"><b>Definition:</b> MATUtil.cxx:461</div></div>
 <div class="ttc" id="a_ret_code_8hxx_html_aff468b46f5c4020989ad3bdbba54af50a6dc3736b62411c496c6880e41d9b4e86"><div class="ttname"><a href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50a6dc3736b62411c496c6880e41d9b4e86">ERROR_INPUT_PAR</a></div><div class="ttdoc">Wrong input argument.</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:26</div></div>
 <div class="ttc" id="afaspxx_8hxx_html_a2c1b481efcce2dbbd0dee644e335c69a"><div class="ttname"><a href="faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a></div><div class="ttdeci">unsigned int INT</div><div class="ttdoc">Index type: Must be non-negative!</div><div class="ttdef"><b>Definition:</b> faspxx.hxx:15</div></div>
 <!-- start footer part -->

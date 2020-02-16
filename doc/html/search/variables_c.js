@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['verbose_429',['verbose',['../struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b',1,'SOLParams']]]
+  ['type_431',['type',['../struct_s_o_l_params.html#a6669dbb8b999387f627457762944670a',1,'SOLParams']]]
 ];

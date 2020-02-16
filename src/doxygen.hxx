@@ -1,7 +1,7 @@
-/*! \file doxygen.hxx
- *  \brief Main page for Doygen documentation
- *  \author Chensong Zhang
- *  \date Sep/29/2019
+/*! \file    doxygen.hxx
+ *  \brief   Main page for Doxygen documentation
+ *  \author  Chensong Zhang
+ *  \date    Sep/29/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -19,16 +19,17 @@
  * See the GNU Lesser General Public License for more details.
  *
  * The FASPxx is a C++ package designed for developing parallel iterative solvers
-and preconditioners for PDEs and systems of PDEs. The main components of the
-package are standard Krylov methods, algebraic multigrid methods, geometric
-multigrid methods, Schwarz methods, and incomplete factorization methods.
-
+ * and preconditioners for PDEs and systems of PDEs. The main components of the
+ * package are standard Krylov methods, algebraic multigrid methods, geometric
+ * multigrid methods, Schwarz methods, and incomplete factorization methods.
+ * 
  */
  
 /**
  * \page download How to obtain FASP++
  *
  * TBA
+ *
  */
 
 /**
@@ -40,7 +41,8 @@ multigrid methods, Schwarz methods, and incomplete factorization methods.
  * on how to use cmake for your own operating system. To compile, you alos need a C++
  * compiler.
  *
- * > $ mkdir Debug; cd Debug; cmake ..
+ * > $ mkdir Build; cd Build; cmake ..
+ *
  * > $ make
  *
  */ 

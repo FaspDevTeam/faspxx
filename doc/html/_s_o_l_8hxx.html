@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">FASP++
-   &#160;<span id="projectnumber">0.3.0 Dec/27/2019</span>
+   &#160;<span id="projectnumber">0.4.0 Feb/16/2020</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -114,7 +114,8 @@ Enumerations</h2></td></tr>
 <a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2">GMRES</a> = 4, 
 <br />
 &#160;&#160;<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646">FGMRES</a> = 5, 
-<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a> = 6
+<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a> = 6, 
+<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ad265c8b1fda63fad2de4994858396ed8">Jacobi</a> = 11
 <br />
  }</td></tr>
 <tr class="memdesc:a211350976404ebcc6715299193cc2ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterative solver type.  <a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7">More...</a><br /></td></tr>
@@ -171,6 +172,8 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 </td></tr>
 <tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c"></a>VFGMRES&#160;</td><td class="fielddoc"><p>Variable-restarting FGMRES. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7ad265c8b1fda63fad2de4994858396ed8"></a>Jacobi&#160;</td><td class="fielddoc"><p><a class="el" href="class_jacobi.html" title="Jacobi iterator.">Jacobi</a> iteration. </p>
+</td></tr>
 </table>
 <div class="fragment"><div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;             {</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="class_c_g.html">CG</a>        = 1,   </div>
@@ -179,7 +182,8 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2">GMRES</a>     = 4,   </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646">FGMRES</a>    = 5,   </div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a>   = 6,   </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;};</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="class_jacobi.html">Jacobi</a>    = 11,  </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -187,6 +191,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646">FGMRES</a></div><div class="ttdoc">Flexible GMRES.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:34</div></div>
 <div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a></div><div class="ttdoc">Minimal Residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:32</div></div>
 <div class="ttc" id="aclass_c_g_html"><div class="ttname"><a href="class_c_g.html">CG</a></div><div class="ttdoc">Preconditioned conjugate gradient method.</div><div class="ttdef"><b>Definition:</b> CG.hxx:24</div></div>
+<div class="ttc" id="aclass_jacobi_html"><div class="ttname"><a href="class_jacobi.html">Jacobi</a></div><div class="ttdoc">Jacobi iterator.</div><div class="ttdef"><b>Definition:</b> Iter.hxx:39</div></div>
 <div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a></div><div class="ttdoc">Bi-Conjugate Gradient Stabilized.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:31</div></div>
 <div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2">GMRES</a></div><div class="ttdoc">Generalized Minimal Residual.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:33</div></div>
 <div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a></div><div class="ttdoc">Variable-restarting FGMRES.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:35</div></div>

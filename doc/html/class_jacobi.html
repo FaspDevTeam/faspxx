@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">FASP++
-   &#160;<span id="projectnumber">0.3.0 Dec/27/2019</span>
+   &#160;<span id="projectnumber">0.4.0 Feb/16/2020</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -96,10 +96,13 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_jacobi.html#ac709545cf25befba8d69bd80f0401821">~Jacobi</a> ()</td></tr>
 <tr class="memdesc:ac709545cf25befba8d69bd80f0401821"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default destructor. <br /></td></tr>
 <tr class="separator:ac709545cf25befba8d69bd80f0401821"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af414ab21f3f9916c74bbd4b375979b01"><td class="memItemLeft" align="right" valign="top"><a id="af414ab21f3f9916c74bbd4b375979b01"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_jacobi.html#af414ab21f3f9916c74bbd4b375979b01">Jacobi</a> (const <a class="el" href="class_m_a_t.html">MAT</a> &amp;<a class="el" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>, double <a class="el" href="class_jacobi.html#a32ddfbd1888f73cef643cc74b7f34b52">alpha</a>)</td></tr>
-<tr class="memdesc:af414ab21f3f9916c74bbd4b375979b01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard constructor. <br /></td></tr>
-<tr class="separator:af414ab21f3f9916c74bbd4b375979b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a127456e933d97dfa76a0ca7e0f00a4fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_jacobi.html#a127456e933d97dfa76a0ca7e0f00a4fc">Setup</a> (const <a class="el" href="class_m_a_t.html">MAT</a> &amp;<a class="el" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>)</td></tr>
+<tr class="memdesc:a127456e933d97dfa76a0ca7e0f00a4fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the <a class="el" href="class_jacobi.html" title="Jacobi iterator.">Jacobi</a> method.  <a href="class_jacobi.html#a127456e933d97dfa76a0ca7e0f00a4fc">More...</a><br /></td></tr>
+<tr class="separator:a127456e933d97dfa76a0ca7e0f00a4fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbfb8560fcb1a1ebbd8f8b5dbf46ca28"><td class="memItemLeft" align="right" valign="top"><a id="adbfb8560fcb1a1ebbd8f8b5dbf46ca28"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_jacobi.html#adbfb8560fcb1a1ebbd8f8b5dbf46ca28">Clean</a> ()</td></tr>
+<tr class="memdesc:adbfb8560fcb1a1ebbd8f8b5dbf46ca28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up <a class="el" href="class_jacobi.html" title="Jacobi iterator.">Jacobi</a> data allocated during Setup. <br /></td></tr>
+<tr class="separator:adbfb8560fcb1a1ebbd8f8b5dbf46ca28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2eede4ecdd0731bac5f2971ca35a4874"><td class="memItemLeft" align="right" valign="top"><a id="a2eede4ecdd0731bac5f2971ca35a4874"></a>
 virtual <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_jacobi.html#a2eede4ecdd0731bac5f2971ca35a4874">Solve</a> (const <a class="el" href="class_v_e_c.html">VEC</a> &amp;b, <a class="el" href="class_v_e_c.html">VEC</a> &amp;x)</td></tr>
 <tr class="memdesc:a2eede4ecdd0731bac5f2971ca35a4874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve Ax=b using the <a class="el" href="class_jacobi.html" title="Jacobi iterator.">Jacobi</a> method. <br /></td></tr>
@@ -134,6 +137,12 @@ virtual <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af5
 <tr class="memitem:aae051a04e2385e6d4120d9e619f52a4e inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aae051a04e2385e6d4120d9e619f52a4e">SetAbsTol</a> (double absTol)</td></tr>
 <tr class="memdesc:aae051a04e2385e6d4120d9e619f52a4e inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set tolerance for absolute residual.  <a href="class_s_o_l.html#aae051a04e2385e6d4120d9e619f52a4e">More...</a><br /></td></tr>
 <tr class="separator:aae051a04e2385e6d4120d9e619f52a4e inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed64eaacd3992a2e4c349ee37cdeaf6f inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aed64eaacd3992a2e4c349ee37cdeaf6f">SetWeight</a> (double alpha)</td></tr>
+<tr class="memdesc:aed64eaacd3992a2e4c349ee37cdeaf6f inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set weight for correction schemes.  <a href="class_s_o_l.html#aed64eaacd3992a2e4c349ee37cdeaf6f">More...</a><br /></td></tr>
+<tr class="separator:aed64eaacd3992a2e4c349ee37cdeaf6f inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a> (<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> solver)</td></tr>
+<tr class="memdesc:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set solver type.  <a href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">More...</a><br /></td></tr>
+<tr class="separator:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top"><a id="a402a9c7642afdf679e6b0e1eba245c83"></a>
 const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a402a9c7642afdf679e6b0e1eba245c83">GetSolType</a> (<a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> type) const</td></tr>
 <tr class="memdesc:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get solver type. <br /></td></tr>
@@ -162,24 +171,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#ad19901eb68a47c238247514a9d9e88b3">PrintFinal</a> (const int &amp;iter, const double &amp;resRel, const double &amp;resAbs, const double &amp;ratio, std::ostream &amp;out=std::cout) const</td></tr>
 <tr class="memdesc:ad19901eb68a47c238247514a9d9e88b3 inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print out final status of an iterative method. <br /></td></tr>
 <tr class="separator:ad19901eb68a47c238247514a9d9e88b3 inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ae3b7b226f098142c37bd0190e08d53 inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a8ae3b7b226f098142c37bd0190e08d53">SetPC</a> (<a class="el" href="class_s_o_l.html">SOL</a> *<a class="el" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>)</td></tr>
-<tr class="memdesc:a8ae3b7b226f098142c37bd0190e08d53 inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup preconditioner operator.  <a href="class_s_o_l.html#a8ae3b7b226f098142c37bd0190e08d53">More...</a><br /></td></tr>
-<tr class="separator:a8ae3b7b226f098142c37bd0190e08d53 inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47077df64e53b5c79001e42075d82d09 inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a47077df64e53b5c79001e42075d82d09">SetPC</a> (<a class="el" href="class_s_o_l.html">SOL</a> &amp;<a class="el" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a>)</td></tr>
+<tr class="memdesc:a47077df64e53b5c79001e42075d82d09 inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup preconditioner operator.  <a href="class_s_o_l.html#a47077df64e53b5c79001e42075d82d09">More...</a><br /></td></tr>
+<tr class="separator:a47077df64e53b5c79001e42075d82d09 inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24c24fa6860e8860902557d2f89f4218 inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top"><a id="a24c24fa6860e8860902557d2f89f4218"></a>
 virtual <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a24c24fa6860e8860902557d2f89f4218">Setup</a> (const <a class="el" href="class_l_o_p.html">LOP</a> &amp;<a class="el" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>)</td></tr>
 <tr class="memdesc:a24c24fa6860e8860902557d2f89f4218 inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the iterative method. <br /></td></tr>
 <tr class="separator:a24c24fa6860e8860902557d2f89f4218 inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7c6642799a621964e005557ed79ed6d inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top"><a id="aa7c6642799a621964e005557ed79ed6d"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aa7c6642799a621964e005557ed79ed6d">Clean</a> ()</td></tr>
-<tr class="memdesc:aa7c6642799a621964e005557ed79ed6d inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release temporary memory and clean up. <br /></td></tr>
-<tr class="separator:aa7c6642799a621964e005557ed79ed6d inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a32ddfbd1888f73cef643cc74b7f34b52"><td class="memItemLeft" align="right" valign="top"><a id="a32ddfbd1888f73cef643cc74b7f34b52"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_jacobi.html#a32ddfbd1888f73cef643cc74b7f34b52">alpha</a></td></tr>
-<tr class="memdesc:a32ddfbd1888f73cef643cc74b7f34b52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weight for damped or weighted <a class="el" href="class_jacobi.html" title="Jacobi iterator.">Jacobi</a>. <br /></td></tr>
-<tr class="separator:a32ddfbd1888f73cef643cc74b7f34b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12110f0244dc2ce0b6fd8d39e80b6118"><td class="memItemLeft" align="right" valign="top"><a id="a12110f0244dc2ce0b6fd8d39e80b6118"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_jacobi.html#a12110f0244dc2ce0b6fd8d39e80b6118">omega</a></td></tr>
+<tr class="memdesc:a12110f0244dc2ce0b6fd8d39e80b6118"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weight for damped or weighted <a class="el" href="class_jacobi.html" title="Jacobi iterator.">Jacobi</a>. <br /></td></tr>
+<tr class="separator:a12110f0244dc2ce0b6fd8d39e80b6118"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f375c8b20a8cb825f583757fa8f38d9"><td class="memItemLeft" align="right" valign="top"><a id="a2f375c8b20a8cb825f583757fa8f38d9"></a>
 <a class="el" href="class_v_e_c.html">VEC</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_jacobi.html#a2f375c8b20a8cb825f583757fa8f38d9">diagInv</a></td></tr>
 <tr class="memdesc:a2f375c8b20a8cb825f583757fa8f38d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inverse of diagonal entries. <br /></td></tr>
@@ -217,10 +222,6 @@ const <a class="el" href="class_l_o_p.html">LOP</a> *&#160;</td><td class="memIt
 <a class="el" href="class_s_o_l.html">SOL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a></td></tr>
 <tr class="memdesc:ad44fa09bb5bbba4f7d9a13c45c49cdb0 inherit pro_attribs_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preconditioner for this solver. <br /></td></tr>
 <tr class="separator:ad44fa09bb5bbba4f7d9a13c45c49cdb0 inherit pro_attribs_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6deb18ce28ff246f336c621958ca58c4 inherit pro_attribs_class_s_o_l"><td class="memItemLeft" align="right" valign="top"><a id="a6deb18ce28ff246f336c621958ca58c4"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a6deb18ce28ff246f336c621958ca58c4">withPC</a></td></tr>
-<tr class="memdesc:a6deb18ce28ff246f336c621958ca58c4 inherit pro_attribs_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a PC or not. <br /></td></tr>
-<tr class="separator:a6deb18ce28ff246f336c621958ca58c4 inherit pro_attribs_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e74012c98efc558ff96ea4819f6cc05 inherit pro_attribs_class_s_o_l"><td class="memItemLeft" align="right" valign="top"><a id="a8e74012c98efc558ff96ea4819f6cc05"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a></td></tr>
 <tr class="memdesc:a8e74012c98efc558ff96ea4819f6cc05 inherit pro_attribs_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Euclidean norm. <br /></td></tr>
@@ -240,11 +241,75 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="class_jacobi.html" title="Jacobi iterator.">Jacobi</a> iterator. </p>
-</div><hr/>The documentation for this class was generated from the following files:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a127456e933d97dfa76a0ca7e0f00a4fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a127456e933d97dfa76a0ca7e0f00a4fc">&#9670;&nbsp;</a></span>Setup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> Jacobi::Setup </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_m_a_t.html">MAT</a> &amp;&#160;</td>
+          <td class="paramname"><em>A</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setup the <a class="el" href="class_jacobi.html" title="Jacobi iterator.">Jacobi</a> method. </p>
+<p>Setup <a class="el" href="class_jacobi.html" title="Jacobi iterator.">Jacobi</a> preconditioner. </p>
+<div class="fragment"><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">const</span> <a class="code" href="faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> len = <a class="code" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>.<a class="code" href="class_l_o_p.html#ac6417cdbff4b6af87e90f9ae288ba1cf">GetColSize</a>();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a>(<a class="code" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ad265c8b1fda63fad2de4994858396ed8">SOLType::Jacobi</a>);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">// Allocate memory for temporary vectors</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <a class="code" href="class_jacobi.html#a92b512b644571448e3b667ce4c823a7c">rk</a>.<a class="code" href="class_v_e_c.html#af4eff2233a6644183f03af5cc8bf4846">SetValues</a>(len, 0.0);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    } <span class="keywordflow">catch</span> (std::bad_alloc &amp;ex) {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07">FaspRetCode::ERROR_ALLOC_MEM</a>;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    }</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">// Get diagonal and compute its reciprocal</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>.GetDiag(<a class="code" href="class_jacobi.html#a2f375c8b20a8cb825f583757fa8f38d9">diagInv</a>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="class_jacobi.html#a2f375c8b20a8cb825f583757fa8f38d9">diagInv</a>.<a class="code" href="class_v_e_c.html#a77866ca316ae6c9755743133f29b2009">Reciprocal</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// Setup the coefficient matrix</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    this-&gt;A = &amp;<a class="code" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    this-&gt;<a class="code" href="class_jacobi.html#a12110f0244dc2ce0b6fd8d39e80b6118">omega</a> = <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a804b595515b17cbd280eb86124d73a07">weight</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="comment">// Print used parameters if necessary</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">if</span> ( <a class="code" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt; PRINT_MIN ) <a class="code" href="class_s_o_l.html#a370fa587c28e987a35fc3da59676b6d6">PrintParam</a>(std::cout);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;}</div>
+</div><!-- fragment -->
+<p class="reference">References <a class="el" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">SOL::A</a>, <a class="el" href="class_jacobi.html#a2f375c8b20a8cb825f583757fa8f38d9">diagInv</a>, <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07">ERROR_ALLOC_MEM</a>, <a class="el" href="class_l_o_p.html#ac6417cdbff4b6af87e90f9ae288ba1cf">LOP::GetColSize()</a>, <a class="el" href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ad265c8b1fda63fad2de4994858396ed8">Jacobi</a>, <a class="el" href="class_jacobi.html#a12110f0244dc2ce0b6fd8d39e80b6118">omega</a>, <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">SOL::params</a>, <a class="el" href="class_v_e_c.html#a77866ca316ae6c9755743133f29b2009">VEC::Reciprocal()</a>, <a class="el" href="class_jacobi.html#a92b512b644571448e3b667ce4c823a7c">rk</a>, <a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SOL::SetSolType()</a>, <a class="el" href="class_v_e_c.html#af4eff2233a6644183f03af5cc8bf4846">VEC::SetValues()</a>, <a class="el" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a>, and <a class="el" href="struct_s_o_l_params.html#a804b595515b17cbd280eb86124d73a07">SOLParams::weight</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li><a class="el" href="_iter_8hxx_source.html">Iter.hxx</a></li>
 <li><a class="el" href="_iter_8cxx.html">Iter.cxx</a></li>
 </ul>
 </div><!-- contents -->
+<div class="ttc" id="aclass_s_o_l_html_a627b490fa36929f82adba0e525fee10d"><div class="ttname"><a href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">SOL::A</a></div><div class="ttdeci">const LOP * A</div><div class="ttdoc">Coefficient matrix in Ax=b.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:61</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a804b595515b17cbd280eb86124d73a07"><div class="ttname"><a href="struct_s_o_l_params.html#a804b595515b17cbd280eb86124d73a07">SOLParams::weight</a></div><div class="ttdeci">double weight</div><div class="ttdoc">Weight for correction schemes.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:49</div></div>
+<div class="ttc" id="aclass_jacobi_html_a12110f0244dc2ce0b6fd8d39e80b6118"><div class="ttname"><a href="class_jacobi.html#a12110f0244dc2ce0b6fd8d39e80b6118">Jacobi::omega</a></div><div class="ttdeci">double omega</div><div class="ttdoc">Weight for damped or weighted Jacobi.</div><div class="ttdef"><b>Definition:</b> Iter.hxx:42</div></div>
+<div class="ttc" id="aclass_s_o_l_html_a72bb6330814ea7ea832f5823285d18c3"><div class="ttname"><a href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SOL::SetSolType</a></div><div class="ttdeci">void SetSolType(SOLType solver)</div><div class="ttdoc">Set solver type.</div><div class="ttdef"><b>Definition:</b> SOL.cxx:156</div></div>
+<div class="ttc" id="a_ret_code_8hxx_html_aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8"><div class="ttname"><a href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">SUCCESS</a></div><div class="ttdoc">Everything is fine.</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:22</div></div>
+<div class="ttc" id="astruct_s_o_l_params_html_a7546f71bcb93fc16f19cfd588908c46b"><div class="ttname"><a href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a></div><div class="ttdeci">Output verbose</div><div class="ttdoc">Output verbosity level.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:50</div></div>
+<div class="ttc" id="aclass_jacobi_html_a2f375c8b20a8cb825f583757fa8f38d9"><div class="ttname"><a href="class_jacobi.html#a2f375c8b20a8cb825f583757fa8f38d9">Jacobi::diagInv</a></div><div class="ttdeci">VEC diagInv</div><div class="ttdoc">Inverse of diagonal entries.</div><div class="ttdef"><b>Definition:</b> Iter.hxx:43</div></div>
+<div class="ttc" id="aclass_s_o_l_html_a370fa587c28e987a35fc3da59676b6d6"><div class="ttname"><a href="class_s_o_l.html#a370fa587c28e987a35fc3da59676b6d6">SOL::PrintParam</a></div><div class="ttdeci">void PrintParam(std::ostream &amp;out=std::cout) const</div><div class="ttdoc">Print parameters.</div><div class="ttdef"><b>Definition:</b> SOL.cxx:218</div></div>
+<div class="ttc" id="aclass_v_e_c_html_af4eff2233a6644183f03af5cc8bf4846"><div class="ttname"><a href="class_v_e_c.html#af4eff2233a6644183f03af5cc8bf4846">VEC::SetValues</a></div><div class="ttdeci">void SetValues(const INT &amp;size, const DBL &amp;value=0.0)</div><div class="ttdoc">Assign the size and the same value to a VEC object.</div><div class="ttdef"><b>Definition:</b> VEC.cxx:104</div></div>
+<div class="ttc" id="a_ret_code_8hxx_html_aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07"><div class="ttname"><a href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07">ERROR_ALLOC_MEM</a></div><div class="ttdoc">Failed to allocate memory.</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:35</div></div>
+<div class="ttc" id="a_s_o_l_8hxx_html_a211350976404ebcc6715299193cc2ea7ad265c8b1fda63fad2de4994858396ed8"><div class="ttname"><a href="_s_o_l_8hxx.html#a211350976404ebcc6715299193cc2ea7ad265c8b1fda63fad2de4994858396ed8">Jacobi</a></div><div class="ttdoc">Jacobi iteration.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:36</div></div>
+<div class="ttc" id="aclass_l_o_p_html_ac6417cdbff4b6af87e90f9ae288ba1cf"><div class="ttname"><a href="class_l_o_p.html#ac6417cdbff4b6af87e90f9ae288ba1cf">LOP::GetColSize</a></div><div class="ttdeci">INT GetColSize() const</div><div class="ttdoc">Get column space dimension.</div><div class="ttdef"><b>Definition:</b> LOP.cxx:50</div></div>
+<div class="ttc" id="aclass_s_o_l_html_a9bc2a6d1e11250089c09235bfe6ae917"><div class="ttname"><a href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">SOL::params</a></div><div class="ttdeci">SOLParams params</div><div class="ttdoc">solver parameters</div><div class="ttdef"><b>Definition:</b> SOL.hxx:66</div></div>
+<div class="ttc" id="afaspxx_8hxx_html_a2c1b481efcce2dbbd0dee644e335c69a"><div class="ttname"><a href="faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a></div><div class="ttdeci">unsigned int INT</div><div class="ttdoc">Index type: Must be non-negative!</div><div class="ttdef"><b>Definition:</b> faspxx.hxx:15</div></div>
+<div class="ttc" id="aclass_v_e_c_html_a77866ca316ae6c9755743133f29b2009"><div class="ttname"><a href="class_v_e_c.html#a77866ca316ae6c9755743133f29b2009">VEC::Reciprocal</a></div><div class="ttdeci">void Reciprocal()</div><div class="ttdoc">Compute reciprocal pointwise.</div><div class="ttdef"><b>Definition:</b> VEC.cxx:193</div></div>
+<div class="ttc" id="aclass_jacobi_html_a92b512b644571448e3b667ce4c823a7c"><div class="ttname"><a href="class_jacobi.html#a92b512b644571448e3b667ce4c823a7c">Jacobi::rk</a></div><div class="ttdeci">VEC rk</div><div class="ttdoc">Work array for the residual.</div><div class="ttdef"><b>Definition:</b> Iter.hxx:44</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
