@@ -80,7 +80,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
     // Initialize iterative method
     numIter = 0;
     A->Apply(x, this->tmp); // A * x -> tmp
-    this->rj.WAXPBY(1.0, b, -1.0, this->tmp); // Todo: Why not using XPAY like CG? --zcs
+    this->rj.WAXPBY(1.0, b, -1.0, this->tmp);
 
     // Prepare for the main loop
     this->r0star = this->rj;  // r0_{*} = r0c
@@ -117,7 +117,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         tmp12 = this->ptmp.Dot(this->r0star);
         if ( fabs(tmp12) > 1e-40 ) alphaj = rjr0star / tmp12;
         else {
-            FASPXX_WARNING("Divided by zero!"); // Possible breakdown
+            FASPXX_WARNING("Divided by zero!") // Possible breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
             break;
         }
@@ -163,7 +163,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                 double xNorminf = x.NormInf();
                 if ( xNorminf < solStagTol ) {
                     if ( params.verbose > PRINT_MIN )
-                        FASPXX_WARNING("Iteration stopped due to x vanishes!");
+                        FASPXX_WARNING("Iteration stopped due to x vanishes!")
                     errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                     break;
                 }
@@ -177,15 +177,15 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                     resAbs = this->rj.Norm2();
                     resRel = resAbs / denAbs;
                     if ( params.verbose > PRINT_SOME ) {
-                        FASPXX_WARNING("Possible iteration stagnate!");
+                        FASPXX_WARNING("Possible iteration stagnate!")
                         WarnRealRes(resRel);
                     }
 
                     if ( resRel < params.relTol || resAbs < params.absTol ) break;
                     else {
                         if ( stagStep >= maxStag ) {
-                            if ( params.verbose > PRINT_MIN ) FASPXX_WARNING(
-                                    "Iteration stopped due to stagnation!");
+                            if ( params.verbose > PRINT_MIN )
+                                FASPXX_WARNING("Iteration stopped due to stagnation!")
                             errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                             break;
                         }
@@ -195,7 +195,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
                     if ( params.verbose > PRINT_SOME ) {
                         WarnDiffRes(xRelDiff, resRel);
-                        FASPXX_WARNING("Iteration restarted due to stagnation!");
+                        FASPXX_WARNING("Iteration restarted due to stagnation!")
                     }
                 } // End of stagnation check!
             } // End of check I and II
@@ -213,15 +213,15 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                 if ( resRel < params.relTol || resAbs < params.absTol ) break;
 
                 if ( params.verbose >= PRINT_MORE ) {
-                    FASPXX_WARNING("False convergence!");
+                    FASPXX_WARNING("False convergence!")
                     WarnCompRes(resRelOld);
                     WarnRealRes(resRel);
                 }
 
-                if ( moreStep >= params.restart ) { // Note: restart has different
-                    // meaning here
+                if ( moreStep >= params.restart ) {
+                    // Note: restart has different meaning here
                     if ( params.verbose > PRINT_MIN )
-                        FASPXX_WARNING("The tolerance might be too small!");
+                        FASPXX_WARNING("The tolerance might be too small!")
                     errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                     break;
                 }
@@ -249,10 +249,12 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
     } // End of main BiCGStab loop
 
-    // Finish iterative method
-    this->norm2 = resAbs;
-    this->normInf = rj.NormInf();
-    PrintFinal(numIter, resRel, resAbs, ratio);
+    // If minIter == numIter == maxIter (preconditioner only), skip this
+    if ( not (numIter == params.minIter && numIter == params.maxIter) ) {
+        this->norm2 = resAbs;
+        this->normInf = rj.NormInf();
+        PrintFinal(numIter, resRel, resAbs, ratio);
+    }
 
     // Restore the saved best iteration if needed
     if ( numIter > params.safeIter ) x = safe;

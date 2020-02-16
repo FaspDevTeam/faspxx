@@ -30,7 +30,7 @@ public:
     ~Identity() {};
 
     /// Iterator
-    virtual FaspRetCode Solve(const VEC &b, VEC &x);
+    virtual FaspRetCode Solve(const VEC& b, VEC& x);
 };
 
 /*! \class Jacobi
@@ -39,25 +39,25 @@ public:
 class Jacobi : public SOL {
 
 public :
-    double   alpha;     ///< Weight for damped or weighted Jacobi
+    double   omega;     ///< Weight for damped or weighted Jacobi
     VEC      diagInv;   ///< Inverse of diagonal entries
     VEC      rk;        ///< Work array for the residual
 
 public:
     /// Default constructor.
-    Jacobi() : alpha(1.0), diagInv(1.0), rk(0.0) {};
+    Jacobi() : omega(1.0), diagInv(1.0), rk(0.0) {};
 
     /// Default destructor.
     ~Jacobi() {};
 
     /// Setup the Jacobi method.
-    FaspRetCode Setup(const MAT &A);
+    FaspRetCode Setup(const MAT& A);
 
     /// Clean up Jacobi data allocated during Setup.
     void Clean() {};
 
     /// Solve Ax=b using the Jacobi method.
-    virtual FaspRetCode Solve(const VEC &b, VEC &x);
+    virtual FaspRetCode Solve(const VEC& b, VEC& x);
 };
 
 #endif /* end if for __ITER_HEADER__ */

@@ -12,16 +12,17 @@
 #include "Iter.hxx"
 
 /// Does nothing in preconditioning
-FaspRetCode Identity::Solve(const VEC &b, VEC &x)
+FaspRetCode Identity::Solve(const VEC& b, VEC& x)
 {
     x = b;
     return FaspRetCode::SUCCESS;
 }
 
 /// Setup Jacobi preconditioner.
-FaspRetCode Jacobi::Setup(const MAT &A)
+FaspRetCode Jacobi::Setup(const MAT& A)
 {
     const INT len = A.GetColSize();
+    SetSolType(SOLType::Jacobi);
 
     // Allocate memory for temporary vectors
     try {
@@ -30,25 +31,22 @@ FaspRetCode Jacobi::Setup(const MAT &A)
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
-    // Set method type
-    SetSolType(SOLType::Jacobi);
-
     // Get diagonal and compute its reciprocal
     A.GetDiag(diagInv);
-    diagInv.Reciprocal();   // Todo: Why not combine it with Jacobi --zcs
+    diagInv.Reciprocal();
 
     // Setup the coefficient matrix
     this->A = &A;
-    this->alpha = params.weight;
+    this->omega = params.weight;
 
-    // Print used parameters
+    // Print used parameters if necessary
     if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
 }
 
 /// Solve Ax=b using the Jacobi method.
-FaspRetCode Jacobi::Solve(const VEC &b, VEC &x)
+FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
 {
     if ( params.verbose > PRINT_NONE ) std::cout << "Use Jacobi to solve Ax=b ...\n";
 
@@ -66,59 +64,47 @@ FaspRetCode Jacobi::Solve(const VEC &b, VEC &x)
 
     // Initialize iterative method
     numIter = 0;
-    A->Apply(x, rk); // rk = A * x
-    rk.XPAY(-1.0, b); // rk = b - rk
 
     // Main Jacobi loop
     while ( numIter < params.maxIter ) {
 
-        // Compute residual norm from minIter
-        if ( numIter == params.minIter ) {
+        // Update residual
+        A->Apply(x, rk); // rk = A * x
+        rk.XPAY(-1.0, b); // rk = b - rk
+
+        // Compute norm of residual and check whether it converges
+        if ( numIter >= params.minIter ) {
             resAbs = rk.Norm2();
-            denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
+            if ( numIter == params.minIter )
+                denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
             if ( resRel < params.relTol || resAbs < params.absTol ) break;
-        }
 
-        // Print iteration information if verbose > 0
-        if ( numIter >= params.minIter )
+            ratio = resAbs / resAbsOld;
+            resAbsOld = resAbs;
             PrintInfo(numIter, resRel, resAbs, ratio);
-
-        ++numIter; // iteration count
+        }
 
         //---------------------------------------------
         // Jacobi iteration starts from here
         //---------------------------------------------
 
+        ++numIter;                 // iteration count
         rk.PointwiseMult(diagInv); // rk = rk ./ dk
-        x.AXPY(alpha, rk); // x = x + alpha * rk
+        x.AXPY(omega, rk);         // x = x + omega * rk
 
         //---------------------------------------------
         // One step of Jacobi iteration ends here
         //---------------------------------------------
 
-        // Prepare for the next iteration
-        if ( numIter < params.maxIter ) {
-            // Update residual
-            A->Apply(x, rk); // rk = A * x
-            rk.XPAY(-1.0, b); // rk = b - rk
-
-            // Compute norm of residual and check whether it converges
-            if ( numIter >= params.minIter ) {
-                resAbs = rk.Norm2();
-                resRel = resAbs / denAbs;
-                if ( resRel < params.relTol || resAbs < params.absTol ) break;
-
-                ratio = resAbs / resAbsOld;
-                resAbsOld = resAbs;
-            }
-        }
     } // End of main Jacobi loop
 
-    // Finish iterative method
-    this->norm2 = resAbs;
-    this->normInf = rk.NormInf();
-    PrintFinal(numIter, resRel, resAbs, ratio);
+    // If minIter == numIter == maxIter (preconditioner only), skip this
+    if ( not (numIter == params.minIter && numIter == params.maxIter) ) {
+        this->norm2 = resAbs;
+        this->normInf = rk.NormInf();
+        PrintFinal(numIter, resRel, resAbs, ratio);
+    }
 
     return errorCode;
 }

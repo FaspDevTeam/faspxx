@@ -197,8 +197,8 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
                     WarnRealRes(resRel);
                 }
 
-                if ( moreStep >= params.restart ) { // Note: restart has different
-                    // meaning here
+                if ( moreStep >= params.restart ) {
+                    // Note: restart has different meaning here
                     if ( params.verbose > PRINT_MIN )
                         FASPXX_WARNING("The tolerance is too small!")
                     errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
@@ -231,10 +231,12 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 
     } // End of main CG loop
 
-    // Finish iterative method
-    this->norm2 = resAbs;
-    this->normInf = rk.NormInf();
-    PrintFinal(numIter, resRel, resAbs, ratio);
+    // If minIter == numIter == maxIter (preconditioner only), skip this
+    if ( not (numIter == params.minIter && numIter == params.maxIter) ) {
+        this->norm2 = resAbs;
+        this->normInf = rk.NormInf();
+        PrintFinal(numIter, resRel, resAbs, ratio);
+    }
 
     // Restore the saved best iteration if needed
     if ( numIter > params.safeIter ) x = safe;

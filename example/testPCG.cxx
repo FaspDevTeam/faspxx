@@ -82,9 +82,9 @@ int main(int argc, const char *args[])
     // Setup preconditioner parameters
     class Jacobi pc;
     pc.SetOutput(PRINT_NONE);
-    pc.SetMaxIter(pcParam.maxIter); // set or read number of iterations
+    pc.SetWeight(pcParam.weight);   // weight for weighted Jacobi
+    pc.SetMaxIter(pcParam.maxIter); // number of iterations
     pc.SetMinIter(pcParam.maxIter); // for preconditioning, use minIter = maxIter!
-    pc.SetWeight(pcParam.weight);
     pc.Setup(mat); // setup preconditioner: a different matrix could be used!
 
     // Setup solver parameters
