@@ -1,10 +1,11 @@
-# Main CMake file for FASP++
+# Main CMakeLists file for FASP++
 # by Chensong Zhang, modified on Feb/15/2020
 #
 # Some sample usages:
+#   cmake .                                      // build in default configuration
 #   cmake -DCMAKE_BUILD_TYPE=Release .           // build in Release configuration
 #   cmake -DCMAKE_BUILD_TYPE=Debug .             // build in Debug configuration
-#   cmake -DCMAKE_BUILD_TYPE=Debug . -DGTEST=ON  // build with GTEST support
+#   cmake -DCMAKE_BUILD_TYPE=Debug -DGTEST=ON .  // build with GTEST support
 #   cmake -DCMAKE_VERBOSE_MAKEFILE=ON .          // build with verbose on
 
 #-----------------------------#
@@ -27,17 +28,16 @@ set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
 find_program(THE_C NAMES $ENV{CC} gcc icc clang)
 set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
 
-# Set default configuration types and flags
+# Default configuration types and flags
 set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Configs" FORCE)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
 
-# Set a default build type if none was specified
 set(build_type "Release")
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "${build_type}" CACHE STRING "the build type" FORCE)
 endif()
-message(STATUS "Set build type to '${CMAKE_BUILD_TYPE}'")
+message(STATUS "Set build type to ${CMAKE_BUILD_TYPE} configuration")
 
 #-----------------------------#
 # Project specific parameters #
@@ -56,6 +56,7 @@ file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
 # Build faspxx library
 add_library(faspxx ${SRC_FILES})
 
+# Set install location for faspxx library
 set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
 install(TARGETS faspxx
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
