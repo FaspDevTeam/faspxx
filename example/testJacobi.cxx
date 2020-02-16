@@ -12,8 +12,6 @@
 // Sample usages:
 //   ./testJacobi -maxIter 1000 -verbose 2
 
-#include <iostream>
-#include <string>
 #include "Timing.hxx"
 #include "ReadData.hxx"
 #include "Param.hxx"

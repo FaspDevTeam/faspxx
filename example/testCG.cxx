@@ -13,8 +13,6 @@
 //   ./testCG -maxIter 200 -minIter 100
 //   ./testCG -maxIter 200 -minIter 0 -mat ../data/fdm_1023X1023.csr -verbose 3
 
-#include <iostream>
-#include <string>
 #include "Param.hxx"
 #include "Timing.hxx"
 #include "ReadData.hxx"

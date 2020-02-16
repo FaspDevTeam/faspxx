@@ -12,12 +12,8 @@
 #ifndef __POISSON2D_HXX__      /*-- allow multiple inclusions --*/
 #define __POISSON2D_HXX__      /**< indicate Poisson2D.hxx has been included before */
 
-#include <iostream>
-#include <fstream>
-#include <cstring>
 #include <cmath>
 
-#define TEST_PROBLEM 1
 //---------------------------------
 // List of test problems:
 // 1 :  u(x,y) = sin(x) * sin(y)
@@ -26,8 +22,9 @@
 // 3 :  u(x,y) = x**2 + y**2
 // 5 :  u(x,y) = x**20 + y**20
 //---------------------------------
+#define TEST_PROBLEM 1
 
-/// \brief The exact solution
+/// The exact solution.
 double ExactSolu(const double x, const double y) {
 #if TEST_PROBLEM == 1
     return sin(M_PI*x)*sin(M_PI*y);
@@ -46,7 +43,7 @@ double ExactSolu(const double x, const double y) {
 #endif
 }
 
-/// \brief Right-hand side function
+/// Right-hand side function.
 double Load(const double x, const double y) {
 #if TEST_PROBLEM == 1
     return 2*M_PI*M_PI*sin(M_PI*x)*sin(M_PI*y);
@@ -65,7 +62,7 @@ double Load(const double x, const double y) {
 #endif
 }
 
-/// \brief Left boundary condition
+/// Left boundary condition.
 double LeftBdyCond(const double x, const double y) {
 #if TEST_PROBLEM == 1
     return 0.0;
@@ -84,7 +81,7 @@ double LeftBdyCond(const double x, const double y) {
 #endif
 }
 
-/// \brief Right boundary condition
+/// Right boundary condition.
 double RightBdyCond(const double x, const double y) {
 #if TEST_PROBLEM == 1
     return 0.0;
@@ -103,7 +100,7 @@ double RightBdyCond(const double x, const double y) {
 #endif
 }
 
-/// \brief Lower boundary condition
+/// Lower boundary condition.
 double LowerBdyCond(const double x, const double y) {
 #if TEST_PROBLEM == 1
     return 0.0;
@@ -122,7 +119,7 @@ double LowerBdyCond(const double x, const double y) {
 #endif
 }
 
-/// \brief Upper boundary condition
+/// Upper boundary condition.
 double UpperBdyCond(const double x, const double y) {
 #if TEST_PROBLEM == 1
     return 0.0;

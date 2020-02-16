@@ -9,7 +9,6 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <iostream>
 #include "faspxx.hxx"
 #include "RetCode.hxx"
 #include "MATUtil.hxx"

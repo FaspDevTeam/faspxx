@@ -4,7 +4,6 @@
  *  \date    Nov/05/2019
  */
 
-#include <iostream>
 #include "Timing.hxx"
 #include "Param.hxx"
 #include "LOP.hxx"

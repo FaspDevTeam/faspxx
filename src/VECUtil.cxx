@@ -1,7 +1,7 @@
-/*! \file VECUtil.cxx
- *  \brief Some auxiliary functions for VEC
- *  \author Kailei Zhang
- *  \date Sep/25/2019
+/*! \file    VECUtil.cxx
+ *  \brief   Some auxiliary functions for VEC
+ *  \author  Kailei Zhang
+ *  \date    Sep/25/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -12,7 +12,7 @@
 #include <cmath>
 #include "VECUtil.hxx"
 
-//! Check whether the size of VEC object is zero
+/// Check whether the size of VEC object is zero.
 FaspRetCode CheckVECSize(const VEC& v)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
@@ -28,7 +28,7 @@ FaspRetCode CheckVECSize(const VEC& v)
     return retCode;
 }
 
-//! Check whether two VEC sizes match
+/// Check whether two VEC sizes match.
 FaspRetCode CheckVECSize(const VEC& v1, const VEC& v2)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
@@ -44,7 +44,7 @@ FaspRetCode CheckVECSize(const VEC& v1, const VEC& v2)
     return retCode;
 }
 
-//! Check whether vector crossover
+/// Check whether vector crossover.
 FaspRetCode CheckVECSize(const VEC& v, const INT& position)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
@@ -60,7 +60,7 @@ FaspRetCode CheckVECSize(const VEC& v, const INT& position)
     return retCode;
 }
 
-//! Check whether there is a zero entry in VEC object
+/// Check whether there is a zero entry in VEC object.
 FaspRetCode CheckVECZero(const VEC& v, const DBL tol)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw

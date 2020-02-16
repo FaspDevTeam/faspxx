@@ -9,7 +9,6 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <sstream>
 #include "SOL.hxx"
 
 /// Warning for actual relative residual.

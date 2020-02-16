@@ -9,15 +9,12 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <iostream>
-#include <vector>
-#include <cstdlib>
 #include <cstring>
 #include "Timing.hxx"
 #include "VEC.hxx"
 
 const int LENGTH = 10000000;
-const int count = 100;
+const int count  = 100;
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/
