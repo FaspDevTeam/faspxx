@@ -24,7 +24,7 @@
  */
 class BiCGStab:public SOL
 {
-private:  // Todo: Check whether we need so many temp vectors! Add Doxygen. --zcs
+private:
     VEC r0star;  ///< Work vector for r0*
     VEC tmp;
     VEC apj;
@@ -39,22 +39,22 @@ private:  // Todo: Check whether we need so many temp vectors! Add Doxygen. --zc
     VEC safe;    ///< Work vector for safe-guard
 
 public:
-    /// Default constructor。
+    /// Default constructor.
     BiCGStab() : r0star(0), tmp(0), apj(0), asj(0), pj(0),
                  rj(0), sj(0), ptmp(0), stmp(0), mp(0),
                  ms(0),safe(0) { };
 
-    /// Default destructor。
-    ~BiCGStab() {};
+    /// Default destructor.
+    ~BiCGStab() = default;
 
     /// Setup the BiCGStab method.
-    FaspRetCode Setup(const LOP& A);
+    FaspRetCode Setup(const LOP& A) override;
 
     /// Clean up CG data allocated during Setup.
-    void Clean();
+    void Clean() override;
 
     /// Solve Ax=b using the BiCGStab method.
-    FaspRetCode Solve(const VEC& b, VEC& x);
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 };
 
 #endif /* end if for __BICGSTAB_HEADER__ */

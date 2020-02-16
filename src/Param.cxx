@@ -52,6 +52,7 @@ static bool JudgeBool(const std::string& value)
     }
 }
 
+/// Save the user specified parameters.
 void Parameters::SaveUserParams(std::string& save) const
 {
     size_t max_len = 0;
@@ -90,6 +91,7 @@ void Parameters::SaveUserParams(std::string& save) const
     save = out.str();
 }
 
+/// Read user parameters from command line input.
 void Parameters::ReadFromCommandLine()
 {
     if (argc == 1) return;
@@ -107,11 +109,11 @@ void Parameters::ReadFromCommandLine()
     }
 }
 
+/// Read user parameters from an input file.
 void Parameters::ReadFromFile()
 {
     for (auto& itm: paramsUser) {
-        if (itm.paramMarker == 2)
-        {
+        if (itm.paramMarker == 2) {
             std::ifstream file;
 
             // first try to find param_file from command line params
@@ -122,7 +124,7 @@ void Parameters::ReadFromFile()
                 file.open(*((std::string*)itm.paramPtr)); // second try to find param_file from user program
             }
 
-            if (!file.is_open()) FASPXX_WARNING("Not found file");
+            if (!file.is_open()) FASPXX_WARNING("File not found!");
 
             std::string line, name, value;
             while (std::getline(file, line)) {
@@ -137,6 +139,7 @@ void Parameters::ReadFromFile()
     }
 }
 
+/// Merge parameters from different sources.
 void Parameters::MergeParams()
 {
     std::map<std::string, std::string>::iterator iter;
@@ -149,6 +152,7 @@ void Parameters::MergeParams()
     }
 }
 
+/// Update parameter value and give warning if unknown type is specified.
 void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& iter, ParamHolder& prm)
 {
     switch (prm.paramType) {
@@ -166,34 +170,43 @@ void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& 
             break;
         case OutputType:
             *(Output*) prm.paramPtr = (Output) std::stoi(iter->second);
+            break;
+        default:
+            FASPXX_WARNING("Unknown parameter type!");
     }
 }
 
+/// Bool type parameter.
 void Parameters::AddParam(const std::string& name, const std::string& help, bool * ptr, int marker)
 {
     paramsUser.emplace_back(BoolType, name, help, ptr, marker);
 }
 
+/// Int type parameter.
 void Parameters::AddParam(const std::string& name, const std::string& help, int * ptr, int marker)
 {
     paramsUser.emplace_back(IntType, name, help, ptr, marker);
 }
 
+/// Double type parameter.
 void Parameters::AddParam(const std::string& name, const std::string& help, double * ptr, int marker)
 {
     paramsUser.emplace_back(DoubleType, name, help, ptr, marker);
 }
 
+/// String type parameter.
 void Parameters::AddParam(const std::string& name, const std::string& help, std::string * ptr, int marker)
 {
     paramsUser.emplace_back(StringType, name, help, ptr, marker);
 }
 
+/// Output type parameter.
 void Parameters::AddParam(const std::string& name, const std::string& help, Output * ptr, int marker)
 {
     paramsUser.emplace_back(OutputType, name, help, ptr, marker);
 }
 
+/// Main entrance point for reading and handling parameters.
 void Parameters::Parse()
 {
     // Read parameters
@@ -249,6 +262,7 @@ void Parameters::PrintUserParams(std::ostream &out) const
     out << paramsUserOrg << std::endl;
 }
 
+/// Print parameters used with width adapt to the names.
 void Parameters::Print(std::ostream &out) const
 {
     size_t max_len = 0;
@@ -285,6 +299,7 @@ void Parameters::Print(std::ostream &out) const
     out << '\n';
 }
 
+/// Print out usage help for command line.
 void Parameters::PrintHelp(std::ostream &out) const
 {
     static const char *indent = "   ";

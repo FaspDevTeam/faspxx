@@ -36,16 +36,16 @@ public:
     CG() : rk(0), pk(0), zk(0), ax(0), safe(0) {};
 
     /// Default destructor.
-    ~CG() {};
+    ~CG() = default;
 
     /// Setup the CG method.
-    FaspRetCode Setup(const LOP& A);
+    FaspRetCode Setup(const LOP& A) override;
 
     /// Clean up CG data allocated during Setup.
-    void Clean();
+    void Clean() override;
 
     /// Solve Ax=b using the CG method.
-    FaspRetCode Solve(const VEC& b, VEC& x);
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 };
 
 #endif /* end if for __CG_HEADER__ */

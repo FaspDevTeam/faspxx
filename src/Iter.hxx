@@ -48,16 +48,16 @@ public:
     Jacobi() : omega(1.0), diagInv(1.0), rk(0.0) {};
 
     /// Default destructor.
-    ~Jacobi() {};
+    ~Jacobi() = default;
 
     /// Setup the Jacobi method.
     FaspRetCode Setup(const MAT& A);
 
     /// Clean up Jacobi data allocated during Setup.
-    void Clean() {};
+    void Clean() override {};
 
     /// Solve Ax=b using the Jacobi method.
-    virtual FaspRetCode Solve(const VEC& b, VEC& x);
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 };
 
 #endif /* end if for __ITER_HEADER__ */

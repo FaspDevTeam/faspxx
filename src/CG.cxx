@@ -9,8 +9,6 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <iostream>
-#include <iomanip>
 #include "Iter.hxx"
 #include "CG.hxx"
 
