@@ -187,6 +187,7 @@ MAT::MAT(const MAT& mat) {
 
 /// Assignment for the MAT object.
 MAT& MAT::operator=(const MAT& mat) {
+    if ( this == &mat ) return *this; // self-assignment
     this->nrow = mat.nrow;
     this->mcol = mat.mcol;
     this->nnz = mat.nnz;

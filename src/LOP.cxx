@@ -35,6 +35,7 @@ LOP::LOP(const LOP& lop)
 /// Assignment for the LOP object.
 LOP& LOP::operator=(const LOP& lop)
 {
+    if ( this == &lop ) return *this; // self-assignment
     this->nrow = lop.nrow;
     this->mcol = lop.mcol;
     return *this;

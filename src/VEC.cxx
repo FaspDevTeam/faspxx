@@ -47,8 +47,9 @@ VEC::VEC(const INT& size, const DBL *src)
 /// Assignment for the VEC object.
 VEC& VEC::operator=(const VEC& src)
 {
+    if ( this == &src ) return *this; // self-assignment
     this->values = src.values;
-    this->size = src.size;
+    this->size   = src.size;
     return *this;
 }
 
