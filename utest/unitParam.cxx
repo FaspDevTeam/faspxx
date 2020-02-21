@@ -1,5 +1,5 @@
 /** \file    unitMAT.cxx
- *  \brief   Unit test for MAT class implementations
+ *  \brief   Unit test for reading parameters
  *  \author  Ronghong Fan
  *  \date    Oct/24/2019
  *

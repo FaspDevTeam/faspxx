@@ -1,7 +1,7 @@
-/** \file Timing.hxx
- *  \brief Measure elapsed wall-time and CPU-cycles
- *  \author Chensong Zhang
- *  \date Sep/24/2019
+/** \file    Timing.hxx
+ *  \brief   Measure elapsed wall-time and CPU-cycles
+ *  \author  Chensong Zhang
+ *  \date    Sep/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.

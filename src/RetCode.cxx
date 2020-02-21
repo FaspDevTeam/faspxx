@@ -1,7 +1,7 @@
-/** \file RetCode.hxx
- *  \brief Decode return code into a readable string
- *  \author Chensong Zhang
- *  \date Sep/25/2019
+/** \file    RetCode.hxx
+ *  \brief   Decode return code into a readable string
+ *  \author  Chensong Zhang
+ *  \date    Sep/25/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.

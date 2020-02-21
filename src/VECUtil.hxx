@@ -1,7 +1,7 @@
-/**\file VECUtil.hxx
- *  \brief Tools for checking and manipulating VEC
- *  \author Chensong Zhang, Kailei Zhang
- *  \date Sep/24/2019
+/** \file    VECUtil.hxx
+ *  \brief   Tools for checking and manipulating VEC
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    Sep/24/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.

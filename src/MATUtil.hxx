@@ -1,7 +1,7 @@
-/**\file MATUtil.hxx
- *  \brief Tools for checking and manipulating MAT
- *  \author Chensong Zhang, Kailei Zhang
- *  \date Sep/26/2019
+/** \file    MATUtil.hxx
+ *  \brief   Tools for checking and manipulating MAT
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    Sep/26/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.

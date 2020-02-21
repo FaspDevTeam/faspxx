@@ -1,7 +1,7 @@
-/*! \file MATUtil.cxx
- *  \brief Some auxiliary functions for MAT
- *  \author Chensong Zhang, Kailei Zhang
- *  \date Sep/26/2019
+/*! \file    MATUtil.cxx
+ *  \brief   Some auxiliary functions for MAT
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    Sep/26/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
