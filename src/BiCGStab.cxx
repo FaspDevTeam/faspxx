@@ -15,10 +15,12 @@
 /// Allocate memory, assign param to this->param.
 FaspRetCode BiCGStab::Setup(const LOP &A)
 {
-    const INT len = A.GetColSize();
+    // Set solver type
+    SetSolType(SOLType::BICGSTAB);
 
     // Allocate memory for temporary vectors
     try {
+        const INT len = A.GetColSize();
         r0star.SetValues(len, 0.0);
         tmp.SetValues(len, 0.0);
         apj.SetValues(len, 0.0);
@@ -34,9 +36,6 @@ FaspRetCode BiCGStab::Setup(const LOP &A)
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
-
-    // Set method type
-    SetSolType(SOLType::BICGSTAB);
 
     // Setup the coefficient matrix
     this->A = &A;

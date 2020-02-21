@@ -21,12 +21,12 @@ FaspRetCode Identity::Solve(const VEC& b, VEC& x)
 /// Setup Jacobi preconditioner.
 FaspRetCode Jacobi::Setup(const MAT& A)
 {
-    const INT len = A.GetColSize();
-    SetSolType(SOLType::Jacobi); // method type
+    // Set solver type
+    SetSolType(SOLType::Jacobi);
 
     // Allocate memory for temporary vectors
     try {
-        rk.SetValues(len, 0.0);
+        rk.SetValues(A.GetColSize(), 0.0);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }

@@ -15,11 +15,12 @@
 /// Allocate memory, setup coefficient matrix of the linear system.
 FaspRetCode CG::Setup(const LOP &A)
 {
-    const INT len = A.GetColSize();
-    SetSolType(SOLType::CG); // method type
+    // Set solver type
+    SetSolType(SOLType::CG);
 
     // Allocate memory for temporary vectors
     try {
+        const INT len = A.GetColSize();
         zk.SetValues(len, 0.0);
         pk.SetValues(len, 0.0);
         rk.SetValues(len, 0.0);
