@@ -130,6 +130,9 @@ public:
     /// Sparse matrix-vector multiplication.
     void Apply(const VEC &v, VEC &w) const;
 
+    /// Residual b - Ax.
+    void Residual(const VEC &b, const VEC &x, VEC &r) const;
+
     /// Transpose of the matrix.
     void Transpose();
 

@@ -52,16 +52,9 @@ void BiCGStab::Clean()
     // Nothing is needed for the moment!
 }
 
-/// Preconditioned Bi-Conjugate Gradient Stabilized method.
+/// Preconditioned Bi-Conjugate Gradient Stabilized method. Don't check problem sizes.
 FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 {
-    if ( params.verbose > PRINT_NONE ) std::cout << "Use BiCGStab to solve Ax=b ...\n";
-
-    // Check whether vector space sizes match
-    if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
-                                        || A->GetRowSize() != A->GetColSize() )
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
-
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables

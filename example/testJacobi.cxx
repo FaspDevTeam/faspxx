@@ -38,6 +38,7 @@ int main(int argc, const char *args[])
     params.AddParam("-minIter", "Min iteration steps", &solParam.minIter);
     params.AddParam("-resRel", "Relative residual tolerance", &solParam.relTol);
     params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
+    params.AddParam("-weight", "Weight for Jacobi", &solParam.weight);
     params.AddParam("-verbose", "Verbose level", &solParam.verbose);
 
     // Parse and print used parameters

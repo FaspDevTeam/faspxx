@@ -45,16 +45,9 @@ void CG::Clean()
     // Nothing is needed for the moment!
 }
 
-/// Using the Preconditioned Conjugate Gradient method.
+/// Using the Preconditioned Conjugate Gradient method. Don't check problem sizes.
 FaspRetCode CG::Solve(const VEC &b, VEC &x)
 {
-    if ( params.verbose > PRINT_NONE ) std::cout << "Use CG to solve Ax=b ...\n";
-
-    // Check whether vector space sizes match
-    if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
-                                        || A->GetRowSize() != A->GetColSize() )
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
-
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Local variables
@@ -75,7 +68,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     rk.XPAY(-1.0, b); // b - rk -> rk
 
     // Preconditioned search direction
-    zk.SetValues(len,0.0);
+    zk.SetValues(len,0.0); // initialize zk = 0
     pc->Solve(rk, zk); // preconditioning: B(r_k) -> z_k
 
     // Prepare for the main loop

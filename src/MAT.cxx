@@ -409,7 +409,7 @@ void MAT::Apply(const VEC& v, VEC& w) const {
     } else { // Only sparse structure
         for ( i = 0; i < this->nrow; ++i ) {
             begin = this->rowPtr[i];
-            switch (this->rowPtr[i + 1] - begin) {
+            switch ( this->rowPtr[i + 1] - begin ) {
                 case 4:
                     w.values[i] = v.values[this->colInd[begin]];
                     w.values[i] += v.values[this->colInd[begin + 1]];
@@ -438,6 +438,24 @@ void MAT::Apply(const VEC& v, VEC& w) const {
             }
         }
     } // end if values.size > 0
+}
+
+/// Compute r = b - *this * x.
+void MAT::Residual(const VEC& b, const VEC& x, VEC& r) const {
+    INT begin, i, k;
+
+    if ( x.NormInf() < CLOSE_ZERO ) {
+        r = b; // if x = 0, for preconditioning
+        return;
+    }
+
+    for ( i = 0; i < this->nrow; ++i ) {
+        begin = this->rowPtr[i];
+        r.values[i] = b.values[i]
+                    - this->values[begin] * x.values[this->colInd[begin]];
+        for ( k = begin+1; k < this->rowPtr[i + 1]; ++k )
+            r.values[i] -= this->values[k] * x.values[this->colInd[k]];
+    }
 }
 
 /// Transpose *this in place

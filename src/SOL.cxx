@@ -216,16 +216,17 @@ int SOL::GetIterations() const
 /// Print parameters.
 void SOL::PrintParam(std::ostream& out) const
 {
-    out << "\nParameters for " << GetSolType(params.type) << " method\n"
+    out << "\nUsing " << GetSolType(params.type)
+        << " method with the following parameters\n"
         << "---------------------------------------------\n"
-        << "    Max num of iteration: " << params.maxIter  << '\n'
-        << "    Min num of iteration: " << params.minIter  << '\n'
-        << "    Safe-guard iteration: " << params.safeIter << '\n'
-        << "    Restart number:       " << params.restart  << '\n'
-        << "    Relative tolerance:   " << params.relTol   << '\n'
-        << "    Absolute tolerance:   " << params.absTol   << '\n'
-        << "    Relaxation weight:    " << params.weight   << '\n'
-        << "    Output level:         " << params.verbose  << '\n' << "\n";
+        << "    Max num of iteration: " << params.maxIter  << "\n"
+        << "    Min num of iteration: " << params.minIter  << "\n"
+        << "    Safe-guard iteration: " << params.safeIter << "\n"
+        << "    Restart number:       " << params.restart  << "\n"
+        << "    Relative tolerance:   " << params.relTol   << "\n"
+        << "    Absolute tolerance:   " << params.absTol   << "\n"
+        << "    Relaxation weight:    " << params.weight   << "\n"
+        << "    Output level:         " << params.verbose  << "\n\n";
 }
 
 /// Build preconditioner operator.

@@ -31,13 +31,14 @@ FaspRetCode Jacobi::Setup(const MAT& A)
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
-    // Get diagonal and compute its reciprocal
-    A.GetDiag(diagInv);
-    diagInv.Reciprocal();
-
     // Setup the coefficient matrix
     this->A = &A;
     this->omega = params.weight;
+
+    // Get diagonal and compute its scaled reciprocal = 1 ./ diag * omega
+    A.GetDiag(diagInv);
+    diagInv.Reciprocal();
+    diagInv.Scale(omega);
 
     // Print used parameters if necessary
     if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
@@ -45,16 +46,9 @@ FaspRetCode Jacobi::Setup(const MAT& A)
     return FaspRetCode::SUCCESS;
 }
 
-/// Solve Ax=b using the Jacobi method.
+/// Solve Ax=b using the Jacobi method. Don't check problem sizes.
 FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
 {
-    if ( params.verbose > PRINT_NONE ) std::cout << "Use Jacobi to solve Ax=b ...\n";
-
-    // Check whether vector space sizes match
-    if ( x.GetSize() != A->GetColSize() || b.GetSize() != A->GetRowSize()
-                                        || A->GetRowSize() != A->GetColSize() )
-        return FaspRetCode::ERROR_NONMATCH_SIZE;
-
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables
@@ -69,8 +63,7 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
     while ( numIter < params.maxIter ) {
 
         // Update residual
-        A->Apply(x, rk); // rk = A * x
-        rk.XPAY(-1.0, b); // rk = b - rk
+        A->Residual(b, x, rk);
 
         // Compute norm of residual and check whether it converges
         if ( numIter >= params.minIter ) {
@@ -90,8 +83,8 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
         //---------------------------------------------
 
         ++numIter;                 // iteration count
-        rk.PointwiseMult(diagInv); // rk = rk ./ dk
-        x.AXPY(omega, rk);         // x = x + omega * rk
+        rk.PointwiseMult(diagInv); // rk = omega * rk ./ dk
+        x += rk;                   // x = x + omega * rk
 
         //---------------------------------------------
         // One step of Jacobi iteration ends here
