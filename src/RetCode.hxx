@@ -13,8 +13,8 @@
 #define __RETCODE_HEADER__      /**< indicate RetCode.hxx has been included before */
 
 #include <string>
-#include <ostream>
 #include <iostream>
+#include <stdexcept>
 
 /// \brief Return code definition
 enum FaspRetCode
@@ -53,8 +53,6 @@ enum FaspRetCode
     //---------- ILU method problems ----------------------------------------------//
     ERROR_SWZ_TYPE         = -60,  ///< Unknown Schwarz method type
     ERROR_SWZ_SETUP        = -69,  ///< Schwarz method setup failed to complete
-    //---------- Unknown problems (default) ---------------------------------------//
-    ERROR_UNKNOWN          = -99,  ///< Unknown error type
 };
 
 /// \brief Get error message from FaspRetCode

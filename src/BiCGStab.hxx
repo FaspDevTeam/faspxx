@@ -12,8 +12,6 @@
 #ifndef __BICGSTAB_HEADER__    /*-- allow multiple inclusions --*/
 #define __BICGSTAB_HEADER__    /**< indicate BiCGStab.hxx has been included before */
 
-#include <cmath>
-#include <cfloat>
 #include "ErrorLog.hxx"
 #include "LOP.hxx"
 #include "MAT.hxx"

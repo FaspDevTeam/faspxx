@@ -12,13 +12,11 @@
 #ifndef __PARAM_HEADER__      /*-- allow multiple inclusions --*/
 #define __PARAM_HEADER__      /**< indicate Param.hxx has been included before */
 
-#include <utility>
-#include <vector>
-#include <string>
-#include <iostream>
-#include <cstring>
-#include <fstream>
 #include <map>
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <cstring>
 #include "faspxx.hxx"
 
 /// Level of output

@@ -12,10 +12,6 @@
 #ifndef __SOL_HEADER__      /*-- allow multiple inclusions --*/
 #define __SOL_HEADER__      /**< indicate SOL.hxx has been included before */
 
-#include <cstring>
-#include <iomanip>
-#include <iostream>
-#include <fstream>
 #include "faspxx.hxx"
 #include "RetCode.hxx"
 #include "ErrorLog.hxx"

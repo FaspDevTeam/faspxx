@@ -47,13 +47,13 @@ FaspRetCode BiCGStab::Setup(const LOP &A)
     return FaspRetCode::SUCCESS;
 }
 
-/// Release additional memory allocated for CG.
+/// Release additional memory allocated for BiCGStab.
 void BiCGStab::Clean()
 {
     // Nothing is needed for the moment!
 }
 
-/// Using the Preconditioned Bi-Conjugate Gradient Stabilized method.
+/// Preconditioned Bi-Conjugate Gradient Stabilized method.
 FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 {
     if ( params.verbose > PRINT_NONE ) std::cout << "Use BiCGStab to solve Ax=b ...\n";
