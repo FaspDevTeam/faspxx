@@ -229,6 +229,14 @@ void SOL::PrintParam(std::ostream& out) const
         << "    Output level:         " << params.verbose  << "\n\n";
 }
 
+/// Print solver time.
+void SOL::PrintTime(const double duration, std::ostream& out) const
+{
+    std::cout << "Solving linear system with " << GetSolType(params.type)
+              << " costs "  << std::fixed << std::setprecision(2)
+              << duration << "ms" << std::endl;
+}
+
 /// Build preconditioner operator.
 void SOL::SetPC(SOL& precond)
 {

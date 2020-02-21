@@ -134,6 +134,9 @@ public:
     void PrintFinal(const int& iter, const double& resRel, const double& resAbs,
                     const double& ratio, std::ostream& out = std::cout) const;
 
+    /// Print out duration of solver.
+    void PrintTime(const double duration, std::ostream& out = std::cout) const;
+
     /// Setup preconditioner operator.
     virtual void SetPC(SOL& pc);
 

@@ -82,8 +82,7 @@ int main(int argc, const char *args[])
     // Solve the linear system using Jacobi iteration
     timer.Start();
     retCode = solver.Solve(b, x);
-    std::cout << "Solving linear system costs " << std::fixed
-              << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
+    solver.PrintTime(timer.Stop());
 
     return retCode;
 }

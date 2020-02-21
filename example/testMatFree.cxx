@@ -226,8 +226,7 @@ int main(int argc, char *args[])
         // Call CG method to solve Ax=b
         timer.Start();
         cg.Solve(b, x);
-        std::cout << "Solving linear system costs " << std::fixed
-                  << std::setprecision(2) << timer.Stop() << "ms" << std::endl;
+        cg.PrintTime(timer.Stop());
 
         std::cout << std::scientific << std::setprecision(4)
                   << "NumIter : " << cg.GetIterations() << std::endl
