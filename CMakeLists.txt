@@ -90,6 +90,10 @@ target_link_libraries(testJacobi faspxx)
 add_executable(testMatFree example/testMatFree.cxx)
 target_link_libraries(testMatFree faspxx)
 
+# Test MatFree implementation of 2D5P stencil
+add_executable(testWeightJacobi example/testWeightJacobi.cxx)
+target_link_libraries(testWeightJacobi faspxx)
+
 # GoogleTest, default "OFF" (enable by "-DGTEST=ON")
 option(GTEST "Google Test" OFF)
 add_subdirectory(utest)
