@@ -232,9 +232,19 @@ void SOL::PrintParam(std::ostream& out) const
 /// Print solver time.
 void SOL::PrintTime(const double duration, std::ostream& out) const
 {
-    std::cout << "Solving linear system with " << GetSolType(params.type)
-              << " costs "  << std::fixed << std::setprecision(2)
-              << duration << "ms" << std::endl;
+    if ( duration < CLOCK_SECOND ) {
+        std::cout << "Solving linear system with " << GetSolType(params.type)
+                  << " costs "  << std::fixed << std::setprecision(3)
+                  << duration << "ms" << std::endl;
+    } else if ( duration < CLOCK_MINUTE ) {
+        std::cout << "Solving linear system with " << GetSolType(params.type)
+                  << " costs "  << std::fixed << std::setprecision(3)
+                  << duration/1000.0 << "s" << std::endl;
+    } else {
+        std::cout << "Solving linear system with " << GetSolType(params.type)
+                  << " costs "  << std::fixed << std::setprecision(3)
+                  << duration/60000.0 << "m" << std::endl;
+    }
 }
 
 /// Build preconditioner operator.

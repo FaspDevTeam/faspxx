@@ -67,7 +67,7 @@ int main(int argc, const char *args[])
     x.SetValues(mcol, 1.0);
     if ( strcmp(x0File.c_str(), "") != 0 ) ReadVEC(x0File.c_str(), x);
 
-    std::cout << "Reading Ax = b costs " << timer.Stop() << "ms" << std::endl;
+    timer.StopInfo("Reading Ax = b");
 
     // Setup solver parameters
     class Jacobi solver;
