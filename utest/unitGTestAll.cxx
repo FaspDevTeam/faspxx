@@ -18,6 +18,7 @@
 #include "unitVEC.cxx"
 #include "unitMAT.cxx"
 #include "unitParam.cxx"
+#include "unitJacobi.cxx"
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/

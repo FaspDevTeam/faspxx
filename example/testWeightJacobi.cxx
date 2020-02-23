@@ -88,10 +88,12 @@ int main(){
     VEC x1(2);
     VEC x2(3);
 
-    DBL wei1=0.4;
+    DBL wei1=0.5;
     DBL wei2=0.5;
 
     class Jacobi j1;
+    j1.SetOutput(Output::PRINT_SOME);
+    j1.SetRelTol(1e-9);
     j1.SetWeight(wei1);
     j1.Setup(mat1);
     j1.Solve(vec1,x1);
@@ -102,6 +104,8 @@ int main(){
     cout<<"x1 : "<<x1[0]<<" , "<<x1[1]<<endl;
 
     class Jacobi j2;
+    j2.SetOutput(Output::PRINT_SOME);
+    j2.SetRelTol(1e-9);
     j2.SetWeight(wei2);
     j2.Setup(mat2);
     j2.Solve(vec2,x2);
