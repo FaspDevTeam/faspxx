@@ -25,13 +25,25 @@ MAT mat0;
  * 0 & 0 & 2 & 1 \\
  * \end{pmatrix}
  * \]
+ * \[
+ * \begin{pmatrix}
+ * 0.00000 & -0.00000 & 0.20000 & -0.20000 \\
+ * 2.66667 & 0.33333 & -0.13333 & -1.20000 \\
+ * 1.00000 & 0.00000 & 0.00000 & 0.00000 \\
+ * -2.00000 & 0.00000 & 0.00000 & 1.00000 \\
+ * \end{pmatrix}
+ * \]
  * */
-const std::vector<DBL> values1 = {0,1,2,3,4,5,2,1,2,1};
-const std::vector<INT> colInd1 = {0,2,0,1,3,0,2,3,2,3};
-const std::vector<INT> rowPtr1 = {0,2,5,8,10};
-const std::vector<INT> diag1 = {0,3,6,9};
+const std::vector<DBL> values1 = {0, 1, 2, 3, 4, 5, 2, 1, 2, 1};
+const std::vector<INT> colInd1 = {0, 2, 0, 1, 3, 0, 2, 3, 2, 3};
+const std::vector<INT> rowPtr1 = {0, 2, 5, 8, 10};
+const std::vector<INT> diag1 = {0, 3, 6, 9};
+const std::vector<DBL> values2 = {0, 0.2, -0.2, 2.66667, 0.33333, -0.13333, -1.2, 1, 0, -2, 1};
+const std::vector<INT> colInd2 = {0, 2, 3, 0, 1, 2, 3, 0, 2, 0, 3};
+const std::vector<INT> rowPtr2 = {0, 3, 7, 9, 11};
+const std::vector<INT> diag2 = {0, 4, 8, 10};
 const MAT mat1(4, 4, 10, values1, colInd1, rowPtr1, diag1);
-
+const MAT invmat1(4,4,11, values2, colInd2, rowPtr2, diag2);
 // Sparse structure
 const MAT mat2(4, 4, 10, colInd1, rowPtr1, diag1);
 
@@ -180,6 +192,14 @@ TEST(MAT_Scale, Scale)
             EXPECT_DOUBLE_EQ(mat.GetValue(i, j), mat7.GetValue(i, j));
 }
 
+TEST(MAT_Inverse, Inverse)
+{
+    MAT mat;
+    mat1.Inverse(mat);
+    for(INT i = 0; i < mat.GetRowSize(); i++)
+        for(INT j = 0; j < mat.GetColSize(); j++)
+            EXPECT_NEAR(mat.GetValue(i, j), invmat1.GetValue(i, j));
+}
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/
