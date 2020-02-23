@@ -829,7 +829,7 @@ void MAT::Inverse(MAT& mat) {
         kn = k * n;
         l = kn + k;
 
-        if( fabs(mat.values[l]) < SMALL )
+        if( fabs(mat.values[l]) < CLOSE_ZERO )
             FASPXX_WARNING("### ERROR: Diagonal entry is close to zero! ");
 
         alinv = 1.0 / mat.values[l];
