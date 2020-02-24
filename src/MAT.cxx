@@ -10,6 +10,7 @@
  */
 
 #include <fstream>
+#include <cmath>
 #include "MAT.hxx"
 #include "MATUtil.hxx"
 
@@ -766,6 +767,112 @@ void MAT::MultRight(const MAT& mat) {
     tmp = *this;
 
     Mult(mat, tmp);
+}
+
+/// mat = Inverse(*this)
+void MAT::Inverse(MAT& mat) {
+    mat.nrow = this->nrow;
+    mat.mcol = this->mcol;
+    mat.nnz = this->nrow * this->mcol;
+
+    mat.rowPtr.resize(this->nrow + 1);
+    for(INT j = 0; j < this->nrow + 1; ++j)
+        mat.rowPtr[j] = j * this->mcol;
+
+    mat.colInd.resize(this->nrow * this->mcol);
+    INT count = 0;
+    INT k, j;
+    for(j = 0;j < this->nrow; ++j) {
+        for(k=0; k < this->mcol; ++k) {
+            mat.colInd[count] = k;
+            ++count;
+        }
+    }
+
+    mat.values.resize(this->nrow * this->mcol);
+
+    count=0;
+    INT num = 0, numcount = 0;
+    for(j = 0; j < this->nrow; ++j) {
+        num = this->rowPtr[j+1] - this->rowPtr[j];
+        for(k = 0; k < this->colInd[this->rowPtr[j]]; ++k){
+            mat.values[count] = 0;
+            ++count;
+        }
+        for(k = 0; k < mcol; ++k) {
+            if( this->colInd[this->rowPtr[j] + numcount] == k ) {
+                mat.values[count] = this->values[this->rowPtr[j] + numcount];
+                ++numcount;
+                ++count;
+            } else {
+                mat.values[count]=0;
+                ++count;
+            }
+            if( num == numcount ) {
+                numcount = 0;
+                break;
+            }
+        }
+        for(k = this->colInd[this->rowPtr[j + 1]] + count; k < this->mcol; ++k) {
+            mat.values[count] = 0;
+            ++count;
+        }
+    }
+
+    mat.FormDiagPtr();
+
+    INT kn, in, u, i, l;
+    DBL alinv;
+
+    INT n = this->nrow;
+    for(k = 0; k < n; ++k){
+        kn = k * n;
+        l = kn + k;
+
+        if( fabs(mat.values[l]) < CLOSE_ZERO )
+            FASPXX_WARNING("### ERROR: Diagonal entry is close to zero! ");
+
+        alinv = 1.0 / mat.values[l];
+        mat.values[l] = alinv;
+
+        for(j = 0; j < k; ++j) {
+            u = kn + j;
+            mat.values[u] *= alinv;
+        }
+        for(j = k + 1; j < n; ++j) {
+            u = kn + j;
+            mat.values[u] *= alinv;
+        }
+        for(i = 0; i < k; ++i) {
+            in = i * n;
+            for(j = 0; j < n; ++j) {
+                if( j != k ) {
+                    u = in + j;
+                    mat.values[u] -= mat.values[in + k] * mat.values[kn + j];
+                }// end if
+            }
+        }
+
+        for(i = k + 1; i < n; ++i){
+            in = i * n;
+            for(j = 0; j < n; ++j){
+                if( j != k){
+                    u = in + j;
+                    mat.values[u] -= mat.values[in + k] * mat.values[kn + j];
+                }// end if
+            }
+        }
+
+        for(i = 0; i < k; ++i){
+            u = i * n + k;
+            mat.values[u] *= -alinv;
+        }
+
+        for(i = k + 1; i < n; ++i){
+            u = i * n + k;
+            mat.values[u] *= -alinv;
+        }
+    }//end for
 }
 
 /// Write data to a disk file in CSR format.
