@@ -154,8 +154,8 @@ public:
     /// *this = mat * *this
     void MultRight(const MAT& mat);
 
-    /// mat = Inverse(*this)
-    void Inverse(MAT& mat);
+    /// invmat = Inverse(*this)
+    void Inverse(MAT& invmat) const;
 
     /// Write an MAT matrix to a disk file in CSR format.
     friend void WriteCSR(char *filename, MAT mat);

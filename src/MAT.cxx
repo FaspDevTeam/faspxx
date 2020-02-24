@@ -769,110 +769,70 @@ void MAT::MultRight(const MAT& mat) {
     Mult(mat, tmp);
 }
 
-/// mat = Inverse(*this)
-void MAT::Inverse(MAT& mat) {
+/// Compute the inverse of *this and store in mat.
+void MAT::Inverse(MAT& mat) const {
+    const INT n = this->nrow;
+    INT k, i, j, kn, in, l;
+
     mat.nrow = this->nrow;
     mat.mcol = this->mcol;
-    mat.nnz = this->nrow * this->mcol;
+    mat.nnz  = this->nrow * this->mcol;
 
     mat.rowPtr.resize(this->nrow + 1);
-    for(INT j = 0; j < this->nrow + 1; ++j)
-        mat.rowPtr[j] = j * this->mcol;
+    for ( j = 0; j < this->nrow + 1; ++j ) mat.rowPtr[j] = j * this->mcol;
 
     mat.colInd.resize(this->nrow * this->mcol);
-    INT count = 0;
-    INT k, j;
-    for(j = 0;j < this->nrow; ++j) {
-        for(k=0; k < this->mcol; ++k) {
-            mat.colInd[count] = k;
+    for ( INT count = 0, k = 0; k < this->nrow; ++k ) {
+        for ( j = 0; j < this->mcol; ++j ) {
+            mat.colInd[count] = j;
             ++count;
         }
     }
 
-    mat.values.resize(this->nrow * this->mcol);
-
-    count=0;
-    INT num = 0, numcount = 0;
-    for(j = 0; j < this->nrow; ++j) {
-        num = this->rowPtr[j+1] - this->rowPtr[j];
-        for(k = 0; k < this->colInd[this->rowPtr[j]]; ++k){
-            mat.values[count] = 0;
-            ++count;
-        }
-        for(k = 0; k < mcol; ++k) {
-            if( this->colInd[this->rowPtr[j] + numcount] == k ) {
-                mat.values[count] = this->values[this->rowPtr[j] + numcount];
-                ++numcount;
-                ++count;
-            } else {
-                mat.values[count]=0;
-                ++count;
-            }
-            if( num == numcount ) {
-                numcount = 0;
-                break;
-            }
-        }
-        for(k = this->colInd[this->rowPtr[j + 1]] + count; k < this->mcol; ++k) {
-            mat.values[count] = 0;
-            ++count;
+    mat.values.resize(mat.nnz);
+    for ( j = 0; j < mat.nnz; ++j ) mat.values[j] = 0.0;
+    for ( k = 0; k < this->nrow; ++k ) {
+        kn = k * n;
+        for ( j = this->rowPtr[k]; j < this->rowPtr[k+1]; ++j ) {
+            mat.values[kn + this->colInd[j]] = this->values[j];
         }
     }
 
     mat.FormDiagPtr();
 
-    INT kn, in, u, i, l;
     DBL alinv;
 
-    INT n = this->nrow;
-    for(k = 0; k < n; ++k){
+    for ( k = 0; k < n; ++k ) {
         kn = k * n;
         l = kn + k;
 
-        if( fabs(mat.values[l]) < CLOSE_ZERO )
-            FASPXX_WARNING("### ERROR: Diagonal entry is close to zero! ");
+        if ( fabs(mat.values[l]) < CLOSE_ZERO )
+            FASPXX_WARNING("### WARNING: Diagonal entry is close to zero! ");
 
         alinv = 1.0 / mat.values[l];
         mat.values[l] = alinv;
 
-        for(j = 0; j < k; ++j) {
-            u = kn + j;
-            mat.values[u] *= alinv;
-        }
-        for(j = k + 1; j < n; ++j) {
-            u = kn + j;
-            mat.values[u] *= alinv;
-        }
-        for(i = 0; i < k; ++i) {
+        for ( j = 0; j < k; ++j ) mat.values[kn + j] *= alinv;
+        for ( j = k + 1; j < n; ++j ) mat.values[kn + j] *= alinv;
+
+        for ( i = 0; i < k; ++i ) {
             in = i * n;
-            for(j = 0; j < n; ++j) {
-                if( j != k ) {
-                    u = in + j;
-                    mat.values[u] -= mat.values[in + k] * mat.values[kn + j];
-                }// end if
-            }
+            for ( j = 0; j < k; ++j )
+                mat.values[in + j] -= mat.values[in + k] * mat.values[kn + j];
+            for ( j = k + 1; j < n; ++j )
+                mat.values[in + j] -= mat.values[in + k] * mat.values[kn + j];
         }
-
-        for(i = k + 1; i < n; ++i){
+        for ( i = k + 1; i < n; ++i ) {
             in = i * n;
-            for(j = 0; j < n; ++j){
-                if( j != k){
-                    u = in + j;
-                    mat.values[u] -= mat.values[in + k] * mat.values[kn + j];
-                }// end if
-            }
+            for ( j = 0; j < k; ++j )
+                mat.values[in + j] -= mat.values[in + k] * mat.values[kn + j];
+            for ( j = k + 1; j < n; ++j )
+                mat.values[in + j] -= mat.values[in + k] * mat.values[kn + j];
         }
 
-        for(i = 0; i < k; ++i){
-            u = i * n + k;
-            mat.values[u] *= -alinv;
-        }
-
-        for(i = k + 1; i < n; ++i){
-            u = i * n + k;
-            mat.values[u] *= -alinv;
-        }
-    }//end for
+        for ( i = 0; i < k; ++i ) mat.values[i*n + k] *= -alinv;
+        for ( i = k + 1; i < n; ++i ) mat.values[i*n + k] *= -alinv;
+    } //end for
 }
 
 /// Write data to a disk file in CSR format.
