@@ -37,15 +37,10 @@ MAT mat0;
 const std::vector<DBL> values1 = {0, 1, 2, 3, 4, 5, 2, 1, 2, 1};
 const std::vector<INT> colInd1 = {0, 2, 0, 1, 3, 0, 2, 3, 2, 3};
 const std::vector<INT> rowPtr1 = {0, 2, 5, 8, 10};
-const std::vector<INT> diag1 = {0, 3, 6, 9};
-const std::vector<DBL> values2 = {0, 0.2, -0.2, 2.66667, 0.33333, -0.13333, -1.2, 1, 0, -2, 1};
-const std::vector<INT> colInd2 = {0, 2, 3, 0, 1, 2, 3, 0, 2, 0, 3};
-const std::vector<INT> rowPtr2 = {0, 3, 7, 9, 11};
-const std::vector<INT> diag2 = {0, 4, 8, 10};
-const MAT mat1(4, 4, 10, values1, colInd1, rowPtr1, diag1);
-const MAT invmat1(4,4,11, values2, colInd2, rowPtr2, diag2);
-// Sparse structure
-const MAT mat2(4, 4, 10, colInd1, rowPtr1, diag1);
+const std::vector<INT> diagPtr1 = {0, 3, 6, 9};
+const MAT mat1(4, 4, 10, values1, colInd1, rowPtr1, diagPtr1);
+
+const MAT mat2(4, 4, 10, colInd1, rowPtr1, diagPtr1);
 
 const std::vector<DBL> diag2 = {0, 1, 2, 3, 4, 5, 2, 1, 2, 1};
 const MAT mat3(diag2);
@@ -57,12 +52,21 @@ const VEC vec1(diag2);
 const MAT mat6(vec1);
 
 const std::vector<DBL> values2 = {0,2.87,5.74,8.61,11.48,14.35,5.74,2.87,5.74,2.87};
-const MAT mat7(4, 4, 10, values2, colInd1, rowPtr1, diag1); // scale by mat1 with 2.87
+const MAT mat7(4, 4, 10, values2, colInd1, rowPtr1, diagPtr1); // scale by mat1 with 2.87
 
 const VEC vec2(4, 0.314);
 
 const double* p1 = new double[4] {0.314, 2.826, 2.512, 0.942};
 const VEC vec3(4, p1); // mat1 * vec2 == vec3
+
+const std::vector<DBL> valuesInv1 = {2.0, 2.0};
+const std::vector<DBL> valuesInv2 = {0.5, 0.5};
+
+const std::vector<INT> colIndInv = {0, 1};
+const std::vector<INT> rowPtrInv = {0, 1, 2};
+const std::vector<INT> diagPtrInv = {0, 1, 2};
+const MAT invmat1(2, 2, 2, valuesInv1, colIndInv, rowPtrInv, diagPtrInv);
+const MAT invmat2(2, 2, 2, valuesInv2, colIndInv, rowPtrInv, diagPtrInv);
 
 /*---------------------------------*/
 /*--     Beginning of TEST       --*/
@@ -194,12 +198,13 @@ TEST(MAT_Scale, Scale)
 
 TEST(MAT_Inverse, Inverse)
 {
-    MAT mat;
-    mat1.Inverse(mat);
-    for(INT i = 0; i < mat.GetRowSize(); i++)
-        for(INT j = 0; j < mat.GetColSize(); j++)
-            EXPECT_NEAR(mat.GetValue(i, j), invmat1.GetValue(i, j));
+    MAT invmat;
+    invmat1.Inverse(invmat);
+    for (INT i = 0; i < invmat.GetRowSize(); i++)
+        for (INT j = 0; j < invmat.GetColSize(); j++)
+            EXPECT_NEAR(invmat.GetValue(i, j), invmat2.GetValue(i, j), 1e-5);
 }
+
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/

@@ -11,8 +11,6 @@
 
 #include <gtest/gtest.h>
 #include <vector>
-#include "Param.hxx"
-#include "LOP.hxx"
 #include "Iter.hxx"
 
 /*---------------------------------*/

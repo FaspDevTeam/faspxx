@@ -771,22 +771,23 @@ void MAT::MultRight(const MAT& mat) {
 }
 
 /// mat = Inverse(*this)
-void MAT::Inverse(MAT& inv_mat) {
+void MAT::Inverse(MAT& inv_mat) const {
+
     MAT mat;
+
     mat.nrow = this->nrow;
     mat.mcol = this->mcol;
-    mat.nnz = this->nrow * this->mcol;
+    mat.nnz  = this->nrow * this->mcol;
+
+    INT count=0;
 
     mat.rowPtr.resize(this->nrow + 1);
-    for(INT j = 0; j < this->nrow + 1; ++j)
-        mat.rowPtr[j] = j * this->mcol;
+    for (INT j = 0; j < this->nrow + 1; ++j ) mat.rowPtr[j] = j * this->mcol;
 
     mat.colInd.resize(this->nrow * this->mcol);
-    INT count = 0;
-    INT k, j;
-    for(j = 0;j < this->nrow; ++j) {
-        for(k=0; k < this->mcol; ++k) {
-            mat.colInd[count] = k;
+    for ( INT k = 0; k < this->nrow; ++k ) {
+        for (INT j = 0; j < this->mcol; ++j ) {
+            mat.colInd[count] = j;
             ++count;
         }
     }
@@ -799,37 +800,36 @@ void MAT::Inverse(MAT& inv_mat) {
 
     count=0;
     INT num = 0, numcount = 0, tmp = 0;
-    for(j = 0; j < this->nrow; ++j) {
-        num = this->rowPtr[j+1] - this->rowPtr[j];
-        for(k = 0; k < this->colInd[this->rowPtr[j]]; ++k){
+    for(INT j = 0; j < this->nrow; ++j) {
+        num = this->rowPtr[j + 1] - this->rowPtr[j];
+        for (INT k = 0; k < this->colInd[this->rowPtr[j]]; ++k) {
             mat.values[count] = 0;
             ++count;
             ++tmp;
         }
-        for(k = this->colInd[this->rowPtr[j]]; k < mcol; ++k) {
-            if( this->colInd[this->rowPtr[j] + numcount] == k ) {
+        for (INT k = this->colInd[this->rowPtr[j]]; k < mcol; ++k) {
+            if (this->colInd[this->rowPtr[j] + numcount] == k) {
                 mat.values[count] = this->values[this->rowPtr[j] + numcount];
                 ++numcount;
                 ++count;
                 ++tmp;
             } else {
-                mat.values[count]=0;
+                mat.values[count] = 0;
                 ++count;
                 ++tmp;
             }
-            if( num == numcount ) {
+            if (num == numcount) {
                 numcount = 0;
                 break;
             }
         }
-        for(k = this->colInd[this->rowPtr[j]] + tmp; k < this->mcol; ++k) {
+        for (INT k = this->colInd[this->rowPtr[j]] + tmp; k < this->mcol; ++k) {
             mat.values[count] = 0;
             ++count;
         }
-        tmp = 0;
     }
 
-    LUP_solve_inverse(mat.values,this->nrow,inv_mat.values);
+    LUP_Solve_Inverse(mat.values,this->nrow,inv_mat.values);
 
 }
 
@@ -890,7 +890,8 @@ void MAT::Empty() {
 }
 
 /// LUP decompostion
-void MAT::LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,std::vector<INT>& P,INT N)
+void MAT::LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,
+        std::vector<INT>& P,INT N) const
 {
     INT row = 0;
     for(INT i = 0; i < N; i++)
@@ -949,7 +950,7 @@ void MAT::LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<
 
 /// LUP solver
 void MAT::LUP_Solve(std::vector<DBL> L,std::vector<DBL> U,std::vector<INT> P,std::vector<DBL> b,INT N,
-                    std::vector<DBL> &x)
+                    std::vector<DBL> &x) const
 {
     std::vector<DBL> y(N);
 
@@ -971,19 +972,19 @@ void MAT::LUP_Solve(std::vector<DBL> L,std::vector<DBL> U,std::vector<INT> P,std
 }
 
 /// successor
-INT MAT::GetNext(INT i, INT m, INT n)
+INT MAT::GetNext(INT i, INT m, INT n) const
 {
     return (i%n)*m + i/n;
 }
 
 /// precursor
-INT MAT::GetPre(INT i, INT m, INT n)
+INT MAT::GetPre(INT i, INT m, INT n) const
 {
     return (i%m)*n + i/m;
 }
 
 /// Handle rings starting with i
-void MAT::MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n)
+void MAT::MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n) const
 {
     DBL temp = mtx[i];
     INT cur = i;
@@ -997,7 +998,7 @@ void MAT::MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n)
 }
 
 /// Transpose, i.e. cycle all rings
-void MAT::Rtranspose(std::vector<DBL> &mtx, INT m, INT n)
+void MAT::Rtranspose(std::vector<DBL> &mtx, INT m, INT n) const
 {
     for(INT i = 0; i < m * n; ++i) {
         INT next = GetNext(i, m, n);
@@ -1009,7 +1010,7 @@ void MAT::Rtranspose(std::vector<DBL> &mtx, INT m, INT n)
 }
 
 /// LUP inversion (assemble each column x from each column B)
-void MAT::LUP_solve_inverse(std::vector<DBL> A,INT N,std::vector<DBL> &inv_A) {
+void MAT::LUP_Solve_Inverse(const std::vector<DBL> A,INT N,std::vector<DBL> &inv_A) const{
     std::vector<DBL> A_mirror(N * N);
     std::vector<DBL> inv_A_each(N);
     std::vector<DBL> b(N);

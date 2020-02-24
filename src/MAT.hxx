@@ -154,8 +154,8 @@ public:
     /// *this = mat * *this
     void MultRight(const MAT& mat);
 
-    /// mat = Inverse(*this)
-    void Inverse(MAT& mat);
+    /// invmat = Inverse(*this)
+    void Inverse(MAT& invmat) const;
 
     /// Write an MAT matrix to a disk file in CSR format.
     friend void WriteCSR(char *filename, MAT mat);
@@ -171,28 +171,27 @@ private:
     void Empty();
 
     /// LUP decomposition
-    void LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,std::vector<INT>& P,INT N);
+    void LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,
+            std::vector<INT>& P,INT N) const;
 
     /// LUP solver
-    void LUP_Solve(std::vector<DBL> L,std::vector<DBL> U,std::vector<INT> P,std::vector<DBL> b,INT N,
-                   std::vector<DBL> &x);
+    void LUP_Solve(std::vector<DBL> L,std::vector<DBL> U,std::vector<INT> P,std::vector<DBL> b,
+            INT N, std::vector<DBL> &x) const;
 
     /// successor
-    INT GetNext(INT i, INT m, INT n);
+    INT GetNext(INT i, INT m, INT n) const;
 
     /// precursor
-    INT GetPre(INT i, INT m, INT n);
+    INT GetPre(INT i, INT m, INT n) const;
 
     /// Handle rings starting with i
-    void MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n);
+    void MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n) const;
 
     /// Transpose, i.e. cycle all rings
-    void Rtranspose(std::vector<DBL> &mtx, INT m, INT n);
+    void Rtranspose(std::vector<DBL> &mtx, INT m, INT n) const;
 
     /// LUP inversion (assemble each column x from each column B)
-    void LUP_solve_inverse(std::vector<DBL> A,INT N,std::vector<DBL> &inv_A);
-
-
+    void LUP_Solve_Inverse(std::vector<DBL> A,INT N,std::vector<DBL> &inv_A) const;
 };
 
 #endif /* end if for __MAT_HEADER__ */
