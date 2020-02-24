@@ -11,6 +11,7 @@
 
 #include <fstream>
 #include <cmath>
+#include <cstring>
 #include "MAT.hxx"
 #include "MATUtil.hxx"
 
@@ -453,7 +454,7 @@ void MAT::Residual(const VEC& b, const VEC& x, VEC& r) const {
     for ( i = 0; i < this->nrow; ++i ) {
         begin = this->rowPtr[i];
         r.values[i] = b.values[i]
-                    - this->values[begin] * x.values[this->colInd[begin]];
+                      - this->values[begin] * x.values[this->colInd[begin]];
         for ( k = begin+1; k < this->rowPtr[i + 1]; ++k )
             r.values[i] -= this->values[k] * x.values[this->colInd[k]];
     }
@@ -770,7 +771,8 @@ void MAT::MultRight(const MAT& mat) {
 }
 
 /// mat = Inverse(*this)
-void MAT::Inverse(MAT& mat) {
+void MAT::Inverse(MAT& inv_mat) {
+    MAT mat;
     mat.nrow = this->nrow;
     mat.mcol = this->mcol;
     mat.nnz = this->nrow * this->mcol;
@@ -791,88 +793,44 @@ void MAT::Inverse(MAT& mat) {
 
     mat.values.resize(this->nrow * this->mcol);
 
+    mat.FormDiagPtr();
+
+    inv_mat=mat;
+
     count=0;
-    INT num = 0, numcount = 0;
+    INT num = 0, numcount = 0, tmp = 0;
     for(j = 0; j < this->nrow; ++j) {
         num = this->rowPtr[j+1] - this->rowPtr[j];
         for(k = 0; k < this->colInd[this->rowPtr[j]]; ++k){
             mat.values[count] = 0;
             ++count;
+            ++tmp;
         }
-        for(k = 0; k < mcol; ++k) {
+        for(k = this->colInd[this->rowPtr[j]]; k < mcol; ++k) {
             if( this->colInd[this->rowPtr[j] + numcount] == k ) {
                 mat.values[count] = this->values[this->rowPtr[j] + numcount];
                 ++numcount;
                 ++count;
+                ++tmp;
             } else {
                 mat.values[count]=0;
                 ++count;
+                ++tmp;
             }
             if( num == numcount ) {
                 numcount = 0;
                 break;
             }
         }
-        for(k = this->colInd[this->rowPtr[j + 1]] + count; k < this->mcol; ++k) {
+        for(k = this->colInd[this->rowPtr[j]] + tmp; k < this->mcol; ++k) {
             mat.values[count] = 0;
             ++count;
         }
+        tmp = 0;
     }
 
-    mat.FormDiagPtr();
+    LUP_solve_inverse(mat.values,this->nrow,inv_mat.values);
 
-    INT kn, in, u, i, l;
-    DBL alinv;
-
-    INT n = this->nrow;
-    for(k = 0; k < n; ++k){
-        kn = k * n;
-        l = kn + k;
-
-        if( fabs(mat.values[l]) < CLOSE_ZERO )
-            FASPXX_WARNING("### ERROR: Diagonal entry is close to zero! ");
-
-        alinv = 1.0 / mat.values[l];
-        mat.values[l] = alinv;
-
-        for(j = 0; j < k; ++j) {
-            u = kn + j;
-            mat.values[u] *= alinv;
-        }
-        for(j = k + 1; j < n; ++j) {
-            u = kn + j;
-            mat.values[u] *= alinv;
-        }
-        for(i = 0; i < k; ++i) {
-            in = i * n;
-            for(j = 0; j < n; ++j) {
-                if( j != k ) {
-                    u = in + j;
-                    mat.values[u] -= mat.values[in + k] * mat.values[kn + j];
-                }// end if
-            }
-        }
-
-        for(i = k + 1; i < n; ++i){
-            in = i * n;
-            for(j = 0; j < n; ++j){
-                if( j != k){
-                    u = in + j;
-                    mat.values[u] -= mat.values[in + k] * mat.values[kn + j];
-                }// end if
-            }
-        }
-
-        for(i = 0; i < k; ++i){
-            u = i * n + k;
-            mat.values[u] *= -alinv;
-        }
-
-        for(i = k + 1; i < n; ++i){
-            u = i * n + k;
-            mat.values[u] *= -alinv;
-        }
-    }//end for
 }
 
 /// Write data to a disk file in CSR format.
@@ -929,6 +887,160 @@ void MAT::Empty() {
     this->diagPtr.resize(0);
     this->colInd.resize(0);
     this->values.resize(0);
+}
+
+/// LUP decompostion
+void MAT::LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,std::vector<INT>& P,INT N)
+{
+    INT row = 0;
+    for(INT i = 0; i < N; i++)
+        P[i] = i;
+    for(INT i = 0;i < N-1; i++) {
+        DBL p = 0.0;
+        for(INT j = i; j < N; j++) {
+            if( abs(A[j * N + i]) > p ) {
+                p = abs(A[j * N + i]);
+                row = j;
+            }
+        }
+        if( 0 == p ) {
+            std::cout<< "Matrix singular, unable to calculate inverse" <<std::endl;
+            return ;
+        }
+
+        // exchange P[i] and P[row]
+        INT tmp = P[i];
+        P[i] = P[row];
+        P[row] = tmp;
+
+        DBL tmp2 = 0.0;
+        for(INT j = 0; j < N; j++) {
+            // exchange A[i][j] and A[row][j]
+            tmp2 = A[i * N + j];
+            A[i*N+j] = A[row * N + j];
+            A[row * N + j] = tmp2;
+        }
+
+        //LU decomposition
+        DBL u = A[i * N + i], l=0.0;
+        for(INT j = i + 1; j < N; j++) {
+            l = A[j * N + i] / u;
+            A[j * N + i] = l;
+            for(INT k = i + 1; k < N; k++) {
+                A[j * N + k] = A[j * N + k] - A[i * N + k] * l;
+            }
+        }
+    }
+
+    // create L and U
+    for(INT i = 0; i < N; i++) {
+        for(INT j = 0; j <= i; j++) {
+            if( i != j ) {
+                L[i * N + j] = A[i * N + j];
+            } else {
+                L[i * N + j] = 1;
+            }
+        }
+        for(INT k = i; k < N; k++) {
+            U[i * N + k] = A[i * N + k];
+        }
+    }
+}
+
+/// LUP solver
+void MAT::LUP_Solve(std::vector<DBL> L,std::vector<DBL> U,std::vector<INT> P,std::vector<DBL> b,INT N,
+                    std::vector<DBL> &x)
+{
+    std::vector<DBL> y(N);
+
+    // forward substitute
+    for(INT i = 0;i < N;i++) {
+        y[i] = b[P[i]];
+        for(INT j = 0;j < i;j++) {
+            y[i] = y[i] - L[i*N+j]*y[j];
+        }
+    }
+    // backward substitute
+    for(int i = N-1;i >= 0; i--) {
+        x[i] = y[i];
+        for(INT j = N-1;j > i;j--) {
+            x[i] = x[i] - U[i*N+j]*x[j];
+        }
+        x[i] /= U[i*N+i];
+    }
+}
+
+/// successor
+INT MAT::GetNext(INT i, INT m, INT n)
+{
+    return (i%n)*m + i/n;
+}
+
+/// precursor
+INT MAT::GetPre(INT i, INT m, INT n)
+{
+    return (i%m)*n + i/m;
+}
+
+/// Handle rings starting with i
+void MAT::MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n)
+{
+    DBL temp = mtx[i];
+    INT cur = i;
+    INT pre = GetPre(cur, m, n);
+    while(pre != i) {
+        mtx[cur] = mtx[pre];
+        cur = pre;
+        pre = GetPre(cur, m, n);
+    }
+    mtx[cur] = temp;
+}
+
+/// Transpose, i.e. cycle all rings
+void MAT::Rtranspose(std::vector<DBL> &mtx, INT m, INT n)
+{
+    for(INT i = 0; i < m * n; ++i) {
+        INT next = GetNext(i, m, n);
+        while( next > i )
+            next = GetNext(next, m, n);
+        if( next == i )
+            MoveData(mtx, i, m, n);
+    }
+}
+
+/// LUP inversion (assemble each column x from each column B)
+void MAT::LUP_solve_inverse(std::vector<DBL> A,INT N,std::vector<DBL> &inv_A) {
+    std::vector<DBL> A_mirror(N * N);
+    std::vector<DBL> inv_A_each(N);
+    std::vector<DBL> b(N);
+
+    INT count = 0;
+
+    for (int i = 0; i < N; i++) {
+        std::vector<DBL> L(N * N);
+        std::vector<DBL> U(N * N);
+        std::vector<INT> P(N);
+
+        // Construct each column of unit matrix
+        for (INT i = 0; i < N; i++)
+            b[i] = 0;
+        b[i] = 1;
+
+        // Need to make a new copy of a every time
+        for (INT i = 0; i < N * N; i++)
+            A_mirror[i] = A[i];
+
+        LUP_Descomposition(A_mirror, L, U, P, N);
+
+        LUP_Solve(L, U, P, b, N, inv_A_each);
+        while (count < N) {
+            inv_A[i * N + count] = inv_A_each[count];
+            ++count;
+        }
+        count = 0;
+    }
+
+    Rtranspose(inv_A, N, N);
 }
 
 /*---------------------------------*/

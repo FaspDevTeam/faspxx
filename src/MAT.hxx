@@ -170,6 +170,29 @@ private:
     /// Make the matrix empty.
     void Empty();
 
+    /// LUP decomposition
+    void LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,std::vector<INT>& P,INT N);
+
+    /// LUP solver
+    void LUP_Solve(std::vector<DBL> L,std::vector<DBL> U,std::vector<INT> P,std::vector<DBL> b,INT N,
+                   std::vector<DBL> &x);
+
+    /// successor
+    INT GetNext(INT i, INT m, INT n);
+
+    /// precursor
+    INT GetPre(INT i, INT m, INT n);
+
+    /// Handle rings starting with i
+    void MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n);
+
+    /// Transpose, i.e. cycle all rings
+    void Rtranspose(std::vector<DBL> &mtx, INT m, INT n);
+
+    /// LUP inversion (assemble each column x from each column B)
+    void LUP_solve_inverse(std::vector<DBL> A,INT N,std::vector<DBL> &inv_A);
+
+
 };
 
 #endif /* end if for __MAT_HEADER__ */
