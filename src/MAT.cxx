@@ -889,22 +889,21 @@ void MAT::Empty() {
     this->values.resize(0);
 }
 
-/// LUP decompostion
-void MAT::LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,
-        std::vector<INT>& P,INT N) const
+/// LUP decomposition
+void MAT::LUP_Decomposition(std::vector<DBL> A, std::vector<DBL>& L,
+                            std::vector<DBL>& U, std::vector<INT>& P, INT N) const
 {
     INT row = 0;
-    for(INT i = 0; i < N; i++)
-        P[i] = i;
-    for(INT i = 0;i < N-1; i++) {
+    for ( INT i = 0; i < N; i++ ) P[i] = i;
+    for ( INT i = 0; i < N-1; i++ ) {
         DBL p = 0.0;
-        for(INT j = i; j < N; j++) {
-            if( abs(A[j * N + i]) > p ) {
+        for ( INT j = i; j < N; j++ ) {
+            if ( abs(A[j * N + i]) > p ) {
                 p = abs(A[j * N + i]);
                 row = j;
             }
         }
-        if( 0 == p ) {
+        if ( 0 == p ) {
             std::cout<< "Matrix singular, unable to calculate inverse" <<std::endl;
             return ;
         }
@@ -915,7 +914,7 @@ void MAT::LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<
         P[row] = tmp;
 
         DBL tmp2 = 0.0;
-        for(INT j = 0; j < N; j++) {
+        for (INT j = 0; j < N; j++) {
             // exchange A[i][j] and A[row][j]
             tmp2 = A[i * N + j];
             A[i*N+j] = A[row * N + j];
@@ -924,49 +923,46 @@ void MAT::LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<
 
         //LU decomposition
         DBL u = A[i * N + i], l=0.0;
-        for(INT j = i + 1; j < N; j++) {
+        for (INT j = i + 1; j < N; j++) {
             l = A[j * N + i] / u;
             A[j * N + i] = l;
-            for(INT k = i + 1; k < N; k++) {
+            for (INT k = i + 1; k < N; k++) {
                 A[j * N + k] = A[j * N + k] - A[i * N + k] * l;
             }
         }
     }
 
     // create L and U
-    for(INT i = 0; i < N; i++) {
-        for(INT j = 0; j <= i; j++) {
-            if( i != j ) {
+    for (INT i = 0; i < N; i++) {
+        for (INT j = 0; j <= i; j++) {
+            if ( i != j ) {
                 L[i * N + j] = A[i * N + j];
             } else {
                 L[i * N + j] = 1;
             }
         }
-        for(INT k = i; k < N; k++) {
+        for (INT k = i; k < N; k++) {
             U[i * N + k] = A[i * N + k];
         }
     }
 }
 
 /// LUP solver
-void MAT::LUP_Solve(std::vector<DBL> L,std::vector<DBL> U,std::vector<INT> P,std::vector<DBL> b,INT N,
-                    std::vector<DBL> &x) const
+void MAT::LUP_Solve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
+                    std::vector<DBL> b, INT N, std::vector<DBL> &x) const
 {
     std::vector<DBL> y(N);
 
     // forward substitute
-    for(INT i = 0;i < N;i++) {
+    for ( INT i = 0; i < N; i++ ) {
         y[i] = b[P[i]];
-        for(INT j = 0;j < i;j++) {
-            y[i] = y[i] - L[i*N+j]*y[j];
-        }
+        for ( INT j = 0; j < i; j++ ) y[i] = y[i] - L[i*N+j]*y[j];
     }
+
     // backward substitute
-    for(int i = N-1;i >= 0; i--) {
+    for ( INT i = N-1; i >= 0; i-- ) {
         x[i] = y[i];
-        for(INT j = N-1;j > i;j--) {
-            x[i] = x[i] - U[i*N+j]*x[j];
-        }
+        for (INT j = N-1; j > i; j-- ) x[i] = x[i] - U[i*N+j]*x[j];
         x[i] /= U[i*N+i];
     }
 }
@@ -989,7 +985,7 @@ void MAT::MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n) const
     DBL temp = mtx[i];
     INT cur = i;
     INT pre = GetPre(cur, m, n);
-    while(pre != i) {
+    while ( pre != i ) {
         mtx[cur] = mtx[pre];
         cur = pre;
         pre = GetPre(cur, m, n);
@@ -1000,41 +996,39 @@ void MAT::MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n) const
 /// Transpose, i.e. cycle all rings
 void MAT::Rtranspose(std::vector<DBL> &mtx, INT m, INT n) const
 {
-    for(INT i = 0; i < m * n; ++i) {
+    for ( INT i = 0; i < m * n; ++i ) {
         INT next = GetNext(i, m, n);
-        while( next > i )
-            next = GetNext(next, m, n);
-        if( next == i )
-            MoveData(mtx, i, m, n);
+        while( next > i ) next = GetNext(next, m, n);
+        if ( next == i ) MoveData(mtx, i, m, n);
     }
 }
 
 /// LUP inversion (assemble each column x from each column B)
-void MAT::LUP_Solve_Inverse(const std::vector<DBL> A,INT N,std::vector<DBL> &inv_A) const{
+void MAT::LUP_Solve_Inverse(const std::vector<DBL> A, INT N,
+                            std::vector<DBL> &inv_A) const
+{
     std::vector<DBL> A_mirror(N * N);
     std::vector<DBL> inv_A_each(N);
     std::vector<DBL> b(N);
 
     INT count = 0;
 
-    for (int i = 0; i < N; i++) {
+    for ( INT i = 0; i < N; ++i ) {
         std::vector<DBL> L(N * N);
         std::vector<DBL> U(N * N);
         std::vector<INT> P(N);
 
         // Construct each column of unit matrix
-        for (INT i = 0; i < N; i++)
-            b[i] = 0;
+        for ( INT k = 0; k < N; ++k ) b[k] = 0;
         b[i] = 1;
 
         // Need to make a new copy of a every time
-        for (INT i = 0; i < N * N; i++)
-            A_mirror[i] = A[i];
+        for ( INT k = 0; k < N * N; ++k ) A_mirror[i] = A[i];
 
-        LUP_Descomposition(A_mirror, L, U, P, N);
+        LUP_Decomposition(A_mirror, L, U, P, N);
 
         LUP_Solve(L, U, P, b, N, inv_A_each);
-        while (count < N) {
+        while ( count < N ) {
             inv_A[i * N + count] = inv_A_each[count];
             ++count;
         }

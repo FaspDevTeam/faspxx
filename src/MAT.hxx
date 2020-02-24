@@ -171,7 +171,7 @@ private:
     void Empty();
 
     /// LUP decomposition
-    void LUP_Descomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,
+    void LUP_Decomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,
             std::vector<INT>& P,INT N) const;
 
     /// LUP solver
