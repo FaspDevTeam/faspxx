@@ -960,7 +960,7 @@ void MAT::LUP_Solve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
     }
 
     // backward substitute
-    for ( INT i = N-1; i >= 0; i-- ) {
+    for ( int i = N-1; i >= 0; i-- ) {
         x[i] = y[i];
         for (INT j = N-1; j > i; j-- ) x[i] = x[i] - U[i*N+j]*x[j];
         x[i] /= U[i*N+i];
@@ -1023,7 +1023,7 @@ void MAT::LUP_Solve_Inverse(const std::vector<DBL> A, INT N,
         b[i] = 1;
 
         // Need to make a new copy of a every time
-        for ( INT k = 0; k < N * N; ++k ) A_mirror[i] = A[i];
+        for ( INT k = 0; k < N * N; ++k ) A_mirror[k] = A[k];
 
         LUP_Decomposition(A_mirror, L, U, P, N);
 
