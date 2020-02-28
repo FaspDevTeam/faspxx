@@ -960,11 +960,12 @@ void MAT::LUP_Solve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
     }
 
     // backward substitute
-    for ( int i = N-1; i >= 0; i-- ) {
+    for ( int i = N-1; i >= 0; i-- ) { // can't change int into INT
         x[i] = y[i];
         for (INT j = N-1; j > i; j-- ) x[i] = x[i] - U[i*N+j]*x[j];
         x[i] /= U[i*N+i];
     }
+
 }
 
 /// successor
