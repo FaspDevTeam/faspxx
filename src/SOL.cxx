@@ -232,11 +232,11 @@ void SOL::PrintParam(std::ostream& out) const
 /// Print solver time.
 void SOL::PrintTime(const double duration, std::ostream& out) const
 {
-    if ( duration < CLOCK_SECOND ) {
+    if ( duration < CLOCK_USE_SEC ) {
         std::cout << "Solving linear system with " << GetSolType(params.type)
                   << " costs "  << std::fixed << std::setprecision(3)
                   << duration << "ms" << std::endl;
-    } else if ( duration < CLOCK_MINUTE ) {
+    } else if ( duration < CLOCK_USE_MIN ) {
         std::cout << "Solving linear system with " << GetSolType(params.type)
                   << " costs "  << std::fixed << std::setprecision(3)
                   << duration/1000.0 << "s" << std::endl;
