@@ -954,18 +954,17 @@ void MAT::LUP_Solve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
     std::vector<DBL> y(N);
 
     // forward substitute
-    for ( INT i = 0; i < N; i++ ) {
+    for ( INT i = 0; i < N; ++i ) {
         y[i] = b[P[i]];
-        for ( INT j = 0; j < i; j++ ) y[i] = y[i] - L[i*N+j]*y[j];
+        for ( INT j = 0; j < i; ++j ) y[i] = y[i] - L[i*N+j]*y[j];
     }
 
     // backward substitute
-    for ( int i = N-1; i >= 0; i-- ) { // can't change int into INT
+    for ( int i = N-1; i >= 0; --i ) { // can't change int into INT
         x[i] = y[i];
-        for (int j = N-1; j > i; j-- ) x[i] = x[i] - U[i*N+j]*x[j];
+        for ( int j = N-1; j > i; --j ) x[i] = x[i] - U[i*N+j]*x[j];
         x[i] /= U[i*N+i];
     }
-
 }
 
 /// successor

@@ -161,7 +161,7 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
     }
 
     // Put MTX data into rowInd, colInd, and values
-    long int locate = 0; // mark the position in rowInd, colInd and values
+    INT locate = 0; // mark the position in rowInd, colInd and values
     long int tmp = 0;
     while ( true ) {
         if (buffer[position] != ' ' && buffer[position] != '\n' &&
@@ -234,7 +234,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
     INT count = 0;
     long long int position = 0; // mark the position of file pointer
     while (true) {
-        if (buffer[position] != '\n') {
+        if ( buffer[position] != '\n' ) {
             decimal[count] = buffer[position];
             ++count;
             ++position;
@@ -262,10 +262,10 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
     }
 
     // Read the rowPtr of CSRx matrix
-    long int locate = 0;
+    INT locate = 0;
     count = 0;
     while ( true ) {
-        if (buffer[position] != '\n') {
+        if ( buffer[position] != '\n' ) {
             decimal[count] = buffer[position];
             ++count;
             ++position;
@@ -275,7 +275,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
             count = 0;
             rowPtr[locate] = std::strtol(decimal, &next, 10);
             ++locate;
-            if (locate == row + 1) break;
+            if ( locate == row + 1 ) break;
         }
     }
 
@@ -292,7 +292,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
     // Read column indices
     locate = 0;
     while ( true ) {
-        if (buffer[position] != '\n') {
+        if ( buffer[position] != '\n' ) {
             decimal[count] = buffer[position];
             ++count;
             ++position;
@@ -302,7 +302,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
             count = 0;
             colInd[locate] = std::strtol(decimal, &next, 10);
             ++locate;
-            if (locate == nnz) break;
+            if ( locate == nnz ) break;
         }
     }
 
