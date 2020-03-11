@@ -111,10 +111,16 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
     // Initialize iterative method
     numIter = 0;
 
-    while (1) {
-        A->Apply(x, rk); // A * x -> rk
-        rk.XPAY(-1.0, b); // b - rk -> rk
+    A->Apply(x, rk); // A * x -> rk
+    rk.XPAY(-1.0, b); // b - rk -> rk
 
+    vk = rk;
+
+    tmpval = vk.Norm2();
+    vk.Scale(1.0 / tmpval);
+    cluster.Set(0,vk);
+
+    while(1) {
         // Start from minIter instead of 0
         if (numIter == params.minIter) {
             resAbs = rk.Norm2();
@@ -124,11 +130,6 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
         }
 
         if (numIter >= params.minIter) PrintInfo(numIter, resRel, resAbs, ratio);
-
-        vk = rk;
-
-        tmpval = vk.Norm2();
-        vk.Scale(1.0 / tmpval);
 
         this->Arnoldi(Hij, cluster);
         betae1[0] = norm2;
@@ -168,6 +169,16 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
                 if (resRel < params.relTol || resAbs < params.absTol) break;
             }
         }
+
+        A->Apply(x, rk); // A * x -> rk
+        rk.XPAY(-1.0, b); // b - rk -> rk
+
+        vk = rk;
+
+        tmpval = vk.Norm2();
+        vk.Scale(1.0 / tmpval);
+        cluster.Set(0,vk);
+
     }
     // If minIter == numIter == maxIter (preconditioner only), skip this
     if (not(numIter == params.minIter && numIter == params.maxIter)) {
