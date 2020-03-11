@@ -114,7 +114,7 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
     A->Apply(x, rk); // A * x -> rk
     rk.XPAY(-1.0, b); // b - rk -> rk
 
-    vk = rk;
+    pc->Solve(rk,vk);
 
     tmpval = vk.Norm2();
     vk.Scale(1.0 / tmpval);
@@ -132,7 +132,7 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
         if (numIter >= params.minIter) PrintInfo(numIter, resRel, resAbs, ratio);
 
         this->Arnoldi(Hij, cluster);
-        betae1[0] = norm2;
+        betae1[0] = rk.Norm2();
         this->HouseHolder(Hij, betae1);
         this->SolveMin(Hij, betae1, yk);
 
@@ -154,9 +154,6 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
             resRel = resAbs / denAbs;
             ratio = resAbs / resAbsOld; // convergence ratio between two steps
 
-            // Save the best solution so far
-            if (numIter >= params.safeIter && resAbs < resAbsOld) safe = x;
-
             // Prepare for the next iteration
             if (numIter < params.maxIter) {
                 // Save the residual for next iteration
@@ -167,18 +164,22 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
                 resAbs = rk.Norm2();
                 resRel = resAbs / denAbs;
                 if (resRel < params.relTol || resAbs < params.absTol) break;
+                pc->Solve(rk,vk);
+
+                tmpval = vk.Norm2();
+                vk.Scale(1.0 / tmpval);
+                cluster.Set(0,vk);
+
             }
+        } else {
+            A->Apply(x, rk); // A * x -> rk
+            rk.XPAY(-1.0, b); // b - rk -> rk
+            pc->Solve(rk,vk);
+
+            tmpval = vk.Norm2();
+            vk.Scale(1.0 / tmpval);
+            cluster.Set(0,vk);
         }
-
-        A->Apply(x, rk); // A * x -> rk
-        rk.XPAY(-1.0, b); // b - rk -> rk
-
-        vk = rk;
-
-        tmpval = vk.Norm2();
-        vk.Scale(1.0 / tmpval);
-        cluster.Set(0,vk);
-
     }
     // If minIter == numIter == maxIter (preconditioner only), skip this
     if (not(numIter == params.minIter && numIter == params.maxIter)) {
