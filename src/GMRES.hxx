@@ -23,7 +23,7 @@ private:
     std::vector<DBL> Hij;
     VecCluster cluster;
 
-private:
+public:
 
     inline INT SetPosition(INT row,INT col);
 
@@ -43,9 +43,6 @@ public:
 
     /// Setup the CG method.
     FaspRetCode Setup(const LOP& A) override;
-
-    /// Clean up CG data allocated during Setup.
-    void Clean() override;
 
     /// Solve Ax=b using the CG method.
     FaspRetCode Solve(const VEC& b, VEC& x) override;

@@ -1,5 +1,5 @@
 
-#include "Gmres.hxx"
+#include "GMRES.hxx"
 
 FaspRetCode GMRES::Setup(const LOP &A) {
 
@@ -14,7 +14,7 @@ FaspRetCode GMRES::Setup(const LOP &A) {
         wk.SetValues(len, 0.0);
         yk.SetValues(len, 0.0);
         tmp.SetValues(len, 0.0);
-        betae1.SetValues(len, 0.0);
+        betae1.SetValues(len + 1, 0.0);
         safe.SetValues(len, 0.0);
         cluster.SetSize(len, len);
         Hij.resize((len + 1) * len);
@@ -37,6 +37,7 @@ INT GMRES::SetPosition(INT row, INT col) {
 
 void GMRES::Arnoldi(std::vector<DBL> &Hij, VecCluster &cluster) {
     DBL norm;
+
     for (INT j = 0; j < this->params.restart; ++j) {
         for (INT i = 0; i <= j; ++i) {
             cluster.Get(j, vk);
@@ -45,16 +46,17 @@ void GMRES::Arnoldi(std::vector<DBL> &Hij, VecCluster &cluster) {
             Hij[SetPosition(i, j)] = vk.Dot(tmp);
         }
         wk = tmp;
-        for (INT k = 0; k < j; ++k) {
+        for (INT k = 0; k <= j; ++k) {
             cluster.Get(k, vk);
             vk.Scale(Hij[SetPosition(k, j)]);
-            wk -= vk;
+            wk.AXPY(-1.0, vk);
         }
         Hij[SetPosition(j + 1, j)] = wk.Norm2();
         if (Hij[SetPosition(j + 1, j)] == 0)
             break;
-        wk.Scale(Hij[1 / SetPosition(j + 1, j)]);
+        wk.Scale(1 / Hij[SetPosition(j + 1, j)]);
         vk = wk;
+        cluster.Set(j + 1, vk);
     }
 }
 
@@ -67,12 +69,11 @@ void GMRES::HouseHolder(std::vector<DBL> &Hij, VEC &b) {
               pow(Hij[SetPosition(k + 1, k)], 2);
         sin = Hij[SetPosition(k + 1, k)] / sqrt(sum);
         cos = Hij[SetPosition(k, k)] / sqrt(sum);
-
         for (INT j = 0; j < this->A->GetColSize(); ++j) {
             Row2[j] = cos * Hij[SetPosition(k, j)] +
-                      sin * Hij[SetPosition(k + 1, 1)];
+                      sin * Hij[SetPosition(k + 1, j)];
             Row2[j + this->A->GetColSize()] = -sin * Hij[SetPosition(k, j)] +
-                                              cos * Hij[SetPosition(k + 1, 1)];
+                                              cos * Hij[SetPosition(k + 1, j)];
         }
 
         tmpb[0] = cos * b[k] + sin * b[k + 1];
@@ -89,32 +90,25 @@ void GMRES::HouseHolder(std::vector<DBL> &Hij, VEC &b) {
 }
 
 void GMRES::SolveMin(std::vector<DBL> Hij, VEC b, VEC &x) {
-    x.SetValues(b.GetSize(), 0.0);
-    x[b.GetSize() - 1] = b[b.GetSize()] / Hij[SetPosition(b.GetSize(), b.GetSize())];
-
-    for (INT j = b.GetSize() - 1; j > 0; --j) {
-        for (INT k = b.GetSize(); k >= j; --k)
-            b[j - 1] -= Hij[SetPosition(j, k)] * x[k];
-        x[j - 1] = b[j - 1] / Hij[SetPosition(j, j)];
+    x.SetValues(this->A->GetColSize(), 0.0);
+    x[this->A->GetColSize()-1] =
+            b[this->A->GetColSize()-1] / Hij[SetPosition(this->A->GetColSize()-1, this->A->GetColSize()-1)];
+    for (INT j = this->A->GetColSize()-1; j > 0; --j) {
+        for (INT k = this->A->GetColSize()-1; k >= j; --k)
+            b[j - 1] -= Hij[SetPosition(j-1, k)] * x[k];
+        x[j - 1] = b[j - 1] / Hij[SetPosition(j-1, j-1)];
     }
 }
 
 FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
+
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
-    // Local variables
-    const INT len = b.GetSize();
-    const int maxStag = MAX_STAG_NUM; // max number of stagnation checks
-    const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
-    const double solZeroTol = CLOSE_ZERO;
-
-    int stagStep = 0, moreStep = 0;
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
-    double alpha, beta, tmpa, tmpb;
-
+    DBL tmpval;
     PrintHead();
 
-    // Initialize iterative method;
+    // Initialize iterative method
     numIter = 0;
 
     while (1) {
@@ -133,8 +127,8 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
 
         vk = rk;
 
-        norm2 = vk.Norm2();
-        vk.Scale(1 / norm2);
+        tmpval = vk.Norm2();
+        vk.Scale(1.0 / tmpval);
 
         this->Arnoldi(Hij, cluster);
         betae1[0] = norm2;
@@ -184,4 +178,6 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
 
     // Restore the saved best iteration if needed
     if (numIter > params.safeIter) x = safe;
+
+    return errorCode;
 }

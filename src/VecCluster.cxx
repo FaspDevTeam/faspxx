@@ -18,7 +18,7 @@ INT VecCluster::GetSize() {
 }
 
 INT VecCluster::GetNumber() {
-    return this->number;ｚ
+    return this->number;
 }
 
 void VecCluster::Get(INT j, VEC &v) {
