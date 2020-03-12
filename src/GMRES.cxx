@@ -16,8 +16,8 @@ FaspRetCode GMRES::Setup(const LOP &A) {
         tmp.SetValues(len, 0.0);
         betae1.SetValues(len + 1, 0.0);
         safe.SetValues(len, 0.0);
-        cluster.SetSize(len, len);
-        Hij.resize((len + 1) * len);
+        cluster.SetSize(len, this->params.restart);
+        Hij.assign((len + 1) * len, 0);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
@@ -36,8 +36,6 @@ INT GMRES::SetPosition(INT row, INT col) {
 }
 
 void GMRES::Arnoldi(std::vector<DBL> &Hij, VecCluster &cluster) {
-    DBL norm;
-
     for (INT j = 0; j < this->params.restart; ++j) {
         for (INT i = 0; i <= j; ++i) {
             cluster.Get(j, vk);
@@ -91,12 +89,12 @@ void GMRES::HouseHolder(std::vector<DBL> &Hij, VEC &b) {
 
 void GMRES::SolveMin(std::vector<DBL> Hij, VEC b, VEC &x) {
     x.SetValues(this->A->GetColSize(), 0.0);
-    x[this->A->GetColSize()-1] =
-            b[this->A->GetColSize()-1] / Hij[SetPosition(this->A->GetColSize()-1, this->A->GetColSize()-1)];
-    for (INT j = this->A->GetColSize()-1; j > 0; --j) {
-        for (INT k = this->A->GetColSize()-1; k >= j; --k)
-            b[j - 1] -= Hij[SetPosition(j-1, k)] * x[k];
-        x[j - 1] = b[j - 1] / Hij[SetPosition(j-1, j-1)];
+    x[this->A->GetColSize() - 1] =
+            b[this->A->GetColSize() - 1] / Hij[SetPosition(this->A->GetColSize() - 1, this->A->GetColSize() - 1)];
+    for (INT j = this->A->GetColSize() - 1; j > 0; --j) {
+        for (INT k = this->A->GetColSize() - 1; k >= j; --k)
+            b[j - 1] -= Hij[SetPosition(j - 1, k)] * x[k];
+        x[j - 1] = b[j - 1] / Hij[SetPosition(j - 1, j - 1)];
     }
 }
 
@@ -104,92 +102,91 @@ FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
-    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
     DBL tmpval;
-    PrintHead();
+    VEC vvv(this->A->GetColSize());
 
     // Initialize iterative method
     numIter = 0;
 
+    std::cout<<"x : "<<numIter<<"  "<<x[0]<<"  "<<x[1]<<"  "<<x[2]<<"  "<<x[3]<<"  "<<x[4]<<std::endl;
     A->Apply(x, rk); // A * x -> rk
+    std::cout<<"rk : "<<numIter<<"  "<<rk[0]<<"  "<<rk[1]<<"  "<<rk[2]<<"  "<<rk[3]<<"  "<<rk[4]<<std::endl;
     rk.XPAY(-1.0, b); // b - rk -> rk
-
-    pc->Solve(rk,vk);
-
+    std::cout<<"rk : "<<numIter<<"  "<<rk[0]<<"  "<<rk[1]<<"  "<<rk[2]<<"  "<<rk[3]<<"  "<<rk[4]<<std::endl;
+    vk = rk;
     tmpval = vk.Norm2();
     vk.Scale(1.0 / tmpval);
-    cluster.Set(0,vk);
-
-    while(1) {
-        // Start from minIter instead of 0
-        if (numIter == params.minIter) {
-            resAbs = rk.Norm2();
-            denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
-            resRel = resAbs / denAbs;
-            if (resRel < params.relTol || resAbs < params.absTol) break;
+    std::cout<<"vk : "<<numIter<<"  "<<vk[0]<<"  "<<vk[1]<<"  "<<vk[2]<<"  "<<vk[3]<<"  "<<vk[4]<<std::endl;
+    cluster.Set(0, vk);
+    while (1) {
+        Hij.assign((A->GetColSize() + 1) * A->GetColSize(), 0.0);
+        this->Arnoldi(Hij, cluster);
+        std::cout<<"Hij "<<numIter<<" : "<<std::endl;
+        for(INT j=0;j<this->A->GetColSize()+1;++j){
+            for(INT k=0;k<this->A->GetColSize();++k)
+                std::cout<<Hij[j*this->A->GetColSize()+k]<<"  ";
+            std::cout<<std::endl;
+        }
+        std::cout<<"cluster "<<numIter<<" : "<<std::endl;
+        for(INT j=0;j<this->A->GetColSize();++j){
+            cluster.Get(j,vvv);
+            for(INT j=0;j<this->A->GetColSize();++j)
+                std::cout<<vvv[j]<<"  ";
+            std::cout<<std::endl;
         }
 
-        if (numIter >= params.minIter) PrintInfo(numIter, resRel, resAbs, ratio);
 
-        this->Arnoldi(Hij, cluster);
+        betae1.SetValues(A->GetColSize() + 1, 0.0);
         betae1[0] = rk.Norm2();
+        std::cout<<"betae1 : "<<numIter<<std::endl;
+        for(INT j=0;j<this->A->GetColSize()+1;++j)
+            std::cout<<betae1[j]<<"  ";
+        std::cout<<std::endl;
         this->HouseHolder(Hij, betae1);
+        std::cout<<"Hij HouseHolder : "<<numIter<<" : "<<std::endl;
+        for(INT j=0;j<this->A->GetColSize()+1;++j){
+            for(INT k=0;k<this->A->GetColSize();++k)
+                std::cout<<Hij[j*this->A->GetColSize()+k]<<"  ";
+            std::cout<<std::endl;
+        }
+        std::cout<<"betae1 HouseHolder : "<<numIter<<std::endl;
+        for(INT j=0;j<this->A->GetColSize()+1;++j)
+            std::cout<<betae1[j]<<"  ";
+        std::cout<<std::endl;
         this->SolveMin(Hij, betae1, yk);
+        std::cout<<"yk SolveMin : "<<numIter<<std::endl;
+        for(INT j=0;j<this->A->GetColSize();++j)
+            std::cout<<yk[j]<<"  ";
+        std::cout<<std::endl;
 
         for (INT l = 0; l < cluster.GetNumber(); ++l) {
             cluster.Get(l, tmp);
             tmp.Scale(yk[l]);
             x += tmp;
         }
+        std::cout<<"x solver : "<<numIter<<std::endl;
+        for(INT j=0;j<this->A->GetColSize()+1;++j)
+            std::cout<<x[j]<<"  ";
+        std::cout<<std::endl;
 
         ++numIter;
 
-        // Save the best solution so far
-        if (numIter >= params.safeIter && resAbs < resAbsOld) safe = x;
-
-        // Apply several checks for robustness
-        if (numIter >= params.minIter) {
-            // Compute norm of residual and output iteration information if needed
-            resAbs = rk.Norm2();
-            resRel = resAbs / denAbs;
-            ratio = resAbs / resAbsOld; // convergence ratio between two steps
-
-            // Prepare for the next iteration
-            if (numIter < params.maxIter) {
-                // Save the residual for next iteration
-                resAbsOld = resAbs;
-
-                A->Apply(x, rk); // A * x -> rk
-                rk.XPAY(-1.0, b); // b - rk -> rk
-                resAbs = rk.Norm2();
-                resRel = resAbs / denAbs;
-                if (resRel < params.relTol || resAbs < params.absTol) break;
-                pc->Solve(rk,vk);
-
-                tmpval = vk.Norm2();
-                vk.Scale(1.0 / tmpval);
-                cluster.Set(0,vk);
-
-            }
-        } else {
+        if (numIter < params.maxIter) {
             A->Apply(x, rk); // A * x -> rk
             rk.XPAY(-1.0, b); // b - rk -> rk
-            pc->Solve(rk,vk);
-
+            vk = rk;
             tmpval = vk.Norm2();
             vk.Scale(1.0 / tmpval);
-            cluster.Set(0,vk);
+            cluster.Set(0, vk);
+        } else {
+            break;
         }
     }
     // If minIter == numIter == maxIter (preconditioner only), skip this
-    if (not(numIter == params.minIter && numIter == params.maxIter)) {
-        this->norm2 = resAbs;
+    if (not(numIter == params.minIter && numIter== params.maxIter)) {
+        this->norm2 = rk.Norm2();
         this->normInf = rk.NormInf();
-        PrintFinal(numIter, resRel, resAbs, ratio);
     }
-
-    // Restore the saved best iteration if needed
-    if (numIter > params.safeIter) x = safe;
 
     return errorCode;
 }
