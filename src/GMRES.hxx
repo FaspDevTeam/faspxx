@@ -2,54 +2,45 @@
 #ifndef GMRES_HXX
 #define GMRES_HXX
 
-#include <cmath>
 #include "ErrorLog.hxx"
 #include "LOP.hxx"
 #include "MAT.hxx"
 #include "SOL.hxx"
 #include "VecCluster.hxx"
 
-class GMRES: public SOL
-{
-
+class GMRES{
+    friend class LGMRES;
+    friend class RGMRES;
 private:
-    VEC rk;
-    VEC wk;
-    VEC vk;
-    VEC safe;
-    VEC betae1;
-    VEC tmp;
-    VEC yk;
-    std::vector<DBL> Hij;
-    VecCluster cluster;
-
-public:
-
-    inline INT SetPosition(INT row,INT col);
-
-    void Arnoldi(std::vector<DBL>& Hij,VecCluster& cluster);
-
-    void HouseHolder(std::vector<DBL>& Hij,VEC& b);
-
-    void SolveMin(std::vector<DBL> Hij, VEC b,VEC& x);
-
-public:
-    /// Default constructor.
-    GMRES() : rk(0),  wk(0), vk(0), safe(0),
-        Hij(0),cluster(0,0){};
-
-    /// Default destructor.
-    ~GMRES() = default;
-
-    /// Setup the CG method.
-    FaspRetCode Setup(const LOP& A) override;
-
-    /// Solve Ax=b using the CG method.
-    FaspRetCode Solve(const VEC& b, VEC& x) override;
+    void SolveMin(std::vector<DBL> H,VEC betae1,VEC qk);
 };
 
+class LGMRES: public SOL{
+private:
+    VEC p0;
+    VEC pk;
+    VEC r0;
+    VEC tmp;
+    VecCluster V;
+    VEC vk;
+    VEC wk;
+    VEC betae1;
+    std::vector<DBL> H;
+public:
+    // default construction
+    LGMRES():p0(0),pk(0),r0(0),tmp(0),V(0,0),
+        vk(0),wk(0),betae1(0),H(0){};
 
+    // destruction
+    ~LGMRES(){};
 
+    /// Setup the LGMRES method.
+    FaspRetCode Setup(const LOP& A) override;
 
+    /// Clean up LGMRES data allocated during Setup.
+    void Clean() override;
 
+    /// Solve Ax=b using the LGMRES method.
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
+};
 #endif //GMRES_HXX
