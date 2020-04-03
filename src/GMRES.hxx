@@ -2,6 +2,7 @@
 #ifndef GMRES_HXX
 #define GMRES_HXX
 
+#include <cmath>
 #include "ErrorLog.hxx"
 #include "LOP.hxx"
 #include "MAT.hxx"
@@ -10,6 +11,8 @@
 
 class GMRES:public SOL{
 public:
+    INT length;
+
     INT Locate(INT row, INT col);
 
     void HouseHolder(std::vector<DBL> H,VEC betae1);
