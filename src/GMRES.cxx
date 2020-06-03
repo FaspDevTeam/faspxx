@@ -1,6 +1,7 @@
 
 #include "GMRES.hxx"
 
+// Set up the GMRES method
 FaspRetCode RGMRES::Setup(const LOP &A) {
     // Set solver type
     SetSolType(SOLType::CG);
@@ -30,7 +31,7 @@ FaspRetCode RGMRES::Setup(const LOP &A) {
             norms.resize(this->params.maxIter+1);
 
             VEC testVariable(len,3.14);
-            for(int j=0;j<this->params.restart;++j)
+            for(int j=0;j<this->params.restart-1;++j)
                 queue_v.push(testVariable);
 
         } catch (std::bad_alloc &ex) {
@@ -49,4 +50,17 @@ FaspRetCode RGMRES::Setup(const LOP &A) {
     if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
+}
+
+// Solve Ax=b using the GMRES method.
+FaspRetCode RGMRES::Solve(const VEC &b, VEC &x) {
+
+    FaspRetCode errorCode = FaspRetCode::SUCCESS;
+
+    // local variables
+    double r_norm,gamma,t,normu;
+    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
+
+    while()
+
 }
