@@ -1,31 +1,16 @@
-/*! \file    testCG.hxx
- *  \brief   Test performance of CG method
- *  \author  Kailei Zhang, Chensong Zhang
- *  \date    Oct/12/2019
- *
- *-----------------------------------------------------------------------------------
- *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
- *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
- *-----------------------------------------------------------------------------------
- */
 
-// Sample usages:
-//   ./testCG -maxIter 200 -minIter 100
-//   ./testCG -maxIter 200 -minIter 0 -mat ../data/fdm_1023X1023.csr -verbose 3
-
-#include <GMRES.hxx>
 #include "Param.hxx"
 #include "Timing.hxx"
 #include "ReadData.hxx"
 #include "LOP.hxx"
 #include "Iter.hxx"
-#include "CG.hxx"
+#include "GMRES.hxx"
 
 int main(int argc, const char *args[])
 {
     // User default parameters
     std::string parFile = "../data/input.param";
-    std::string matFile = "../data/fdm_10X10.csr";
+    std::string matFile = "/home/kailei/github/faspsolver/data/add32.mtx";
     std::string rhsFile, x0File;
 
     // Read in general parameters
@@ -77,8 +62,8 @@ int main(int argc, const char *args[])
     Identity pc;  // pc = identity, no preconditioning used
 
     // Setup solver parameters
-    class GMRES solver;
-    solver.SetOutput(solParam.verbose);
+    class RGMRES solver;
+    solver.SetOutput(PRINT_MORE);
     solver.SetMaxIter(solParam.maxIter);
     solver.SetMinIter(solParam.minIter);
     solver.SetSafeIter(solParam.safeIter);
@@ -86,12 +71,16 @@ int main(int argc, const char *args[])
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
     solver.SetPC(pc);
+
     solver.Setup(mat);
 
     // Solve the linear system using CG
     timer.Start();
     retCode = solver.Solve(b, x);
     solver.PrintTime(timer.Stop());
+
+    cout<<"infnorm : "<<solver.GetInfNorm()<<endl;
+    cout<<"norm2 : "<<solver.GetNorm2()<<endl;
 
     return retCode;
 }
