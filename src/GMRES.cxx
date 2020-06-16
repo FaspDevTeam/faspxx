@@ -4,13 +4,13 @@
 #include <iostream>
 
 /// set the maximum and minimum restart
-void RGMRES::SetMaxMinRestart(int maxRestart, int minRestart) {
+void GMRES::SetMaxMinRestart(int maxRestart, int minRestart) {
     this->maxRestart = maxRestart;
     this->minRestart = minRestart;
 }
 
 // Set up the GMRES method
-FaspRetCode RGMRES::Setup(const LOP &A) {
+FaspRetCode GMRES::Setup(const LOP &A) {
 
     // Set solver type
     SetSolType(SOLType::GMRES);
@@ -22,38 +22,39 @@ FaspRetCode RGMRES::Setup(const LOP &A) {
             ->minRestart;
 
     // Allocate memory for temporary vectors
-    while ( this->maxRestart - this->minRestart > 5 ) {
+    try {
+        const INT len = A.GetColSize();
+        wk.SetValues(len, 0.0);
+        tmp.SetValues(len, 0.0);
+        safe.SetValues(len, 0.0);
+
+        var.resize(len);
+
+        hh.resize(this->maxRestart + 1);
+        for ( int j = 0; j < this->maxRestart + 1; ++j )
+            hh[j].resize(this->maxRestart);
+
+        hcos.resize(this->maxRestart + 1);
+        hsin.resize(this->maxRestart);
+
+        norms.resize(this->params.maxIter + 1);
+    } catch ( std::bad_alloc &ex ) {
+        return FaspRetCode::ERROR_ALLOC_MEM;
+    }
+
+    while ( this->maxRestart >= this->minRestart ) {
         try {
-            const INT len = A.GetColSize();
-            wk.SetValues(len, 0.0);
-            tmp.SetValues(len, 0.0);
-            safe.SetValues(len, 0.0);
-
-            var.resize(len);
-
-            hh.resize(this->maxRestart + 1);
-            for ( int j = 0; j < this->maxRestart + 1; ++j )
-                hh[j].resize(this->maxRestart);
-
-            cos.resize(this->maxRestart + 1);
-            sin.resize(this->maxRestart);
-
-            norms.resize(this->params.maxIter + 1);
-
             for ( int j = 0; j < this->maxRestart + 1; ++j )
                 V.push_back(safe);
-
             break;
         } catch ( std::bad_alloc &ex ) {
-
             this->maxRestart -= 5;
-
             while ( !V.empty() )
                 V.resize(0);
         }
     }
 
-    if ( this->maxRestart <= 5 ) {
+    if ( this->maxRestart < this->minRestart ) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
@@ -72,7 +73,7 @@ FaspRetCode RGMRES::Setup(const LOP &A) {
 }
 
 // Solve Ax=b using the GMRES method.
-FaspRetCode RGMRES::Solve(const VEC &b, VEC &x) {
+FaspRetCode GMRES::Solve(const VEC &b, VEC &x) {
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
@@ -152,20 +153,20 @@ FaspRetCode RGMRES::Solve(const VEC &b, VEC &x) {
             for ( int j = 1; j < count; ++j ) {
                 t = hh[j - 1][count - 1];
                 hh[j - 1][count - 1] =
-                        sin[j - 1] * hh[j][count - 1] + cos[j - 1] * t;
-                hh[j][count - 1] = -sin[j - 1] * t + cos[j - 1] * hh[j][count - 1];
+                        hsin[j - 1] * hh[j][count - 1] + hcos[j - 1] * t;
+                hh[j][count - 1] = -hsin[j - 1] * t + hcos[j - 1] * hh[j][count - 1];
             }
             t = hh[count][count - 1] * hh[count][count - 1];
             t += hh[count - 1][count - 1] * hh[count - 1][count - 1];
 
             t = sqrt(t);
             gamma = t > SMALL ? t : SMALL;
-            cos[count - 1] = hh[count - 1][count - 1] / gamma;
-            sin[count - 1] = hh[count][count - 1] / gamma;
-            var[count] = -sin[count - 1] * var[count - 1];
-            var[count - 1] = cos[count - 1] * var[count - 1];
+            hcos[count - 1] = hh[count - 1][count - 1] / gamma;
+            hsin[count - 1] = hh[count][count - 1] / gamma;
+            var[count] = -hsin[count - 1] * var[count - 1];
+            var[count - 1] = hcos[count - 1] * var[count - 1];
             hh[count - 1][count - 1] =
-                    sin[count - 1] * hh[count][count - 1] + cos[count - 1] * hh
+                    hsin[count - 1] * hh[count][count - 1] + hcos[count - 1] * hh
                     [count - 1][count - 1];
 
             resAbs = fabs(var[count]);
@@ -258,8 +259,8 @@ FaspRetCode RGMRES::Solve(const VEC &b, VEC &x) {
 
         /* compute residual vector and continue loop */
         for ( int j = count; j > 0; --j ) {
-            var[j - 1] = -sin[j - 1] * var[j];
-            var[j] = cos[j - 1] * var[j];
+            var[j - 1] = -hsin[j - 1] * var[j];
+            var[j] = hcos[j - 1] * var[j];
         }
 
         if ( count )
