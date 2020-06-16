@@ -12,33 +12,37 @@
 class RGMRES : public SOL {
 
 private:
-    VEC vk;
     VEC wk;
-    VEC p0;
-    VEC pk;
-    VEC qk;
-    VEC var;
+    VEC safe;
+    VEC tmp;
 
     std::vector<std::vector<double>> hh;
     std::vector<double> sin;
     std::vector<double> cos;
+    std::vector<double> var;
     std::vector<double> norms;
 
-    std::queue<VEC> queue_v;
+    std::vector<VEC> V;
+
+    int maxRestart;
+    int minRestart;
 
 public:
     /// Default constructor.
-    RGMRES() : vk(0), wk(0), p0(0), pk(0), qk(0), hh(0), sin(0), cos(0), var(0),
-               norms(0) {};
+    RGMRES() : wk(0), safe(0), tmp(0), hh(0), sin(0), cos(0),
+               var(0), norms(0), maxRestart{20}, minRestart(5) {};
 
     /// Default destructor.
     ~RGMRES() = default;
+
+    /// set the maximum and minmum restart
+    void SetMaxMinRestart(int maxRestart, int minRestart);
 
     /// Setup the GMRES method.
     FaspRetCode Setup(const LOP &A) override;
 
     /// Clean up GMRES data allocated during Setup.
-    void Clean() override;
+    //void Clean() override;
 
     /// Solve Ax=b using the GMRES method.
     FaspRetCode Solve(const VEC &b, VEC &x) override;

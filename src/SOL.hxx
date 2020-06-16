@@ -46,7 +46,7 @@ struct SOLParams {
     Output    verbose;    ///< Output verbosity level
 
     SOLParams() : type(SOLType::CG), algName("cg"), maxIter(100), minIter(0),
-                  safeIter(500), restart(20), relTol(1e-6), absTol(1e-8),
+                  safeIter(500000), restart(20), relTol(1e-6), absTol(1e-8),
                   weight(1.0), verbose(PRINT_NONE) {}
 };
 

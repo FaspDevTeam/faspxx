@@ -181,7 +181,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 
                 // If false converged, print out warning messages
                 if ( params.verbose >= PRINT_MORE ) {
-                    FASPXX_WARNING("False convergence!")
+                    FASPXX_WARNING("False convergence!");
                     WarnCompRes(resRelOld);
                     WarnRealRes(resRel);
                 }
