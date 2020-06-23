@@ -3,6 +3,12 @@
 #include "GMRES.hxx"
 #include <iostream>
 
+/// Solve Ax=b using the GMRES method.
+FaspRetCode GMRES::Solve(const VEC &b, VEC &x){
+    return FaspRetCode::SUCCESS;
+}
+
+
 /// set the maximum and minimum restart
 void GMRES::SetMaxMinRestart(int maxRestart, int minRestart) {
     this->maxRestart = maxRestart;
