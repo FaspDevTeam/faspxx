@@ -43,8 +43,16 @@ public:
     /// Clean up GMRES data allocated during Setup.
     //void Clean() override;
 
+private:
     /// Solve Ax=b using the GMRES method.
-    FaspRetCode Solve(const VEC &b, VEC &x) override;
+    FaspRetCode Solve(const VEC &b, VEC &x);
+
+public:
+    /// right preconditioner solver
+    FaspRetCode RSolve(const VEC &b, VEC &x);
+
+    /// left preconditioner slover
+    FaspRetCode LSolve(const VEC &b, VEC &x);
 
 };
 
