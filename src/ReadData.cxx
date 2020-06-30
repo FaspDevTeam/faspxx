@@ -123,6 +123,19 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
     in.read(buffer, length); // read the whole file in bytes
     in.close(); // close the file stream
 
+    while( true ) { // skip the comment in the begining
+        if( buffer[position] == '%' || buffer[position] == '\0'){
+            while( true ){
+                ++position;
+                if( buffer[position] == '\n' || buffer[position] == '\0'){
+                    ++position;
+                    break;
+                }
+            }
+        } else
+            break;
+    }
+
     int count = 0; // number of bytes in the decimal
     int mark = 0; // which number of integer is reading
     while ( true ) { // read matrix 's row, column, nnz
