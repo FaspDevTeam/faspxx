@@ -1,4 +1,5 @@
 
+#include <fstream>
 #include "Param.hxx"
 #include "Timing.hxx"
 #include "ReadData.hxx"
@@ -10,7 +11,7 @@ int main(int argc, const char *args[])
 {
     // User default parameters
     std::string parFile = "../data/input.param";
-    std::string matFile = "/home/kailei/github/faspsolver/data/add32.mtx";
+    std::string matFile = "/home/kailei/data/fdm_1023X1023.csr";
     std::string rhsFile, x0File;
 
     // Read in general parameters
@@ -48,7 +49,7 @@ int main(int argc, const char *args[])
 
     // Read the right-hand-side b; if not specified, use b = 0.0
     VEC b;
-    b.SetValues(nrow, 0.0);
+    b.SetValues(nrow, 1.0);
     if ( strcmp(rhsFile.c_str(), "") != 0 ) ReadVEC(rhsFile.c_str(), b);
 
     // Read the initial guess x0; if not specified, use x0 = 1.0
@@ -62,25 +63,23 @@ int main(int argc, const char *args[])
     Identity pc;  // pc = identity, no preconditioning used
 
     // Setup solver parameters
-    class RGMRES solver;
-    solver.SetOutput(PRINT_MORE);
+    class GMRES solver;
+    solver.SetOutput(PRINT_NONE);
     solver.SetMaxIter(solParam.maxIter);
     solver.SetMinIter(solParam.minIter);
     solver.SetSafeIter(solParam.safeIter);
-    solver.SetRestart(solParam.restart);
+    solver.SetRestart(solParam.safeIter);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
+    solver.SetMaxMinRestart(20,5);
     solver.SetPC(pc);
 
     solver.Setup(mat);
 
     // Solve the linear system using CG
     timer.Start();
-    retCode = solver.Solve(b, x);
+    retCode = solver.RSolve(b, x);
     solver.PrintTime(timer.Stop());
-
-    cout<<"infnorm : "<<solver.GetInfNorm()<<endl;
-    cout<<"norm2 : "<<solver.GetNorm2()<<endl;
 
     return retCode;
 }
