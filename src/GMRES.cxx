@@ -2,6 +2,7 @@
 #include <stack>
 #include "GMRES.hxx"
 #include <iostream>
+#include <fstream>
 
 /// Solve Ax=b using the GMRES method.
 FaspRetCode GMRES::Solve(const VEC &b, VEC &x){
@@ -103,13 +104,24 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
 
     V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
 
+    std::ofstream out("/home/kailei/cxx");
+    out.precision(13);
+    for(int j=0;j<len;++j){
+        out<<V[0][j]<<std::endl;
+    }
+    out.close();
+
     ri = V[0].Norm2();
 
-    // preconditioner
-    tmp.SetValues(len, 0.0);
-    pc->Solve(V[0], tmp);
+    std::cout<<"ri : "<<ri<<std::endl;
+
+    //tmp.SetValues(len, 0.0);
+    //pc->Solve(V[0], tmp);
+    tmp=V[0];
 
     resAbs = tmp.Norm2();
+    std::cout<<"resAbs : "<<resAbs<<std::endl;
+
     denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
     resRel = resAbs / denAbs;
     resAbsOld = resAbs;
@@ -141,8 +153,9 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
                           resAbs, ratio);
 
             // preconditioner
-            tmp.SetValues(len, 0.0);
-            pc->Solve(V[count - 1], tmp);
+            //tmp.SetValues(len, 0.0);
+            //pc->Solve(V[count - 1], tmp);
+            tmp=V[count-1];
 
             A->Apply(tmp, V[count]);
 
@@ -207,8 +220,9 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
             wk.AXPBY(1.0, var[j], V[j]);
 
         /* apply preconditioner */
-        tmp.SetValues(len, 0.0);
-        pc->Solve(wk, tmp);
+        //tmp.SetValues(len, 0.0);
+        //pc->Solve(wk, tmp);
+        tmp=wk;
 
         x.AXPY(1.0, tmp);
 
@@ -241,8 +255,9 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
             wk.AXPBY(-1.0, 1.0, b); // b - p0 -> p0
 
             /* apply preconditioner */
-            tmp.SetValues(len, 0.0);
-            pc->Solve(wk, tmp);
+            //tmp.SetValues(len, 0.0);
+            //pc->Solve(wk, tmp);
+            tmp=wk;
 
             resAbs = tmp.Norm2();
             resRel = resAbs / denAbs;
@@ -290,10 +305,15 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
     A->Apply(x, wk); // A * x -> wk
     wk.XPAY(-1.0, b); // b - p0 -> wk
 
-    this->norm2 = wk.Norm2();
-    this->normInf = wk.NormInf();
-    PrintFinal(numIter, resRel, resAbs, ratio);
+    // If minIter == numIter == maxIter (preconditioner only), skip this
+    if ( not (numIter == params.minIter && numIter == params.maxIter) ) {
+        this->norm2 = wk.Norm2();
+        this->normInf = wk.NormInf();
+        PrintFinal(numIter, resRel, resAbs, ratio);
+    }
 
+    // Restore the saved best iteration if needed
+    if ( numIter > params.safeIter ) x = safe;
 
     return errorCode;
 }
@@ -508,10 +528,15 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
     A->Apply(x, wk); // A * x -> wk
     wk.XPAY(-1.0, b); // b - p0 -> wk
 
-    this->norm2 = wk.Norm2();
-    this->normInf = wk.NormInf();
-    PrintFinal(numIter, resRel, resAbs, ratio);
+    // If minIter == numIter == maxIter (preconditioner only), skip this
+    if ( not (numIter == params.minIter && numIter == params.maxIter) ) {
+        this->norm2 = wk.Norm2();
+        this->normInf = wk.NormInf();
+        PrintFinal(numIter, resRel, resAbs, ratio);
+    }
 
+    // Restore the saved best iteration if needed
+    if ( numIter > params.safeIter ) x = safe;
 
     return errorCode;
 }
