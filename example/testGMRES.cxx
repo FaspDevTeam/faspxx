@@ -43,6 +43,11 @@ int main(int argc, const char *args[])
     FaspRetCode retCode = ReadMat(matFile.c_str(), mat);
     if ( retCode < 0 ) return retCode;
 
+    for(int j=0;j<10;++j)
+        std::cout<<mat.GetValue(0,j)<<",";
+    std::cout<<std::endl;
+
+
     // Print problem size information
     const INT nrow = mat.GetRowSize(), mcol = mat.GetColSize();
     std::cout << "nrow: " << nrow << ", mcol: " << mcol << std::endl;
@@ -64,11 +69,11 @@ int main(int argc, const char *args[])
 
     // Setup solver parameters
     class GMRES solver;
-    solver.SetOutput(PRINT_NONE);
+    solver.SetOutput(PRINT_MORE);
     solver.SetMaxIter(solParam.maxIter);
     solver.SetMinIter(solParam.minIter);
     solver.SetSafeIter(solParam.safeIter);
-    solver.SetRestart(solParam.safeIter);
+    solver.SetRestart(solParam.restart);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
     solver.SetMaxMinRestart(20,5);
