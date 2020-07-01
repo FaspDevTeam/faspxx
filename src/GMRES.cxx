@@ -104,38 +104,29 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
 
     V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
 
-    std::ofstream out("/home/kailei/cxx");
-    out.precision(13);
-    for(int j=0;j<len;++j){
-        out<<V[0][j]<<std::endl;
-    }
-    out.close();
-
     ri = V[0].Norm2();
 
-    std::cout<<"ri : "<<ri<<std::endl;
-
-    //tmp.SetValues(len, 0.0);
-    //pc->Solve(V[0], tmp);
-    tmp=V[0];
+    tmp.SetValues(len, 0.0);
+    pc->Solve(V[0], tmp);
+    //tmp=V[0];
 
     resAbs = tmp.Norm2();
-    std::cout<<"resAbs : "<<resAbs<<std::endl;
 
     denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
     resRel = resAbs / denAbs;
     resAbsOld = resAbs;
 
-    if (resRel < params.relTol || resAbs < params.absTol)
+    if ( resRel < params.relTol || resAbs < params.absTol )
         return FaspRetCode::SUCCESS;
 
     // store initial residual
     norms[0] = resRel;
 
+
     ratio = 1.0;
     /* GMRES(M) outer iteration */
-    while (this->numIter < this->params.maxIter && resRel > this->params
-            .relTol) {
+    while ( this->numIter < this->params.maxIter && resRel > this->params
+            .relTol && resAbs > this->params.absTol ) {
 
         var[0] = resAbs;
         V[0].Scale(1 / resAbs);
@@ -153,9 +144,9 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
                           resAbs, ratio);
 
             // preconditioner
-            //tmp.SetValues(len, 0.0);
-            //pc->Solve(V[count - 1], tmp);
-            tmp=V[count-1];
+            tmp.SetValues(len, 0.0);
+            pc->Solve(V[count - 1], tmp);
+            //tmp=V[count-1];
 
             A->Apply(tmp, V[count]);
 
@@ -197,17 +188,17 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
             norms[this->numIter] = resRel;
 
             /* exit restart cycle if reaches tolerance */
-            if ((resAbs < this->params.absTol || resRel < this->params.relTol) &&
-                this->numIter > this->params.minIter)
+            if ( (resAbs < this->params.absTol || resRel < this->params.relTol) &&
+                this->numIter > this->params.minIter )
                 break;
 
         } /* end of restart cycle */
 
         /* compute solution, first solve upper triangular system */
         var[count - 1] = var[count - 1] / hh[count - 1][count - 1];
-        for (int k = count - 2; k >= 0; --k) {
+        for ( int k = count - 2; k >= 0; --k ) {
             t = 0.0;
-            for (int j = k + 1; j < count; ++j)
+            for ( int j = k + 1; j < count; ++j )
                 t -= hh[k][j] * var[j];
             t += var[k];
             var[k] = t / hh[k][k];
@@ -216,13 +207,13 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
         wk = V[count - 1];
         wk.Scale(var[count - 1]);
 
-        for (int j = count - 2; j >= 0; --j)
+        for ( int j = count - 2; j >= 0; --j )
             wk.AXPBY(1.0, var[j], V[j]);
 
         /* apply preconditioner */
-        //tmp.SetValues(len, 0.0);
-        //pc->Solve(wk, tmp);
-        tmp=wk;
+        tmp.SetValues(len, 0.0);
+        pc->Solve(wk, tmp);
+        //tmp=wk;
 
         x.AXPY(1.0, tmp);
 
@@ -233,20 +224,20 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
         cr = rj / ri;
         ri = rj;
 
-        if (cr > max_cr)
+        if ( cr > max_cr )
             this->params.restart = this->maxRestart;
-        else if (cr <= max_cr && cr >= min_cr) {
-            if (this->params.restart - d > this->minRestart)
+        else if ( cr <= max_cr && cr >= min_cr ) {
+            if ( this->params.restart - d > this->minRestart )
                 this->params.restart -= d;
             else
                 this->params.restart = this->maxRestart;
         }
 
         // Save the best solution so far
-        if (numIter >= params.safeIter && resAbs < resAbsOld) safe = x;
+        if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
 
         // Check: prevent false convergence
-        if (resRel < this->params.absTol && this->numIter >= this->params.minIter
+        if ( resRel < this->params.absTol && this->numIter >= this->params.minIter
                 ) {
             double computed_resRel = resRel;
 
@@ -255,16 +246,16 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
             wk.AXPBY(-1.0, 1.0, b); // b - p0 -> p0
 
             /* apply preconditioner */
-            //tmp.SetValues(len, 0.0);
-            //pc->Solve(wk, tmp);
-            tmp=wk;
+            tmp.SetValues(len, 0.0);
+            pc->Solve(wk, tmp);
+            //tmp=wk;
 
             resAbs = tmp.Norm2();
             resRel = resAbs / denAbs;
 
             norms[this->numIter] = resRel;
 
-            if (resRel < this->params.relTol)
+            if ( resRel < this->params.relTol )
                 break;
             else { // Need to restart
                 V[0] = tmp;
@@ -280,25 +271,25 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
         } /* end of convergence check */
 
         /* compute residual vector and continue loop */
-        for (int j = count; j > 0; --j) {
+        for ( int j = count; j > 0; --j ) {
             var[j - 1] = -hsin[j - 1] * var[j];
             var[j] = hcos[j - 1] * var[j];
         }
 
-        if (count)
+        if ( count )
             V[count].Scale(var[count]);
 
-        for (int j = count - 1; j > 0; --j)
+        for ( int j = count - 1; j > 0; --j )
             V[count].AXPY(var[j], V[j]);
 
-        if (count) {
+        if ( count ) {
             V[0].Scale(var[0]);
             V[0].AXPY(1.0, V[count]);
         }
 
     } /* end of main while loop */
 
-    if (this->numIter > this->params.maxIter)
+    if ( this->numIter > this->params.maxIter )
         errorCode = FaspRetCode::ERROR_SOLVER_MAXIT;
 
 
@@ -354,7 +345,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
     resRel = resAbs / denAbs;
     resAbsOld = resAbs;
 
-    if (resRel < params.relTol || resAbs < params.absTol)
+    if ( resRel < params.relTol || resAbs < params.absTol )
         return FaspRetCode::SUCCESS;
 
     // store initial residual
@@ -362,21 +353,21 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
 
     ratio = 1.0;
     /* GMRES(M) outer iteration */
-    while (this->numIter < this->params.maxIter && resRel > this->params
-            .relTol) {
+    while ( this->numIter < this->params.maxIter && resRel > this->params
+            .relTol && resAbs > this->params.absTol ) {
 
         var[0] = resAbs;
         V[0].Scale(1 / resAbs);
 
         /* RESTART CYCLE (right-preconditioning) */
         count = 0;
-        while (count < this->params.restart &&
-               this->numIter < this->params.maxIter) {
+        while ( count < this->params.restart &&
+               this->numIter < this->params.maxIter ) {
 
             ++count;
             ++this->numIter;
 
-            if (this->numIter > this->params.minIter)
+            if ( this->numIter > this->params.minIter )
                 PrintInfo(numIter - 1, resRel,
                           resAbs, ratio);
 
@@ -387,17 +378,17 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
             pc->Solve(tmp, V[count]);
 
             /* Modified Gram_Schmidt orthogonalization */
-            for (int j = 0; j < count; ++j) {
+            for ( int j = 0; j < count; ++j ) {
                 hh[j][count - 1] = V[count].Dot(V[j]);
                 V[count].AXPBY(1.0, -hh[j][count - 1], V[j]);
             }
             t = V[count].Norm2();
             hh[count][count - 1] = t;
 
-            if (fabs(t) > SMALL) // if t=0, we get solution subspace
+            if ( fabs(t) > SMALL ) // if t=0, we get solution subspace
                 V[count].Scale(1.0 / t);
 
-            for (int j = 1; j < count; ++j) {
+            for ( int j = 1; j < count; ++j ) {
                 t = hh[j - 1][count - 1];
                 hh[j - 1][count - 1] =
                         hsin[j - 1] * hh[j][count - 1] + hcos[j - 1] * t;
@@ -424,17 +415,17 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
             norms[this->numIter] = resRel;
 
             /* exit restart cycle if reaches tolerance */
-            if ((resAbs < this->params.absTol || resRel < this->params.relTol) &&
-                this->numIter > this->params.minIter)
+            if ( (resAbs < this->params.absTol || resRel < this->params.relTol) &&
+                this->numIter > this->params.minIter )
                 break;
 
         } /* end of restart cycle */
 
         /* compute solution, first solve upper triangular system */
         var[count - 1] = var[count - 1] / hh[count - 1][count - 1];
-        for (int k = count - 2; k >= 0; --k) {
+        for ( int k = count - 2; k >= 0; --k ) {
             t = 0.0;
-            for (int j = k + 1; j < count; ++j)
+            for ( int j = k + 1; j < count; ++j )
                 t -= hh[k][j] * var[j];
             t += var[k];
             var[k] = t / hh[k][k];
@@ -443,7 +434,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
         wk = V[count - 1];
         wk.Scale(var[count - 1]);
 
-        for (int j = count - 2; j >= 0; --j)
+        for ( int j = count - 2; j >= 0; --j )
             wk.AXPBY(1.0, var[j], V[j]);
 
         tmp = wk;
@@ -457,20 +448,20 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
         cr = rj / ri;
         ri = rj;
 
-        if (cr > max_cr)
+        if ( cr > max_cr )
             this->params.restart = this->maxRestart;
-        else if (cr <= max_cr && cr >= min_cr) {
-            if (this->params.restart - d > this->minRestart)
+        else if ( cr <= max_cr && cr >= min_cr ) {
+            if ( this->params.restart - d > this->minRestart )
                 this->params.restart -= d;
             else
                 this->params.restart = this->maxRestart;
         }
 
         // Save the best solution so far
-        if (numIter >= params.safeIter && resAbs < resAbsOld) safe = x;
+        if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
 
         // Check: prevent false convergence
-        if (resRel < this->params.absTol && this->numIter >= this->params.minIter
+        if ( resRel < this->params.absTol && this->numIter >= this->params.minIter
                 ) {
             double computed_resRel = resRel;
 
@@ -487,14 +478,14 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
 
             norms[this->numIter] = resRel;
 
-            if (resRel < this->params.relTol)
+            if ( resRel < this->params.relTol )
                 break;
             else { // Need to restart
                 V[0] = tmp;
                 count = 0;
             }
 
-            if (this->params.verbose >= PRINT_MORE) {
+            if ( this->params.verbose >= PRINT_MORE ) {
                 FASPXX_WARNING("False convergence!");
                 WarnCompRes(computed_resRel);
                 WarnRealRes(resRel);
@@ -503,25 +494,25 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
         } /* end of convergence check */
 
         /* compute residual vector and continue loop */
-        for (int j = count; j > 0; --j) {
+        for ( int j = count; j > 0; --j ) {
             var[j - 1] = -hsin[j - 1] * var[j];
             var[j] = hcos[j - 1] * var[j];
         }
 
-        if (count)
+        if ( count )
             V[count].Scale(var[count]);
 
-        for (int j = count - 1; j > 0; --j)
+        for ( int j = count - 1; j > 0; --j )
             V[count].AXPY(var[j], V[j]);
 
-        if (count) {
+        if ( count ) {
             V[0].Scale(var[0]);
             V[0].AXPY(1.0, V[count]);
         }
 
     } /* end of main while loop */
 
-    if (this->numIter > this->params.maxIter)
+    if ( this->numIter > this->params.maxIter )
         errorCode = FaspRetCode::ERROR_SOLVER_MAXIT;
 
 
