@@ -96,6 +96,8 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
     double cr = 1.0;
     int d = 3;
 
+    PrintHead();
+
     // Initialize iterative method
     numIter = 0;
     safe = x;
@@ -318,6 +320,8 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
     double min_cr = 0.17364817766693041;
     double cr = 1.0;
     int d = 3;
+
+    PrintHead();
 
     // Initialize iterative method
     numIter = 0;
