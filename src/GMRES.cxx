@@ -177,7 +177,7 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
                     hsin[count - 1] * hh[count][count - 1] + hcos[count - 1] * hh
                     [count - 1][count - 1];
 
-            resAbs = fabs(var[count]);
+            resAbs = rj = fabs(var[count]);
             ratio = resAbs / resAbsOld;
             resAbsOld = resAbs;
             resRel = resAbs / denAbs;
@@ -213,10 +213,10 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
 
         x.AXPY(1.0, tmp);
 
-        A->Apply(x, tmp);
-        tmp.XPAY(-1.0, b);
+        //A->Apply(x, tmp);
+        //tmp.XPAY(-1.0, b);
 
-        rj = tmp.Norm2();
+        //rj = tmp.Norm2();
         cr = rj / ri;
         ri = rj;
 
