@@ -31,6 +31,9 @@ FaspRetCode GMRES::Setup(const LOP &A) {
     // Set solver type
     SetSolType(SOLType::GMRES);
 
+    this->restart=this->params.restart;
+    this->len = A.GetColSize();
+
     this->maxRestart = this->maxRestart > this->params.maxIter
                      ? this->params.maxIter : this->maxRestart;
 
@@ -39,7 +42,6 @@ FaspRetCode GMRES::Setup(const LOP &A) {
 
     // Allocate memory for temporary vectors
     try {
-        const INT len = A.GetColSize();
         wk.SetValues(len, 0.0);
         tmp.SetValues(len, 0.0);
         safe.SetValues(len, 0.0);
@@ -68,11 +70,11 @@ FaspRetCode GMRES::Setup(const LOP &A) {
 
     if ( this->maxRestart < this->minRestart ) return FaspRetCode::ERROR_ALLOC_MEM;
 
-    if ( this->params.restart > this->maxRestart )
-        this->params.restart = this->maxRestart;
+    if ( this->restart > this->maxRestart )
+        this->restart = this->maxRestart;
 
-    if ( this->params.restart < this->minRestart )
-        this->params.restart = this->minRestart;
+    if ( this->restart < this->minRestart )
+        this->restart = this->minRestart;
 
     // Setup the coefficient matrix
     this->A = &A;
@@ -81,6 +83,35 @@ FaspRetCode GMRES::Setup(const LOP &A) {
     if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
+}
+
+// Clean up GMRES data allocated during setup.
+void GMRES::Clean() {
+
+    this->restart=this->params.restart;
+
+    if ( this->restart > this->maxRestart )
+        this->restart = this->maxRestart;
+
+    if ( this->restart < this->minRestart )
+        this->restart = this->minRestart;
+
+    wk.SetValues(len, 0.0);
+    tmp.SetValues(len, 0.0);
+    safe.SetValues(len, 0.0);
+
+    var.assign(len,0.0);
+
+    hh.resize(this->maxRestart+1);
+    for(int j=0;j<this->maxRestart+1;++j)
+        hh[j].assign(this->maxRestart,0.0);
+
+    hcos.assign(this->maxRestart+1,0.0);
+    hsin.assign(this->maxRestart,0.0);
+    norms.assign(this->params.maxIter+1,0.0);
+
+    V.assign(this->maxRestart+1,safe);
+
 }
 
 // Solve Ax=b using the right preconditioned GMRES method.
@@ -93,7 +124,6 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld;
     int count;
     double ri, rj;
-    int len = x.GetSize();
 
     const double max_cr = 0.9902680687415704;
     const double min_cr = 0.17364817766693041;
@@ -136,7 +166,7 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
 
         // RESTART CYCLE (right-preconditioning)
         count = 0;
-        while (   count < this->params.restart
+        while (   count < this->restart
                && this->numIter < this->params.maxIter ) {
 
             ++count;
@@ -209,17 +239,19 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
         tmp.SetValues(len, 0.0);
         pc->Solve(wk, tmp);
 
+        x.AXPY(1.0, tmp);
+
         // Choose restart number adaptively
         cr = rj / ri;
         ri = rj;
 
         if ( cr > max_cr )
-            this->params.restart = this->maxRestart;
+            this->restart = this->maxRestart;
         else if ( cr <= max_cr && cr >= min_cr ) {
-            if ( this->params.restart - decrease > this->minRestart )
-                this->params.restart -= decrease;
+            if ( this->restart - decrease > this->minRestart )
+                this->restart -= decrease;
             else
-                this->params.restart = this->maxRestart;
+                this->restart = this->maxRestart;
         }
 
         // Save the best solution so far
@@ -347,7 +379,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
 
         // RESTART CYCLE (left-preconditioning)
         count = 0;
-        while (   count < this->params.restart
+        while (   count < this->restart
                && this->numIter < this->params.maxIter ) {
 
             ++count;
@@ -390,7 +422,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
             hh[count-1][count-1] = hsin[count-1] * hh[count][count-1]
                                  + hcos[count-1] * hh[count-1][count-1];
 
-            resAbs = fabs(var[count]);
+            resAbs = rj = fabs(var[count]);
             ratio = resAbs / resAbsOld;
             resAbsOld = resAbs;
             resRel = resAbs / denAbs;
@@ -420,20 +452,16 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
 
         x.AXPY(1.0, tmp);
 
-        A->Apply(x, tmp);
-        tmp.XPAY(-1.0, b);
-
-        rj = tmp.Norm2();
         cr = rj / ri;
         ri = rj;
 
         if ( cr > max_cr )
-            this->params.restart = this->maxRestart;
+            this->restart = this->maxRestart;
         else if ( cr <= max_cr && cr >= min_cr ) {
-            if ( this->params.restart - decrease > this->minRestart )
-                this->params.restart -= decrease;
+            if ( this->restart - decrease > this->minRestart )
+                this->restart -= decrease;
             else
-                this->params.restart = this->maxRestart;
+                this->restart = this->maxRestart;
         }
 
         // Save the best solution so far

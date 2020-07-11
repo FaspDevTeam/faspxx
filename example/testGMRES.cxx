@@ -79,6 +79,10 @@ int main(int argc, const char *args[])
     timer.Start();
     retCode = solver.RSolve(b, x);
     solver.PrintTime(timer.Stop());
+    std::cout<<"Right preconditioned GMRES method 's residual : "<<solver.GetNorm2
+    ()<<std::endl;
+
+    solver.Clean();
 
     x.SetValues(mcol, 1.0); // If initial guess not specified, set x0 = 1.0
     if ( strcmp(xinFile.c_str(), "") != 0 ) ReadVEC(xinFile.c_str(), x);
@@ -87,6 +91,8 @@ int main(int argc, const char *args[])
     timer.Start();
     retCode = solver.LSolve(b, x);
     solver.PrintTime(timer.Stop());
+    std::cout<<"Left preconditioned GMRES method 's residual : "<<solver.GetNorm2
+    ()<<std::endl;
 
     return retCode;
 }

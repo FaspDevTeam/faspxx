@@ -25,6 +25,8 @@ private:
 
     int maxRestart;
     int minRestart;
+    int restart;
+    int len;
 
 public:
     /// Default constructor.
@@ -41,7 +43,7 @@ public:
     FaspRetCode Setup(const LOP &A) override;
 
     /// Clean up GMRES data allocated during setup.
-    //void Clean() override;
+    void Clean() override;
 
 private:
     /// Solve Ax=b using the GMRES method.
