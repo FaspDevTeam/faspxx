@@ -78,6 +78,10 @@ target_link_libraries(testCG faspxx)
 add_executable(testPCG example/testPCG.cxx)
 target_link_libraries(testPCG faspxx)
 
+# Test GMRES class
+add_executable(testGMRES example/testGMRES.cxx)
+target_link_libraries(testGMRES faspxx)
+
 # Test Krylov methods
 add_executable(testKrylov example/testKrylov.cxx)
 target_link_libraries(testKrylov faspxx)

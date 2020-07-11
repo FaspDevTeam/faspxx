@@ -1,32 +1,41 @@
+/*! \file    GMRES.cxx
+ *  \brief   Preconditioned GMRES class definition
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    July/11/2020
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
+ */
 
 #include <stack>
-#include "GMRES.hxx"
 #include <iostream>
 #include <fstream>
+#include "GMRES.hxx"
 
 /// Solve Ax=b using the GMRES method.
 FaspRetCode GMRES::Solve(const VEC &b, VEC &x){
     return FaspRetCode::SUCCESS;
 }
 
-
-/// set the maximum and minimum restart
-void GMRES::SetMaxMinRestart(int maxRestart, int minRestart) {
+/// Set the maximum and minimum restart
+void GMRES::SetMaxMinRestart(const int maxRestart, const int minRestart) {
     this->maxRestart = maxRestart;
     this->minRestart = minRestart;
 }
 
-// Set up the GMRES method
+/// Set up the GMRES method
 FaspRetCode GMRES::Setup(const LOP &A) {
 
     // Set solver type
     SetSolType(SOLType::GMRES);
 
-    this->maxRestart = this->maxRestart > this->params.maxIter ? this->params
-            .maxIter : this->maxRestart;
+    this->maxRestart = this->maxRestart > this->params.maxIter
+                     ? this->params.maxIter : this->maxRestart;
 
-    this->minRestart = this->minRestart > this->maxRestart ? this->maxRestart : this
-            ->minRestart;
+    this->minRestart = this->minRestart > this->maxRestart
+                     ? this->maxRestart : this->minRestart;
 
     // Allocate memory for temporary vectors
     try {
@@ -37,36 +46,31 @@ FaspRetCode GMRES::Setup(const LOP &A) {
 
         var.resize(len);
 
-        hh.resize(this->maxRestart + 1);
-        for (int j = 0; j < this->maxRestart + 1; ++j)
-            hh[j].resize(this->maxRestart);
+        hh.resize(this->maxRestart+1);
+        for (int j = 0; j < this->maxRestart+1; ++j) hh[j].resize(this->maxRestart);
 
-        hcos.resize(this->maxRestart + 1);
+        hcos.resize(this->maxRestart+1);
         hsin.resize(this->maxRestart);
-
-        norms.resize(this->params.maxIter + 1);
+        norms.resize(this->params.maxIter+1);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
     while ( this->maxRestart >= this->minRestart ) {
         try {
-            for ( int j = 0; j < this->maxRestart + 1; ++j )
-                V.push_back(safe);
+            for ( int j = 0; j < this->maxRestart+1; ++j ) V.push_back(safe);
             break;
         } catch ( std::bad_alloc &ex ) {
             this->maxRestart -= 5;
-            while ( !V.empty() )
-                V.resize(0);
+            while ( !V.empty() ) V.resize(0);
         }
     }
 
-    if ( this->maxRestart < this->minRestart ) {
-        return FaspRetCode::ERROR_ALLOC_MEM;
-    }
+    if ( this->maxRestart < this->minRestart ) return FaspRetCode::ERROR_ALLOC_MEM;
 
     if ( this->params.restart > this->maxRestart )
         this->params.restart = this->maxRestart;
+
     if ( this->params.restart < this->minRestart )
         this->params.restart = this->minRestart;
 
@@ -91,10 +95,10 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
     double ri, rj;
     int len = x.GetSize();
 
-    double max_cr = 0.9902680687415704;
-    double min_cr = 0.17364817766693041;
+    const double max_cr = 0.9902680687415704;
+    const double min_cr = 0.17364817766693041;
+    const int decrease  = 3;
     double cr = 1.0;
-    int d = 3;
 
     PrintHead();
 
@@ -120,112 +124,100 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
 
     // store initial residual
     norms[0] = resRel;
-
     ratio = 1.0;
-    /* GMRES(M) outer iteration */
-    while ( this->numIter < this->params.maxIter && resRel > this->params.relTol
+
+    // GMRES(m) outer iteration
+    while (   this->numIter < this->params.maxIter
+           && resRel > this->params.relTol
            && resAbs > this->params.absTol ) {
 
         var[0] = resAbs;
         V[0].Scale(1 / resAbs);
 
-        /* RESTART CYCLE (right-preconditioning) */
+        // RESTART CYCLE (right-preconditioning)
         count = 0;
-        while ( count < this->params.restart &&
-               this->numIter < this->params.maxIter ) {
+        while (   count < this->params.restart
+               && this->numIter < this->params.maxIter ) {
 
             ++count;
             ++this->numIter;
 
             if ( this->numIter > this->params.minIter )
-                PrintInfo(numIter - 1, resRel,
-                          resAbs, ratio);
+                PrintInfo(numIter-1, resRel, resAbs, ratio);
 
             // preconditioner
             tmp.SetValues(len, 0.0);
-            pc->Solve(V[count - 1], tmp);
+            pc->Solve(V[count-1], tmp);
 
             A->Apply(tmp, V[count]);
 
-            /* Modified Gram_Schmidt orthogonalization */
+            // Modified Gram-Schmidt orthogonalization
             for ( int j = 0; j < count; ++j ) {
-                hh[j][count - 1] = V[count].Dot(V[j]);
-                V[count].AXPBY(1.0, -hh[j][count - 1], V[j]);
+                hh[j][count-1] = V[count].Dot(V[j]);
+                V[count].AXPBY(1.0, -hh[j][count-1], V[j]);
             }
             t = V[count].Norm2();
-            hh[count][count - 1] = t;
+            hh[count][count-1] = t;
 
-            if ( fabs(t) > SMALL ) // if t=0, we get solution subspace
-                V[count].Scale(1.0 / t);
+            // If t=0, we get solution subspace
+            if ( fabs(t) > SMALL ) V[count].Scale(1.0 / t);
 
             for ( int j = 1; j < count; ++j ) {
-                t = hh[j - 1][count - 1];
-                hh[j - 1][count - 1] =
-                        hsin[j - 1] * hh[j][count - 1] + hcos[j - 1] * t;
-                hh[j][count - 1] = -hsin[j - 1] * t + hcos[j - 1] * hh[j][count - 1];
+                t = hh[j-1][count-1];
+                hh[j-1][count-1] =  hsin[j-1] * hh[j][count-1] + hcos[j-1] * t;
+                hh[j][count-1]   = -hsin[j-1] * t + hcos[j-1] * hh[j][count-1];
             }
-            t = hh[count][count - 1] * hh[count][count - 1];
-            t += hh[count - 1][count - 1] * hh[count - 1][count - 1];
+            t = hh[count][count-1] * hh[count][count-1];
+            t += hh[count-1][count-1] * hh[count-1][count-1];
 
             t = sqrt(t);
             gamma = t > SMALL ? t : SMALL;
-            hcos[count - 1] = hh[count - 1][count - 1] / gamma;
-            hsin[count - 1] = hh[count][count - 1] / gamma;
-            var[count] = -hsin[count - 1] * var[count - 1];
-            var[count - 1] = hcos[count - 1] * var[count - 1];
-            hh[count - 1][count - 1] =
-                    hsin[count - 1] * hh[count][count - 1] + hcos[count - 1] * hh
-                    [count - 1][count - 1];
+            hcos[count-1] =  hh[count-1][count-1] / gamma;
+            hsin[count-1] =  hh[count][count-1] / gamma;
+            var[count]    = -hsin[count-1] * var[count-1];
+            var[count-1]  =  hcos[count-1] * var[count-1];
+            hh[count-1][count-1] = hsin[count-1] * hh[count][count-1]
+                                 + hcos[count-1] * hh[count-1][count-1];
 
             resAbs = rj = fabs(var[count]);
             ratio = resAbs / resAbsOld;
             resAbsOld = resAbs;
             resRel = resAbs / denAbs;
-
             norms[this->numIter] = resRel;
 
-            /* exit restart cycle if reaches tolerance */
-            if ( (resAbs < this->params.absTol || resRel < this->params.relTol) &&
-                this->numIter > this->params.minIter )
-                break;
+            // Exit restart cycle if reaches tolerance
+            if (  (resAbs < this->params.absTol || resRel < this->params.relTol)
+                && this->numIter > this->params.minIter ) break;
 
-        } /* end of restart cycle */
+        } // end of restart cycle
 
-        /* compute solution, first solve upper triangular system */
-        var[count - 1] = var[count - 1] / hh[count - 1][count - 1];
+        // Compute solution, first solve upper triangular system
+        var[count-1] = var[count-1] / hh[count-1][count-1];
         for ( int k = count - 2; k >= 0; --k ) {
             t = 0.0;
-            for ( int j = k + 1; j < count; ++j )
-                t -= hh[k][j] * var[j];
+            for ( int j = k+1; j < count; ++j ) t -= hh[k][j] * var[j];
             t += var[k];
             var[k] = t / hh[k][k];
         }
 
-        wk = V[count - 1];
-        wk.Scale(var[count - 1]);
+        wk = V[count-1];
+        wk.Scale(var[count-1]);
 
-        for ( int j = count - 2; j >= 0; --j )
-            wk.AXPBY(1.0, var[j], V[j]);
+        for ( int j = count - 2; j >= 0; --j ) wk.AXPBY(1.0, var[j], V[j]);
 
-        /* apply preconditioner */
+        // Apply preconditioner
         tmp.SetValues(len, 0.0);
         pc->Solve(wk, tmp);
 
-        x.AXPY(1.0, tmp);
-
-        //A->Apply(x, tmp);
-        //tmp.XPAY(-1.0, b);
-
-        //rj = tmp.Norm2();
+        // Choose restart number adaptively
         cr = rj / ri;
         ri = rj;
-
 
         if ( cr > max_cr )
             this->params.restart = this->maxRestart;
         else if ( cr <= max_cr && cr >= min_cr ) {
-            if ( this->params.restart - d > this->minRestart )
-                this->params.restart -= d;
+            if ( this->params.restart - decrease > this->minRestart )
+                this->params.restart -= decrease;
             else
                 this->params.restart = this->maxRestart;
         }
@@ -234,21 +226,20 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
         if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
 
         // Check: prevent false convergence
-        if ( resRel < this->params.relTol && resAbs < this->params.absTol &&
-            this->numIter >= this->params.minIter ) {
+        if (   resRel < this->params.relTol && resAbs < this->params.absTol
+            && this->numIter >= this->params.minIter ) {
             double computed_resRel = resRel;
 
             // compute residual
             A->Apply(x, wk); // A * x -> p0
             wk.AXPBY(-1.0, 1.0, b); // b - p0 -> p0
 
-            /* apply preconditioner */
+            // apply preconditioner
             tmp.SetValues(len, 0.0);
             pc->Solve(wk, tmp);
 
             resAbs = tmp.Norm2();
             resRel = resAbs / denAbs;
-
             norms[this->numIter] = resRel;
 
             if ( resRel < this->params.relTol || resAbs < this->params.absTol )
@@ -264,26 +255,24 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
                 WarnRealRes(resRel);
             }
 
-        } /* end of convergence check */
+        } // end of convergence check
 
-        /* compute residual vector and continue loop */
+        // Compute residual vector and continue loop
         for ( int j = count; j > 0; --j ) {
-            var[j - 1] = -hsin[j - 1] * var[j];
-            var[j] = hcos[j - 1] * var[j];
+            var[j-1] = -hsin[j-1] * var[j];
+            var[j]   =  hcos[j-1] * var[j];
         }
 
-        if ( count )
-            V[count].Scale(var[count]);
+        if ( count ) V[count].Scale(var[count]);
 
-        for ( int j = count - 1; j > 0; --j )
-            V[count].AXPY(var[j], V[j]);
+        for ( int j = count-1; j > 0; --j ) V[count].AXPY(var[j], V[j]);
 
         if ( count ) {
             V[0].Scale(var[0]);
             V[0].AXPY(1.0, V[count]);
         }
 
-    } /* end of main while loop */
+    } // end of main while loop
 
     if ( this->numIter > this->params.maxIter )
         errorCode = FaspRetCode::ERROR_SOLVER_MAXIT;
@@ -316,10 +305,10 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
     double ri, rj;
     int len = x.GetSize();
 
-    double max_cr = 0.9902680687415704;
-    double min_cr = 0.17364817766693041;
+    const double max_cr = 0.9902680687415704;
+    const double min_cr = 0.17364817766693041;
+    const int decrease  = 3;
     double cr = 1.0;
-    int d = 3;
 
     PrintHead();
 
@@ -330,10 +319,9 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
     A->Apply(x, V[0]); // A * x -> V[0]
 
     V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
-
     ri = V[0].Norm2();
 
-    // preconditioner
+    // Preconditioner
     tmp.SetValues(len, 0.0);
     pc->Solve(V[0], tmp);
 
@@ -345,94 +333,88 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
     if ( resRel < params.relTol || resAbs < params.absTol )
         return FaspRetCode::SUCCESS;
 
-    // store initial residual
+    // Store initial residual
     norms[0] = resRel;
-
     ratio = 1.0;
-    /* GMRES(M) outer iteration */
-    while ( this->numIter < this->params.maxIter && resRel > this->params
-            .relTol && resAbs > this->params.absTol ) {
+
+    // GMRES(m) outer iteration
+    while (   this->numIter < this->params.maxIter
+           && resRel > this->params.relTol
+           && resAbs > this->params.absTol ) {
 
         var[0] = resAbs;
         V[0].Scale(1 / resAbs);
 
-        /* RESTART CYCLE (right-preconditioning) */
+        // RESTART CYCLE (left-preconditioning)
         count = 0;
-        while ( count < this->params.restart &&
-               this->numIter < this->params.maxIter ) {
+        while (   count < this->params.restart
+               && this->numIter < this->params.maxIter ) {
 
             ++count;
             ++this->numIter;
 
             if ( this->numIter > this->params.minIter )
-                PrintInfo(numIter - 1, resRel,
-                          resAbs, ratio);
+                PrintInfo(numIter-1, resRel, resAbs, ratio);
 
-            A->Apply(V[count - 1], tmp);
+            A->Apply(V[count-1], tmp);
 
-            // preconditioner
+            // Preconditioner
             V[count].SetValues(len, 0.0);
             pc->Solve(tmp, V[count]);
 
-            /* Modified Gram_Schmidt orthogonalization */
+            // Modified Gram-Schmidt orthogonalization
             for ( int j = 0; j < count; ++j ) {
-                hh[j][count - 1] = V[count].Dot(V[j]);
-                V[count].AXPBY(1.0, -hh[j][count - 1], V[j]);
+                hh[j][count-1] = V[count].Dot(V[j]);
+                V[count].AXPBY(1.0, -hh[j][count-1], V[j]);
             }
             t = V[count].Norm2();
-            hh[count][count - 1] = t;
+            hh[count][count-1] = t;
 
-            if ( fabs(t) > SMALL ) // if t=0, we get solution subspace
-                V[count].Scale(1.0 / t);
+            // if t=0, we get solution subspace
+            if ( fabs(t) > SMALL ) V[count].Scale(1.0 / t);
 
             for ( int j = 1; j < count; ++j ) {
-                t = hh[j - 1][count - 1];
-                hh[j - 1][count - 1] =
-                        hsin[j - 1] * hh[j][count - 1] + hcos[j - 1] * t;
-                hh[j][count - 1] = -hsin[j - 1] * t + hcos[j - 1] * hh[j][count - 1];
+                t = hh[j-1][count-1];
+                hh[j-1][count-1] =  hsin[j-1] * hh[j][count-1] + hcos[j-1] * t;
+                hh[j][count-1]   = -hsin[j-1] * t + hcos[j-1] * hh[j][count-1];
             }
-            t = hh[count][count - 1] * hh[count][count - 1];
-            t += hh[count - 1][count - 1] * hh[count - 1][count - 1];
+            t = hh[count][count-1] * hh[count][count-1];
+            t += hh[count-1][count-1] * hh[count-1][count-1];
 
             t = sqrt(t);
             gamma = t > SMALL ? t : SMALL;
-            hcos[count - 1] = hh[count - 1][count - 1] / gamma;
-            hsin[count - 1] = hh[count][count - 1] / gamma;
-            var[count] = -hsin[count - 1] * var[count - 1];
-            var[count - 1] = hcos[count - 1] * var[count - 1];
-            hh[count - 1][count - 1] =
-                    hsin[count - 1] * hh[count][count - 1] + hcos[count - 1] * hh
-                    [count - 1][count - 1];
+            hcos[count-1] = hh[count-1][count-1] / gamma;
+            hsin[count-1] = hh[count][count-1] / gamma;
+            var[count]    = -hsin[count-1] * var[count-1];
+            var[count-1]  = hcos[count-1] * var[count-1];
+            hh[count-1][count-1] = hsin[count-1] * hh[count][count-1]
+                                 + hcos[count-1] * hh[count-1][count-1];
 
             resAbs = fabs(var[count]);
             ratio = resAbs / resAbsOld;
             resAbsOld = resAbs;
             resRel = resAbs / denAbs;
-
             norms[this->numIter] = resRel;
 
-            /* exit restart cycle if reaches tolerance */
-            if ( (resAbs < this->params.absTol || resRel < this->params.relTol) &&
-                this->numIter > this->params.minIter )
-                break;
+            // Exit restart cycle if reaches tolerance
+            if (  (resAbs < this->params.absTol || resRel < this->params.relTol)
+                && this->numIter > this->params.minIter ) break;
 
-        } /* end of restart cycle */
+        } // End of restart cycle
 
-        /* compute solution, first solve upper triangular system */
-        var[count - 1] = var[count - 1] / hh[count - 1][count - 1];
+        // Compute solution, first solve upper triangular system
+        var[count-1] = var[count-1] / hh[count-1][count-1];
         for ( int k = count - 2; k >= 0; --k ) {
             t = 0.0;
-            for ( int j = k + 1; j < count; ++j )
-                t -= hh[k][j] * var[j];
+            for ( int j = k+1; j < count; ++j ) t -= hh[k][j] * var[j];
             t += var[k];
             var[k] = t / hh[k][k];
         }
 
-        wk = V[count - 1];
-        wk.Scale(var[count - 1]);
+        wk = V[count-1];
+        wk.Scale(var[count-1]);
 
-        for ( int j = count - 2; j >= 0; --j )
-            wk.AXPBY(1.0, var[j], V[j]);
+        for ( int j = count - 2; j >= 0; --j ) wk.AXPBY(1.0, var[j], V[j]);
 
         tmp = wk;
 
@@ -448,8 +430,8 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
         if ( cr > max_cr )
             this->params.restart = this->maxRestart;
         else if ( cr <= max_cr && cr >= min_cr ) {
-            if ( this->params.restart - d > this->minRestart )
-                this->params.restart -= d;
+            if ( this->params.restart - decrease > this->minRestart )
+                this->params.restart -= decrease;
             else
                 this->params.restart = this->maxRestart;
         }
@@ -466,13 +448,12 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
             A->Apply(x, wk); // A * x -> p0
             wk.AXPBY(-1.0, 1.0, b); // b - p0 -> p0
 
-            /* apply preconditioner */
+            // apply preconditioner
             tmp.SetValues(len, 0.0);
             pc->Solve(wk, tmp);
 
             resAbs = tmp.Norm2();
             resRel = resAbs / denAbs;
-
             norms[this->numIter] = resRel;
 
             if ( resRel < this->params.relTol || resAbs < this->params.absTol)
@@ -488,30 +469,27 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
                 WarnRealRes(resRel);
             }
 
-        } /* end of convergence check */
+        } // End of convergence check
 
-        /* compute residual vector and continue loop */
+        // compute residual vector and continue loop
         for ( int j = count; j > 0; --j ) {
-            var[j - 1] = -hsin[j - 1] * var[j];
-            var[j] = hcos[j - 1] * var[j];
+            var[j-1] = -hsin[j-1] * var[j];
+            var[j] = hcos[j-1] * var[j];
         }
 
-        if ( count )
-            V[count].Scale(var[count]);
+        if ( count ) V[count].Scale(var[count]);
 
-        for ( int j = count - 1; j > 0; --j )
-            V[count].AXPY(var[j], V[j]);
+        for ( int j = count-1; j > 0; --j ) V[count].AXPY(var[j], V[j]);
 
         if ( count ) {
             V[0].Scale(var[0]);
             V[0].AXPY(1.0, V[count]);
         }
 
-    } /* end of main while loop */
+    } // End of main while loop
 
     if ( this->numIter > this->params.maxIter )
         errorCode = FaspRetCode::ERROR_SOLVER_MAXIT;
-
 
     A->Apply(x, wk); // A * x -> wk
     wk.XPAY(-1.0, b); // b - p0 -> wk
@@ -528,3 +506,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
 
     return errorCode;
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/
