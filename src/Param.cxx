@@ -4,7 +4,7 @@
  *  \date    Nov/25/2019
  *
  *-----------------------------------------------------------------------------------
- *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Copyright=(C) 2019--present by the FASP++ team. All rights reserved.
  *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
  *-----------------------------------------------------------------------------------
  */
@@ -90,11 +90,18 @@ void Parameters::SaveUserParams(std::string& save) const
 /// Read user parameters from command line input.
 void Parameters::ReadFromCommandLine()
 {
-    if (argc == 1) return;
+    if( argc % 2 == 0 ){
+        FASPXX_WARNING("Command line input format error!\n "
+                       "            Ignore the command line!\n");
+        return;
+    }
+
+    if ( argc == 1 )
+        return;
 
     for (int i = 1; i < argc; ++i) {
         // -h, --help will trigger program terminate
-        if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+        if ( strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0 ) {
             PrintHelp();
             FASPXX_ABORT("-h, --help trigger abort")
         }
@@ -109,22 +116,22 @@ void Parameters::ReadFromCommandLine()
 void Parameters::ReadFromFile()
 {
     for (auto& itm: paramsUser) {
-        if (itm.paramMarker == 2) {
+        if ( itm.paramMarker == 2 ) {
             std::ifstream file;
 
             // first try to find param_file from command line params
-            if (paramsCML.find(itm.paramName) != paramsCML.end()) {
+            if ( paramsCML.find(itm.paramName) != paramsCML.end() ) {
                 file.open(paramsCML.find(itm.paramName)->second);
             }
             else {
                 file.open(*((std::string*)itm.paramPtr)); // second try to find param_file from user program
             }
 
-            if (!file.is_open()) FASPXX_WARNING("File not found!")
+            if ( !file.is_open() ) FASPXX_WARNING("File not found!")
 
             std::string line, name, value;
             while (std::getline(file, line)) {
-                if (ProcessLine(line, name, value)) {
+                if ( ProcessLine(line, name, value) ) {
                     // each param is a key-value pair of a Dictionary
                     paramsFile.insert(std::pair<std::string, std::string>(name, value));
                 }
@@ -141,10 +148,10 @@ void Parameters::MergeParams()
     std::map<std::string, std::string>::iterator iter;
     for (auto& prm: paramsUser) {
         iter = paramsFile.find(prm.paramName);
-        if (iter != paramsFile.end()) UpdateParamValue(iter, prm);
+        if ( iter != paramsFile.end() ) UpdateParamValue(iter, prm);
 
         iter = paramsCML.find(prm.paramName);
-        if (iter != paramsCML.end()) UpdateParamValue(iter, prm);
+        if ( iter != paramsCML.end() ) UpdateParamValue(iter, prm);
     }
 }
 
