@@ -27,23 +27,23 @@ int main(int argc, const char *args[])
     std::string matFile = "../data/fdm_10X10.csr";
     std::string rhsFile, x0File;
 
-    // Read in general parameters
+    // Read general parameters
     Parameters params(argc, args);
-    params.AddParam("-mat", "Coefficient matrix A", &matFile);
-    params.AddParam("-rhs", "Right-hand-side b", &rhsFile);
-    params.AddParam("-x0", "Initial guess for iteration", &x0File);
-    params.AddParam("-par", "Solver parameter file", &parFile);
+    params.AddParam("-par",      "Solver parameter file",       &parFile);
+    params.AddParam("-mat",      "Coefficient matrix A",        &matFile);
+    params.AddParam("-rhs",      "Right-hand-side b",           &rhsFile);
+    params.AddParam("-xin",      "Initial guess for iteration", &xinFile);
 
-    // Read in solver parameters
+    // Read solver parameters
     SOLParams solParam;
-    params.AddParam("-maxIter", "Max iteration steps", &solParam.maxIter);
-    params.AddParam("-minIter", "Min iteration steps", &solParam.minIter);
-    params.AddParam("-safeIter", "Safe-guard steps", &solParam.safeIter);
-    params.AddParam("-restart", "Restart number", &solParam.restart);
-    params.AddParam("-resRel", "Relative residual tolerance", &solParam.relTol);
-    params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
-    params.AddParam("-algName", "Iterative solver type", &solParam.algName);
-    params.AddParam("-verbose", "Verbose level", &solParam.verbose);
+    params.AddParam("-maxIter",  "Max iteration steps",         &solParam.maxIter);
+    params.AddParam("-minIter",  "Min iteration steps",         &solParam.minIter);
+    params.AddParam("-safeIter", "Safe-guard steps",            &solParam.safeIter);
+    params.AddParam("-restart",  "Restart number",              &solParam.restart);
+    params.AddParam("-resRel",   "Relative residual tolerance", &solParam.relTol);
+    params.AddParam("-resAbs",   "Absolute residual tolerance", &solParam.absTol);
+    params.AddParam("-algName",  "Iterative solver type",       &solParam.algName);
+    params.AddParam("-verbose",  "Verbose level",               &solParam.verbose);
 
     // Parse and print used parameters
     params.Parse();

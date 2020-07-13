@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include "Param.hxx"
+#include "RetCode.hxx"
 #include "ErrorLog.hxx"
 
 /// Process a line. Return false if the line is a comment or empty.
@@ -43,7 +44,7 @@ static bool JudgeBool(const std::string& value)
     else if ( copy == "false" ) {
         return false;
     }
-    else { // 其余情况就是int型整数
+    else { // otherwise, an integer
         return (bool) (std::stoi(copy));
     }
 }
@@ -90,20 +91,21 @@ void Parameters::SaveUserParams(std::string& save) const
 /// Read user parameters from command line input.
 void Parameters::ReadFromCommandLine()
 {
-    if( argc % 2 == 0 ){
-        FASPXX_WARNING("Command line input format error!\n "
-                       "            Ignore the command line!\n");
-        return;
-    }
+    if ( argc == 1 ) return; // no command line arguments
 
-    if ( argc == 1 )
-        return;
-
-    for (int i = 1; i < argc; ++i) {
+    for ( int i = 1; i < argc; ++i ) {
         // -h, --help will trigger program terminate
         if ( strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0 ) {
             PrintHelp();
-            FASPXX_ABORT("-h, --help trigger abort")
+            std::exit(FaspRetCode::PRINT_HELP);
+        }
+
+        // check whether the parameters come in pairs: it is still possible the
+        // arguments are in pairs but mismatch!!!
+        if ( i >= argc-1 ) {
+            std::cout << "Check the argument: " << argv[i] << std::endl;
+            PrintHelp();
+            std::exit(FaspRetCode::PRINT_HELP);
         }
 
         // each param is a key-value pair of a Dictionary
@@ -115,7 +117,7 @@ void Parameters::ReadFromCommandLine()
 /// Read user parameters from an input file.
 void Parameters::ReadFromFile()
 {
-    for (auto& itm: paramsUser) {
+    for ( auto& itm: paramsUser ) {
         if ( itm.paramMarker == 2 ) {
             std::ifstream file;
 
@@ -124,7 +126,7 @@ void Parameters::ReadFromFile()
                 file.open(paramsCML.find(itm.paramName)->second);
             }
             else {
-                file.open(*((std::string*)itm.paramPtr)); // second try to find param_file from user program
+                file.open(*((std::string*)itm.paramPtr)); // find param_file
             }
 
             if ( !file.is_open() ) FASPXX_WARNING("File not found!")
@@ -146,7 +148,7 @@ void Parameters::ReadFromFile()
 void Parameters::MergeParams()
 {
     std::map<std::string, std::string>::iterator iter;
-    for (auto& prm: paramsUser) {
+    for ( auto& prm: paramsUser ) {
         iter = paramsFile.find(prm.paramName);
         if ( iter != paramsFile.end() ) UpdateParamValue(iter, prm);
 
@@ -159,7 +161,7 @@ void Parameters::MergeParams()
 void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& iter,
                                   ParamHolder& prm)
 {
-    switch (prm.paramType) {
+    switch ( prm.paramType ) {
         case BoolType:
             *(bool*) prm.paramPtr = JudgeBool(iter->second);
             break;
@@ -254,9 +256,9 @@ void Parameters::PrintCommandLineParams(std::ostream& out) const
     static std::string indent = "   ";
     out << "Parameters from the command line input:\n"
         << "---------------------------------------------\n";
-    for (const auto& itm: paramsCML) {
-        out << indent << std::setw(max_len) << std::left
-            << itm.first << " [" << itm.second << "]\n";
+    for ( const auto& itm: paramsCML ) {
+        out << indent << std::setw(max_len) << std::left << itm.first
+            << " [" << itm.second << "]\n";
     }
     out << std::endl;
 }
@@ -278,9 +280,9 @@ void Parameters::Print(std::ostream &out) const
     out << "Parameters used in program:\n"
         << "---------------------------------------------\n";
 
-    for ( auto& itm: paramsUser ) {
+    for ( const auto& itm : paramsUser ) {
         out << indent << std::setw(max_len) << std::left << itm.paramName << " [";
-        switch (itm.paramType) {
+        switch ( itm.paramType ) {
             case BoolType:
                 out << std::boolalpha << *((bool *) (itm.paramPtr))
                     << std::resetiosflags(out.flags());
@@ -309,36 +311,38 @@ void Parameters::PrintHelp(std::ostream &out) const
     static const char *indent = "   ";
     static const char *types[] = {"<bool>", "<int>", "<double>", "<string>", "<Output>"};
 
-    out << "Usage: " << argv[0] << " [options] ...\n"
-        << "Options:\n" << indent << std::setw(21) << std::left
-        << "-h, --help" << "              : print help information and exit\n";
+    size_t max_len = 0;
+    for ( const auto& itm: paramsUser ) {
+        if ( itm.paramName.length() > max_len ) max_len = itm.paramName.length();
+    }
 
-    for ( const auto& prm: paramsUser ) {
-        ParamType type = prm.paramType;
-        out << indent << std::setw(12) << std::left << prm.paramName
-            << " " << std::setw(8) << types[type];
-        if ( prm.paramMarker == 0)      out << ", optional   ";
-        else if ( prm.paramMarker == 1) out << ", required   ";
-        else                            out << ", params file";
-        if ( !prm.paramHelp.empty() ) out << " : " << prm.paramHelp;
+    out << "Usage: " << argv[0] << " [options] ...\n" << "Options:\n";
+
+    for ( const auto& itm : paramsUser ) {
+        out << indent << std::setw(max_len) << std::left << itm.paramName
+            << " " << std::setw(8) << types[itm.paramType];
+        if ( itm.paramMarker == 0)      out << ", optional  ";
+        else if ( itm.paramMarker == 1) out << ", required  ";
+        else                            out << ", from file ";
+        if ( !itm.paramHelp.empty() ) out << " :  " << itm.paramHelp;
 
         out << ", default = [";
-        switch ( type ) {
+        switch ( itm.paramType ) {
             case BoolType:
-                out << std::boolalpha << *(bool *) (prm.paramPtr)
+                out << std::boolalpha << *(bool *) (itm.paramPtr)
                     << std::setiosflags(out.flags());
                 break;
             case IntType:
-                out << *(int *) (prm.paramPtr);
+                out << *(int *) (itm.paramPtr);
                 break;
             case DoubleType:
-                out << *(double *) (prm.paramPtr);
+                out << *(double *) (itm.paramPtr);
                 break;
             case StringType:
-                out << *(char **) (prm.paramPtr);
+                out << *((std::string*) itm.paramPtr);
                 break;
             case OutputType:
-                out << *(Output *) (prm.paramPtr);
+                out << *(Output *) (itm.paramPtr);
                 break;
         }
         out << "]\n";

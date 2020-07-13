@@ -27,14 +27,14 @@ int main(int argc, const char *args[])
     std::string matFile = "../data/fdm_10X10.csr";
     std::string rhsFile, xinFile;
 
-    // Read in general parameters
+    // Read general parameters
     Parameters params(argc, args);
+    params.AddParam("-par",      "Solver parameter file",       &parFile);
     params.AddParam("-mat",      "Coefficient matrix A",        &matFile);
     params.AddParam("-rhs",      "Right-hand-side b",           &rhsFile);
     params.AddParam("-xin",      "Initial guess for iteration", &xinFile);
-    params.AddParam("-par",      "Solver parameter file",       &parFile);
 
-    // Read in solver parameters
+    // Read solver parameters
     SOLParams solParam;
     params.AddParam("-maxIter",  "Max iteration steps",         &solParam.maxIter);
     params.AddParam("-minIter",  "Min iteration steps",         &solParam.minIter);
@@ -44,7 +44,7 @@ int main(int argc, const char *args[])
     params.AddParam("-resAbs",   "Absolute residual tolerance", &solParam.absTol);
     params.AddParam("-verbose",  "Verbose level",               &solParam.verbose);
 
-    // Read in preconditioner parameters
+    // Read preconditioner parameters
     SOLParams pcParam;
     params.AddParam("-pcIter",   "Preconditioner steps",        &pcParam.maxIter);
     params.AddParam("-pcWeight", "Preconditioner weigth",       &pcParam.weight);

@@ -53,6 +53,8 @@ enum FaspRetCode
     //---------- ILU method problems ----------------------------------------------//
     ERROR_SWZ_TYPE         = -60,  ///< Unknown Schwarz method type
     ERROR_SWZ_SETUP        = -69,  ///< Schwarz method setup failed to complete
+    //---------- Other problems ---------------------------------------------------//
+    PRINT_HELP             = 0,    ///< Print help message
 };
 
 /// \brief Get error message from FaspRetCode

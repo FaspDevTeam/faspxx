@@ -11,17 +11,17 @@ int main(int argc, const char *args[])
 {
     // User default parameters
     std::string parFile = "../data/input.param";
-    std::string matFile = "/home/kailei/data/fdm_1023X1023.csr";
+    std::string matFile = "../data/fdm_10X10.csr";
     std::string rhsFile, xinFile;
 
-    // Read in general parameters
+    // Read general parameters
     Parameters params(argc, args);
-    params.AddParam("-mat", "Coefficient matrix A",        &matFile);
-    params.AddParam("-rhs", "Right-hand-side b",           &rhsFile);
-    params.AddParam("-xin", "Initial guess for iteration", &xinFile);
-    params.AddParam("-par", "Solver parameter file",       &parFile);
+    params.AddParam("-par",      "Solver parameter file",       &parFile);
+    params.AddParam("-mat",      "Coefficient matrix A",        &matFile);
+    params.AddParam("-rhs",      "Right-hand-side b",           &rhsFile);
+    params.AddParam("-xin",      "Initial guess for iteration", &xinFile);
 
-    // Read in solver parameters
+    // Read solver parameters
     SOLParams solParam;
     params.AddParam("-maxIter",  "Max iteration steps",         &solParam.maxIter);
     params.AddParam("-minIter",  "Min iteration steps",         &solParam.minIter);

@@ -23,23 +23,23 @@ int main(int argc, const char *args[])
     // User default parameters
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
-    std::string rhsFile, x0File;
+    std::string rhsFile, xinFile;
 
-    // Read in general parameters
+    // Read general parameters
     Parameters params(argc, args);
-    params.AddParam("-mat", "Coefficient matrix A", &matFile);
-    params.AddParam("-rhs", "Right-hand-side b", &rhsFile);
-    params.AddParam("-x0", "Initial guess for iteration", &x0File);
-    params.AddParam("-par", "Solver parameter file", &parFile);
+    params.AddParam("-mat",     "Coefficient matrix A",        &matFile);
+    params.AddParam("-rhs",     "Right-hand-side b",           &rhsFile);
+    params.AddParam("-xin",     "Initial guess for iteration", &xinFile);
+    params.AddParam("-par",     "Solver parameter file",       &parFile);
 
-    // Read in solver parameters
+    // Read solver parameters
     SOLParams solParam;
-    params.AddParam("-maxIter", "Max iteration steps", &solParam.maxIter);
-    params.AddParam("-minIter", "Min iteration steps", &solParam.minIter);
-    params.AddParam("-resRel", "Relative residual tolerance", &solParam.relTol);
-    params.AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
-    params.AddParam("-weight", "Weight for Jacobi", &solParam.weight);
-    params.AddParam("-verbose", "Verbose level", &solParam.verbose);
+    params.AddParam("-maxIter", "Max iteration steps",         &solParam.maxIter);
+    params.AddParam("-minIter", "Min iteration steps",         &solParam.minIter);
+    params.AddParam("-resRel",  "Relative residual tolerance", &solParam.relTol);
+    params.AddParam("-resAbs",  "Absolute residual tolerance", &solParam.absTol);
+    params.AddParam("-weight",  "Weight for Jacobi",           &solParam.weight);
+    params.AddParam("-verbose", "Verbose level",               &solParam.verbose);
 
     // Parse and print used parameters
     params.Parse();
@@ -65,7 +65,7 @@ int main(int argc, const char *args[])
     // Read the initial guess x0; if not specified, use x0 = 1.0
     VEC x;
     x.SetValues(mcol, 1.0);
-    if ( strcmp(x0File.c_str(), "") != 0 ) ReadVEC(x0File.c_str(), x);
+    if ( strcmp(xinFile.c_str(), "") != 0 ) ReadVEC(xinFile.c_str(), x);
 
     timer.StopInfo("Reading Ax = b");
 

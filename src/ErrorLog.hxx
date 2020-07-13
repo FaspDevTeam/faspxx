@@ -42,7 +42,7 @@
 //  msg: user-defined abort message
 #define FASPXX_ABORT(msg)                          \
     {                                              \
-        _FASPXX_MASSAGE_("### ABORT: " << msg);    \
+        _FASPXX_MASSAGE_("### ABORT: " << (msg));  \
         std::abort();                              \
     }
 
