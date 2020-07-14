@@ -19,9 +19,9 @@ private:
     std::vector<double> hsin;
     std::vector<double> hcos;
     std::vector<double> var;
-    std::vector<double> norms;
 
     std::vector<VEC> V;
+    std::vector<VEC> Z;
 
     int maxRestart;
     int minRestart;
@@ -30,7 +30,7 @@ private:
 
 public:
     /// Default constructor.
-    GMRES() : wk(0), safe(0), tmp(0), hh(0), hsin(0), hcos(0), var(0), norms(0),
+    GMRES() : wk(0), safe(0), tmp(0), hh(0), hsin(0), hcos(0), var(0),
               maxRestart{20}, minRestart(5) {};
 
     /// Default destructor.
@@ -55,6 +55,15 @@ public:
 
     /// Left-preconditioned GMRES slover.
     FaspRetCode LSolve(const VEC &b, VEC &x);
+
+    /// Allocate the extra space of FGMRES
+    FaspRetCode FSetup();
+
+    /// Right-preconditioned FGMRES solver
+    FaspRetCode RFSolve(const VEC &b, VEC &x);
+
+    /// Left-preconditioned FGMRES solver
+    FaspRetCode LFSolve(const VEC &b, VEC &x);
 
 };
 
