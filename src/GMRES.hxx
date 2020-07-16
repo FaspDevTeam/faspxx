@@ -21,7 +21,6 @@ private:
     std::vector<double> var;
 
     std::vector<VEC> V;
-    std::vector<VEC> Z;
 
     int maxRestart;
     int minRestart;
@@ -55,15 +54,6 @@ public:
 
     /// Left-preconditioned GMRES slover.
     FaspRetCode LSolve(const VEC &b, VEC &x);
-
-    /// Allocate the extra space of FGMRES
-    FaspRetCode FSetup();
-
-    /// Right-preconditioned FGMRES solver
-    FaspRetCode RFSolve(const VEC &b, VEC &x);
-
-    /// Left-preconditioned FGMRES solver
-    FaspRetCode LFSolve(const VEC &b, VEC &x);
 
 };
 
