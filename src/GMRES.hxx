@@ -62,9 +62,6 @@ public:
     /// Right-preconditioned FGMRES solver
     FaspRetCode RFSolve(const VEC &b, VEC &x);
 
-    /// Left-preconditioned FGMRES solver
-    FaspRetCode LFSolve(const VEC &b, VEC &x);
-
 };
 
 #endif // GMRES_HXX
