@@ -25,7 +25,7 @@ int main(int argc, const char *args[])
     // User default parameters
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
-    std::string rhsFile, x0File;
+    std::string rhsFile, xinFile;
 
     // Read general parameters
     Parameters params(argc, args);
@@ -70,7 +70,7 @@ int main(int argc, const char *args[])
     // Read the initial guess x0; if not specified, use x0 = 1.0
     VEC x;
     x.SetValues(mcol, 1.0);
-    if ( strcmp(x0File.c_str(), "") != 0 ) ReadVEC(x0File.c_str(), x);
+    if ( strcmp(xinFile.c_str(), "") != 0 ) ReadVEC(xinFile.c_str(), x);
 
     timer.StopInfo("Reading Ax = b");
 
