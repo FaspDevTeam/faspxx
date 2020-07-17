@@ -1,6 +1,16 @@
+/*! \file    FGMRES.hxx
+ *  \brief   Preconditioned Flexible GMRES class declaration
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    July/16/2020
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
+ */
 
-#ifndef FGMRES_HXX
-#define FGMRES_HXX
+#ifndef __FGMRES_HXX__      /*-- allow multiple inclusions --*/
+#define __FGMRES_HXX__      /**< indicate FGMRES.hxx has been included before */
 
 #include <cmath>
 #include "ErrorLog.hxx"
@@ -8,6 +18,9 @@
 #include "MAT.hxx"
 #include "SOL.hxx"
 
+/*! \class FGMRES
+ *  \brief Preconditioned flexible generalized minimal residual method.
+ */
 class FGMRES : public SOL {
 
 private:
@@ -31,7 +44,7 @@ private:
 public:
     /// Default constructor.
     FGMRES() : wk(0), safe(0), tmp(0), hh(0), hsin(0), hcos(0), var(0),
-              maxRestart{20}, minRestart(5) {};
+               maxRestart{20}, minRestart(5) {};
 
     /// Default destructor.
     ~FGMRES() = default;
@@ -50,4 +63,8 @@ public:
 
 };
 
-#endif // FGMRES_HXX
+#endif /* end if for __FGMRES_HEADER__ */
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

@@ -6,6 +6,7 @@
 #include "LOP.hxx"
 #include "Iter.hxx"
 #include "GMRES.hxx"
+#include "FGMRES.hxx"
 
 int main(int argc, const char *args[])
 {
@@ -57,7 +58,7 @@ int main(int argc, const char *args[])
     // Setup preconditioner parameters
     Identity pc;  // pc = identity, no preconditioning used
 
-    // Setup solver parameters
+    // Setup GMRES parameters
     class GMRES solver;
     solver.SetOutput(solParam.verbose);
     solver.SetMaxIter(solParam.maxIter);
@@ -79,9 +80,8 @@ int main(int argc, const char *args[])
     timer.Start();
     retCode = solver.RSolve(b, x);
     solver.PrintTime(timer.Stop());
-    std::cout<<"Right preconditioned GMRES method 's residual : "<<solver.GetNorm2
-    ()<<std::endl;
-
+    std::cout << "Right preconditioned GMRES: residual = " << solver.GetNorm2()
+              << "\n--------------------------------------------" << std::endl;
     solver.Clean();
 
     x.SetValues(mcol, 1.0); // If initial guess not specified, set x0 = 1.0
@@ -91,8 +91,34 @@ int main(int argc, const char *args[])
     timer.Start();
     retCode = solver.LSolve(b, x);
     solver.PrintTime(timer.Stop());
-    std::cout<<"Left preconditioned GMRES method 's residual : "<<solver.GetNorm2
-    ()<<std::endl;
+    std::cout << "Left preconditioned GMRES: residual = " << solver.GetNorm2()
+              << "\n--------------------------------------------" << std::endl;
+    solver.Clean();
+
+    // Setup FGMRES parameters
+    class FGMRES fsolver;
+    fsolver.SetOutput(solParam.verbose);
+    fsolver.SetMaxIter(solParam.maxIter);
+    fsolver.SetMinIter(solParam.minIter);
+    fsolver.SetSafeIter(solParam.safeIter);
+    fsolver.SetRestart(solParam.restart);
+    fsolver.SetRelTol(solParam.relTol);
+    fsolver.SetAbsTol(solParam.absTol);
+    fsolver.SetMaxMinRestart(solParam.restart, 5);
+    fsolver.SetPC(pc);
+
+    fsolver.Setup(mat);
+
+    x.SetValues(mcol, 1.0); // If initial guess not specified, set x0 = 1.0
+    if ( strcmp(xinFile.c_str(), "") != 0 ) ReadVEC(xinFile.c_str(), x);
+
+    // Solve the linear system using GMRES with right preconditioner
+    timer.Start();
+    retCode = fsolver.Solve(b, x);
+    fsolver.PrintTime(timer.Stop());
+    std::cout << "Right preconditioned FGMRES: residual = " << fsolver.GetNorm2()
+              << "\n--------------------------------------------" << std::endl;
+    fsolver.Clean();
 
     return retCode;
 }

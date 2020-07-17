@@ -1,6 +1,16 @@
+/*! \file    GMRES.hxx
+ *  \brief   Preconditioned GMRES class declaration
+ *  \author  Chensong Zhang, Kailei Zhang
+ *  \date    July/16/2020
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
+ */
 
-#ifndef GMRES_HXX
-#define GMRES_HXX
+#ifndef __GMRES_HXX__      /*-- allow multiple inclusions --*/
+#define __GMRES_HXX__      /**< indicate GMRES.hxx has been included before */
 
 #include <cmath>
 #include "ErrorLog.hxx"
@@ -8,6 +18,9 @@
 #include "MAT.hxx"
 #include "SOL.hxx"
 
+/*! \class GMRES
+ *  \brief Preconditioned generalized minimal residual method.
+ */
 class GMRES : public SOL {
 
 private:
@@ -57,4 +70,8 @@ public:
 
 };
 
-#endif // GMRES_HXX
+#endif /* end if for __GMRES_HEADER__ */
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

@@ -1,7 +1,7 @@
-/*! \file    GMRES.cxx
- *  \brief   Preconditioned GMRES class definition
+/*! \file    FGMRES.cxx
+ *  \brief   Preconditioned Flexible GMRES class definition
  *  \author  Chensong Zhang, Kailei Zhang
- *  \date    July/11/2020
+ *  \date    July/17/2020
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -26,14 +26,12 @@ FaspRetCode FGMRES::Setup(const LOP &A) {
     // Set solver type
     SetSolType(SOLType::GMRES);
 
-    this->restart = this->params.restart;
-    this->len = A.GetColSize();
-
+    this->len        = A.GetColSize();
+    this->restart    = this->params.restart;
     this->maxRestart = this->maxRestart > this->params.maxIter
-                       ? this->params.maxIter : this->maxRestart;
-
+                     ? this->params.maxIter : this->maxRestart;
     this->minRestart = this->minRestart > this->maxRestart
-                       ? this->maxRestart : this->minRestart;
+                     ? this->maxRestart : this->minRestart;
 
     // Allocate memory for temporary vectors
     try {
@@ -44,41 +42,39 @@ FaspRetCode FGMRES::Setup(const LOP &A) {
         var.resize(len);
 
         hh.resize(this->maxRestart + 1);
-        for (int j = 0; j < this->maxRestart + 1; ++j)
+        for ( int j = 0; j < this->maxRestart + 1; ++j )
             hh[j].resize(this->maxRestart);
 
         hcos.resize(this->maxRestart + 1);
         hsin.resize(this->maxRestart);
-    } catch (std::bad_alloc &ex) {
+    } catch ( std::bad_alloc &ex ) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
-    while (this->maxRestart >= this->minRestart) {
+    while ( this->maxRestart >= this->minRestart ) {
         try {
-            for (int j = 0; j < this->maxRestart + 1; ++j) {
+            for ( int j = 0; j < this->maxRestart + 1; ++j ) {
                 V.push_back(safe);
                 Z.push_back(safe);
             }
             break;
-        } catch (std::bad_alloc &ex) {
+        } catch ( std::bad_alloc &ex ) {
             this->maxRestart -= 5;
             while (!V.empty()) V.resize(0);
         }
     }
 
-    if (this->maxRestart < this->minRestart) return FaspRetCode::ERROR_ALLOC_MEM;
+    if ( this->maxRestart < this->minRestart ) return FaspRetCode::ERROR_ALLOC_MEM;
 
-    if (this->restart > this->maxRestart)
-        this->restart = this->maxRestart;
+    if ( this->restart > this->maxRestart ) this->restart = this->maxRestart;
 
-    if (this->restart < this->minRestart)
-        this->restart = this->minRestart;
+    if ( this->restart < this->minRestart ) this->restart = this->minRestart;
 
     // Setup the coefficient matrix
     this->A = &A;
 
     // Print used parameters
-    if (params.verbose > PRINT_MIN) PrintParam(std::cout);
+    if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
 }
@@ -88,11 +84,9 @@ void FGMRES::Clean() {
 
     this->restart = this->params.restart;
 
-    if (this->restart > this->maxRestart)
-        this->restart = this->maxRestart;
+    if ( this->restart > this->maxRestart ) this->restart = this->maxRestart;
 
-    if (this->restart < this->minRestart)
-        this->restart = this->minRestart;
+    if ( this->restart < this->minRestart ) this->restart = this->minRestart;
 
     wk.SetValues(len, 0.0);
     tmp.SetValues(len, 0.0);
@@ -101,14 +95,14 @@ void FGMRES::Clean() {
     var.assign(len, 0.0);
 
     hh.resize(this->maxRestart + 1);
-    for (int j = 0; j < this->maxRestart + 1; ++j)
+    for ( int j = 0; j < this->maxRestart + 1; ++j )
         hh[j].assign(this->maxRestart, 0.0);
 
-    hcos.assign(this->maxRestart + 1, 0.0);
-    hsin.assign(this->maxRestart, 0.0);
+    hcos.assign( this->maxRestart + 1, 0.0 );
+    hsin.assign( this->maxRestart, 0.0 );
 
-    V.assign(this->maxRestart + 1, safe);
-    Z.assign(this->maxRestart + 1, safe);
+    V.assign( this->maxRestart + 1, safe );
+    Z.assign( this->maxRestart + 1, safe );
 
 }
 
