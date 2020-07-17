@@ -128,31 +128,26 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
 
     // Initialize iterative method
     numIter = 0;
-    safe = x;
-
-    // Compute initial residual
     A->Apply(x, V[0]); // A * x -> V[0]
     V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
-
-    resAbs = ri = V[0].Norm2();
-    denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
-    resRel = resAbs / denAbs;
-    resAbsOld = resAbs;
-
-    ratio = 0.0;
 
     // GMRES(m) outer iteration
     while ( this->numIter < this->params.maxIter
            && resRel > this->params.relTol
            && resAbs > this->params.absTol ) {
 
-        // Start from minIter instead of 0
-        if ( numIter == params.minIter ) {
-            if (resRel < params.relTol || resAbs < params.absTol) break;
-        }
-
+        // Norm of current residual
+        resAbs = ri = V[0].Norm2();
         var[0] = resAbs;
         V[0].Scale(1 / resAbs);
+
+        // Start checking from minIter instead of 0
+        if ( numIter == params.minIter ) {
+            denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
+            resRel = resAbs / denAbs;
+            resAbsOld = resAbs;
+            if ( resRel < params.relTol || resAbs < params.absTol ) break;
+        }
 
         // RESTART CYCLE (right-preconditioning)
         count = 0;
@@ -251,7 +246,7 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
 
             if ( resRel < this->params.relTol || resAbs < this->params.absTol )
                 break;
-            else { // Need a hard restart
+            else { // Need a hard restart now!!!
                 V[0] = wk;
                 count = 0;
             }
@@ -262,8 +257,7 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
                 WarnRealRes(resRel);
             }
 
-        } else { // end of convergence check
-            // Compute residual and continue with the iteration
+        } else { // Compute residual and continue with the iteration
             A->Apply(x, V[0]); // A * x -> V[0]
             V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
             resAbs = rj = V[0].Norm2();

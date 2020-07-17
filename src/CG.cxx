@@ -78,7 +78,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
     // Main CG loop
     while ( numIter < params.maxIter ) {
 
-        // Start from minIter instead of 0
+        // Start checking from minIter instead of 0
         if ( numIter == params.minIter ) {
             resAbs = rk.Norm2();
             denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
