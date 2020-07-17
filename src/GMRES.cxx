@@ -139,15 +139,17 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
     resRel = resAbs / denAbs;
     resAbsOld = resAbs;
 
-    if ( resRel < params.relTol || resAbs < params.absTol )
-        return FaspRetCode::SUCCESS;
-
     ratio = 0.0;
 
     // GMRES(m) outer iteration
     while ( this->numIter < this->params.maxIter
            && resRel > this->params.relTol
            && resAbs > this->params.absTol ) {
+
+        // Start from minIter instead of 0
+        if ( numIter == params.minIter ) {
+            if (resRel < params.relTol || resAbs < params.absTol) break;
+        }
 
         var[0] = resAbs;
         V[0].Scale(1 / resAbs);
@@ -235,8 +237,8 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
         if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
 
         // Check: prevent false convergence!!!
-        if ( resRel < this->params.relTol
-            && resAbs < this->params.absTol
+        if ( ( resRel < this->params.relTol
+            || resAbs < this->params.absTol )
             && this->numIter >= this->params.minIter ) {
 
             const double computed_resRel = resRel;
@@ -247,10 +249,10 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
             resAbs = wk.Norm2();
             resRel = resAbs / denAbs;
 
-            if ( resRel < this->params.relTol && resAbs < this->params.absTol )
+            if ( resRel < this->params.relTol || resAbs < this->params.absTol )
                 break;
             else { // Need a hard restart
-                V[0] = tmp;
+                V[0] = wk;
                 count = 0;
             }
 
@@ -260,12 +262,13 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
                 WarnRealRes(resRel);
             }
 
-        } // end of convergence check
-
-        // Compute residual and continue with the iteration
-        A->Apply(x, V[0]); // A * x -> V[0]
-        V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
-        resAbs = rj = V[0].Norm2();
+        } else { // end of convergence check
+            // Compute residual and continue with the iteration
+            A->Apply(x, V[0]); // A * x -> V[0]
+            V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
+            resAbs = rj = V[0].Norm2();
+            resRel = resAbs / denAbs;
+        }
 
         // Choose restart number adaptively
         cr = rj / ri;
@@ -321,22 +324,18 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
     safe = x;
 
     A->Apply(x, V[0]); // A * x -> V[0]
+    tmp.XPAY(-1.0, b); // b - V[0] -> V[0]
 
-    V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
-
-    ri = V[0].Norm2();
+    ri = tmp.Norm2();
 
     // Preconditioner
-    tmp.SetValues(len, 0.0);
-    pc->Solve(V[0], tmp);
+    V[0].SetValues(len, 0.0);
+    pc->Solve(tmp, V[0]);
 
-    resAbs = tmp.Norm2();
+    resAbs = V[0].Norm2();
     denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
     resRel = resAbs / denAbs;
     resAbsOld = resAbs;
-
-    if ( resRel < params.relTol || resAbs < params.absTol )
-        return FaspRetCode::SUCCESS;
 
     ratio = 0.0;
 
@@ -344,6 +343,11 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
     while ( this->numIter < this->params.maxIter
            && resRel > this->params.relTol
            && resAbs > this->params.absTol ) {
+
+        // Start from minIter instead of 0
+        if ( numIter == params.minIter ) {
+            if (resRel < params.relTol || resAbs < params.absTol) break;
+        }
 
         var[0] = resAbs;
         V[0].Scale(1 / resAbs);
@@ -426,8 +430,8 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
         if ( numIter >= params.safeIter && resAbs < resAbsOld ) safe = x;
 
         // Check: prevent false convergence
-        if ( resRel < this->params.absTol
-            && resAbs < this->params.absTol
+        if ( ( resRel < this->params.absTol
+            || resAbs < this->params.absTol )
             && this->numIter >= this->params.minIter ) {
 
             const double computed_resRel = resRel;
@@ -435,6 +439,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
             // compute residual
             A->Apply(x, wk); // A * x -> p0
             wk.AXPBY(-1.0, 1.0, b); // b - p0 -> p0
+            rj = wk.Norm2();
 
             // apply preconditioner
             tmp.SetValues(len, 0.0);
@@ -443,7 +448,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
             resAbs = tmp.Norm2();
             resRel = resAbs / denAbs;
 
-            if ( resRel < this->params.relTol && resAbs < this->params.absTol )
+            if ( resRel < this->params.relTol || resAbs < this->params.absTol )
                 break;
             else { // Need to restart
                 V[0] = tmp;
@@ -456,17 +461,18 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
                 WarnRealRes(resRel);
             }
 
-        } // End of convergence check
+        } else { // End of convergence check
+            // Compute residual and continue with the iteration
+            A->Apply(x, tmp); // A * x -> V[0]
+            tmp.XPAY(-1.0, b); // b - V[0] -> V[0]
+            rj = tmp.Norm2();
 
-        // Compute residual and continue with the iteration
-        A->Apply(x, V[0]); // A * x -> V[0]
-        V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
-        rj = V[0].Norm2();
-
-        // Apply preconditioner
-        tmp.SetValues(len, 0.0);
-        pc->Solve(V[0], tmp);
-        resAbs = tmp.Norm2();
+            // Apply preconditioner
+            V[0].SetValues(len, 0.0);
+            pc->Solve(tmp, V[0]);
+            resAbs = V[0].Norm2();
+            resRel = resAbs / denAbs;
+        }
 
         // Choose restart number adaptively
         cr = rj / ri;
@@ -488,8 +494,8 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
     if ( not(numIter == params.minIter && numIter == params.maxIter) ) {
-        this->norm2 = V[0].Norm2();
-        this->normInf = V[0].NormInf();
+        this->norm2 = tmp.Norm2();
+        this->normInf = tmp.NormInf();
         PrintFinal(numIter, resRel, resAbs, ratio);
     }
 

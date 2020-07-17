@@ -114,7 +114,6 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
     // local variables
     double gamma, t;
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld;
-    double bNorm;
     int count;
     double ri, rj;
 
@@ -130,22 +129,22 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
     safe = x;
 
     A->Apply(x, V[0]); // A * x -> V[0]
-
     V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
 
     resAbs = ri = V[0].Norm2();
-    bNorm = b.Norm2();
-    denAbs = (bNorm > CLOSE_ZERO) ? bNorm : resAbs;
+    denAbs = (resAbs > CLOSE_ZERO) ? resAbs : CLOSE_ZERO;
     resRel = resAbs / denAbs;
     resAbsOld = resAbs;
-
-    if (resRel < params.relTol || resAbs < params.absTol)
-        return FaspRetCode::SUCCESS;
 
     ratio = 0.0;
 
     // GMRES(m) outer iteration
     while (this->numIter < this->params.maxIter) {
+
+        // Start from minIter instead of 0
+        if ( numIter == params.minIter ) {
+            if (resRel < params.relTol || resAbs < params.absTol) break;
+        }
 
         // Enter the cycle at the first iteration for at least one iteration
         var[0] = resAbs;
@@ -229,21 +228,23 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
         if (numIter >= params.safeIter && resAbs < resAbsOld) safe = x;
 
         // Check: prevent false convergence
-        if (resRel < this->params.relTol && resAbs < this->params.absTol
-            && this->numIter >= this->params.minIter) {
+        if ( ( resRel < this->params.relTol
+                || resAbs < this->params.absTol )
+                && this->numIter >= this->params.minIter) {
+
             double computed_resRel = resRel;
 
             // compute residual
             A->Apply(x, wk); // A * x -> p0
             wk.AXPBY(-1.0, 1.0, b); // b - p0 -> p0
 
-            resAbs = wk.Norm2();
+            resAbs = rj = wk.Norm2();
             resRel = resAbs / denAbs;
 
             if (resRel < this->params.relTol || resAbs < this->params.absTol)
                 break;
             else { // Need to restart
-                V[0] = tmp;
+                V[0] = wk;
                 count = 0;
             }
 
@@ -253,14 +254,15 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
                 WarnRealRes(resRel);
             }
 
-        } // end of convergence check
+        } else {// end of convergence check
+            // Compute residual vector and continue loop
+            A->Apply(x, V[0]); // A * x -> V[0]
 
-        // Compute residual vector and continue loop
-        A->Apply(x, V[0]); // A * x -> V[0]
+            V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
 
-        V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
-
-        resAbs = rj = V[0].Norm2();
+            resAbs = rj = V[0].Norm2();
+            resRel = resAbs / denAbs;
+        }
 
         // Choose restart number adaptively
         cr = rj / ri;
