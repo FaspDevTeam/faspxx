@@ -49,7 +49,7 @@ private:
 public:
     /// Default constructor.
     FGMRES() : wk(0), safe(0), tmp(0), hh(0), hsin(0), hcos(0), var(0),
-               maxRestart{20}, minRestart(5) {};
+               maxRestart{30}, minRestart(10) {};
 
     /// Default destructor.
     ~FGMRES() = default;

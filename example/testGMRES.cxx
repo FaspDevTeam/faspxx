@@ -81,7 +81,7 @@ int main(int argc, const char *args[])
     retCode = solver.RSolve(b, x);
     solver.PrintTime(timer.Stop());
     std::cout << "Right preconditioned GMRES: residual = " << solver.GetNorm2()
-              << "\n--------------------------------------------" << std::endl;
+              << "\n---------------------------------------------" << std::endl;
     solver.Clean();
 
     x.SetValues(mcol, 1.0); // If initial guess not specified, set x0 = 1.0
@@ -92,7 +92,7 @@ int main(int argc, const char *args[])
     retCode = solver.LSolve(b, x);
     solver.PrintTime(timer.Stop());
     std::cout << "Left preconditioned GMRES: residual = " << solver.GetNorm2()
-              << "\n--------------------------------------------" << std::endl;
+              << "\n---------------------------------------------" << std::endl;
     solver.Clean();
 
     // Setup FGMRES parameters
@@ -117,7 +117,7 @@ int main(int argc, const char *args[])
     retCode = fsolver.Solve(b, x);
     fsolver.PrintTime(timer.Stop());
     std::cout << "Right preconditioned FGMRES: residual = " << fsolver.GetNorm2()
-              << "\n--------------------------------------------" << std::endl;
+              << "\n---------------------------------------------" << std::endl;
     fsolver.Clean();
 
     return retCode;

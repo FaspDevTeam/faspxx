@@ -25,8 +25,8 @@ class GMRES : public SOL {
 
 private:
     VEC wk;
-    VEC safe;
     VEC tmp;
+    VEC safe;
 
     std::vector<std::vector<double>> hh;
     std::vector<double> hsin;
@@ -48,7 +48,7 @@ private:
 public:
     /// Default constructor.
     GMRES() : wk(0), safe(0), tmp(0), hh(0), hsin(0), hcos(0), var(0),
-              maxRestart{20}, minRestart(5) {};
+              maxRestart{30}, minRestart(10) {};
 
     /// Default destructor.
     ~GMRES() = default;

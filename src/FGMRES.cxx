@@ -1,5 +1,5 @@
 /*! \file    FGMRES.cxx
- *  \brief   Preconditioned Flexible GMRES class definition
+ *  \brief   Preconditioned flexible GMRES class definition
  *  \author  Chensong Zhang, Kailei Zhang
  *  \date    July/17/2020
  *
@@ -9,8 +9,6 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <stack>
-#include <iostream>
 #include "FGMRES.hxx"
 
 /// Set the maximum and minimum restart
@@ -19,7 +17,7 @@ void FGMRES::SetMaxMinRestart(const int maxRestart, const int minRestart) {
     this->minRestart = minRestart;
 }
 
-/// Set up the GMRES method
+/// Set up the FGMRES method.
 FaspRetCode FGMRES::Setup(const LOP &A) {
 
     // Set solver type
@@ -76,7 +74,7 @@ FaspRetCode FGMRES::Setup(const LOP &A) {
     return FaspRetCode::SUCCESS;
 }
 
-// Clean up GMRES data allocated during setup.
+/// Clean up FGMRES data allocated during setup.
 void FGMRES::Clean() {
 
     restart = params.restart;
@@ -99,7 +97,7 @@ void FGMRES::Clean() {
 
 }
 
-/// Right-preconditioned FGMRES solver
+/// Right-preconditioned FGMRES solver.
 FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
@@ -107,7 +105,7 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
     // local variables
     double gamma, t, ri, rj, cr = 1.0;
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld;
-    int count, count_1;
+    int    count, count_1;
 
     PrintHead();
 
@@ -115,13 +113,14 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
     numIter = 0;
     safe = x;
 
+    // Initialize residual norm
     A->Apply(x, V[0]); // A * x -> V[0]
     V[0].XPAY(-1.0, b); // b - V[0] -> V[0]
     resAbs = ri = V[0].Norm2();
     denAbs = (resAbs > CLOSE_ZERO) ? resAbs : CLOSE_ZERO;
 
-    // GMRES(m) outer iteration
-    while (this->numIter < this->params.maxIter) {
+    // FGMRES(m) outer iteration
+    while ( numIter < params.maxIter ) {
 
         // Start from minIter instead of 0
         if ( numIter == params.minIter ) {
@@ -131,25 +130,23 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
         }
 
         // Initial search direction: r/||r||
-        if( resAbs < SMALL) break; // Resiudal is too small
+        if ( resAbs < SMALL) break; // Resiudal is too small
         var[0] = resAbs;
         V[0].Scale(1 / resAbs);
 
         // RESTART CYCLE (right-preconditioning)
         count = 0;
-        while ( count < this->restart
-               && this->numIter < this->params.maxIter ) {
+        while ( count < restart && numIter < params.maxIter ) {
 
             if ( numIter >= params.minIter ) PrintInfo(numIter, resRel, resAbs, ratio);
 
             //---------------------------------------------
             // GMRES(m) inner iteration starts from here
             //---------------------------------------------
+            ++numIter;         // total iteration number
+            count_1 = count++; // inner iteration number
 
-            ++numIter; // iteration count
-            ++count; count_1 = count - 1;
-
-            // preconditioner
+            // Apply preconditioner
             tmp.SetValues(len, 0.0);
             pc->Solve(V[count_1], Z[count_1]);
 
@@ -165,6 +162,7 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
 
             // If t=0, we get solution subspace
             if ( fabs(t) > SMALL ) V[count].Scale(1.0 / t);
+            else break;
 
             for ( int j = 1; j < count; ++j ) {
                 t = hh[j - 1][count_1];
@@ -237,7 +235,6 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
         // Choose restart number adaptively
         cr = rj / ri;
         ri = rj;
-
         if ( cr > max_cr )
             restart = maxRestart;
         else if ( cr <= max_cr && cr >= min_cr ) {
@@ -250,7 +247,7 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
     } // end of main while loop
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
-    if (not(numIter == params.minIter && numIter == params.maxIter)) {
+    if ( not(numIter == params.minIter && numIter == params.maxIter) ) {
          norm2 = V[0].Norm2();
          normInf = V[0].NormInf();
         PrintFinal(numIter, resRel, resAbs, ratio);

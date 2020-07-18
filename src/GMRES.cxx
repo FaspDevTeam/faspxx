@@ -9,8 +9,6 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <stack>
-#include <iostream>
 #include "GMRES.hxx"
 
 /// Solve Ax=b using the GMRES method.
@@ -144,9 +142,8 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
             //---------------------------------------------
             // GMRES(m) inner iteration starts from here
             //---------------------------------------------
-
-            ++numIter; // iteration count
-            ++count; count_1 = count - 1;
+            ++numIter;         // total iteration number
+            count_1 = count++; // inner iteration number
 
             // Apply preconditioner
             tmp.SetValues(len, 0.0);
@@ -162,7 +159,7 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
             t = V[count].Norm2();
             hh[count][count_1] = t;
 
-            // if t=0, we get solution subspace
+            // If t=0, we get solution subspace
             if ( fabs(t) > SMALL ) V[count].Scale(1.0 / t);
             else break;
 
@@ -241,7 +238,6 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
         // Choose restart number adaptively
         cr = rj / ri;
         ri = rj;
-
         if ( cr > max_cr )
             restart = maxRestart;
         else if ( cr < max_cr && cr > min_cr ) {
@@ -317,8 +313,8 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
             //---------------------------------------------
             // GMRES(m) inner iteration starts from here
             //---------------------------------------------
-            ++numIter; // iteration count
-            ++count; count_1 = count-1;
+            ++numIter;         // total iteration number
+            count_1 = count++; // inner iteration number
 
             A->Apply(V[count_1], tmp);
             V[count].SetValues(len, 0.0);
@@ -411,7 +407,6 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
         // Choose restart number adaptively
         cr = rj / ri;
         ri = rj;
-
         if ( cr > max_cr )
             restart = maxRestart;
         else if ( cr < max_cr && cr > min_cr ) {
