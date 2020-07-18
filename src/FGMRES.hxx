@@ -41,6 +41,11 @@ private:
     int restart;
     int len;
 
+    // Constants for variable restarting
+    const double max_cr = 0.99026806874157040;
+    const double min_cr = 0.17364817766693041;
+    const int  decrease = 3;
+
 public:
     /// Default constructor.
     FGMRES() : wk(0), safe(0), tmp(0), hh(0), hsin(0), hcos(0), var(0),

@@ -11,7 +11,6 @@
 
 #include <stack>
 #include <iostream>
-#include <fstream>
 #include "GMRES.hxx"
 
 /// Solve Ax=b using the GMRES method.
@@ -95,7 +94,7 @@ void GMRES::Clean() {
     hh.resize(maxRestart + 1);
     for ( int j = 0; j < maxRestart + 1; ++j ) hh[j].assign(maxRestart, 0.0);
 
-    V.assign(this->maxRestart + 1, safe);
+    V.assign(maxRestart + 1, safe);
 
 }
 
@@ -147,7 +146,7 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
             //---------------------------------------------
 
             ++numIter; // iteration count
-            ++count; count_1 = count-1;
+            ++count; count_1 = count - 1;
 
             // Apply preconditioner
             tmp.SetValues(len, 0.0);
