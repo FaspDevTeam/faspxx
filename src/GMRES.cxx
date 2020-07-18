@@ -426,8 +426,8 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
     if ( not(numIter == params.minIter && numIter == params.maxIter) ) {
-        norm2   = V[0].Norm2();
-        normInf = V[0].NormInf();
+        norm2   = tmp.Norm2();
+        normInf = tmp.NormInf();
         PrintFinal(numIter, resRel, resAbs, ratio);
     }
 
