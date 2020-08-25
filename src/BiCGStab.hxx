@@ -23,6 +23,7 @@
 class BiCGStab:public SOL
 {
 private:
+    int len;
     VEC r0star;  ///< Work vector for r0*
     VEC tmp;
     VEC apj;
@@ -38,7 +39,7 @@ private:
 
 public:
     /// Default constructor.
-    BiCGStab() : r0star(0), tmp(0), apj(0), asj(0), pj(0),
+    BiCGStab() : len(0), r0star(0), tmp(0), apj(0), asj(0), pj(0),
                  rj(0), sj(0), ptmp(0), stmp(0), mp(0),
                  ms(0),safe(0) { };
 
