@@ -24,6 +24,7 @@ class CG: public SOL
 {
 
 private:
+    int len;
     VEC rk;      ///< Work vector for residual
     VEC pk;      ///< Work vector for preconditioned residual
     VEC zk;      ///< Work vector for search direction
@@ -32,7 +33,7 @@ private:
 
 public:
     /// Default constructor.
-    CG() : rk(0), pk(0), zk(0), ax(0), safe(0) {};
+    CG() : len(0), rk(0), pk(0), zk(0), ax(0), safe(0) {};
 
     /// Default destructor.
     ~CG() = default;
