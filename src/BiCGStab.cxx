@@ -20,7 +20,7 @@ FaspRetCode BiCGStab::Setup(const LOP &A)
 
     // Allocate memory for temporary vectors
     try {
-        const INT len = A.GetColSize();
+        len = A.GetColSize();
         r0star.SetValues(len, 0.0);
         tmp.SetValues(len, 0.0);
         apj.SetValues(len, 0.0);
@@ -49,7 +49,18 @@ FaspRetCode BiCGStab::Setup(const LOP &A)
 /// Release additional memory allocated for BiCGStab.
 void BiCGStab::Clean()
 {
-    // Nothing is needed for the moment!
+    r0star.SetValues(len, 0.0);
+    tmp.SetValues(len, 0.0);
+    apj.SetValues(len, 0.0);
+    asj.SetValues(len, 0.0);
+    pj.SetValues(len, 0.0);
+    rj.SetValues(len, 0.0);
+    sj.SetValues(len, 0.0);
+    ptmp.SetValues(len, 0.0);
+    stmp.SetValues(len, 0.0);
+    ms.SetValues(len, 0.0);
+    mp.SetValues(len, 0.0);
+    safe.SetValues(len, 0.0);
 }
 
 /// Preconditioned Bi-Conjugate Gradient Stabilized method. Don't check problem sizes.
@@ -58,7 +69,6 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables
-    const INT len = b.GetSize();
     const int maxStag = MAX_STAG_NUM; // maximum number of stagnation before quit
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
 

@@ -20,7 +20,7 @@ FaspRetCode CG::Setup(const LOP &A)
 
     // Allocate memory for temporary vectors
     try {
-        const INT len = A.GetColSize();
+        len = A.GetColSize();
         zk.SetValues(len, 0.0);
         pk.SetValues(len, 0.0);
         rk.SetValues(len, 0.0);
@@ -42,16 +42,21 @@ FaspRetCode CG::Setup(const LOP &A)
 /// Release additional memory allocated for CG.
 void CG::Clean()
 {
-    // Nothing is needed for the moment!
+
+    zk.SetValues(len,0.0);
+    pk.SetValues(len,0.0);
+    rk.SetValues(len,0.0);
+    ax.SetValues(len,0.0);
+    safe.SetValues(len,0.0);
+
 }
 
-/// Using the Preconditioned Conjugate Gradient method. Don't check problem sizes.
+/// Using the Conjugate Gradient method. Don't check problem sizes.
 FaspRetCode CG::Solve(const VEC &b, VEC &x)
 {
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Local variables
-    const INT len = b.GetSize();
     const int maxStag = MAX_STAG_NUM; // max number of stagnation checks
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
     const double solZeroTol = CLOSE_ZERO; // solution close to zero tolerance
