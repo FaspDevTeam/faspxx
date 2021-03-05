@@ -13,7 +13,7 @@
 #-----------------------------#
 
 # Minimum cmake version needed
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.12)
 
 # Set C++ language standard (ANSI C++ 11)
 set(CMAKE_CXX_STANDARD 11)
@@ -21,7 +21,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Default C++ compiler look-up order
-find_program(THE_CXX NAMES $ENV{CXX} g++ icc clang++)
+find_program(THE_CXX NAMES $ENV{CXX} g++ icpc clang++)
 set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
 
 # Default C compiler look-up order

@@ -1,11 +1,8 @@
 .DS_Store
 .idea/
-
+.vscode/
 data/fdm_1023X1023.csr
-
 **/**/cmake-build-debug/
 **/**/cmake-build-release/
 **/**/build/
-
 lib/
-
