@@ -55,12 +55,12 @@ public:
 
     /// Action of the linear operator to a vector.
     virtual void Apply(const VEC& x, VEC& y) const {
-        FASPXX_WARNING("Action not defined!")
+        FASPXX_WARNING("Action not defined!");
     };
 
     /// Compute residual of a linear operator equation.
     virtual void Residual(const VEC& b, const VEC& x, VEC& r) const {
-        FASPXX_WARNING("Action not defined!")
+        FASPXX_WARNING("Action not defined!");
     };
 };
 

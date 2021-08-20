@@ -168,7 +168,7 @@ void SOL::SetSolTypeFromName(SOLParams& params)
     else {
         params.type = SOLType::CG; // default solver type
         if ( params.verbose > PRINT_NONE )
-            FASPXX_WARNING("Unknown solver type. Using default solver!")
+            FASPXX_WARNING("Unknown solver type. Using default solver!");
     }
 }
 

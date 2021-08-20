@@ -27,9 +27,10 @@ FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, SOLParams& params)
             sol = new class BiCGStab();
             break;
         default:
+            // Set default solver, should never reach here!!!
             if ( params.verbose > PRINT_NONE )
-                FASPXX_WARNING("Unknown Krylov method type")
-            sol = new class CG(); // default solver, should never reach here!!!
+                FASPXX_WARNING("Unknown Krylov method! Use CG instead!");
+            sol = new class CG(); 
     }
 
     sol->SetOutput(params.verbose);

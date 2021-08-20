@@ -117,7 +117,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
         tmp12 = this->ptmp.Dot(this->r0star);
         if ( fabs(tmp12) > 1e-40 ) alpha = rjr0star / tmp12;
         else {
-            FASPXX_WARNING("Divided by zero!") // Possible breakdown
+            FASPXX_WARNING("Divided by zero!"); // Possible breakdown
             errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
             break;
         }
@@ -163,7 +163,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                 double xNorminf = x.NormInf();
                 if ( xNorminf < solStagTol ) {
                     if ( params.verbose > PRINT_MIN )
-                        FASPXX_WARNING("Iteration stopped due to x vanishes!")
+                        FASPXX_WARNING("Iteration stopped due to x vanishes!");
                     errorCode = FaspRetCode::ERROR_SOLVER_SOLSTAG;
                     break;
                 }
@@ -177,7 +177,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                     resAbs = this->rj.Norm2();
                     resRel = resAbs / denAbs;
                     if ( params.verbose > PRINT_SOME ) {
-                        FASPXX_WARNING("Possible iteration stagnate!")
+                        FASPXX_WARNING("Possible iteration stagnate!");
                         WarnRealRes(resRel);
                     }
 
@@ -185,7 +185,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                     else {
                         if ( stagStep >= maxStag ) {
                             if ( params.verbose > PRINT_MIN )
-                                FASPXX_WARNING("Iteration stopped due to stagnation!")
+                                FASPXX_WARNING("Iteration stopped due to stagnation!");
                             errorCode = FaspRetCode::ERROR_SOLVER_STAG;
                             break;
                         }
@@ -195,7 +195,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
 
                     if ( params.verbose > PRINT_SOME ) {
                         WarnDiffRes(xRelDiff, resRel);
-                        FASPXX_WARNING("Iteration restarted due to stagnation!")
+                        FASPXX_WARNING("Iteration restarted due to stagnation!");
                     }
                 } // End of stagnation check!
             } // End of check I and II
@@ -213,7 +213,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                 if ( resRel < params.relTol || resAbs < params.absTol ) break;
 
                 if ( params.verbose >= PRINT_MORE ) {
-                    FASPXX_WARNING("False convergence!")
+                    FASPXX_WARNING("False convergence!");
                     WarnCompRes(resRelOld);
                     WarnRealRes(resRel);
                 }
@@ -221,7 +221,7 @@ FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
                 if ( moreStep >= params.restart ) {
                     // Note: restart has different meaning here
                     if ( params.verbose > PRINT_MIN )
-                        FASPXX_WARNING("The tolerance might be too small!")
+                        FASPXX_WARNING("The tolerance might be too small!");
                     errorCode = FaspRetCode::ERROR_SOLVER_TOLSMALL;
                     break;
                 }

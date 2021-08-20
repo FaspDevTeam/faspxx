@@ -129,7 +129,7 @@ void Parameters::ReadFromFile()
                 file.open(*((std::string*)itm.paramPtr)); // find param_file
             }
 
-            if ( !file.is_open() ) FASPXX_WARNING("File not found!")
+            if ( !file.is_open() ) FASPXX_WARNING("File not found!");
 
             std::string line, name, value;
             while (std::getline(file, line)) {
@@ -178,7 +178,7 @@ void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& 
             *(Output*) prm.paramPtr = (Output) std::stoi(iter->second);
             break;
         default:
-            FASPXX_WARNING("Unknown parameter type!")
+            FASPXX_WARNING("Unknown parameter type!");
     }
 }
 

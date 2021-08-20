@@ -156,7 +156,7 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
                 case 3: // third, integer, number of nonzeros
                     nnz = std::strtol(decimal, &next, 10); break;
                 default:
-                    FASPXX_WARNING("Unknown input value!")
+                    FASPXX_WARNING("Unknown input value!");
             }
         }
         if ( mark == 3 ) break; // skip the rest
@@ -435,7 +435,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
             break;
 
         default:
-            FASPXX_WARNING("Unknown file format detected!")
+            FASPXX_WARNING("Unknown file format detected!");
             retCode = FaspRetCode::ERROR_INPUT_FILE;
             break;
     }
