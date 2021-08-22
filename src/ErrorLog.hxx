@@ -31,7 +31,7 @@
         std::ostringstream info;                   \
         info << std::setprecision(16);             \
         info << msg << _FASPXX_LOCATION_ << '\n';  \
-        std::cout << info.str().c_str();           \
+        std::cerr << info.str().c_str();           \
     } while(false)
 
 /// Log warning messages
