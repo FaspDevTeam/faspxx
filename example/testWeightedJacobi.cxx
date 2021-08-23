@@ -1,4 +1,4 @@
-/*! \file    testWeightJacobi.cxx
+/*! \file    testWeightedJacobi.cxx
  *  \brief   Test performance of Weighted Jacobi method
  *  \author  Kailei Zhang
  *  \date    Dec/12/2019
@@ -9,16 +9,19 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Standard header files
+#include <iostream>
+#include <vector>
+using std::cout;
+using std::endl;
+using std::vector;
+
+// FASPXX header files
 #include "Timing.hxx"
 #include "ReadData.hxx"
 #include "Param.hxx"
 #include "LOP.hxx"
 #include "Iter.hxx"
-
-#include <iostream>
-using std::cout;
-using std::endl;
-using std::vector;
 
 int main(){
     // matrix 1

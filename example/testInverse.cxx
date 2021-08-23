@@ -9,12 +9,15 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include "MAT.hxx"
-
+// Standard header files
 #include <iostream>
+#include <vector>
 using std::cout;
 using std::endl;
 using std::vector;
+
+// FASPXX header files
+#include "MAT.hxx"
 
 int main(){
 

@@ -9,10 +9,11 @@
  *-----------------------------------------------------------------------------------
  */
 
-// FASPXX header files
-#include "VEC.hxx"
 // Standard header files
 #include <cmath>
+
+// FASPXX header files
+#include "VEC.hxx"
 
 /// Assign the size and the same value to a VEC object.
 VEC::VEC(const INT& size, const DBL& value)

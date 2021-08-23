@@ -12,14 +12,15 @@
 #ifndef __PARAM_HEADER__      /*-- allow multiple inclusions --*/
 #define __PARAM_HEADER__      /**< indicate Param.hxx has been included before */
 
-// FASPXX header files
-#include "faspxx.hxx"
 // Standard header files
 #include <map>
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <cstring>
+
+// FASPXX header files
+#include "faspxx.hxx"
 
 /// Level of output
 enum Output {

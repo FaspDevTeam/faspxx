@@ -12,6 +12,7 @@
 // Sample usages:
 //   ./testJacobi -maxIter 1000 -verbose 2
 
+// FASPXX header files
 #include "Timing.hxx"
 #include "ReadData.hxx"
 #include "Param.hxx"

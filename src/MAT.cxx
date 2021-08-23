@@ -9,13 +9,14 @@
  *-----------------------------------------------------------------------------------
  */
 
-// FASPXX header files
-#include "MAT.hxx"
-#include "MATUtil.hxx"
 // Standard header files
 #include <cmath>
 #include <cstring>
 #include <fstream>
+
+// FASPXX header files
+#include "MAT.hxx"
+#include "MATUtil.hxx"
 
 /// Assign nrow, mcol, nnz, values, colInd, rowPtr, diagPtr to *this.
 MAT::MAT(const INT& nrow, const INT& mcol, const INT& nnz,

@@ -15,9 +15,9 @@
 #define __ERRORLOG_HXX__      /**< indicate ErrorLog.hxx has been included before */
 
 // Standard header files
-#include <sstream>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 
 /// Print out location at (file, line) and function name
 #define _FASPXX_LOCATION_                                 \

@@ -9,10 +9,12 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Standard header files
+#include <cstring>
+
+// FASPXX header files
 #include "Timing.hxx"
 #include "VEC.hxx"
-
-#include <cstring>
 
 const int LENGTH = 10000000;
 const int count  = 100;

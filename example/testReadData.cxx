@@ -9,6 +9,7 @@
  *-----------------------------------------------------------------------------------
  */
 
+// FASPXX header files
 #include "faspxx.hxx"
 #include "RetCode.hxx"
 #include "MATUtil.hxx"

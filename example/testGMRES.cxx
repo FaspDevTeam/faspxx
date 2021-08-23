@@ -9,6 +9,10 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Standard header files
+#include <fstream>
+
+// FASPXX header files
 #include "Param.hxx"
 #include "Timing.hxx"
 #include "ReadData.hxx"
@@ -16,8 +20,6 @@
 #include "Iter.hxx"
 #include "GMRES.hxx"
 #include "FGMRES.hxx"
-
-#include <fstream>
 
 int main(int argc, const char *args[])
 {

@@ -9,12 +9,13 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Standard header files
+#include <algorithm>
+
 // FASPXX header files
 #include "Param.hxx"
 #include "RetCode.hxx"
 #include "ErrorLog.hxx"
-// Standard header files
-#include <algorithm>
 
 /// Process a line. Return false if the line is a comment or empty.
 static bool ProcessLine(std::string& line, std::string& param, std::string& value)

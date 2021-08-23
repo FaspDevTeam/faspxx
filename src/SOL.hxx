@@ -12,6 +12,10 @@
 #ifndef __SOL_HEADER__      /*-- allow multiple inclusions --*/
 #define __SOL_HEADER__      /**< indicate SOL.hxx has been included before */
 
+// Standard header files
+#include <iostream>
+using std::string;
+
 // FASPXX header files
 #include "faspxx.hxx"
 #include "RetCode.hxx"
@@ -19,9 +23,6 @@
 #include "Param.hxx"
 #include "LOP.hxx"
 #include "VEC.hxx"
-// Standard header files
-#include <iostream>
-using std::string;
 
 /// Iterative solver type.
 enum SOLType {
