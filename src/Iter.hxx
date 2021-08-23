@@ -12,10 +12,12 @@
 #ifndef __ITER_HEADER__      /*-- allow multiple inclusions --*/
 #define __ITER_HEADER__      /**< indicate Iter.hxx has been included before */
 
-#include <cmath>
+// FASPXX header files
 #include "faspxx.hxx"
 #include "SOL.hxx"
 #include "MAT.hxx"
+// Standard header files
+#include <cmath>
 
 /*! \class Identity
  *  \brief Identity operator.

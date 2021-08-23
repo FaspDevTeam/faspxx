@@ -9,8 +9,10 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <string>
+// FASPXX header files
 #include "RetCode.hxx"
+// Standard header files
+#include <string>
 
 /// Decode FaspRetCode to a readable error message.
 std::string GetRetCode(const FaspRetCode code) {

@@ -12,6 +12,7 @@
 #ifndef __CG_HEADER__      /*-- allow multiple inclusions --*/
 #define __CG_HEADER__      /**< indicate CG.hxx has been included before */
 
+// FASPXX header files
 #include "ErrorLog.hxx"
 #include "LOP.hxx"
 #include "MAT.hxx"

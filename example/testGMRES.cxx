@@ -1,5 +1,14 @@
+/*! \file    testGMRES.cxx
+ *  \brief   Test performance of GMRES method
+ *  \author  Kailei Zhang, Chensong Zhang
+ *  \date    Oct/12/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
+ */
 
-#include <fstream>
 #include "Param.hxx"
 #include "Timing.hxx"
 #include "ReadData.hxx"
@@ -7,6 +16,8 @@
 #include "Iter.hxx"
 #include "GMRES.hxx"
 #include "FGMRES.hxx"
+
+#include <fstream>
 
 int main(int argc, const char *args[])
 {

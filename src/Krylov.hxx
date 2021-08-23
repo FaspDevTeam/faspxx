@@ -12,6 +12,7 @@
 #ifndef __KRYLOV_HEADER__      /*-- allow multiple inclusions --*/
 #define __KRYLOV_HEADER__      /**< indicate Krylov.hxx has been included before */
 
+// FASPXX header files
 #include "RetCode.hxx"
 #include "SOL.hxx"
 #include "Iter.hxx"

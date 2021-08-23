@@ -12,6 +12,7 @@
 #ifndef __VECUTIL_HXX__      /*-- allow multiple inclusions --*/
 #define __VECUTIL_HXX__      /**< indicate VECUtil.hxx has been included before */
 
+// FASPXX header files
 #include "faspxx.hxx"
 #include "VEC.hxx"
 

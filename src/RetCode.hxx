@@ -12,6 +12,7 @@
 #ifndef __RETCODE_HEADER__      /*-- allow multiple inclusions --*/
 #define __RETCODE_HEADER__      /**< indicate RetCode.hxx has been included before */
 
+// Standard header files
 #include <string>
 #include <iostream>
 #include <stdexcept>

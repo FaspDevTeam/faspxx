@@ -12,11 +12,13 @@
 #ifndef __FGMRES_HXX__      /*-- allow multiple inclusions --*/
 #define __FGMRES_HXX__      /**< indicate FGMRES.hxx has been included before */
 
-#include <cmath>
+// FASPXX header files
 #include "ErrorLog.hxx"
 #include "LOP.hxx"
 #include "MAT.hxx"
 #include "SOL.hxx"
+// Standard header files
+#include <cmath>
 
 /*! \class FGMRES
  *  \brief Preconditioned flexible generalized minimal residual method.

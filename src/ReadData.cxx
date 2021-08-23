@@ -9,10 +9,12 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <cstring>
-#include <fstream>
+// FASPXX header files
 #include "ReadData.hxx"
 #include "MATUtil.hxx"
+// Standard header files
+#include <cstring>
+#include <fstream>
 
 /// Read a VEC data file stored as val[i], i=0:end-1.
 FaspRetCode ReadVEC(const char *fileName, VEC &dst)

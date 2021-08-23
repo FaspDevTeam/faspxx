@@ -9,6 +9,7 @@
  *-----------------------------------------------------------------------------------
  */
 
+// FASPXX header files
 #include "SOL.hxx"
 
 /// Warning for actual relative residual.

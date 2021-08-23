@@ -12,6 +12,7 @@
 #ifndef __MATUTIL_HXX__      /*-- allow multiple inclusions --*/
 #define __MATUTIL_HXX__      /**< indicate MATUtil.hxx has been included before */
 
+// FASPXX header files
 #include "MAT.hxx"
 
 /// Check whether two matrices have same sizes for addition

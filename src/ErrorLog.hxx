@@ -14,6 +14,7 @@
 #ifndef __ERRORLOG_HXX__      /*-- allow multiple inclusions --*/
 #define __ERRORLOG_HXX__      /**< indicate ErrorLog.hxx has been included before */
 
+// Standard header files
 #include <sstream>
 #include <iomanip>
 #include <iostream>

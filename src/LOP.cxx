@@ -9,6 +9,7 @@
  *-----------------------------------------------------------------------------------
  */
 
+// FASPXX header files
 #include "LOP.hxx"
 
 /// Assign nrow, mcol to *this.

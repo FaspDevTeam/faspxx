@@ -12,9 +12,11 @@
 #ifndef __VEC_HEADER__      /*-- allow multiple inclusions --*/
 #define __VEC_HEADER__      /**< indicate VEC.hxx has been included before */
 
-#include <vector>
+// FASPXX header files
 #include "faspxx.hxx"
 #include "RetCode.hxx"
+// Standard header files
+#include <vector>
 
 /*! \class VEC
  *  \brief General vector class.

@@ -12,7 +12,7 @@
 #ifndef __LOP_HEADER__  /*-- allow multiple inclusions --*/
 #define __LOP_HEADER__  /**< indicate LOP.hxx has been included before */
 
-#include <vector>
+// FASPXX header files
 #include "faspxx.hxx"
 #include "ErrorLog.hxx"
 #include "VEC.hxx"

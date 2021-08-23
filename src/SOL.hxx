@@ -12,38 +12,40 @@
 #ifndef __SOL_HEADER__      /*-- allow multiple inclusions --*/
 #define __SOL_HEADER__      /**< indicate SOL.hxx has been included before */
 
+// FASPXX header files
 #include "faspxx.hxx"
 #include "RetCode.hxx"
 #include "ErrorLog.hxx"
 #include "Param.hxx"
 #include "LOP.hxx"
 #include "VEC.hxx"
-
+// Standard header files
+#include <iostream>
 using std::string;
 
 /// Iterative solver type.
 enum SOLType {
-    CG        = 1,   ///< Conjugate Gradient
-    BICGSTAB  = 2,   ///< Bi-Conjugate Gradient Stabilized
-    MINRES    = 3,   ///< Minimal Residual
-    GMRES     = 4,   ///< Generalized Minimal Residual
-    FGMRES    = 5,   ///< Flexible GMRES
-    VFGMRES   = 6,   ///< Variable-restarting FGMRES
-    Jacobi    = 11,  ///< Jacobi iteration
+    CG          = 1,        ///< Conjugate Gradient
+    BICGSTAB    = 2,        ///< Bi-Conjugate Gradient Stabilized
+    MINRES      = 3,        ///< Minimal Residual
+    GMRES       = 4,        ///< Generalized Minimal Residual
+    FGMRES      = 5,        ///< Flexible GMRES
+    VFGMRES     = 6,        ///< Variable-restarting FGMRES
+    Jacobi      = 11,       ///< Jacobi iteration
 };
 
 /// Iterative solver parameters.
 struct SOLParams {
-    SOLType   type;       ///< Algorithm type
-    string    algName;    ///< Algorithm name
-    int       maxIter;    ///< Maximal number of iterations
-    int       minIter;    ///< Minimal number of iterations
-    int       safeIter;   ///< Minimal number of iterations before safe-guard
-    int       restart;    ///< Restart number
-    double    relTol;     ///< Tolerance for relative residual
-    double    absTol;     ///< Tolerance for absolute residual
-    double    weight;     ///< Weight for correction schemes
-    Output    verbose;    ///< Output verbosity level
+    SOLType     type;       ///< Algorithm type
+    string      algName;    ///< Algorithm name
+    int         maxIter;    ///< Maximal number of iterations
+    int         minIter;    ///< Minimal number of iterations
+    int         safeIter;   ///< Minimal number of iterations before safe-guard
+    int         restart;    ///< Restart number
+    double      relTol;     ///< Tolerance for relative residual
+    double      absTol;     ///< Tolerance for absolute residual
+    double      weight;     ///< Weight for correction schemes
+    Output      verbose;    ///< Output verbosity level
 
     SOLParams() : type(SOLType::CG), algName("cg"), maxIter(100), minIter(0),
                   safeIter(5000), restart(30), relTol(1e-6), absTol(1e-8),

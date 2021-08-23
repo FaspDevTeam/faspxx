@@ -9,9 +9,10 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <cstring>
 #include "Timing.hxx"
 #include "VEC.hxx"
+
+#include <cstring>
 
 const int LENGTH = 10000000;
 const int count  = 100;

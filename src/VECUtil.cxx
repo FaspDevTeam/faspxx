@@ -9,8 +9,10 @@
  *-----------------------------------------------------------------------------------
  */
 
-#include <cmath>
+// FASPXX header files
 #include "VECUtil.hxx"
+// Standard header files
+#include <cmath>
 
 /// Check whether the size of VEC object is zero.
 FaspRetCode CheckVECSize(const VEC& v)

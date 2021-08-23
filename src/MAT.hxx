@@ -24,7 +24,7 @@
 #ifndef __MAT_HEADER__      /*-- allow multiple inclusions --*/
 #define __MAT_HEADER__      /**< indicate MAT.hxx has been included before */
 
-#include <vector>
+// FASPXX header files
 #include "faspxx.hxx"
 #include "VEC.hxx"
 #include "LOP.hxx"
