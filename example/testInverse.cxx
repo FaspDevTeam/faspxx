@@ -1,16 +1,25 @@
-/**
- * a demo
+/*! \file    testInverse.cxx
+ *  \brief   Test inversion of a matrix
+ *  \author  Kailei Zhang, Chensong Zhang
+ *  \date    Oct/12/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
 #include <iostream>
 #include "MAT.hxx"
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::vector;
 
 int main(){
 
-    INT row1=4,col1=4,nnz1=10;
-    vector<INT> colInd1(10),rowPtr1(5),diag1(4);
+    INT row1=4, col1=4, nnz1=10;
+    vector<INT> colInd1(10), rowPtr1(5), diag1(4);
     vector<DBL> values1(10);
 
     values1[0]=0; values1[1]=1;
@@ -28,21 +37,20 @@ int main(){
     diag1[0]=0; diag1[1]=3; diag1[2]=6; diag1[3]=9;
 
     MAT A(row1,col1,nnz1,values1,colInd1,rowPtr1,diag1);
-
     MAT B;
 
     A.Inverse(B);
-    cout<<"initial matrix : A"<<endl;
-    for(int j=0;j<4;++j){
-        for(int k=0;k<4;++k)
-            cout<<A.GetValue(j,k)<<"  ";
-        cout<<endl;
+    cout << "initial matrix : A" << endl;
+    for ( int j=0; j<4; ++j ) {
+        for ( int k=0; k<4; ++k )
+            cout << A.GetValue(j,k) << "  ";
+        cout << endl;
     }
-    cout<<"the inverse of A :"<<endl;
-    for(int j=0;j<4;++j){
-        for(int k=0;k<4;++k)
-            cout<<B.GetValue(j,k)<<"  ";
-        cout<<endl;
+    cout << "the inverse of A :" << endl;
+    for ( int j=0; j<4; ++j ) {
+        for ( int k=0; k<4; ++k )
+            cout << B.GetValue(j,k) << "  ";
+        cout << endl;
     }
 
     vector<DBL> valuesInv1 = {2.0, 2.0};
@@ -50,26 +58,28 @@ int main(){
     vector<INT> colIndInv = {0, 1};
     vector<INT> rowPtrInv = {0, 1, 2};
     vector<INT> diagPtrInv = {0, 1, 2};
-    MAT C(2, 2, 2, valuesInv1, colIndInv, rowPtrInv, diagPtrInv);
-
+    
+    MAT C(2, 2, 2, valuesInv1, colIndInv, rowPtrInv, diagPtrInv);\
     MAT D;
 
-
-
     C.Inverse(D);
-    cout<<"initial matrix : C"<<endl;
-    for(int j=0;j<2;++j){
-        for(int k=0;k<2;++k)
-            cout<<C.GetValue(j,k)<<"  ";
-        cout<<endl;
+    cout << "initial matrix : C" << endl;
+    for ( int j=0; j<2; ++j ) {
+        for ( int k=0; k<2; ++k )
+            cout << C.GetValue(j,k) << "  ";
+        cout << endl;
     }
 
-    cout<<"the inverse of C :"<<endl;
-    for(int j=0;j<2;++j){
-        for(int k=0;k<2;++k)
-            cout<<D.GetValue(j,k)<<"  ";
-        cout<<endl;
+    cout << "the inverse of C :" << endl;
+    for ( int j=0; j<2; ++j ) {
+        for ( int k=0; k<2; ++k )
+            cout << D.GetValue(j,k) << "  ";
+        cout << endl;
     }
 
     return 0;
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

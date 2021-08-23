@@ -19,7 +19,7 @@
 #include "LOP.hxx"
 #include "VEC.hxx"
 
-using namespace std;
+using std::string;
 
 /// Iterative solver type.
 enum SOLType {

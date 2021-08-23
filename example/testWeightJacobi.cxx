@@ -1,5 +1,12 @@
-/*
- * a demo
+/*! \file    testWeightJacobi.cxx
+ *  \brief   Test performance of Weighted Jacobi method
+ *  \author  Kailei Zhang
+ *  \date    Dec/12/2019
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
  */
 
 #include "Timing.hxx"
@@ -8,7 +15,9 @@
 #include "LOP.hxx"
 #include "Iter.hxx"
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::vector;
 
 int main(){
     // matrix 1
@@ -101,7 +110,7 @@ int main(){
     /*
      * true solutions (from octave): 0.19231 0.11538
      */
-    cout<<"x1 : "<<x1[0]<<" , "<<x1[1]<<endl;
+    cout << "x1 : " << x1[0] << ", " << x1[1] << endl;
 
     class Jacobi j2;
     j2.SetOutput(Output::PRINT_SOME);
@@ -113,7 +122,11 @@ int main(){
     /**
      * true solutions (from octave) : 0.221719 0.027149 0.058824
      */
-    cout<<"x2 : "<<x2[0]<<" , "<<x2[1]<<" , "<<x2[2]<<endl;
+    cout << "x2 : " << x2[0] << ", " << x2[1] << ", " << x2[2] <<endl;
 
     return 0;
 }
+
+/*---------------------------------*/
+/*--        End of File          --*/
+/*---------------------------------*/

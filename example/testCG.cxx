@@ -1,4 +1,4 @@
-/*! \file    testCG.hxx
+/*! \file    testCG.cxx
  *  \brief   Test performance of CG method
  *  \author  Kailei Zhang, Chensong Zhang
  *  \date    Oct/12/2019
