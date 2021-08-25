@@ -3,11 +3,11 @@
 The FASP++ is a C++ package designed for developing parallel iterative solvers
 and preconditioners for PDEs and systems of PDEs. The main components of the
 package are standard Krylov methods, algebraic multigrid methods, geometric
-multigrid methods, Schwarz methods, and incomplete factorization methods.
+multigrid methods, Schwarz methods, incomplete factorization methods, etc.
 
 ## Install
-There is a top level cmake for configuration and building of the FASP++ shared
-library and the test programs suite. You can use a cmake-style approach to compile 
+There is a top level cmake for configuration and building of the FASP++ library 
+and the test programs suite. You can use a cmake-style approach to compile 
 the package; see https://cmake.org on how to use cmake for your own operating 
 system. The typical command for compiling FASP++ is:
 
