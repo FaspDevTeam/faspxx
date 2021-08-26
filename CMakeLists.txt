@@ -86,21 +86,21 @@ target_link_libraries(testGMRES faspxx)
 add_executable(testKrylov example/testKrylov.cxx)
 target_link_libraries(testKrylov faspxx)
 
-# Test Jacobi class
+# Test Jacobi method
 add_executable(testJacobi example/testJacobi.cxx)
 target_link_libraries(testJacobi faspxx)
 
-# Test MatFree implementation of 2D5P stencil
-add_executable(testMatFree example/testMatFree.cxx)
-target_link_libraries(testMatFree faspxx)
-
-# Test MatFree implementation of 2D5P stencil
-add_executable(testWeightJacobi example/testWeightJacobi.cxx)
-target_link_libraries(testWeightJacobi faspxx)
+# Test Weighted Jacobi method
+add_executable(testWeightedJacobi example/testWeightedJacobi.cxx)
+target_link_libraries(testWeightedJacobi faspxx)
 
 # Test MatFree implementation of 2D5P stencil
 add_executable(testInverse example/testInverse.cxx)
 target_link_libraries(testInverse faspxx)
+
+# Test MatFree implementation of 2D5P stencil
+add_executable(testMatFree example/testMatFree.cxx)
+target_link_libraries(testMatFree faspxx)
 
 # GoogleTest, default "OFF" (enable by "-DGTEST=ON")
 option(GTEST "Google Test" OFF)
