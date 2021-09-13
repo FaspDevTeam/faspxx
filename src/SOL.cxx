@@ -33,9 +33,10 @@ void SOL::WarnDiffRes(double reldiff, double relres) const
 }
 
 /// Print out iteration information table head.
-void SOL::PrintHead(std::ostream& out) const
+void SOL::PrintHead(std::ostream &out) const
 {
-    if ( params.verbose >= PRINT_MIN && params.minIter < params.maxIter ) {
+    if (params.verbose >= PRINT_MIN && params.minIter < params.maxIter)
+    {
         out << "---------------------------------------------\n";
         out << " It Num | ||r||/||b|| |    ||r||    |  Ratio \n";
         out << "---------------------------------------------\n";
@@ -43,19 +44,21 @@ void SOL::PrintHead(std::ostream& out) const
 }
 
 /// Print out iteration information for iterative solvers
-void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
-                    const double& ratio, std::ostream& out) const
+void SOL::PrintInfo(const int &iter, const double &resRel, const double &resAbs,
+                    const double &ratio, std::ostream &out) const
 {
-    if ( params.verbose > PRINT_SOME
-    || ( params.verbose >= PRINT_MIN && iter%PRT_STEP_NUM == 0)
-    || ( params.verbose >= PRINT_MIN && iter == params.maxIter) ) {
+    if (params.verbose > PRINT_SOME || (params.verbose >= PRINT_MIN && iter % PRT_STEP_NUM == 0) || (params.verbose >= PRINT_MIN && iter == params.maxIter))
+    {
         out.precision(4);
         std::setiosflags(std::ios::scientific);
-        if ( iter == params.minIter ) { // Initial iteration
+        if (iter == params.minIter)
+        { // Initial iteration
             out << std::setw(7) << std::right << iter << " | "
                 << std::scientific << std::setprecision(5) << resRel << " | "
                 << std::setw(11) << resAbs << " | " << std::endl;
-        } else { // Later iterations
+        }
+        else
+        { // Later iterations
             out << std::setw(7) << std::right << iter << " | "
                 << std::scientific << std::setprecision(5) << resRel << " | "
                 << std::setw(11) << resAbs << " | "
@@ -65,33 +68,41 @@ void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
 }
 
 /// Print out final status of an iterative method.
-void SOL::PrintFinal(const int& iter, const double& resRel, const double& resAbs,
-                     const double& ratio, std::ostream& out) const
+void SOL::PrintFinal(const int &iter, const double &resRel, const double &resAbs,
+                     const double &ratio, std::ostream &out) const
 {
-    if ( params.minIter >= params.maxIter ) return;
+    if (params.minIter >= params.maxIter)
+        return;
 
-    if ( params.verbose >= PRINT_MIN ) {
-        if ( iter > params.minIter ) {
+    if (params.verbose >= PRINT_MIN)
+    {
+        if (iter > params.minIter)
+        {
             out << std::setw(7) << std::right << iter << " | "
                 << std::scientific << std::setprecision(5) << resRel << " | "
                 << std::setw(11) << resAbs << " | "
                 << std::fixed << std::setprecision(4) << ratio << std::endl;
-        } else {
+        }
+        else
+        {
             out << std::setw(7) << std::right << iter << " | "
                 << std::scientific << std::setprecision(5) << resRel << " | "
                 << std::setw(11) << resAbs << " | " << std::endl;
         }
     }
 
-    if ( params.verbose >= PRINT_MIN  ) {
+    if (params.verbose >= PRINT_MIN)
+    {
         out << "---------------------------------------------\n";
-        if ( numIter >= params.maxIter )
+        if (numIter >= params.maxIter)
             std::cout << "### WARNING: maxIter = " << params.maxIter << " reached!\n";
         out << std::scientific << std::setprecision(5);
         out << "Number of iterations : " << numIter << '\n';
-        out << "Norm2 of residual    : " << norm2   << '\n';
+        out << "Norm2 of residual    : " << norm2 << '\n';
         out << "NormInf of residual  : " << normInf << '\n';
-    } else if ( params.verbose > PRINT_NONE ) {
+    }
+    else if (params.verbose > PRINT_NONE)
+    {
         out << std::scientific << std::setprecision(5);
         out << GetSolType(params.type) << " takes " << numIter << " iterations";
         out << " to reach L2-norm of residual " << norm2 << '\n';
@@ -105,7 +116,7 @@ SOL::~SOL()
 }
 
 /// Set output level verbose.
-void SOL::SetOutput(Output verbose) 
+void SOL::SetOutput(Output verbose)
 {
     params.verbose = verbose;
 }
@@ -159,16 +170,18 @@ void SOL::SetSolType(SOLType type)
 }
 
 /// Set value for SOLType using algName.
-void SOL::SetSolTypeFromName(SOLParams& params)
+void SOL::SetSolTypeFromName(SOLParams &params)
 {
-    for ( char & c : params.algName ) c = std::tolower(c); // Change to lowercase
-    if ( params.algName == "cg" )
+    for (char &c : params.algName)
+        c = std::tolower(c); // Change to lowercase
+    if (params.algName == "cg")
         params.type = SOLType::CG;
-    else if ( params.algName == "bicgstab" )
+    else if (params.algName == "bicgstab")
         params.type = SOLType::BICGSTAB;
-    else {
+    else
+    {
         params.type = SOLType::CG; // default solver type
-        if ( params.verbose > PRINT_NONE )
+        if (params.verbose > PRINT_NONE)
             FASPXX_WARNING("Unknown solver type. Using default solver!");
     }
 }
@@ -176,35 +189,36 @@ void SOL::SetSolTypeFromName(SOLParams& params)
 /// Get solver type.
 const char *SOL::GetSolType(SOLType type) const
 {
-    switch (type) {
-        case CG:
-            return "CG";
-        case BICGSTAB:
-            return "BiCGStab";
-        case MINRES:
-            return "MinRes";
-        case GMRES:
-            return "GMRES";
-        case FGMRES:
-            return "FGMRES";
-        case VFGMRES:
-            return "VFGMRES";
-        case Jacobi:
-            return "Jacobi";
-        case GS:
-            return "GS";
-        case SGS:
-            return "SGS";
-        case SOR:
-            return "SOR";
-        case SSOR:
-            return "SSOR";
-        case MG:
-            return "Multigrid";
-        case FMG:
-            return "Full Multigrid";
-        default:
-            FASPXX_ABORT("Unknown solver type!");
+    switch (type)
+    {
+    case CG:
+        return "CG";
+    case BICGSTAB:
+        return "BiCGStab";
+    case MINRES:
+        return "MinRes";
+    case GMRES:
+        return "GMRES";
+    case FGMRES:
+        return "FGMRES";
+    case VFGMRES:
+        return "VFGMRES";
+    case Jacobi:
+        return "Jacobi";
+    case GS:
+        return "GS";
+    case SGS:
+        return "SGS";
+    case SOR:
+        return "SOR";
+    case SSOR:
+        return "SSOR";
+    case MG:
+        return "MG";
+    case FMG:
+        return "FMG";
+    default:
+        FASPXX_ABORT("Unknown solver type!");
     }
 }
 
@@ -227,41 +241,61 @@ int SOL::GetIterations() const
 }
 
 /// Print parameters.
-void SOL::PrintParam(std::ostream& out) const
+void SOL::PrintParam(std::ostream &out) const
 {
-    out << "\nUsing " << GetSolType(params.type)
-        << " method with the following parameters\n"
-        << "---------------------------------------------\n"
-        << "    Max num of iteration: " << params.maxIter  << "\n"
-        << "    Min num of iteration: " << params.minIter  << "\n"
+    // General solver parameters
+    out << "\n---------------------------------------------\n"
+        << GetSolType(params.type) << " solver with the following parameters"
+        << "\n---------------------------------------------\n"
+        << "    Output level:         " << params.verbose << "\n"
+        << "    Max num of iteration: " << params.maxIter << "\n"
+        << "    Min num of iteration: " << params.minIter << "\n"
         << "    Safe-guard iteration: " << params.safeIter << "\n"
-        << "    Restart number:       " << params.restart  << "\n"
-        << "    Relative tolerance:   " << params.relTol   << "\n"
-        << "    Absolute tolerance:   " << params.absTol   << "\n"
-        << "    Relaxation weight:    " << params.weight   << "\n"
-        << "    Output level:         " << params.verbose  << "\n\n";
+        << std::scientific << std::setprecision(5)
+        << "    Relative tolerance:   " << params.relTol << "\n"
+        << "    Absolute tolerance:   " << params.absTol << "\n";
+
+    // Parameters for Krylov solvers
+    if (0 < params.type && params.type < 10)
+    {
+        out << "    Restart number:       " << params.restart << "\n";
+    }
+
+    // Parameters for relaxation solvers
+    if (10 < params.type && params.type < 20)
+    {
+        out << std::fixed << std::setprecision(3)
+            << "    Relaxation weight:    " << params.weight << "\n";
+    }
+
+    out << std::endl;
 }
 
 /// Print solver time.
-void SOL::PrintTime(const double duration, std::ostream& out) const
+void SOL::PrintTime(const double duration, std::ostream &out) const
 {
-    if ( duration < CLOCK_USE_SEC ) {
+    if (duration < CLOCK_USE_SEC)
+    {
         std::cout << "Solving linear system with " << GetSolType(params.type)
-                  << " costs "  << std::fixed << std::setprecision(3)
+                  << " costs " << std::fixed << std::setprecision(3)
                   << duration << "ms" << std::endl;
-    } else if ( duration < CLOCK_USE_MIN ) {
+    }
+    else if (duration < CLOCK_USE_MIN)
+    {
         std::cout << "Solving linear system with " << GetSolType(params.type)
-                  << " costs "  << std::fixed << std::setprecision(3)
-                  << duration/1000.0 << "s" << std::endl;
-    } else {
+                  << " costs " << std::fixed << std::setprecision(3)
+                  << duration / 1000.0 << "s" << std::endl;
+    }
+    else
+    {
         std::cout << "Solving linear system with " << GetSolType(params.type)
-                  << " costs "  << std::fixed << std::setprecision(3)
-                  << duration/60000.0 << "m" << std::endl;
+                  << " costs " << std::fixed << std::setprecision(3)
+                  << duration / 60000.0 << "m" << std::endl;
     }
 }
 
 /// Build preconditioner operator.
-void SOL::SetPC(SOL& precond)
+void SOL::SetPC(SOL &precond)
 {
     this->pc = &precond;
 }

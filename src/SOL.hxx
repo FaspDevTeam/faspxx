@@ -12,10 +12,6 @@
 #ifndef __SOL_HEADER__      /*-- allow multiple inclusions --*/
 #define __SOL_HEADER__      /**< indicate SOL.hxx has been included before */
 
-// Standard header files
-#include <iostream>
-using std::string;
-
 // FASPXX header files
 #include "faspxx.hxx"
 #include "RetCode.hxx"
@@ -23,41 +19,6 @@ using std::string;
 #include "Param.hxx"
 #include "LOP.hxx"
 #include "VEC.hxx"
-
-/// Iterative solver type.
-enum SOLType {
-    CG = 1,       ///< Conjugate Gradient
-    BICGSTAB = 2, ///< Bi-Conjugate Gradient Stabilized
-    MINRES = 3,   ///< Minimal Residual
-    GMRES = 4,    ///< Generalized Minimal Residual
-    FGMRES = 5,   ///< Flexible GMRES
-    VFGMRES = 6,  ///< Variable-restarting FGMRES
-    Jacobi = 11,  ///< Jacobi method
-    GS = 12,      ///< Gauss-Seidel method
-    SGS = 13,     ///< Symmetrized Gauss-Seidel method
-    SOR = 14,     ///< Successive over-relaxation method
-    SSOR = 15,    ///< Symmetrized successive over-relaxation method
-    MG = 21,      ///< Multigrid method
-    FMG = 22,     ///< Full multigrid method
-};
-
-/// Iterative solver parameters.
-struct SOLParams {
-    SOLType     type;       ///< Algorithm type
-    string      algName;    ///< Algorithm name
-    int         maxIter;    ///< Maximal number of iterations
-    int         minIter;    ///< Minimal number of iterations
-    int         safeIter;   ///< Minimal number of iterations before safe-guard
-    int         restart;    ///< Restart number
-    double      relTol;     ///< Tolerance for relative residual
-    double      absTol;     ///< Tolerance for absolute residual
-    double      weight;     ///< Weight for correction schemes
-    Output      verbose;    ///< Output verbosity level
-
-    SOLParams() : type(SOLType::CG), algName("cg"), maxIter(100), minIter(0),
-                  safeIter(5000), restart(30), relTol(1e-6), absTol(1e-8),
-                  weight(1.0), verbose(PRINT_NONE) {}
-};
 
 /// Base class for iterative solvers.
 class SOL {

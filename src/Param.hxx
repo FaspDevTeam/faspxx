@@ -18,6 +18,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+using std::string;
 
 // FASPXX header files
 #include "faspxx.hxx"
@@ -29,6 +30,25 @@ enum Output {
     PRINT_SOME = 4,  // some output
     PRINT_MORE = 6,  // more output
     PRINT_MAX  = 8   // maximal output
+};
+
+/// Iterative solver parameters.
+struct SOLParams
+{
+    SOLType type;   ///< Algorithm type
+    string algName; ///< Algorithm name
+    int maxIter;    ///< Maximal number of iterations
+    int minIter;    ///< Minimal number of iterations
+    int safeIter;   ///< Minimal number of iterations before safe-guard
+    int restart;    ///< Restart number
+    double relTol;  ///< Tolerance for relative residual
+    double absTol;  ///< Tolerance for absolute residual
+    double weight;  ///< Weight for correction schemes
+    Output verbose; ///< Output verbosity level
+
+    SOLParams() : type(SOLType::CG), algName("cg"), maxIter(100), minIter(0),
+                  safeIter(5000), restart(30), relTol(1e-6), absTol(1e-8),
+                  weight(1.0), verbose(PRINT_NONE) {}
 };
 
 /// Solver parameters
@@ -133,8 +153,11 @@ public:
     /// Parse the parameters.
     void Parse();
 
+    /// Set SOLParams for solvers.
+    void SetSOLParams(SOLParams &solParam); //const;
+
     /// Print original params (before merge or parse) in user program.
-    void PrintUserParams(std::ostream &out) const;
+    void PrintUserParams(std::ostream& out) const;
 
     /// Print parameters coming from an option file.
     void PrintFileParams(std::ostream& out) const;
@@ -146,7 +169,7 @@ public:
     void Print(std::ostream& out = std::cout) const;
 
     /// Print the help messages for Param.
-    void PrintHelp(std::ostream &out = std::cout) const;
+    void PrintHelp(std::ostream& out = std::cout) const;
 };
 
 #endif /* end if for __PARAM_HEADER__ */

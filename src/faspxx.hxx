@@ -34,6 +34,24 @@ const INT PRT_STEP_NUM = 20;    ///< Print iteration info every N steps
 // Definition of constants in Multigrid methods
 const INT MAX_MG_LEVEL = 20; ///< Maximal number of multigrid levels
 
+/// Iterative solver type.
+enum SOLType
+{
+    CG = 1,       ///< Conjugate Gradient
+    BICGSTAB = 2, ///< Bi-Conjugate Gradient Stabilized
+    MINRES = 3,   ///< Minimal Residual
+    GMRES = 4,    ///< Generalized Minimal Residual
+    FGMRES = 5,   ///< Flexible GMRES
+    VFGMRES = 6,  ///< Variable-restarting FGMRES
+    Jacobi = 11,  ///< Jacobi method
+    GS = 12,      ///< Gauss-Seidel method
+    SGS = 13,     ///< Symmetrized Gauss-Seidel method
+    SOR = 14,     ///< Successive over-relaxation method
+    SSOR = 15,    ///< Symmetrized successive over-relaxation method
+    MG = 21,      ///< Multigrid method
+    FMG = 22      ///< Full multigrid method
+};
+
 #endif /* end if for __FASPXX_HEADER__ */
 
 /*---------------------------------*/

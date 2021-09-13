@@ -107,7 +107,6 @@ FaspRetCode AMG::Setup(const MAT &A)
     // Print used parameters
     if (params.verbose > PRINT_MIN)
         PrintParam(std::cout);
-    std::cout << "setup ok" << std::endl;
 
     return FaspRetCode::SUCCESS;
 }
