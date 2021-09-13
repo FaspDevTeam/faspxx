@@ -54,6 +54,12 @@ INT LOP::GetColSize() const
     return this->mcol;
 }
 
+/// Identity operator.
+void IdentityOper::Apply(const VEC &b, VEC &x) const
+{
+    x = b;
+}
+
 /*---------------------------------*/
 /*--        End of File          --*/
 /*---------------------------------*/

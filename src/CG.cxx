@@ -40,16 +40,14 @@ FaspRetCode CG::Setup(const LOP &A)
     return FaspRetCode::SUCCESS;
 }
 
-/// Release additional memory allocated for CG.
+/// Clean up temp memory allocated for CG.
 void CG::Clean()
 {
-
-    zk.SetValues(len,0.0);
-    pk.SetValues(len,0.0);
-    rk.SetValues(len,0.0);
-    ax.SetValues(len,0.0);
-    safe.SetValues(len,0.0);
-
+    zk.SetValues(len, 0.0);
+    pk.SetValues(len, 0.0);
+    rk.SetValues(len, 0.0);
+    ax.SetValues(len, 0.0);
+    safe.SetValues(len, 0.0);
 }
 
 /// Using the Conjugate Gradient method. Don't check problem sizes.
@@ -212,7 +210,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
             resAbsOld = resAbs;
 
             // Apply preconditioner z_k = B(r_k)
-            zk.SetValues(len,0.0);
+            zk.SetValues(len, 0.0);
             pc->Solve(rk, zk);
 
             // Compute beta_k = (z_k, r_k) / (z_{k-1}, r_{k-1})

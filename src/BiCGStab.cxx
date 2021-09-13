@@ -47,7 +47,7 @@ FaspRetCode BiCGStab::Setup(const LOP &A)
     return FaspRetCode::SUCCESS;
 }
 
-/// Release additional memory allocated for BiCGStab.
+/// Clean up temp memory allocated for BiCGStab.
 void BiCGStab::Clean()
 {
     r0star.SetValues(len, 0.0);

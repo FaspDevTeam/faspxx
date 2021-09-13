@@ -27,7 +27,7 @@ FaspRetCode Jacobi::Setup(const MAT& A)
 
     // Allocate memory for temporary vectors
     try {
-        rk.SetValues(A.GetColSize(), 0.0);
+        w.SetValues(A.GetColSize(), 0.0);
     } catch (std::bad_alloc &ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
@@ -63,12 +63,12 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
     // Main Jacobi loop
     while ( numIter < params.maxIter ) {
 
-        // Update residual
-        A->Residual(b, x, rk);
+        // Update residual r = b - A*x
+        A->Residual(b, x, w);
 
         // Compute norm of residual and check whether it converges
         if ( numIter >= params.minIter ) {
-            resAbs = rk.Norm2();
+            resAbs = w.Norm2();
             if ( numIter == params.minIter )
                 denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
@@ -83,9 +83,9 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
         // Jacobi iteration starts from here
         //---------------------------------------------
 
-        ++numIter;                 // iteration count
-        rk.PointwiseMult(diagInv); // rk = omega * rk ./ dk
-        x += rk;                   // x = x + omega * rk
+        ++numIter;                // iteration count
+        w.PointwiseMult(diagInv); // r = omega * r ./ d
+        x += w;                   // x = x + omega * r
 
         //---------------------------------------------
         // One step of Jacobi iteration ends here
@@ -96,7 +96,7 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
     // If minIter == numIter == maxIter (preconditioner only), skip this
     if ( not (numIter == params.minIter && numIter == params.maxIter) ) {
         this->norm2 = resAbs;
-        this->normInf = rk.NormInf();
+        this->normInf = w.NormInf();
         PrintFinal(numIter, resRel, resAbs, ratio);
     }
 

@@ -14,7 +14,8 @@
  *  CSRx data structure is an extension of the wellknown CSR sparse matrix format.
  *  The differences lie in the following two aspects:
  *      (1) Unlike the classical CSR format, the CSRx format requires the column
- *          indices in each row are in ascending order;
+ *          indices in each row are in a rough ascending order (namely, the nonzero
+ *          entries should be ordered as lower trig, diag, uppper trig);
  *      (2) The CSRx format has a diagPtr array which stores the locations of the
  *          diagonal entries in each row.
  *  Note that the CSRx format stores the diagonal entries even if they are zero.
@@ -192,6 +193,23 @@ private:
 
     /// LUP inversion (assemble each column x from each column B)
     void LUP_Solve_Inverse(std::vector<DBL> A,INT N,std::vector<DBL> &inv_A) const;
+};
+
+/*! \class IdentityMatrix
+ *  \brief Identity matrix.
+ */
+class IdentityMatrix : public MAT
+{
+
+public:
+    /// Default constructor
+    IdentityMatrix() = default;
+
+    /// Default destructor
+    ~IdentityMatrix() = default;
+
+    /// Iterator
+    void Apply(const VEC &b, VEC &x) const override;
 };
 
 #endif /* end if for __MAT_HEADER__ */

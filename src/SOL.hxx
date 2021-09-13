@@ -26,13 +26,19 @@ using std::string;
 
 /// Iterative solver type.
 enum SOLType {
-    CG          = 1,        ///< Conjugate Gradient
-    BICGSTAB    = 2,        ///< Bi-Conjugate Gradient Stabilized
-    MINRES      = 3,        ///< Minimal Residual
-    GMRES       = 4,        ///< Generalized Minimal Residual
-    FGMRES      = 5,        ///< Flexible GMRES
-    VFGMRES     = 6,        ///< Variable-restarting FGMRES
-    Jacobi      = 11,       ///< Jacobi iteration
+    CG = 1,       ///< Conjugate Gradient
+    BICGSTAB = 2, ///< Bi-Conjugate Gradient Stabilized
+    MINRES = 3,   ///< Minimal Residual
+    GMRES = 4,    ///< Generalized Minimal Residual
+    FGMRES = 5,   ///< Flexible GMRES
+    VFGMRES = 6,  ///< Variable-restarting FGMRES
+    Jacobi = 11,  ///< Jacobi method
+    GS = 12,      ///< Gauss-Seidel method
+    SGS = 13,     ///< Symmetrized Gauss-Seidel method
+    SOR = 14,     ///< Successive over-relaxation method
+    SSOR = 15,    ///< Symmetrized successive over-relaxation method
+    MG = 21,      ///< Multigrid method
+    FMG = 22,     ///< Full multigrid method
 };
 
 /// Iterative solver parameters.
@@ -76,7 +82,7 @@ protected:
 public:
 
     /// Default constructor.
-    SOL() : A(nullptr), pc(nullptr), norm2(1.0), normInf(1.0), numIter(0) {};
+    SOL() : A(nullptr), pc(nullptr), norm2(LARGE), normInf(LARGE), numIter(0){};
 
     /// Default destructor.
     ~SOL();
@@ -143,21 +149,20 @@ public:
     /// Setup preconditioner operator.
     virtual void SetPC(SOL& pc);
 
-    /// Setup the iterative method.
+    /// Setup the iterative method using linear opeartor.
     virtual FaspRetCode Setup(const LOP& A) {
-        FASPXX_ABORT("Not supported!");
-    }
-
-    /// Release temporary memory and clean up.
-    virtual void Clean() {
-        FASPXX_ABORT("Not supported!");
+        FASPXX_ABORT("Should be over-written!");
     }
 
     /// Solve Ax=b using the iterative method.
     virtual FaspRetCode Solve(const VEC& b, VEC& x) {
-        FASPXX_ABORT("Not supported!");
+        FASPXX_ABORT("Should be over-written!");
     }
 
+    /// Release temporary memory and clean up.
+    virtual void Clean() {
+        FASPXX_ABORT("Should be over-written!");
+    }
 };
 
 #endif /* end if for __SOL_HEADER__ */

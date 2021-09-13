@@ -16,16 +16,16 @@
 #include "faspxx.hxx"
 #include "VEC.hxx"
 
-//! Check whether the size of VEC object is zero
+/// Check whether the size of VEC object is zero.
 FaspRetCode CheckVECSize(const VEC& v);
 
-//! Check whether two VEC sizes match
+/// Check whether two VEC sizes match.
 FaspRetCode CheckVECSize(const VEC& v1, const VEC& v2);
 
-//! Check whether vector crossover
+/// Check whether vector crossover.
 FaspRetCode CheckVECSize(const VEC& v, const INT& position);
 
-//! Check whether there is a zero entry in VEC object
+/// Check whether there is a zero entry in VEC object.
 FaspRetCode CheckVECZero(const VEC& v, const DBL tol=SMALL_TOL);
 
 #endif /* end if for __VECUTIL_HXX__ */

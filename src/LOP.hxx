@@ -13,7 +13,6 @@
 #define __LOP_HEADER__  /**< indicate LOP.hxx has been included before */
 
 // FASPXX header files
-#include "faspxx.hxx"
 #include "ErrorLog.hxx"
 #include "VEC.hxx"
 
@@ -55,13 +54,30 @@ public:
 
     /// Action of the linear operator to a vector.
     virtual void Apply(const VEC& x, VEC& y) const {
-        FASPXX_WARNING("Action not defined!");
+        FASPXX_ABORT("Should be over-written!");
     };
 
     /// Compute residual of a linear operator equation.
     virtual void Residual(const VEC& b, const VEC& x, VEC& r) const {
-        FASPXX_WARNING("Action not defined!");
+        FASPXX_ABORT("Should be over-written!");
     };
+};
+
+/*! \class IdentityOper
+ *  \brief Identity operator.
+ */
+class IdentityOper : public LOP
+{
+
+public:
+    /// Default constructor
+    IdentityOper() = default;
+
+    /// Default destructor
+    ~IdentityOper() = default;
+
+    /// Iterator
+    void Apply(const VEC &b, VEC &x) const override;
 };
 
 #endif /* end if for __LOP_HEADER__ */

@@ -21,7 +21,7 @@
 #include "MAT.hxx"
 
 /*! \class Identity
- *  \brief Identity operator.
+ *  \brief Identity iterator, do nothing solver.
  */
 class Identity : public SOL {
 
@@ -41,14 +41,14 @@ public:
  */
 class Jacobi : public SOL {
 
-public :
+private :
     double   omega;     ///< Weight for damped or weighted Jacobi
     VEC      diagInv;   ///< Inverse of diagonal entries
-    VEC      rk;        ///< Work array for the residual
+    VEC      w;         ///< Work array for the residual
 
 public:
     /// Default constructor.
-    Jacobi() : omega(1.0), diagInv(1.0), rk(0.0) {};
+    Jacobi() : omega(1.0), diagInv(1.0), w(0.0) {};
 
     /// Default destructor.
     ~Jacobi() = default;

@@ -191,8 +191,20 @@ const char *SOL::GetSolType(SOLType type) const
             return "VFGMRES";
         case Jacobi:
             return "Jacobi";
+        case GS:
+            return "GS";
+        case SGS:
+            return "SGS";
+        case SOR:
+            return "SOR";
+        case SSOR:
+            return "SSOR";
+        case MG:
+            return "Multigrid";
+        case FMG:
+            return "Full Multigrid";
         default:
-            return "Unknown Solver";
+            FASPXX_ABORT("Unknown solver type!");
     }
 }
 

@@ -1,5 +1,5 @@
 /*! \file    testWeightedJacobi.cxx
- *  \brief   Test performance of Weighted Jacobi method
+ *  \brief   Test convergence of Weighted Jacobi method with exact solutions
  *  \author  Kailei Zhang
  *  \date    Dec/12/2019
  *

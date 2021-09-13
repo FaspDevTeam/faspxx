@@ -23,9 +23,8 @@
  */
 class CG: public SOL
 {
-
 private:
-    int len;
+    int len;     ///< dimension of the solution vector
     VEC rk;      ///< Work vector for residual
     VEC pk;      ///< Work vector for preconditioned residual
     VEC zk;      ///< Work vector for search direction
@@ -42,11 +41,11 @@ public:
     /// Setup the CG method.
     FaspRetCode Setup(const LOP& A) override;
 
-    /// Clean up CG data allocated during Setup.
-    void Clean() override;
-
     /// Solve Ax=b using the CG method.
     FaspRetCode Solve(const VEC& b, VEC& x) override;
+
+    /// Clean up CG data allocated during Setup.
+    void Clean() override;
 };
 
 #endif /* end if for __CG_HEADER__ */

@@ -70,6 +70,10 @@ target_link_libraries(testVecSpeed faspxx)
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
 
+# Test AMG class
+add_executable(testAMG example/testAMG.cxx)
+target_link_libraries(testAMG faspxx)
+
 # Test CG class
 add_executable(testCG example/testCG.cxx)
 target_link_libraries(testCG faspxx)
