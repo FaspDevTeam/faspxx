@@ -35,16 +35,9 @@ int main(int argc, const char *args[])
     params.AddParam("-rhs",      "Right-hand-side b",           &rhsFile);
     params.AddParam("-xin",      "Initial guess for iteration", &xinFile);
 
-    // Read solver parameters
+    // Set solver parameters
     SOLParams solParam;
-    params.AddParam("-maxIter",  "Max iteration steps",         &solParam.maxIter);
-    params.AddParam("-minIter",  "Min iteration steps",         &solParam.minIter);
-    params.AddParam("-safeIter", "Safe-guard steps",            &solParam.safeIter);
-    params.AddParam("-restart",  "Restart number",              &solParam.restart);
-    params.AddParam("-resRel",   "Relative residual tolerance", &solParam.relTol);
-    params.AddParam("-resAbs",   "Absolute residual tolerance", &solParam.absTol);
-    params.AddParam("-algName",  "Iterative solver type",       &solParam.algName);
-    params.AddParam("-verbose",  "Verbose level",               &solParam.verbose);
+    params.SetSOLParams(solParam);
 
     // Parse and print used parameters
     params.Parse();

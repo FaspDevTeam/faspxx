@@ -33,15 +33,10 @@ int main(int argc, const char *args[])
     params.AddParam("-xin",     "Initial guess for iteration", &xinFile);
     params.AddParam("-par",     "Solver parameter file",       &parFile);
 
-    // Read solver parameters
+    // Set solver parameters
     SOLParams solParam;
-    params.AddParam("-maxIter", "Max iteration steps",         &solParam.maxIter);
-    params.AddParam("-minIter", "Min iteration steps",         &solParam.minIter);
-    params.AddParam("-resRel",  "Relative residual tolerance", &solParam.relTol);
-    params.AddParam("-resAbs",  "Absolute residual tolerance", &solParam.absTol);
-    params.AddParam("-weight",  "Weight for Jacobi",           &solParam.weight);
-    params.AddParam("-verbose", "Verbose level",               &solParam.verbose);
-
+    params.SetSOLParams(solParam);
+    
     // Parse and print used parameters
     params.Parse();
     params.Print();
