@@ -9,18 +9,18 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __KRYLOV_HEADER__      /*-- allow multiple inclusions --*/
-#define __KRYLOV_HEADER__      /**< indicate Krylov.hxx has been included before */
+#ifndef __KRYLOV_HEADER__ /*-- allow multiple inclusions --*/
+#define __KRYLOV_HEADER__ /**< indicate Krylov.hxx has been included before */
 
 // FASPXX header files
+#include "BiCGStab.hxx"
+#include "CG.hxx"
+#include "Iter.hxx"
 #include "RetCode.hxx"
 #include "SOL.hxx"
-#include "Iter.hxx"
-#include "CG.hxx"
-#include "BiCGStab.hxx"
 
 /// General interface to Krylov subspace methods.
-FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pc, SOLParams& params);
+FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pc, SOLParams &params);
 
 #endif // __KRYLOV_HEADER__
 

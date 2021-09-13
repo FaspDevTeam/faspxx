@@ -9,14 +9,14 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __DOXYGEN_HXX__      /*-- allow multiple inclusions --*/
-#define __DOXYGEN_HXX__      /**< indicate doxygen.hxx has been included before */
+#ifndef __DOXYGEN_HXX__ /*-- allow multiple inclusions --*/
+#define __DOXYGEN_HXX__ /**< indicate doxygen.hxx has been included before */
 
 /** \mainpage Introduction
  *
- * This software distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
- * See the GNU Lesser General Public License for more details.
+ * This software distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  *
  * The FASPxx is a C++ package designed for developing parallel iterative solvers
  * and preconditioners for PDEs and systems of PDEs. The main components of the
@@ -24,7 +24,7 @@
  * multigrid methods, Schwarz methods, and incomplete factorization methods.
  *
  */
- 
+
 /**
  * \page download How to obtain FASP++
  *
@@ -45,8 +45,7 @@
  *
  * > $ make
  *
- */ 
-
+ */
 
 /**
  * \page developers Developers
@@ -62,18 +61,18 @@
  * - Zhang, Kailei (AMSS, Chinese Academy of Sciences, China)
  *
  */
-   
+
 /**
  * \page doxygen_comment Doxygen
  *
- * We use Doxygen as our automatically documentation generator which will make our 
- * future maintainance minimized. You can obtain the software (Windows, Linux and 
- * OS X) as well as its manual on the official website 
- * 
+ * We use Doxygen as our automatically documentation generator which will make our
+ * future maintainance minimized. You can obtain the software (Windows, Linux and
+ * OS X) as well as its manual on the official website
+ *
  * http://www.doxygen.org
  *
- * For an ordinary user, Doxygen is completely trivial to use. We only need to use 
- * some special marker in the usual comment as we put in c-files. 
+ * For an ordinary user, Doxygen is completely trivial to use. We only need to use
+ * some special marker in the usual comment as we put in c-files.
  *
  */
 

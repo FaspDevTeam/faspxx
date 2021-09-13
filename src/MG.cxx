@@ -10,16 +10,15 @@
  */
 
 // FASPXX header files
+#include "MG.hxx"
 #include "Iter.hxx"
 #include "LOP.hxx"
-#include "MG.hxx"
 
 using std::vector;
 
-void MG::oneCycleMultigrid(const VEC &b, VEC &x)
-{
+void MG::oneCycleMultigrid(const VEC &b, VEC &x) {
     // local variables
-    unsigned l = 0; // level index
+    unsigned l                      = 0; // level index
     unsigned numCycle[numLevelsUse] = {0};
 
     // initialize linear system information
@@ -27,8 +26,7 @@ void MG::oneCycleMultigrid(const VEC &b, VEC &x)
     xVectors[0] = x;
 
 ForwardSweep:
-    while (l < numLevelsUse - 1)
-    {
+    while (l < numLevelsUse - 1) {
         numCycle[l]++;
 
         // apply pre-smoothing solver
@@ -49,9 +47,8 @@ ForwardSweep:
     // Call the coarsest space solver
     coarsestSolver->Solve(bVectors[numLevelsUse - 1], xVectors[numLevelsUse - 1]);
 
-////BackwardSweep:
-    while (l > 0)
-    {
+    ////BackwardSweep:
+    while (l > 0) {
         --l;
 
         // prolongate to the next finer level x = x + P*e1
@@ -68,15 +65,13 @@ ForwardSweep:
             numCycle[l] = 0;
     }
 
-    if (l > 0)
-        goto ForwardSweep;
+    if (l > 0) goto ForwardSweep;
 
     x = xVectors[0];
 }
 
 /// Using the multigrid method. Don't check problem sizes.
-FaspRetCode MG::Solve(const VEC &b, VEC &x)
-{
+FaspRetCode MG::Solve(const VEC &b, VEC &x) {
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables
@@ -88,22 +83,19 @@ FaspRetCode MG::Solve(const VEC &b, VEC &x)
     numIter = 0;
 
     // Main Jacobi loop
-    while (numIter < params.maxIter)
-    {
+    while (numIter < params.maxIter) {
         // Update residual r = b - A*x
         A->Residual(b, x, wVectors[0]);
 
         // Compute norm of residual and check whether it converges
-        if (numIter >= params.minIter)
-        {
+        if (numIter >= params.minIter) {
             resAbs = wVectors[0].Norm2();
             if (numIter == params.minIter)
                 denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
-            if (resRel < params.relTol || resAbs < params.absTol)
-                break;
+            if (resRel < params.relTol || resAbs < params.absTol) break;
 
-            ratio = resAbs / resAbsOld;
+            ratio     = resAbs / resAbsOld;
             resAbsOld = resAbs;
             PrintInfo(numIter, resRel, resAbs, ratio);
         }
@@ -112,7 +104,7 @@ FaspRetCode MG::Solve(const VEC &b, VEC &x)
         // Multigrid iteration starts from here
         //---------------------------------------------
 
-        ++numIter;    // iteration count
+        ++numIter;               // iteration count
         oneCycleMultigrid(b, x); // MG cycle
 
         //---------------------------------------------
@@ -122,9 +114,8 @@ FaspRetCode MG::Solve(const VEC &b, VEC &x)
     } // End of main loop
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
-    if (not(numIter == params.minIter && numIter == params.maxIter))
-    {
-        this->norm2 = resAbs;
+    if (not(numIter == params.minIter && numIter == params.maxIter)) {
+        this->norm2   = resAbs;
         this->normInf = wVectors[0].NormInf();
         PrintFinal(numIter, resRel, resAbs, ratio);
     }
@@ -133,10 +124,8 @@ FaspRetCode MG::Solve(const VEC &b, VEC &x)
 }
 
 /// Clean up temp memory allocated for MG.
-void MG::Clean()
-{
-    for (unsigned i = 0; i < numLevelsUse; ++i)
-    {
+void MG::Clean() {
+    for (unsigned i = 0; i < numLevelsUse; ++i) {
         bVectors[i].SetValues(len, 0.0);
         xVectors[i].SetValues(len, 0.0);
         wVectors[i].SetValues(len, 0.0);

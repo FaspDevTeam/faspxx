@@ -13,52 +13,39 @@
 #include "LOP.hxx"
 
 /// Assign nrow, mcol to *this.
-LOP::LOP(const INT& nrow, const INT& mcol)
-{
+LOP::LOP(const INT &nrow, const INT &mcol) {
     this->nrow = nrow;
     this->mcol = mcol;
 }
 
 /// Assign nrow, mcol=nrow to *this.
-LOP::LOP(const INT& nrow)
-{
+LOP::LOP(const INT &nrow) {
     this->nrow = nrow;
     this->mcol = nrow;
 }
 
 /// Assign LOP object to *this.
-LOP::LOP(const LOP& lop)
-{
+LOP::LOP(const LOP &lop) {
     this->nrow = lop.nrow;
     this->mcol = lop.mcol;
 }
 
 /// Assignment for the LOP object.
-LOP& LOP::operator=(const LOP& lop)
-{
-    if ( this == &lop ) return *this; // self-assignment
+LOP &LOP::operator=(const LOP &lop) {
+    if (this == &lop) return *this; // self-assignment
     this->nrow = lop.nrow;
     this->mcol = lop.mcol;
     return *this;
 }
 
 /// Dimension of the row space of LOP.
-INT LOP::GetRowSize() const
-{
-    return this->nrow;
-}
+INT LOP::GetRowSize() const { return this->nrow; }
 
 /// Dimension of the column space of LOP.
-INT LOP::GetColSize() const
-{
-    return this->mcol;
-}
+INT LOP::GetColSize() const { return this->mcol; }
 
 /// Identity operator.
-void IdentityOper::Apply(const VEC &b, VEC &x) const
-{
-    x = b;
-}
+void IdentityOper::Apply(const VEC &b, VEC &x) const { x = b; }
 
 /*---------------------------------*/
 /*--        End of File          --*/

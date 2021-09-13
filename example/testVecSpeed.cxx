@@ -23,25 +23,24 @@ const int count  = 100;
 /*--     Beginning of main       --*/
 /*---------------------------------*/
 
-int main()
-{
-    if ( count < 1 ) return 0; // Do nothing at all!
+int main() {
+    if (count < 1) return 0; // Do nothing at all!
 
-    std::cout << "Problem size " << LENGTH << ", repeat " << count << " times:"
-              << std::endl;
+    std::cout << "Problem size " << LENGTH << ", repeat " << count
+              << " times:" << std::endl;
 
-    int j, k;
-    double sum;
+    int         j, k;
+    double      sum;
     GetCycleNum cycle;
     GetWallTime timer;
 
-    srand((unsigned) time(nullptr));
+    srand((unsigned)time(nullptr));
     auto *test1 = new double[LENGTH];
     auto *test2 = new double[LENGTH];
 
-    for ( j = 0; j < LENGTH; j++ ) {
-        test1[j] = rand() / (double) RAND_MAX;
-        test2[j] = rand() / (double) RAND_MAX;
+    for (j = 0; j < LENGTH; j++) {
+        test1[j] = rand() / (double)RAND_MAX;
+        test2[j] = rand() / (double)RAND_MAX;
     }
 
     /*------------------------------------------------------------*/
@@ -78,7 +77,7 @@ int main()
     /*------------------------------------------------------------*/
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) {
+    for (k = 0; k < count; k++) {
         memcpy(ptr1, test1, LENGTH * sizeof(double));
         memcpy(ptr2, test2, LENGTH * sizeof(double));
     }
@@ -87,7 +86,7 @@ int main()
 
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) {
+    for (k = 0; k < count; k++) {
         vec1.assign(test1, test1 + LENGTH);
         vec2.assign(test2, test2 + LENGTH);
     }
@@ -96,7 +95,7 @@ int main()
 
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) {
+    for (k = 0; k < count; k++) {
         nvec1.SetValues(LENGTH, test1);
         nvec2.SetValues(LENGTH, test2);
     }
@@ -108,23 +107,23 @@ int main()
     /*------------------------------------------------------------*/
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) {
-        for ( j = 0; j < LENGTH; j++ ) ptr1[j] += ptr2[j];
+    for (k = 0; k < count; k++) {
+        for (j = 0; j < LENGTH; j++) ptr1[j] += ptr2[j];
     }
     std::cout << "pointer cycles : " << cycle.Stop() / count << std::endl;
     std::cout << "pointer time   : " << timer.Stop() / count << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) {
-        for ( j = 0; j < LENGTH; j++ ) vec1[j] += vec2[j];
+    for (k = 0; k < count; k++) {
+        for (j = 0; j < LENGTH; j++) vec1[j] += vec2[j];
     }
     std::cout << "vector cycles  : " << cycle.Stop() / count << std::endl;
     std::cout << "vector time    : " << timer.Stop() / count << "ms" << std::endl;
 
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) nvec1.AXPBY(1.0, 1.0, nvec2);
+    for (k = 0; k < count; k++) nvec1.AXPBY(1.0, 1.0, nvec2);
     std::cout << "new VEC cycles : " << cycle.Stop() / count << std::endl;
     std::cout << "new VEC time   : " << timer.Stop() / count << "ms" << std::endl;
 
@@ -133,8 +132,8 @@ int main()
     /*------------------------------------------------------------*/
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) {
-        for ( sum = 0.0, j = 0; j < LENGTH; j++ ) sum += ptr1[j] * ptr2[j];
+    for (k = 0; k < count; k++) {
+        for (sum = 0.0, j = 0; j < LENGTH; j++) sum += ptr1[j] * ptr2[j];
     }
     std::cout << "pointer dot    : " << sum << std::endl;
     std::cout << "pointer cycles : " << cycle.Stop() / count << std::endl;
@@ -142,8 +141,8 @@ int main()
 
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) {
-        for ( sum = 0.0, j = 0; j < LENGTH; j++ ) sum += vec1[j] * vec2[j];
+    for (k = 0; k < count; k++) {
+        for (sum = 0.0, j = 0; j < LENGTH; j++) sum += vec1[j] * vec2[j];
     }
     std::cout << "vector dot     : " << sum << std::endl;
     std::cout << "vector cycles  : " << cycle.Stop() / count << std::endl;
@@ -151,7 +150,7 @@ int main()
 
     timer.Start();
     cycle.Start();
-    for ( k = 0; k < count; k++ ) {
+    for (k = 0; k < count; k++) {
         // One can use the overloaded [ ] operator for VEC as well (but slower):
         //     for ( sum = 0.0, j = 0; j < LENGTH; j++ ) sum += nvec1[j] * nvec2[j];
         sum = nvec1.Dot(nvec2);

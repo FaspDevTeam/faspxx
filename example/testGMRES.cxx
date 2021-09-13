@@ -13,16 +13,15 @@
 #include <fstream>
 
 // FASPXX header files
-#include "Param.hxx"
-#include "Timing.hxx"
-#include "ReadData.hxx"
-#include "LOP.hxx"
-#include "Iter.hxx"
-#include "GMRES.hxx"
 #include "FGMRES.hxx"
+#include "GMRES.hxx"
+#include "Iter.hxx"
+#include "LOP.hxx"
+#include "Param.hxx"
+#include "ReadData.hxx"
+#include "Timing.hxx"
 
-int main(int argc, const char *args[])
-{
+int main(int argc, const char *args[]) {
     // User default parameters
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
@@ -30,10 +29,10 @@ int main(int argc, const char *args[])
 
     // Read general parameters
     Parameters params(argc, args);
-    params.AddParam("-par",      "Solver parameter file",       &parFile);
-    params.AddParam("-mat",      "Coefficient matrix A",        &matFile);
-    params.AddParam("-rhs",      "Right-hand-side b",           &rhsFile);
-    params.AddParam("-xin",      "Initial guess for iteration", &xinFile);
+    params.AddParam("-par", "Solver parameter file", &parFile);
+    params.AddParam("-mat", "Coefficient matrix A", &matFile);
+    params.AddParam("-rhs", "Right-hand-side b", &rhsFile);
+    params.AddParam("-xin", "Initial guess for iteration", &xinFile);
 
     // Set solver parameters
     SOLParams solParam;
@@ -47,10 +46,10 @@ int main(int argc, const char *args[])
     timer.Start();
 
     // Read matrix data file and exit if failed
-    MAT mat;
+    MAT         mat;
     FaspRetCode retCode = ReadMat(matFile.c_str(), mat);
-    if ( retCode < 0 ) return retCode;
-    
+    if (retCode < 0) return retCode;
+
     // Print problem size information
     const INT nrow = mat.GetRowSize(), mcol = mat.GetColSize();
     std::cout << "nrow: " << nrow << ", mcol: " << mcol << std::endl;
@@ -58,12 +57,12 @@ int main(int argc, const char *args[])
     // Read the right-hand-side b; if not specified, use b = 0.0
     VEC b;
     b.SetValues(nrow, 1.0);
-    if ( strcmp(rhsFile.c_str(), "") != 0 ) ReadVEC(rhsFile.c_str(), b);
+    if (strcmp(rhsFile.c_str(), "") != 0) ReadVEC(rhsFile.c_str(), b);
 
     timer.StopInfo("Reading Ax = b");
 
     // Setup preconditioner parameters
-    Identity pc;  // pc = identity, no preconditioning used
+    Identity pc; // pc = identity, no preconditioning used
 
     // Setup GMRES parameters
     class GMRES solver;
@@ -81,7 +80,7 @@ int main(int argc, const char *args[])
 
     VEC x;
     x.SetValues(mcol, 1.0); // If initial guess not specified, set x0 = 1.0
-    if ( strcmp(xinFile.c_str(), "") != 0 ) ReadVEC(xinFile.c_str(), x);
+    if (strcmp(xinFile.c_str(), "") != 0) ReadVEC(xinFile.c_str(), x);
 
     // Solve the linear system using GMRES with right preconditioner
     timer.Start();
@@ -92,7 +91,7 @@ int main(int argc, const char *args[])
     solver.Clean();
 
     x.SetValues(mcol, 1.0); // If initial guess not specified, set x0 = 1.0
-    if ( strcmp(xinFile.c_str(), "") != 0 ) ReadVEC(xinFile.c_str(), x);
+    if (strcmp(xinFile.c_str(), "") != 0) ReadVEC(xinFile.c_str(), x);
 
     // Solve the linear system using GMRES with right preconditioner
     timer.Start();
@@ -117,7 +116,7 @@ int main(int argc, const char *args[])
     fsolver.Setup(mat);
 
     x.SetValues(mcol, 1.0); // If initial guess not specified, set x0 = 1.0
-    if ( strcmp(xinFile.c_str(), "") != 0 ) ReadVEC(xinFile.c_str(), x);
+    if (strcmp(xinFile.c_str(), "") != 0) ReadVEC(xinFile.c_str(), x);
 
     // Solve the linear system using GMRES with right preconditioner
     timer.Start();

@@ -9,24 +9,24 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __VECUTIL_HXX__      /*-- allow multiple inclusions --*/
-#define __VECUTIL_HXX__      /**< indicate VECUtil.hxx has been included before */
+#ifndef __VECUTIL_HXX__ /*-- allow multiple inclusions --*/
+#define __VECUTIL_HXX__ /**< indicate VECUtil.hxx has been included before */
 
 // FASPXX header files
-#include "faspxx.hxx"
 #include "VEC.hxx"
+#include "faspxx.hxx"
 
 /// Check whether the size of VEC object is zero.
-FaspRetCode CheckVECSize(const VEC& v);
+FaspRetCode CheckVECSize(const VEC &v);
 
 /// Check whether two VEC sizes match.
-FaspRetCode CheckVECSize(const VEC& v1, const VEC& v2);
+FaspRetCode CheckVECSize(const VEC &v1, const VEC &v2);
 
 /// Check whether vector crossover.
-FaspRetCode CheckVECSize(const VEC& v, const INT& position);
+FaspRetCode CheckVECSize(const VEC &v, const INT &position);
 
 /// Check whether there is a zero entry in VEC object.
-FaspRetCode CheckVECZero(const VEC& v, const DBL tol=SMALL_TOL);
+FaspRetCode CheckVECZero(const VEC &v, const DBL tol = SMALL_TOL);
 
 #endif /* end if for __VECUTIL_HXX__ */
 

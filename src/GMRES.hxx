@@ -9,8 +9,8 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __GMRES_HXX__      /*-- allow multiple inclusions --*/
-#define __GMRES_HXX__      /**< indicate GMRES.hxx has been included before */
+#ifndef __GMRES_HXX__ /*-- allow multiple inclusions --*/
+#define __GMRES_HXX__ /**< indicate GMRES.hxx has been included before */
 
 // Standard header files
 #include <cmath>
@@ -32,9 +32,9 @@ private:
     VEC safe;
 
     std::vector<std::vector<double>> hh;
-    std::vector<double> hsin;
-    std::vector<double> hcos;
-    std::vector<double> var;
+    std::vector<double>              hsin;
+    std::vector<double>              hcos;
+    std::vector<double>              var;
 
     std::vector<VEC> V;
 
@@ -44,14 +44,22 @@ private:
     int len;
 
     // Constants for variable restarting
-    const double max_cr = 0.99026806874157040;
-    const double min_cr = 0.17364817766693041;
-    const int  decrease = 3;
+    const double max_cr   = 0.99026806874157040;
+    const double min_cr   = 0.17364817766693041;
+    const int    decrease = 3;
 
 public:
     /// Default constructor.
-    GMRES() : wk(0), safe(0), tmp(0), hh(0), hsin(0), hcos(0), var(0),
-              maxRestart{30}, minRestart(10) {};
+    GMRES()
+        : wk(0)
+        , safe(0)
+        , tmp(0)
+        , hh(0)
+        , hsin(0)
+        , hcos(0)
+        , var(0)
+        , maxRestart{30}
+        , minRestart(10){};
 
     /// Default destructor.
     ~GMRES() = default;
@@ -75,7 +83,6 @@ public:
 
     /// Left-preconditioned GMRES slover.
     FaspRetCode LSolve(const VEC &b, VEC &x);
-
 };
 
 #endif /* end if for __GMRES_HEADER__ */

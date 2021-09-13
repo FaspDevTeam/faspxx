@@ -17,7 +17,7 @@
 
 /// Decode FaspRetCode to a readable error message.
 std::string GetRetCode(const FaspRetCode code) {
-    switch ( code ) {
+    switch (code) {
         case SUCCESS:
             return "Finish successfully!";
         case ERROR_OPEN_FILE:
@@ -78,17 +78,17 @@ std::string GetRetCode(const FaspRetCode code) {
 }
 
 /// Log exception messages in a file or to the screen.
-void FaspRunTime::LogExcep(std::ostream& stream) const {
+void FaspRunTime::LogExcep(std::ostream &stream) const {
     stream << "### ERROR: " << this->what() << std::endl;
-    stream << "### ERROR: Check " << this->GetFile() << " in "
-           << this->GetFunc() << "( ) at Line " << this->GetLine() << std::endl;
+    stream << "### ERROR: Check " << this->GetFile() << " in " << this->GetFunc()
+           << "( ) at Line " << this->GetLine() << std::endl;
 }
 
 /// Log allocation error messages in a file or to the screen.
-void FaspBadAlloc::LogExcep(std::ostream& stream) const {
+void FaspBadAlloc::LogExcep(std::ostream &stream) const {
     stream << "### ERROR: " << this->what() << std::endl;
-    stream << "### ERROR: Check " << this->GetFile() << " in "
-           << this->GetFunc() << "() at Line " << this->GetLine() << std::endl;
+    stream << "### ERROR: Check " << this->GetFile() << " in " << this->GetFunc()
+           << "() at Line " << this->GetLine() << std::endl;
 }
 
 /*---------------------------------*/

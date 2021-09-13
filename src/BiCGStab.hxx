@@ -9,8 +9,8 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __BICGSTAB_HEADER__    /*-- allow multiple inclusions --*/
-#define __BICGSTAB_HEADER__    /**< indicate BiCGStab.hxx has been included before */
+#ifndef __BICGSTAB_HEADER__ /*-- allow multiple inclusions --*/
+#define __BICGSTAB_HEADER__ /**< indicate BiCGStab.hxx has been included before */
 
 // FASPXX header files
 #include "ErrorLog.hxx"
@@ -21,11 +21,10 @@
 /*! \class BiCGStab
  *  \brief Preconditioned bi-conjugate gradient stabilized method.
  */
-class BiCGStab:public SOL
-{
+class BiCGStab : public SOL {
 private:
     int len;
-    VEC r0star;  ///< Work vector for r0*
+    VEC r0star; ///< Work vector for r0*
     VEC tmp;
     VEC apj;
     VEC asj;
@@ -36,25 +35,36 @@ private:
     VEC stmp;
     VEC mp;
     VEC ms;
-    VEC safe;    ///< Work vector for safe-guard
+    VEC safe; ///< Work vector for safe-guard
 
 public:
     /// Default constructor.
-    BiCGStab() : len(0), r0star(0), tmp(0), apj(0), asj(0), pj(0),
-                 rj(0), sj(0), ptmp(0), stmp(0), mp(0),
-                 ms(0),safe(0) { };
+    BiCGStab()
+        : len(0)
+        , r0star(0)
+        , tmp(0)
+        , apj(0)
+        , asj(0)
+        , pj(0)
+        , rj(0)
+        , sj(0)
+        , ptmp(0)
+        , stmp(0)
+        , mp(0)
+        , ms(0)
+        , safe(0){};
 
     /// Default destructor.
     ~BiCGStab() = default;
 
     /// Setup the BiCGStab method.
-    FaspRetCode Setup(const LOP& A) override;
+    FaspRetCode Setup(const LOP &A) override;
 
     /// Clean up CG data allocated during Setup.
     void Clean() override;
 
     /// Solve Ax=b using the BiCGStab method.
-    FaspRetCode Solve(const VEC& b, VEC& x) override;
+    FaspRetCode Solve(const VEC &b, VEC &x) override;
 };
 
 #endif /* end if for __BICGSTAB_HEADER__ */

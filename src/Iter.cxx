@@ -13,15 +13,13 @@
 #include "Iter.hxx"
 
 /// Does nothing in preconditioning
-FaspRetCode Identity::Solve(const VEC& b, VEC& x)
-{
+FaspRetCode Identity::Solve(const VEC &b, VEC &x) {
     x = b;
     return FaspRetCode::SUCCESS;
 }
 
 /// Setup Jacobi preconditioner.
-FaspRetCode Jacobi::Setup(const MAT& A)
-{
+FaspRetCode Jacobi::Setup(const MAT &A) {
     // Set solver type
     SetSolType(SOLType::Jacobi);
 
@@ -33,7 +31,7 @@ FaspRetCode Jacobi::Setup(const MAT& A)
     }
 
     // Setup the coefficient matrix
-    this->A = &A;
+    this->A     = &A;
     this->omega = params.weight;
 
     // Get diagonal and compute its scaled reciprocal = 1 ./ diag * omega
@@ -42,14 +40,13 @@ FaspRetCode Jacobi::Setup(const MAT& A)
     diagInv.Scale(omega);
 
     // Print used parameters if necessary
-    if ( params.verbose > PRINT_MIN ) PrintParam(std::cout);
+    if (params.verbose > PRINT_MIN) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
 }
 
 /// Solve Ax=b using the Jacobi method. Don't check problem sizes.
-FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
-{
+FaspRetCode Jacobi::Solve(const VEC &b, VEC &x) {
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables
@@ -61,20 +58,20 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
     numIter = 0;
 
     // Main Jacobi loop
-    while ( numIter < params.maxIter ) {
+    while (numIter < params.maxIter) {
 
         // Update residual r = b - A*x
         A->Residual(b, x, w);
 
         // Compute norm of residual and check whether it converges
-        if ( numIter >= params.minIter ) {
+        if (numIter >= params.minIter) {
             resAbs = w.Norm2();
-            if ( numIter == params.minIter )
+            if (numIter == params.minIter)
                 denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
-            if ( resRel < params.relTol || resAbs < params.absTol ) break;
+            if (resRel < params.relTol || resAbs < params.absTol) break;
 
-            ratio = resAbs / resAbsOld;
+            ratio     = resAbs / resAbsOld;
             resAbsOld = resAbs;
             PrintInfo(numIter, resRel, resAbs, ratio);
         }
@@ -94,8 +91,8 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
     } // End of main Jacobi loop
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
-    if ( not (numIter == params.minIter && numIter == params.maxIter) ) {
-        this->norm2 = resAbs;
+    if (not(numIter == params.minIter && numIter == params.maxIter)) {
+        this->norm2   = resAbs;
         this->normInf = w.NormInf();
         PrintFinal(numIter, resRel, resAbs, ratio);
     }

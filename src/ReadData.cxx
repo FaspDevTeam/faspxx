@@ -14,17 +14,16 @@
 #include <fstream>
 
 // FASPXX header files
-#include "ReadData.hxx"
 #include "MATUtil.hxx"
+#include "ReadData.hxx"
 
 /// Read a VEC data file stored as val[i], i=0:end-1.
-FaspRetCode ReadVEC(const char *fileName, VEC &dst)
-{
+FaspRetCode ReadVEC(const char *fileName, VEC &dst) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     std::cout << "Reading from disk file " << fileName << std::endl;
     std::ifstream in(fileName);
-    if ( !in.is_open() ) { // check whether file is opened successfully
+    if (!in.is_open()) { // check whether file is opened successfully
         retCode = FaspRetCode::ERROR_OPEN_FILE;
         return retCode;
     }
@@ -34,12 +33,12 @@ FaspRetCode ReadVEC(const char *fileName, VEC &dst)
     const long long int length = in.tellg();
     in.seekg(0, std::ios::beg);
 
-    char decimal[128]; // temporary storage for data
+    char          decimal[128]; // temporary storage for data
     long long int position = 0; // mark the position of file pointer
-    long int count = 0, len;
+    long int      count    = 0, len;
 
     char *buffer, *next;
-    try { // catch bad allocation error if it happens
+    try {                          // catch bad allocation error if it happens
         buffer = new char[length]; // allocate memory for buffer
     } catch (std::bad_alloc &ex) {
         in.close();
@@ -47,17 +46,17 @@ FaspRetCode ReadVEC(const char *fileName, VEC &dst)
         return retCode;
     }
     in.read(buffer, length); // read the total bytes of file
-    in.close(); // close the file pointer
+    in.close();              // close the file pointer
 
     // Read in the size of VEC object
-    while ( true ) {
+    while (true) {
         if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
             ++position;
             ++count;
         } else {
             decimal[count] = '\0';
-            count = 0;
+            count          = 0;
             ++position;
             len = std::strtol(decimal, &next, 10);
             break;
@@ -69,14 +68,14 @@ FaspRetCode ReadVEC(const char *fileName, VEC &dst)
 
     // Read in the VEC object's entries
     long int locate = 0; // mark the element position
-    while ( true ) {
+    while (true) {
         if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
             ++position;
             ++count;
         } else {
             decimal[count] = '\0';
-            count = 0;
+            count          = 0;
             ++position;
             dst[locate] = std::strtod(decimal, &next);
             ++locate;
@@ -84,7 +83,7 @@ FaspRetCode ReadVEC(const char *fileName, VEC &dst)
         if (buffer[position] == '\0') break;
     }
 
-    if ( locate != len ) retCode = FaspRetCode::ERROR_INPUT_FILE;
+    if (locate != len) retCode = FaspRetCode::ERROR_INPUT_FILE;
 
     delete[] buffer; // clean up memory space
 
@@ -94,8 +93,7 @@ FaspRetCode ReadVEC(const char *fileName, VEC &dst)
 /// Read (rowInd, colInd, values) from the MTX (MatrixMarket) file.
 FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
                     std::vector<INT> &rowInd, std::vector<INT> &colInd,
-                    std::vector<DBL> &values)
-{
+                    std::vector<DBL> &values) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     // Open the file to read
@@ -111,8 +109,8 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
     const long long int length = in.tellg();
     in.seekg(0, std::ios::beg);
 
-    char decimal[128];
-    char *buffer, *next;
+    char          decimal[128];
+    char *        buffer, *next;
     long long int position = 0; // position of file pointer
 
     // Allocate temp space for storing the whole file
@@ -124,13 +122,13 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
         return retCode;
     }
     in.read(buffer, length); // read the whole file in bytes
-    in.close(); // close the file stream
+    in.close();              // close the file stream
 
-    while( true ) { // skip the comment in the begining
-        if( buffer[position] == '%' || buffer[position] == '\0'){
-            while( true ){
+    while (true) { // skip the comment in the begining
+        if (buffer[position] == '%' || buffer[position] == '\0') {
+            while (true) {
                 ++position;
-                if( buffer[position] == '\n' || buffer[position] == '\0'){
+                if (buffer[position] == '\n' || buffer[position] == '\0') {
                     ++position;
                     break;
                 }
@@ -140,29 +138,32 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
     }
 
     int count = 0; // number of bytes in the decimal
-    int mark = 0; // which number of integer is reading
-    while ( true ) { // read matrix 's row, column, nnz
-        if ( buffer[position] != ' ' && buffer[position] != '\n' ) {
+    int mark  = 0; // which number of integer is reading
+    while (true) { // read matrix 's row, column, nnz
+        if (buffer[position] != ' ' && buffer[position] != '\n') {
             decimal[count] = buffer[position];
             ++count;
             ++position;
         } else {
             decimal[count] = '\0';
-            count = 0;
+            count          = 0;
             ++mark;
             ++position;
             switch (mark) {
                 case 1: // first, integer, number of rows
-                    row = std::strtol(decimal, &next, 10); break;
+                    row = std::strtol(decimal, &next, 10);
+                    break;
                 case 2: // second, integer, number of columns
-                    col = std::strtol(decimal, &next, 10); break;
+                    col = std::strtol(decimal, &next, 10);
+                    break;
                 case 3: // third, integer, number of nonzeros
-                    nnz = std::strtol(decimal, &next, 10); break;
+                    nnz = std::strtol(decimal, &next, 10);
+                    break;
                 default:
                     FASPXX_WARNING("Unknown input value!");
             }
         }
-        if ( mark == 3 ) break; // skip the rest
+        if (mark == 3) break; // skip the rest
     }
 
     // Allocate memory space to store row indices, column indices and values
@@ -177,9 +178,9 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
     }
 
     // Put MTX data into rowInd, colInd, and values
-    INT locate = 0; // mark the position in rowInd, colInd and values
-    long int tmp = 0;
-    while ( true ) {
+    INT      locate = 0; // mark the position in rowInd, colInd and values
+    long int tmp    = 0;
+    while (true) {
         if (buffer[position] != ' ' && buffer[position] != '\n' &&
             buffer[position] != '\0') {
             decimal[count] = buffer[position];
@@ -188,23 +189,26 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
         } else {
             ++position;
             if (buffer[position] == ' ') continue; // multiple consecutive spaces
-            decimal[count] = '\0'; // mark the end of 'decimal' string
-            count = 0;
+            decimal[count] = '\0';                 // mark the end of 'decimal' string
+            count          = 0;
             ++tmp;
             locate = tmp / 3;
             switch (tmp % 3) {
                 case 1: // first: integer, row index
-                    rowInd[locate] = std::strtol(decimal, &next, 10) - 1; break;
+                    rowInd[locate] = std::strtol(decimal, &next, 10) - 1;
+                    break;
                 case 2: // second: integer, column index
-                    colInd[locate] = std::strtol(decimal, &next, 10) - 1; break;
+                    colInd[locate] = std::strtol(decimal, &next, 10) - 1;
+                    break;
                 case 0: // third: double, value
-                    values[locate-1] = std::strtod(decimal, &next); break;
+                    values[locate - 1] = std::strtod(decimal, &next);
+                    break;
             }
             if (buffer[position] == '\0') break;
         }
     }
 
-    if ( locate != nnz ) retCode = FaspRetCode::ERROR_INPUT_FILE;
+    if (locate != nnz) retCode = FaspRetCode::ERROR_INPUT_FILE;
 
     delete[] buffer; // clean up memory space
 
@@ -214,8 +218,7 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
 /// Read (rowPtr, colInd, values) from the CSR file.
 FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
                     std::vector<INT> &rowPtr, std::vector<INT> &colInd,
-                    std::vector<DBL> &values)
-{
+                    std::vector<DBL> &values) {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     // Open the file to read
@@ -232,7 +235,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
     long long int length = in.tellg(); // compute total bytes 's number
     in.seekg(0, std::ios::beg);
 
-    char decimal[128];
+    char  decimal[128];
     char *buffer, *next;
 
     // Allocate memory space for storing the whole file
@@ -244,13 +247,13 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
         return retCode;
     }
     in.read(buffer, length); // read the whole file in bytes
-    in.close(); // close the file stream
+    in.close();              // close the file stream
 
     // Read number of rows
-    INT count = 0;
+    INT           count    = 0;
     long long int position = 0; // mark the position of file pointer
     while (true) {
-        if ( buffer[position] != '\n' ) {
+        if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
             ++count;
             ++position;
@@ -262,7 +265,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
     }
 
     row = std::strtol(decimal, &next, 10);
-    if ( row <= 0 ) { // prevent memory leaks if error happens
+    if (row <= 0) { // prevent memory leaks if error happens
         retCode = FaspRetCode::ERROR_INPUT_PAR;
         delete[] buffer;
         return retCode;
@@ -279,19 +282,19 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
 
     // Read the rowPtr of CSRx matrix
     INT locate = 0;
-    count = 0;
-    while ( true ) {
-        if ( buffer[position] != '\n' ) {
+    count      = 0;
+    while (true) {
+        if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
             ++count;
             ++position;
         } else {
             ++position;
             decimal[count] = '\0';
-            count = 0;
+            count          = 0;
             rowPtr[locate] = std::strtol(decimal, &next, 10);
             ++locate;
-            if ( locate == row + 1 ) break;
+            if (locate == row + 1) break;
         }
     }
 
@@ -307,24 +310,24 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
 
     // Read column indices
     locate = 0;
-    while ( true ) {
-        if ( buffer[position] != '\n' ) {
+    while (true) {
+        if (buffer[position] != '\n') {
             decimal[count] = buffer[position];
             ++count;
             ++position;
         } else {
             ++position;
             decimal[count] = '\0';
-            count = 0;
+            count          = 0;
             colInd[locate] = std::strtol(decimal, &next, 10);
             ++locate;
-            if ( locate == nnz ) break;
+            if (locate == nnz) break;
         }
     }
 
     // Read values
     locate = 0;
-    while ( true ) {
+    while (true) {
         if (buffer[position] != '\n' && buffer[position] != '\0') {
             decimal[count] = buffer[position];
             ++count;
@@ -333,15 +336,15 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
             if (buffer[position] == '\0') break;
             ++position;
             decimal[count] = '\0';
-            count = 0;
+            count          = 0;
             values[locate] = std::strtod(decimal, &next);
             ++locate;
         }
     }
-    if ( locate != nnz ) retCode = FaspRetCode::ERROR_INPUT_FILE;
+    if (locate != nnz) retCode = FaspRetCode::ERROR_INPUT_FILE;
 
     // If the indices start from 1, we shift them to start from 0
-    if ( rowPtr[0] == 1 ) {
+    if (rowPtr[0] == 1) {
         for (count = 0; count <= row; ++count) rowPtr[count]--;
         for (count = 0; count < nnz; ++count) colInd[count]--;
     }
@@ -352,40 +355,37 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
 }
 
 /// Read data from CSR or MTX file and store it in the MAT format.
-FaspRetCode ReadMat(const char *fileName, MAT &dst)
-{
-    const int len = strlen(fileName);
+FaspRetCode ReadMat(const char *fileName, MAT &dst) {
+    const int   len     = strlen(fileName);
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
-    if ( len <= 4 ) {
+    if (len <= 4) {
         retCode = FaspRetCode::ERROR_INPUT_FILE;
         return retCode;
     }
 
     // Check the file extension
     char fileExt[4];
-    for ( int i = 0; i < 3; ++i ) fileExt[i] = tolower(fileName[len - 3 + i]);
+    for (int i = 0; i < 3; ++i) fileExt[i] = tolower(fileName[len - 3 + i]);
     fileExt[3] = '\0';
 
     int flag = 0; // Undefined file format
-    if ( strcmp(fileExt, "csr" ) == 0)
-        flag = 1; // CSR file
-    else if ( strcmp(fileExt, "mtx" ) == 0)
-        flag = 2; // MTX file
+    if (strcmp(fileExt, "csr") == 0)
+        flag = FILE_CSR; // CSR file
+    else if (strcmp(fileExt, "mtx") == 0)
+        flag = FILE_MTX; // MTX file
 
-    INT row, col, nnz;
+    INT              row, col, nnz;
     std::vector<INT> rowPtr, colInd, rowInd;
     std::vector<DBL> values;
 
-    switch ( flag ) {
-        case 1:
+    switch (flag) {
+        case FILE_CSR:
             try {
-                retCode = ReadCSR(fileName, row, col, nnz,
-                                  rowPtr, colInd, values);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-            }
-            catch (FaspRunTime &ex) {
+                retCode = ReadCSR(fileName, row, col, nnz, rowPtr, colInd, values);
+                if (retCode < 0)
+                    throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+            } catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
@@ -393,10 +393,9 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
             // Sort each row in ascending order
             try {
                 retCode = SortCSRRow(row, col, nnz, rowPtr, colInd, values);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-            }
-            catch (FaspRunTime &ex) {
+                if (retCode < 0)
+                    throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+            } catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
@@ -404,23 +403,20 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
             // Convert a MTX matrix to MAT
             try {
                 retCode = CSRtoMAT(row, col, nnz, values, colInd, rowPtr, dst);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-            }
-            catch (FaspRunTime &ex) {
+                if (retCode < 0)
+                    throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+            } catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
             break;
 
-        case 2:
+        case FILE_MTX:
             try {
-                retCode = ReadMTX(fileName, row, col, nnz, rowInd,
-                                  colInd, values);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-            }
-            catch (FaspRunTime &ex) {
+                retCode = ReadMTX(fileName, row, col, nnz, rowInd, colInd, values);
+                if (retCode < 0)
+                    throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+            } catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
@@ -428,17 +424,16 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
             // Sort each row in ascending order
             try {
                 retCode = MTXtoMAT(row, col, nnz, rowInd, colInd, values, dst);
-                if ( retCode < 0 )
-                    throw( FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__) );
-            }
-            catch (FaspRunTime &ex) {
+                if (retCode < 0)
+                    throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
+            } catch (FaspRunTime &ex) {
                 ex.LogExcep();
                 break;
             }
             break;
 
         default:
-            FASPXX_WARNING("Unknown file format detected!");
+            FASPXX_WARNING("Unknown file format!");
             retCode = FaspRetCode::ERROR_INPUT_FILE;
             break;
     }

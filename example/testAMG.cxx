@@ -14,15 +14,14 @@
 //   ./testAMG -maxIter 200 -minIter 0 -mat ../data/fdm_1023X1023.csr -verbose 3
 
 // FASPXX header files
-#include "Param.hxx"
-#include "Timing.hxx"
-#include "ReadData.hxx"
-#include "LOP.hxx"
-#include "Iter.hxx"
 #include "AMG.hxx"
+#include "Iter.hxx"
+#include "LOP.hxx"
+#include "Param.hxx"
+#include "ReadData.hxx"
+#include "Timing.hxx"
 
-int main(int argc, const char *args[])
-{
+int main(int argc, const char *args[]) {
     // User default parameters
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";
@@ -47,10 +46,9 @@ int main(int argc, const char *args[])
     timer.Start();
 
     // Read matrix data file and exit if failed
-    MAT mat;
+    MAT         mat;
     FaspRetCode retCode = ReadMat(matFile.c_str(), mat);
-    if (retCode < 0)
-        FASPXX_ABORT("Failed to read matrix file!");
+    if (retCode < 0) FASPXX_ABORT("Failed to read matrix file!");
 
     // Print problem size information
     const INT nrow = mat.GetRowSize(), mcol = mat.GetColSize();
@@ -59,14 +57,12 @@ int main(int argc, const char *args[])
     // Read the right-hand-side b; if not specified, use b = 0.0
     VEC b;
     b.SetValues(nrow, 0.0);
-    if (strcmp(rhsFile.c_str(), "") != 0)
-        ReadVEC(rhsFile.c_str(), b);
+    if (strcmp(rhsFile.c_str(), "") != 0) ReadVEC(rhsFile.c_str(), b);
 
     // Read the initial guess x0; if not specified, use x0 = 1.0
     VEC x;
     x.SetValues(mcol, 1.0);
-    if (strcmp(xinFile.c_str(), "") != 0)
-        ReadVEC(xinFile.c_str(), x);
+    if (strcmp(xinFile.c_str(), "") != 0) ReadVEC(xinFile.c_str(), x);
 
     timer.StopInfo("Reading Ax = b");
 

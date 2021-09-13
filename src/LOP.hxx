@@ -9,8 +9,8 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __LOP_HEADER__  /*-- allow multiple inclusions --*/
-#define __LOP_HEADER__  /**< indicate LOP.hxx has been included before */
+#ifndef __LOP_HEADER__ /*-- allow multiple inclusions --*/
+#define __LOP_HEADER__ /**< indicate LOP.hxx has been included before */
 
 // FASPXX header files
 #include "ErrorLog.hxx"
@@ -22,26 +22,26 @@
 class LOP {
 
 protected:
-
-    INT nrow;   ///< number of rows
-    INT mcol;   ///< number of columns
+    INT nrow; ///< number of rows
+    INT mcol; ///< number of columns
 
 public:
-
     /// Default constructor.
-    LOP() : nrow(0), mcol(0) { };
+    LOP()
+        : nrow(0)
+        , mcol(0){};
 
     /// Make an LOP from VEC(mcol) to VEC(nrow).
-    LOP(const INT& nrow, const INT& mcol);
+    LOP(const INT &nrow, const INT &mcol);
 
     /// Make an LOP from VEC(nrow) to VEC(nrow).
-    explicit LOP(const INT& nrow);
+    explicit LOP(const INT &nrow);
 
     /// Make an LOP from another LOP.
-    LOP(const LOP& lop);
+    LOP(const LOP &lop);
 
     /// Overload the = operator.
-    LOP& operator=(const LOP& lop);
+    LOP &operator=(const LOP &lop);
 
     /// Default destructor.
     ~LOP() = default;
@@ -53,12 +53,12 @@ public:
     INT GetColSize() const;
 
     /// Action of the linear operator to a vector.
-    virtual void Apply(const VEC& x, VEC& y) const {
+    virtual void Apply(const VEC &x, VEC &y) const {
         FASPXX_ABORT("Should be over-written!");
     };
 
     /// Compute residual of a linear operator equation.
-    virtual void Residual(const VEC& b, const VEC& x, VEC& r) const {
+    virtual void Residual(const VEC &b, const VEC &x, VEC &r) const {
         FASPXX_ABORT("Should be over-written!");
     };
 };
@@ -66,8 +66,7 @@ public:
 /*! \class IdentityOper
  *  \brief Identity operator.
  */
-class IdentityOper : public LOP
-{
+class IdentityOper : public LOP {
 
 public:
     /// Default constructor

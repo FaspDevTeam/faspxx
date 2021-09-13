@@ -9,8 +9,8 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __FGMRES_HXX__      /*-- allow multiple inclusions --*/
-#define __FGMRES_HXX__      /**< indicate FGMRES.hxx has been included before */
+#ifndef __FGMRES_HXX__ /*-- allow multiple inclusions --*/
+#define __FGMRES_HXX__ /**< indicate FGMRES.hxx has been included before */
 
 // Standard header files
 #include <cmath>
@@ -32,9 +32,9 @@ private:
     VEC tmp;
 
     std::vector<std::vector<double>> hh;
-    std::vector<double> hsin;
-    std::vector<double> hcos;
-    std::vector<double> var;
+    std::vector<double>              hsin;
+    std::vector<double>              hcos;
+    std::vector<double>              var;
 
     std::vector<VEC> V;
     std::vector<VEC> Z;
@@ -45,14 +45,22 @@ private:
     int len;
 
     // Constants for variable restarting
-    const double max_cr = 0.99026806874157040;
-    const double min_cr = 0.17364817766693041;
-    const int  decrease = 3;
+    const double max_cr   = 0.99026806874157040;
+    const double min_cr   = 0.17364817766693041;
+    const int    decrease = 3;
 
 public:
     /// Default constructor.
-    FGMRES() : wk(0), safe(0), tmp(0), hh(0), hsin(0), hcos(0), var(0),
-               maxRestart{30}, minRestart(10) {};
+    FGMRES()
+        : wk(0)
+        , safe(0)
+        , tmp(0)
+        , hh(0)
+        , hsin(0)
+        , hcos(0)
+        , var(0)
+        , maxRestart{30}
+        , minRestart(10){};
 
     /// Default destructor.
     ~FGMRES() = default;
@@ -68,7 +76,6 @@ public:
 
     /// Solve Ax=b using the FGMRES method.
     FaspRetCode Solve(const VEC &b, VEC &x) override;
-
 };
 
 #endif /* end if for __FGMRES_HEADER__ */

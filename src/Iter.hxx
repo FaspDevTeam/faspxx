@@ -9,16 +9,16 @@
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __ITER_HEADER__      /*-- allow multiple inclusions --*/
-#define __ITER_HEADER__      /**< indicate Iter.hxx has been included before */
+#ifndef __ITER_HEADER__ /*-- allow multiple inclusions --*/
+#define __ITER_HEADER__ /**< indicate Iter.hxx has been included before */
 
 // Standard header files
 #include <cmath>
 
 // FASPXX header files
-#include "faspxx.hxx"
-#include "SOL.hxx"
 #include "MAT.hxx"
+#include "SOL.hxx"
+#include "faspxx.hxx"
 
 /*! \class Identity
  *  \brief Identity iterator, do nothing solver.
@@ -33,7 +33,7 @@ public:
     ~Identity() = default;
 
     /// Iterator
-    FaspRetCode Solve(const VEC& b, VEC& x) override;
+    FaspRetCode Solve(const VEC &b, VEC &x) override;
 };
 
 /*! \class Jacobi
@@ -41,26 +41,29 @@ public:
  */
 class Jacobi : public SOL {
 
-private :
-    double   omega;     ///< Weight for damped or weighted Jacobi
-    VEC      diagInv;   ///< Inverse of diagonal entries
-    VEC      w;         ///< Work array for the residual
+private:
+    double omega;   ///< Weight for damped or weighted Jacobi
+    VEC    diagInv; ///< Inverse of diagonal entries
+    VEC    w;       ///< Work array for the residual
 
 public:
     /// Default constructor.
-    Jacobi() : omega(1.0), diagInv(1.0), w(0.0) {};
+    Jacobi()
+        : omega(1.0)
+        , diagInv(1.0)
+        , w(0.0){};
 
     /// Default destructor.
     ~Jacobi() = default;
 
     /// Setup the Jacobi method.
-    FaspRetCode Setup(const MAT& A);
+    FaspRetCode Setup(const MAT &A);
 
     /// Clean up Jacobi data allocated during Setup.
-    void Clean() override {};
+    void Clean() override{};
 
     /// Solve Ax=b using the Jacobi method.
-    FaspRetCode Solve(const VEC& b, VEC& x) override;
+    FaspRetCode Solve(const VEC &b, VEC &x) override;
 };
 
 #endif /* end if for __ITER_HEADER__ */

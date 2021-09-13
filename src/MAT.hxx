@@ -22,13 +22,13 @@
  *  Furthermore, it is compatible with all CSR subroutines!
  */
 
-#ifndef __MAT_HEADER__      /*-- allow multiple inclusions --*/
-#define __MAT_HEADER__      /**< indicate MAT.hxx has been included before */
+#ifndef __MAT_HEADER__ /*-- allow multiple inclusions --*/
+#define __MAT_HEADER__ /**< indicate MAT.hxx has been included before */
 
 // FASPXX header files
-#include "faspxx.hxx"
-#include "VEC.hxx"
 #include "LOP.hxx"
+#include "VEC.hxx"
+#include "faspxx.hxx"
 
 /*! \class MAT
  *  \brief Sparse matrix class.
@@ -36,15 +36,13 @@
 class MAT : public LOP {
 
 private:
-
-    INT nnz;                  ///< number of nonzeros of the matrix.
+    INT              nnz;     ///< number of nonzeros of the matrix.
     std::vector<DBL> values;  ///< nonzero entries, compressed row by row.
     std::vector<INT> colInd;  ///< column indices of the nonzero in values.
     std::vector<INT> rowPtr;  ///< pointers to the beginning of each row in values.
     std::vector<INT> diagPtr; ///< pointers to diagonal entries in values.
 
 public:
-
     //------------------- Default Constructor Behavior -----------------------//
     // If "row == 0", "col ==0 " or "nnz == 0", set *this as an empty matrix. //
     // If these parameters can't form a CSRx data type, throw an exception.   //
@@ -52,7 +50,12 @@ public:
     //------------------------------------------------------------------------//
 
     /// Default constructor.
-    MAT() : nnz(0), values(0), colInd(0), rowPtr(0), diagPtr(0) {
+    MAT()
+        : nnz(0)
+        , values(0)
+        , colInd(0)
+        , rowPtr(0)
+        , diagPtr(0) {
         nrow = 0;
         mcol = 0;
     };
@@ -105,16 +108,16 @@ public:
     INT GetNNZ() const;
 
     /// Get the diagonal entries of *this and save them in a VEC object.
-    void GetDiag(VEC& v) const;
+    void GetDiag(VEC &v) const;
 
     /// Get reciprocal diagonal entries and save them in a MAT object.
-    void GetDiagInv(MAT& m) const;
+    void GetDiagInv(MAT &m) const;
 
     /// Get the lower triangular matrix.
-    void GetLowerTri(MAT& lTri) const;
+    void GetLowerTri(MAT &lTri) const;
 
     /// Get the upper triangular matrix.
-    void GetUpperTri(MAT& uTri) const;
+    void GetUpperTri(MAT &uTri) const;
 
     /// Copy the matrix to another MAT object.
     void CopyTo(MAT &mat) const;
@@ -147,16 +150,16 @@ public:
     void Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2);
 
     /// *this = matl * matr
-    void Mult(const MAT& matl, const MAT& matr);
+    void Mult(const MAT &matl, const MAT &matr);
 
     /// *this = *this * mat
-    void MultLeft(const MAT& mat);
+    void MultLeft(const MAT &mat);
 
     /// *this = mat * *this
-    void MultRight(const MAT& mat);
+    void MultRight(const MAT &mat);
 
     /// invmat = Inverse(*this)
-    void Inverse(MAT& invmat) const;
+    void Inverse(MAT &invmat) const;
 
     /// Write an MAT matrix to a disk file in CSR format.
     friend void WriteCSR(char *filename, MAT mat);
@@ -172,12 +175,12 @@ private:
     void Empty();
 
     /// LUP decomposition
-    void LUP_Decomposition(std::vector<DBL> A,std::vector<DBL>& L,std::vector<DBL>& U,
-            std::vector<INT>& P,INT N) const;
+    void LUP_Decomposition(std::vector<DBL> A, std::vector<DBL> &L, std::vector<DBL> &U,
+                           std::vector<INT> &P, INT N) const;
 
     /// LUP solver
-    void LUP_Solve(std::vector<DBL> L,std::vector<DBL> U,std::vector<INT> P,std::vector<DBL> b,
-            INT N, std::vector<DBL> &x) const;
+    void LUP_Solve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
+                   std::vector<DBL> b, INT N, std::vector<DBL> &x) const;
 
     /// successor
     INT GetNext(INT i, INT m, INT n) const;
@@ -192,14 +195,13 @@ private:
     void Rtranspose(std::vector<DBL> &mtx, INT m, INT n) const;
 
     /// LUP inversion (assemble each column x from each column B)
-    void LUP_Solve_Inverse(std::vector<DBL> A,INT N,std::vector<DBL> &inv_A) const;
+    void LUP_Solve_Inverse(std::vector<DBL> A, INT N, std::vector<DBL> &inv_A) const;
 };
 
 /*! \class IdentityMatrix
  *  \brief Identity matrix.
  */
-class IdentityMatrix : public MAT
-{
+class IdentityMatrix : public MAT {
 
 public:
     /// Default constructor
