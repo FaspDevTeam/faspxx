@@ -254,7 +254,7 @@ void Parameters::Parse()
 }
 
 /// Set SOLParams for solvers.
-void Parameters::SetSOLParams(SOLParams &solParam) //const
+void Parameters::SetSOLParams(SOLParams &solParam)
 {
     this->AddParam("-maxIter", "Max iteration steps", &solParam.maxIter);
     this->AddParam("-minIter", "Min iteration steps", &solParam.minIter);
@@ -263,6 +263,15 @@ void Parameters::SetSOLParams(SOLParams &solParam) //const
     this->AddParam("-resRel", "Relative residual tolerance", &solParam.relTol);
     this->AddParam("-resAbs", "Absolute residual tolerance", &solParam.absTol);
     this->AddParam("-verbose", "Verbose level", &solParam.verbose);
+}
+
+/// Set SOLParams for solvers and preconditioners.
+void Parameters::SetSOLParams(SOLParams &solParam, SOLParams &pcParam)
+{
+    SetSOLParams(solParam);
+    
+    this->AddParam("-pcIter", "Preconditioner steps", &pcParam.maxIter);
+    this->AddParam("-pcWeight", "Preconditioner weigth", &pcParam.weight);
 }
 
 void Parameters::PrintFileParams(std::ostream &out) const

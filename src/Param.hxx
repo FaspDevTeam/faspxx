@@ -154,10 +154,13 @@ public:
     void Parse();
 
     /// Set SOLParams for solvers.
-    void SetSOLParams(SOLParams &solParam); //const;
+    void SetSOLParams(SOLParams &solParam);
+
+    /// Set SOLParams for solvers and preconditioners.
+    void SetSOLParams(SOLParams &solParam, SOLParams &pcParam);
 
     /// Print original params (before merge or parse) in user program.
-    void PrintUserParams(std::ostream& out) const;
+    void PrintUserParams(std::ostream &out) const;
 
     /// Print parameters coming from an option file.
     void PrintFileParams(std::ostream& out) const;
