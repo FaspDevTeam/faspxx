@@ -22,7 +22,8 @@ using std::vector;
 /*! \class AMG
  *  \brief Algebraic multigrid method.
  */
-class AMG : public MG {
+class AMG : public MG
+{
 private:
     unsigned numLevelsMax;     ///< max number of levels
     unsigned numLevelsUse;     ///< number of levels in use <= max_levels

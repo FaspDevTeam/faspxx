@@ -23,7 +23,8 @@ using std::vector;
 #include "ReadData.hxx"
 #include "Timing.hxx"
 
-int main() {
+int main()
+{
     // matrix 1
     INT row1 = 2;
     INT col1 = 2;

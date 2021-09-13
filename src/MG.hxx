@@ -23,7 +23,8 @@ using std::vector;
 /*! \class MG
  *  \brief Multigrid method in an abstract setting.
  */
-class MG : public SOL {
+class MG : public SOL
+{
 private:
     unsigned numLevelsMax;     ///< max number of levels
     unsigned numLevelsUse;     ///< number of levels in use <= max_levels

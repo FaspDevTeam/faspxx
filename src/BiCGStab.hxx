@@ -21,7 +21,8 @@
 /*! \class BiCGStab
  *  \brief Preconditioned bi-conjugate gradient stabilized method.
  */
-class BiCGStab : public SOL {
+class BiCGStab : public SOL
+{
 private:
     int len;
     VEC r0star; ///< Work vector for r0*

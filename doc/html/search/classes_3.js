@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['getcyclenum_266',['GetCycleNum',['../class_get_cycle_num.html',1,'']]],
-  ['getwalltime_267',['GetWallTime',['../class_get_wall_time.html',1,'']]],
-  ['gmres_268',['GMRES',['../class_g_m_r_e_s.html',1,'']]]
+  ['faspbadalloc_0',['FaspBadAlloc',['../class_fasp_bad_alloc.html',1,'']]],
+  ['faspruntime_1',['FaspRunTime',['../class_fasp_run_time.html',1,'']]],
+  ['fgmres_2',['FGMRES',['../class_f_g_m_r_e_s.html',1,'']]]
 ];

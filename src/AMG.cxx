@@ -16,7 +16,8 @@
 #include "LOP.hxx"
 
 /// Setup the one-level "MG" method using linear operator A
-FaspRetCode AMG::SetupOneLevel(const MAT &A) {
+FaspRetCode AMG::SetupOneLevel(const MAT &A)
+{
     len              = A.GetColSize(); // size of the solution vector
     numLevelsUse     = 1;              // only one level
     useSymmRoperator = true;           // symmetric restriction based on prolongation
@@ -77,7 +78,8 @@ FaspRetCode AMG::SetupOneLevel(const MAT &A) {
 }
 
 /// Allocate memory, setup multigrid hierarical structure of the linear system.
-FaspRetCode AMG::Setup(const MAT &A) {
+FaspRetCode AMG::Setup(const MAT &A)
+{
     // Set solver type
     SetSolType(SOLType::MG);
 
@@ -98,7 +100,8 @@ FaspRetCode AMG::Setup(const MAT &A) {
 }
 
 /// Clean up temp memory allocated for MG.
-void AMG::Clean() {
+void AMG::Clean()
+{
     for (unsigned i = 0; i < numLevelsUse; ++i) {
         bVectors[i].SetValues(len, 0.0);
         xVectors[i].SetValues(len, 0.0);

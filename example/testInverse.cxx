@@ -19,8 +19,8 @@ using std::vector;
 // FASPXX header files
 #include "MAT.hxx"
 
-int main() {
-
+int main()
+{
     INT         row1 = 4, col1 = 4, nnz1 = 10;
     vector<INT> colInd1(10), rowPtr1(5), diag1(4);
     vector<DBL> values1(10);

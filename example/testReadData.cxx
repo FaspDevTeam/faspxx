@@ -20,7 +20,8 @@
 /*--     Beginning of main       --*/
 /*---------------------------------*/
 
-int main() {
+int main()
+{
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
 
     // Read a MTX matrix from file

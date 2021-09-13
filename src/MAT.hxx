@@ -33,7 +33,8 @@
 /*! \class MAT
  *  \brief Sparse matrix class.
  */
-class MAT : public LOP {
+class MAT : public LOP
+{
 
 private:
     INT              nnz;     ///< number of nonzeros of the matrix.
@@ -55,7 +56,8 @@ public:
         , values(0)
         , colInd(0)
         , rowPtr(0)
-        , diagPtr(0) {
+        , diagPtr(0)
+    {
         nrow = 0;
         mcol = 0;
     };
@@ -201,7 +203,8 @@ private:
 /*! \class IdentityMatrix
  *  \brief Identity matrix.
  */
-class IdentityMatrix : public MAT {
+class IdentityMatrix : public MAT
+{
 
 public:
     /// Default constructor

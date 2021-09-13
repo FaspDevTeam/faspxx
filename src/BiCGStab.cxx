@@ -15,7 +15,8 @@
 #include "Iter.hxx"
 
 /// Allocate memory, assign param to this->param.
-FaspRetCode BiCGStab::Setup(const LOP &A) {
+FaspRetCode BiCGStab::Setup(const LOP &A)
+{
     // Set solver type
     SetSolType(SOLType::BICGSTAB);
 
@@ -48,7 +49,8 @@ FaspRetCode BiCGStab::Setup(const LOP &A) {
 }
 
 /// Clean up temp memory allocated for BiCGStab.
-void BiCGStab::Clean() {
+void BiCGStab::Clean()
+{
     r0star.SetValues(len, 0.0);
     tmp.SetValues(len, 0.0);
     apj.SetValues(len, 0.0);
@@ -64,7 +66,8 @@ void BiCGStab::Clean() {
 }
 
 /// Preconditioned Bi-Conjugate Gradient Stabilized method. Don't check problem sizes.
-FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x) {
+FaspRetCode BiCGStab::Solve(const VEC &b, VEC &x)
+{
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables

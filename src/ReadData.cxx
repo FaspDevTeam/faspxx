@@ -18,7 +18,8 @@
 #include "ReadData.hxx"
 
 /// Read a VEC data file stored as val[i], i=0:end-1.
-FaspRetCode ReadVEC(const char *fileName, VEC &dst) {
+FaspRetCode ReadVEC(const char *fileName, VEC &dst)
+{
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     std::cout << "Reading from disk file " << fileName << std::endl;
@@ -93,7 +94,8 @@ FaspRetCode ReadVEC(const char *fileName, VEC &dst) {
 /// Read (rowInd, colInd, values) from the MTX (MatrixMarket) file.
 FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
                     std::vector<INT> &rowInd, std::vector<INT> &colInd,
-                    std::vector<DBL> &values) {
+                    std::vector<DBL> &values)
+{
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     // Open the file to read
@@ -218,7 +220,8 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
 /// Read (rowPtr, colInd, values) from the CSR file.
 FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
                     std::vector<INT> &rowPtr, std::vector<INT> &colInd,
-                    std::vector<DBL> &values) {
+                    std::vector<DBL> &values)
+{
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
     // Open the file to read
@@ -355,7 +358,8 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
 }
 
 /// Read data from CSR or MTX file and store it in the MAT format.
-FaspRetCode ReadMat(const char *fileName, MAT &dst) {
+FaspRetCode ReadMat(const char *fileName, MAT &dst)
+{
     const int   len     = strlen(fileName);
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 

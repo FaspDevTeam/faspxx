@@ -19,7 +19,8 @@
 #include "ReadData.hxx"
 #include "Timing.hxx"
 
-int main(int argc, const char *args[]) {
+int main(int argc, const char *args[])
+{
     // User default parameters
     std::string parFile = "../data/input.param";
     std::string matFile = "../data/fdm_10X10.csr";

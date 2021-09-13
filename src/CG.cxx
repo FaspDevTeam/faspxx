@@ -14,7 +14,8 @@
 #include "Iter.hxx"
 
 /// Allocate memory, setup coefficient matrix of the linear system.
-FaspRetCode CG::Setup(const LOP &A) {
+FaspRetCode CG::Setup(const LOP &A)
+{
     // Set solver type
     SetSolType(SOLType::CG);
 
@@ -40,7 +41,8 @@ FaspRetCode CG::Setup(const LOP &A) {
 }
 
 /// Clean up temp memory allocated for CG.
-void CG::Clean() {
+void CG::Clean()
+{
     zk.SetValues(len, 0.0);
     pk.SetValues(len, 0.0);
     rk.SetValues(len, 0.0);
@@ -49,7 +51,8 @@ void CG::Clean() {
 }
 
 /// Using the Conjugate Gradient method. Don't check problem sizes.
-FaspRetCode CG::Solve(const VEC &b, VEC &x) {
+FaspRetCode CG::Solve(const VEC &b, VEC &x)
+{
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Local variables

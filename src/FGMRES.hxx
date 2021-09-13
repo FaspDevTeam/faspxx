@@ -24,8 +24,8 @@
 /*! \class FGMRES
  *  \brief Preconditioned flexible generalized minimal residual method.
  */
-class FGMRES : public SOL {
-
+class FGMRES : public SOL
+{
 private:
     VEC wk;
     VEC safe;

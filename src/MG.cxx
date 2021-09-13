@@ -16,7 +16,8 @@
 
 using std::vector;
 
-void MG::oneCycleMultigrid(const VEC &b, VEC &x) {
+void MG::oneCycleMultigrid(const VEC &b, VEC &x)
+{
     // local variables
     unsigned l                      = 0; // level index
     unsigned numCycle[numLevelsUse] = {0};
@@ -71,7 +72,8 @@ ForwardSweep:
 }
 
 /// Using the multigrid method. Don't check problem sizes.
-FaspRetCode MG::Solve(const VEC &b, VEC &x) {
+FaspRetCode MG::Solve(const VEC &b, VEC &x)
+{
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables
@@ -124,7 +126,8 @@ FaspRetCode MG::Solve(const VEC &b, VEC &x) {
 }
 
 /// Clean up temp memory allocated for MG.
-void MG::Clean() {
+void MG::Clean()
+{
     for (unsigned i = 0; i < numLevelsUse; ++i) {
         bVectors[i].SetValues(len, 0.0);
         xVectors[i].SetValues(len, 0.0);

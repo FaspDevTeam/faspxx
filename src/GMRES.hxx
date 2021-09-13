@@ -24,8 +24,8 @@
 /*! \class GMRES
  *  \brief Preconditioned generalized minimal residual method.
  */
-class GMRES : public SOL {
-
+class GMRES : public SOL
+{
 private:
     VEC wk;
     VEC tmp;

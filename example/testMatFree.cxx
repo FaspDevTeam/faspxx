@@ -23,11 +23,13 @@ int dim = 16; // number of partitions in X and Y directions: 16x16 grid
 #define locate(row, column) (((row)-1) * (dim - 1) + (column)-1)
 
 /// Matrix-free linear operator object.
-class MatFree : public LOP {
+class MatFree : public LOP
+{
 
 public:
     /// Default constructor.
-    MatFree(const INT row, const INT col) {
+    MatFree(const INT row, const INT col)
+    {
         nrow = row;
         mcol = col;
     }
@@ -37,7 +39,8 @@ public:
 };
 
 /// Assemble the right-hand side.
-static void AssembleRHS(int dim, DBL *ptr) {
+static void AssembleRHS(int dim, DBL *ptr)
+{
     const DBL h    = 1.0 / dim; // mesh size
     const DBL h2   = h * h;     // mesh size squared
     const int dim1 = dim - 1;   // DOF in each direction
@@ -82,7 +85,8 @@ static void AssembleRHS(int dim, DBL *ptr) {
 }
 
 /// Matrix-free action on a VEC object.
-void MatFree::Apply(const VEC &x, VEC &y) const {
+void MatFree::Apply(const VEC &x, VEC &y) const
+{
     const DBL *x_val;
     x.GetArray(&x_val);
 
@@ -171,7 +175,8 @@ void MatFree::Apply(const VEC &x, VEC &y) const {
     y_val[center] = -x_val[lower] - x_val[left] + 4.0 * x_val[center];
 }
 
-int main(int argc, char *args[]) {
+int main(int argc, char *args[])
+{
     const int   numTotalMesh = 7; // number of meshes in total
     GetWallTime timer;
     DBL *       ptr           = nullptr;

@@ -23,7 +23,8 @@ const int count  = 100;
 /*--     Beginning of main       --*/
 /*---------------------------------*/
 
-int main() {
+int main()
+{
     if (count < 1) return 0; // Do nothing at all!
 
     std::cout << "Problem size " << LENGTH << ", repeat " << count

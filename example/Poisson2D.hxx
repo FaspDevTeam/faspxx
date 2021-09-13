@@ -26,7 +26,8 @@
 #define TEST_PROBLEM 1
 
 /// The exact solution.
-double ExactSolu(const double x, const double y) {
+double ExactSolu(const double x, const double y)
+{
 #if TEST_PROBLEM == 1
     return sin(M_PI * x) * sin(M_PI * y);
 #endif
@@ -45,7 +46,8 @@ double ExactSolu(const double x, const double y) {
 }
 
 /// Right-hand side function.
-double Load(const double x, const double y) {
+double Load(const double x, const double y)
+{
 #if TEST_PROBLEM == 1
     return 2 * M_PI * M_PI * sin(M_PI * x) * sin(M_PI * y);
 #endif
@@ -64,7 +66,8 @@ double Load(const double x, const double y) {
 }
 
 /// Left boundary condition.
-double LeftBdyCond(const double x, const double y) {
+double LeftBdyCond(const double x, const double y)
+{
 #if TEST_PROBLEM == 1
     return 0.0;
 #endif
@@ -83,7 +86,8 @@ double LeftBdyCond(const double x, const double y) {
 }
 
 /// Right boundary condition.
-double RightBdyCond(const double x, const double y) {
+double RightBdyCond(const double x, const double y)
+{
 #if TEST_PROBLEM == 1
     return 0.0;
 #endif
@@ -102,7 +106,8 @@ double RightBdyCond(const double x, const double y) {
 }
 
 /// Lower boundary condition.
-double LowerBdyCond(const double x, const double y) {
+double LowerBdyCond(const double x, const double y)
+{
 #if TEST_PROBLEM == 1
     return 0.0;
 #endif
@@ -121,7 +126,8 @@ double LowerBdyCond(const double x, const double y) {
 }
 
 /// Upper boundary condition.
-double UpperBdyCond(const double x, const double y) {
+double UpperBdyCond(const double x, const double y)
+{
 #if TEST_PROBLEM == 1
     return 0.0;
 #endif

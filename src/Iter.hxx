@@ -23,8 +23,8 @@
 /*! \class Identity
  *  \brief Identity iterator, do nothing solver.
  */
-class Identity : public SOL {
-
+class Identity : public SOL
+{
 public:
     /// Default constructor
     Identity() = default;
@@ -39,8 +39,8 @@ public:
 /*! \class Jacobi
  *  \brief Jacobi iterator.
  */
-class Jacobi : public SOL {
-
+class Jacobi : public SOL
+{
 private:
     double omega;   ///< Weight for damped or weighted Jacobi
     VEC    diagInv; ///< Inverse of diagonal entries

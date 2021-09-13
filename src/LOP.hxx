@@ -19,7 +19,8 @@
 /*! \class LOP
  *  \brief Linear operator virtual class.
  */
-class LOP {
+class LOP
+{
 
 protected:
     INT nrow; ///< number of rows
@@ -53,12 +54,14 @@ public:
     INT GetColSize() const;
 
     /// Action of the linear operator to a vector.
-    virtual void Apply(const VEC &x, VEC &y) const {
+    virtual void Apply(const VEC &x, VEC &y) const
+    {
         FASPXX_ABORT("Should be over-written!");
     };
 
     /// Compute residual of a linear operator equation.
-    virtual void Residual(const VEC &b, const VEC &x, VEC &r) const {
+    virtual void Residual(const VEC &b, const VEC &x, VEC &r) const
+    {
         FASPXX_ABORT("Should be over-written!");
     };
 };
@@ -66,7 +69,8 @@ public:
 /*! \class IdentityOper
  *  \brief Identity operator.
  */
-class IdentityOper : public LOP {
+class IdentityOper : public LOP
+{
 
 public:
     /// Default constructor

@@ -16,14 +16,15 @@
 FaspRetCode GMRES::Solve(const VEC &b, VEC &x) { return FaspRetCode::SUCCESS; }
 
 /// Set the maximum and minimum restart
-void GMRES::SetMaxMinRestart(const int maxRestart, const int minRestart) {
+void GMRES::SetMaxMinRestart(const int maxRestart, const int minRestart)
+{
     this->maxRestart = maxRestart;
     this->minRestart = minRestart;
 }
 
 /// Set up the GMRES method
-FaspRetCode GMRES::Setup(const LOP &A) {
-
+FaspRetCode GMRES::Setup(const LOP &A)
+{
     // Set solver type
     SetSolType(SOLType::GMRES);
 
@@ -53,7 +54,7 @@ FaspRetCode GMRES::Setup(const LOP &A) {
             for (int j = 0; j < maxRestart + 1; ++j) V.push_back(safe);
             break;
         } catch (std::bad_alloc &ex) {
-            maxRestart -= decrease; // reduce restart size if memory is not enough
+            maxRestart -= decrease; // reduce restart if memory is not enough
             while (!V.empty()) V.resize(0);
         }
     }
@@ -75,8 +76,8 @@ FaspRetCode GMRES::Setup(const LOP &A) {
 }
 
 /// Clean up GMRES data allocated during setup.
-void GMRES::Clean() {
-
+void GMRES::Clean()
+{
     restart = params.restart; // restore restart value
 
     if (restart > maxRestart)
@@ -98,8 +99,8 @@ void GMRES::Clean() {
 }
 
 /// Solve Ax=b using the right preconditioned GMRES method.
-FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
-
+FaspRetCode GMRES::RSolve(const VEC &b, VEC &x)
+{
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // local variables
@@ -267,8 +268,8 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x) {
 }
 
 /// Solve Ax=b using the left preconditioned GMRES method.
-FaspRetCode GMRES::LSolve(const VEC &b, VEC &x) {
-
+FaspRetCode GMRES::LSolve(const VEC &b, VEC &x)
+{
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // local variables

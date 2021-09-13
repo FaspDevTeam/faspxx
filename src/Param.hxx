@@ -55,11 +55,14 @@ struct SOLParams {
         , relTol(1e-6)
         , absTol(1e-8)
         , weight(1.0)
-        , verbose(PRINT_NONE) {}
+        , verbose(PRINT_NONE)
+    {
+    }
 };
 
 /// Solver parameters
-class Parameters {
+class Parameters
+{
     // parameter priority: command line > param file > user program
 
 private:
@@ -86,7 +89,9 @@ private:
             , paramName(std::move(name))
             , paramHelp(std::move(help))
             , paramPtr(ptr)
-            , paramMarker(marker) {}
+            , paramMarker(marker)
+        {
+        }
     };
 
     std::map<std::string, std::string> paramsCML;     ///< Params from command line
@@ -142,7 +147,9 @@ public:
     /// Default constructor.
     Parameters(int _argc, const char *_argv[])
         : argc(_argc)
-        , argv(_argv) {}
+        , argv(_argv)
+    {
+    }
 
     /// Default destructor.
     ~Parameters() = default;

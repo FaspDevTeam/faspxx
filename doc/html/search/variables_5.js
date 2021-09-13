@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['large_450',['LARGE',['../faspxx_8hxx.html#a3eb000fc129c8d09e47d3289fb424b83',1,'faspxx.hxx']]]
+  ['ksm_5fchk_5fratio_0',['KSM_CHK_RATIO',['../faspxx_8hxx.html#aae5bdd78e6688e0cb64f6b907897b0f0',1,'faspxx.hxx']]]
 ];

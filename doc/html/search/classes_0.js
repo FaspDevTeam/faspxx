@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bicgstab_261',['BiCGStab',['../class_bi_c_g_stab.html',1,'']]]
+  ['amg_0',['AMG',['../class_a_m_g.html',1,'']]]
 ];

@@ -21,7 +21,8 @@
 /*! \class CG
  *  \brief Preconditioned conjugate gradient method.
  */
-class CG : public SOL {
+class CG : public SOL
+{
 private:
     int len;  ///< dimension of the solution vector
     VEC rk;   ///< Work vector for residual

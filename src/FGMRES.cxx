@@ -13,13 +13,15 @@
 #include "FGMRES.hxx"
 
 /// Set the maximum and minimum restart
-void FGMRES::SetMaxMinRestart(const int maxRestart, const int minRestart) {
+void FGMRES::SetMaxMinRestart(const int maxRestart, const int minRestart)
+{
     this->maxRestart = maxRestart;
     this->minRestart = minRestart;
 }
 
 /// Set up the FGMRES method.
-FaspRetCode FGMRES::Setup(const LOP &A) {
+FaspRetCode FGMRES::Setup(const LOP &A)
+{
 
     // Set solver type
     SetSolType(SOLType::GMRES);
@@ -78,7 +80,8 @@ FaspRetCode FGMRES::Setup(const LOP &A) {
 }
 
 /// Clean up FGMRES data allocated during setup.
-void FGMRES::Clean() {
+void FGMRES::Clean()
+{
 
     restart = params.restart;
 
@@ -102,7 +105,8 @@ void FGMRES::Clean() {
 }
 
 /// Right-preconditioned FGMRES solver.
-FaspRetCode FGMRES::Solve(const VEC &b, VEC &x) {
+FaspRetCode FGMRES::Solve(const VEC &b, VEC &x)
+{
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
