@@ -320,13 +320,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>numIter</b></td></tr>
 <p >Clean up <a class="el" href="class_a_m_g.html" title="Algebraic multigrid method.">AMG</a> data allocated during Setup. </p>
 
 <p>Reimplemented from <a class="el" href="class_s_o_l.html#aa7c6642799a621964e005557ed79ed6d">SOL</a>.</p>
-<div class="fragment"><div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>{</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; numLevelsUse; ++i) {</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <a class="code hl_variable" href="class_m_g.html#ac2e993f7bc2bcd329e809a52ae86e068">bVectors</a>[i].SetValues(len, 0.0);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <a class="code hl_variable" href="class_m_g.html#a280726dae15d439be8a9cb858d251159">xVectors</a>[i].SetValues(len, 0.0);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <a class="code hl_variable" href="class_m_g.html#a4c9383836f14e4ac3d212a2796606111">wVectors</a>[i].SetValues(len, 0.0);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>}</div>
+<div class="fragment"><div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>{</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> i = 0; i &lt; numLevelsUse; ++i) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <a class="code hl_variable" href="class_m_g.html#ac2e993f7bc2bcd329e809a52ae86e068">bVectors</a>[i].SetValues(len, 0.0);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <a class="code hl_variable" href="class_m_g.html#a280726dae15d439be8a9cb858d251159">xVectors</a>[i].SetValues(len, 0.0);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <a class="code hl_variable" href="class_m_g.html#a4c9383836f14e4ac3d212a2796606111">wVectors</a>[i].SetValues(len, 0.0);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>}</div>
 <div class="ttc" id="aclass_m_g_html_a280726dae15d439be8a9cb858d251159"><div class="ttname"><a href="class_m_g.html#a280726dae15d439be8a9cb858d251159">MG::xVectors</a></div><div class="ttdeci">vector&lt; VEC &gt; xVectors</div><div class="ttdoc">solution vectors x at all levels</div><div class="ttdef"><b>Definition:</b> MG.hxx:42</div></div>
 <div class="ttc" id="aclass_m_g_html_a4c9383836f14e4ac3d212a2796606111"><div class="ttname"><a href="class_m_g.html#a4c9383836f14e4ac3d212a2796606111">MG::wVectors</a></div><div class="ttdeci">vector&lt; VEC &gt; wVectors</div><div class="ttdoc">work vectors w at all levels</div><div class="ttdef"><b>Definition:</b> MG.hxx:43</div></div>
 <div class="ttc" id="aclass_m_g_html_ac2e993f7bc2bcd329e809a52ae86e068"><div class="ttname"><a href="class_m_g.html#ac2e993f7bc2bcd329e809a52ae86e068">MG::bVectors</a></div><div class="ttdeci">vector&lt; VEC &gt; bVectors</div><div class="ttdoc">right-hand side vectors b at all levels</div><div class="ttdef"><b>Definition:</b> MG.hxx:41</div></div>
@@ -353,25 +353,25 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>numIter</b></td></tr>
 
 <p>Setup the <a class="el" href="class_a_m_g.html" title="Algebraic multigrid method.">AMG</a> method using coefficient matrix A. </p>
 <p >Allocate memory, setup multigrid hierarical structure of the linear system. </p>
-<div class="fragment"><div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>{</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="comment">// Set solver type</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    <a class="code hl_function" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a>(<a class="code hl_enumvalue" href="faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066">SOLType::MG</a>);</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="comment">// Allocate memory for temporary vectors</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        SetupOneLevel(<a class="code hl_variable" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>); <span class="comment">// TODO: Need to be replaced!</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    } <span class="keywordflow">catch</span> (std::bad_alloc &amp;ex) {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50a7ace9acfa2f982f46ee7e526c342bdb0">FaspRetCode::ERROR_AMG_SETUP</a>;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="comment">// Setup the coefficient matrix</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    this-&gt;A = &amp;<a class="code hl_variable" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="comment">// Print used parameters</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code hl_variable" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt; PRINT_MIN) <a class="code hl_function" href="class_s_o_l.html#a370fa587c28e987a35fc3da59676b6d6">PrintParam</a>(std::cout);</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>}</div>
+<div class="fragment"><div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>{</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="comment">// Set solver type</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <a class="code hl_function" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a>(<a class="code hl_enumvalue" href="faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066">SOLType::MG</a>);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="comment">// Allocate memory for temporary vectors</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        SetupOneLevel(<a class="code hl_variable" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>); <span class="comment">// TODO: Need to be replaced!</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    } <span class="keywordflow">catch</span> (std::bad_alloc &amp;ex) {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50a7ace9acfa2f982f46ee7e526c342bdb0">FaspRetCode::ERROR_AMG_SETUP</a>;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="comment">// Setup the coefficient matrix</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    this-&gt;A = &amp;<a class="code hl_variable" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">A</a>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="comment">// Print used parameters</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code hl_variable" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">verbose</a> &gt; PRINT_MIN) <a class="code hl_function" href="class_s_o_l.html#a370fa587c28e987a35fc3da59676b6d6">PrintParam</a>(std::cout);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
 <div class="ttc" id="a_ret_code_8hxx_html_aff468b46f5c4020989ad3bdbba54af50a7ace9acfa2f982f46ee7e526c342bdb0"><div class="ttname"><a href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50a7ace9acfa2f982f46ee7e526c342bdb0">ERROR_AMG_SETUP</a></div><div class="ttdeci">@ ERROR_AMG_SETUP</div><div class="ttdoc">AMG setup failed to complete.</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:44</div></div>
 <div class="ttc" id="a_ret_code_8hxx_html_aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8"><div class="ttname"><a href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">SUCCESS</a></div><div class="ttdeci">@ SUCCESS</div><div class="ttdoc">Everything is fine.</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:22</div></div>
 <div class="ttc" id="aclass_s_o_l_html_a370fa587c28e987a35fc3da59676b6d6"><div class="ttname"><a href="class_s_o_l.html#a370fa587c28e987a35fc3da59676b6d6">SOL::PrintParam</a></div><div class="ttdeci">void PrintParam(std::ostream &amp;out=std::cout) const</div><div class="ttdoc">Print parameters.</div><div class="ttdef"><b>Definition:</b> SOL.cxx:189</div></div>
