@@ -211,7 +211,7 @@ int main(int argc, char *args[])
         MatFree matfree((dim - 1) * (dim - 1), (dim - 1) * (dim - 1));
 
         // Setup preconditioner parameters
-        Identity pc; // pc = identity, no preconditioning used
+        Identity pcd; // no preconditioning used
 
         // Setup solver parameters
         class CG cg;
@@ -220,7 +220,7 @@ int main(int argc, char *args[])
         cg.SetRestart(20);
         cg.SetAbsTol(1e-12);
         cg.SetRelTol(1e-8);
-        cg.SetPC(pc);
+        cg.SetupPCD(pcd);
         cg.Setup(matfree);
 
         // Call CG method to solve Ax=b

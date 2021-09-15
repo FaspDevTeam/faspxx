@@ -10,8 +10,8 @@
  */
 
 // Sample usages:
-//   ./testPCG -maxIter 200 -minIter 0 -pcIter 1
-//   ./testPCG -maxIter 200 -minIter 200 -mat ../data/fdm_1023X1023.csr -pcIter 1
+//   ./testPCG -maxIter 200 -minIter 0 -pcdIter 1
+//   ./testPCG -maxIter 200 -minIter 200 -mat ../data/fdm_1023X1023.csr -pcdIter 1
 
 // FASPXX header files
 #include "CG.hxx"
@@ -36,8 +36,8 @@ int main(int argc, const char *args[])
     params.AddParam("-xin", "Initial guess for iteration", &xinFile);
 
     // Set solver and preconditioner parameters
-    SOLParams solParam, pcParam;
-    params.SetSOLParams(solParam, pcParam);
+    SOLParams solParam, pcdParam;
+    params.SetSOLParams(solParam, pcdParam);
 
     // Parse and print used parameters
     params.Parse();
@@ -68,12 +68,12 @@ int main(int argc, const char *args[])
     timer.StopInfo("Reading Ax = b");
 
     // Setup preconditioner parameters
-    class Jacobi pc;
-    pc.SetOutput(PRINT_NONE);
-    pc.SetWeight(pcParam.weight);   // weight for weighted Jacobi
-    pc.SetMaxIter(pcParam.maxIter); // number of iterations
-    pc.SetMinIter(pcParam.maxIter); // for preconditioning, use minIter = maxIter!
-    pc.Setup(mat); // setup preconditioner: a different matrix could be used!
+    class Jacobi pcd;
+    pcd.SetOutput(PRINT_NONE);
+    pcd.SetWeight(pcdParam.weight);   // weight for weighted Jacobi
+    pcd.SetMaxIter(pcdParam.maxIter); // number of iterations
+    pcd.SetMinIter(pcdParam.maxIter); // for preconditioning, use minIter = maxIter!
+    pcd.Setup(mat); // setup preconditioner: a different matrix could be used!
 
     // Setup solver parameters
     class CG solver;
@@ -84,7 +84,7 @@ int main(int argc, const char *args[])
     solver.SetRestart(solParam.restart);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
-    solver.SetPC(pc);
+    solver.SetupPCD(pcd);
     solver.Setup(mat);
 
     // Solve the linear system using CG

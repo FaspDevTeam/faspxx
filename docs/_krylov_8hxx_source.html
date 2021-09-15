@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.5.0 July/18/2020</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.4 Sep/15/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -80,7 +80,7 @@ $(function() {
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="_ret_code_8hxx.html">RetCode.hxx</a>&quot;</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="_s_o_l_8hxx.html">SOL.hxx</a>&quot;</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><a class="code hl_enumeration" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="_krylov_8hxx.html#a417b439a529b9cb8f53c0e2e6fa6ad93">Krylov</a>(<a class="code hl_class" href="class_l_o_p.html">LOP</a> &amp;A, <a class="code hl_class" href="class_v_e_c.html">VEC</a> &amp;b, <a class="code hl_class" href="class_v_e_c.html">VEC</a> &amp;x, <a class="code hl_class" href="class_s_o_l.html">SOL</a> &amp;pc, <a class="code hl_struct" href="struct_s_o_l_params.html">SOLParams</a> &amp;params);</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><a class="code hl_enumeration" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="_krylov_8hxx.html#acf9eaf26a85da6bd52ebe7c8c27432df">Krylov</a>(<a class="code hl_class" href="class_l_o_p.html">LOP</a> &amp;A, <a class="code hl_class" href="class_v_e_c.html">VEC</a> &amp;b, <a class="code hl_class" href="class_v_e_c.html">VEC</a> &amp;x, <a class="code hl_class" href="class_s_o_l.html">SOL</a> &amp;pcd, <a class="code hl_struct" href="struct_s_o_l_params.html">SOLParams</a> &amp;params);</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#endif </span><span class="comment">// __KRYLOV_HEADER__</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
@@ -90,12 +90,12 @@ $(function() {
 <div class="ttc" id="a_bi_c_g_stab_8hxx_html"><div class="ttname"><a href="_bi_c_g_stab_8hxx.html">BiCGStab.hxx</a></div><div class="ttdoc">Preconditioned BiCGStab class declaration.</div></div>
 <div class="ttc" id="a_c_g_8hxx_html"><div class="ttname"><a href="_c_g_8hxx.html">CG.hxx</a></div><div class="ttdoc">Preconditioned CG class declaration.</div></div>
 <div class="ttc" id="a_iter_8hxx_html"><div class="ttname"><a href="_iter_8hxx.html">Iter.hxx</a></div><div class="ttdoc">Simple iterative methods declaration.</div></div>
-<div class="ttc" id="a_krylov_8hxx_html_a417b439a529b9cb8f53c0e2e6fa6ad93"><div class="ttname"><a href="_krylov_8hxx.html#a417b439a529b9cb8f53c0e2e6fa6ad93">Krylov</a></div><div class="ttdeci">FaspRetCode Krylov(LOP &amp;A, VEC &amp;b, VEC &amp;x, SOL &amp;pc, SOLParams &amp;params)</div><div class="ttdoc">General interface to Krylov subspace methods.</div><div class="ttdef"><b>Definition:</b> Krylov.cxx:17</div></div>
+<div class="ttc" id="a_krylov_8hxx_html_acf9eaf26a85da6bd52ebe7c8c27432df"><div class="ttname"><a href="_krylov_8hxx.html#acf9eaf26a85da6bd52ebe7c8c27432df">Krylov</a></div><div class="ttdeci">FaspRetCode Krylov(LOP &amp;A, VEC &amp;b, VEC &amp;x, SOL &amp;pcd, SOLParams &amp;params)</div><div class="ttdoc">General interface to Krylov subspace methods.</div><div class="ttdef"><b>Definition:</b> Krylov.cxx:17</div></div>
 <div class="ttc" id="a_ret_code_8hxx_html"><div class="ttname"><a href="_ret_code_8hxx.html">RetCode.hxx</a></div><div class="ttdoc">Decode return code into a readable string.</div></div>
 <div class="ttc" id="a_ret_code_8hxx_html_aff468b46f5c4020989ad3bdbba54af50"><div class="ttname"><a href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a></div><div class="ttdeci">FaspRetCode</div><div class="ttdoc">Return code definition.</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:21</div></div>
 <div class="ttc" id="a_s_o_l_8hxx_html"><div class="ttname"><a href="_s_o_l_8hxx.html">SOL.hxx</a></div><div class="ttdoc">Iterative solver class declaration.</div></div>
 <div class="ttc" id="aclass_l_o_p_html"><div class="ttname"><a href="class_l_o_p.html">LOP</a></div><div class="ttdoc">Linear operator virtual class.</div><div class="ttdef"><b>Definition:</b> LOP.hxx:23</div></div>
-<div class="ttc" id="aclass_s_o_l_html"><div class="ttname"><a href="class_s_o_l.html">SOL</a></div><div class="ttdoc">Base class for iterative solvers.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:24</div></div>
+<div class="ttc" id="aclass_s_o_l_html"><div class="ttname"><a href="class_s_o_l.html">SOL</a></div><div class="ttdoc">Base class for iterative solvers.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:25</div></div>
 <div class="ttc" id="aclass_v_e_c_html"><div class="ttname"><a href="class_v_e_c.html">VEC</a></div><div class="ttdoc">General vector class.</div><div class="ttdef"><b>Definition:</b> VEC.hxx:25</div></div>
 <div class="ttc" id="astruct_s_o_l_params_html"><div class="ttname"><a href="struct_s_o_l_params.html">SOLParams</a></div><div class="ttdoc">Iterative solver parameters.</div><div class="ttdef"><b>Definition:</b> Param.hxx:36</div></div>
 </div><!-- fragment --></div><!-- contents -->

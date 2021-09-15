@@ -73,7 +73,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 
     // Preconditioned search direction
     zk.SetValues(len, 0.0); // initialize zk = 0
-    pc->Solve(rk, zk);      // preconditioning: B(r_k) -> z_k
+    pcd->Solve(rk, zk);     // preconditioning: B(r_k) -> z_k
 
     // Prepare for the main loop
     pk   = zk;
@@ -84,9 +84,10 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 
         // Start checking from minIter instead of 0
         if (numIter == params.minIter) {
-            resAbs = rk.Norm2();
-            denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
-            resRel = resAbs / denAbs;
+            resAbs    = rk.Norm2();
+            resAbsOld = resAbs; // save initial residual
+            denAbs    = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
+            resRel    = resAbs / denAbs;
             if (resRel < params.relTol || resAbs < params.absTol) break;
         }
 
@@ -214,7 +215,7 @@ FaspRetCode CG::Solve(const VEC &b, VEC &x)
 
             // Apply preconditioner z_k = B(r_k)
             zk.SetValues(len, 0.0);
-            pc->Solve(rk, zk);
+            pcd->Solve(rk, zk);
 
             // Compute beta_k = (z_k, r_k) / (z_{k-1}, r_{k-1})
             tmpb = zk.Dot(rk);

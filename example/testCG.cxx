@@ -68,7 +68,7 @@ int main(int argc, const char *args[])
     timer.StopInfo("Reading Ax = b");
 
     // Setup preconditioner parameters
-    Identity pc; // pc = identity, no preconditioning used
+    Identity pcd; // no preconditioning used
 
     // Setup solver parameters
     class CG solver;
@@ -79,7 +79,7 @@ int main(int argc, const char *args[])
     solver.SetRestart(solParam.restart);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
-    solver.SetPC(pc);
+    solver.SetupPCD(pcd);
     solver.Setup(mat);
 
     // Solve the linear system using CG

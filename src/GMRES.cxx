@@ -149,7 +149,7 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x)
 
             // Apply preconditioner
             tmp.SetValues(len, 0.0);
-            pc->Solve(V[count_1], tmp);
+            pcd->Solve(V[count_1], tmp);
 
             A->Apply(tmp, V[count]);
 
@@ -213,7 +213,7 @@ FaspRetCode GMRES::RSolve(const VEC &b, VEC &x)
 
         // Apply preconditioner
         tmp.SetValues(len, 0.0);
-        pc->Solve(wk, tmp);
+        pcd->Solve(wk, tmp);
 
         // Update iterative solution
         x.AXPY(1.0, tmp);
@@ -290,7 +290,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x)
 
     // Apply preconditioner
     V[0].SetValues(len, 0.0);
-    pc->Solve(tmp, V[0]);
+    pcd->Solve(tmp, V[0]);
     resAbs = V[0].Norm2();
     denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
 
@@ -323,7 +323,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x)
 
             A->Apply(V[count_1], tmp);
             V[count].SetValues(len, 0.0);
-            pc->Solve(tmp, V[count]); // apply preconditioner
+            pcd->Solve(tmp, V[count]); // apply preconditioner
 
             // Modified Gram-Schmidt orthogonalization
             for (int j = 0; j < count; ++j) {
@@ -404,7 +404,7 @@ FaspRetCode GMRES::LSolve(const VEC &b, VEC &x)
 
         // Apply preconditioner
         V[0].SetValues(len, 0.0);
-        pc->Solve(tmp, V[0]);
+        pcd->Solve(tmp, V[0]);
 
         // Check whether converged
         resAbs = V[0].Norm2();

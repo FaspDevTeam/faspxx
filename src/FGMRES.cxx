@@ -156,7 +156,7 @@ FaspRetCode FGMRES::Solve(const VEC &b, VEC &x)
 
             // Apply preconditioner
             tmp.SetValues(len, 0.0);
-            pc->Solve(V[count_1], Z[count_1]);
+            pcd->Solve(V[count_1], Z[count_1]);
 
             A->Apply(Z[count_1], V[count]);
 

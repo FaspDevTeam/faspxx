@@ -21,11 +21,12 @@
 #include "faspxx.hxx"
 
 /// Base class for iterative solvers.
-class SOL {
+class SOL
+{
 
 protected:
     const LOP *A;       ///< Coefficient matrix in Ax=b
-    SOL *      pc;      ///< Preconditioner for this solver
+    SOL *      pcd;     ///< Preconditioner for this solver
     double     norm2;   ///< Euclidean norm
     double     normInf; ///< Infinity norm
     int        numIter; ///< Number of iterations when exit
@@ -44,7 +45,7 @@ public:
     /// Default constructor.
     SOL()
         : A(nullptr)
-        , pc(nullptr)
+        , pcd(nullptr)
         , norm2(LARGE)
         , normInf(LARGE)
         , numIter(0){};
@@ -112,13 +113,14 @@ public:
     void PrintTime(const double duration, std::ostream &out = std::cout) const;
 
     /// Setup preconditioner operator.
-    virtual void SetPC(SOL &pc);
+    virtual void SetupPCD(SOL &pc);
 
     /// Setup the iterative method using linear opeartor.
     virtual FaspRetCode Setup(const LOP &A) { FASPXX_ABORT("Should be over-written!"); }
 
     /// Solve Ax=b using the iterative method.
-    virtual FaspRetCode Solve(const VEC &b, VEC &x) {
+    virtual FaspRetCode Solve(const VEC &b, VEC &x)
+    {
         FASPXX_ABORT("Should be over-written!");
     }
 

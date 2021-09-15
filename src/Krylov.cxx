@@ -14,7 +14,7 @@
 #include "SOL.hxx"
 
 /// All supported Krylov methods can be accessed using this interface
-FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pc, SOLParams &params)
+FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pcd, SOLParams &params)
 {
     SOL solver;
     solver.SetSolTypeFromName(params); // get solver type
@@ -42,7 +42,7 @@ FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pc, SOLParams &params)
     sol->SetAbsTol(params.absTol);
     sol->SetSafeIter(params.safeIter);
     sol->Setup(A);
-    sol->SetPC(pc);
+    sol->SetupPCD(pcd);
 
     return sol->Solve(b, x);
 }

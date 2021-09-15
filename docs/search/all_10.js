@@ -5,7 +5,7 @@ var searchData=
   ['parameters_2',['Parameters',['../class_parameters.html',1,'Parameters'],['../class_parameters.html#a5a3bca0c54addd14f8b04a210c3a6ffb',1,'Parameters::Parameters()']]],
   ['params_3',['params',['../class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917',1,'SOL']]],
   ['parse_4',['Parse',['../class_parameters.html#af714e7650f23ea2287060a515f661ac9',1,'Parameters']]],
-  ['pc_5',['pc',['../class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0',1,'SOL']]],
+  ['pcd_5',['pcd',['../class_s_o_l.html#a81ff7cd858cdf6ec719cc75944655ec8',1,'SOL']]],
   ['pointwisedivide_6',['PointwiseDivide',['../class_v_e_c.html#a72c9a77985beffe9eba16f2e51166715',1,'VEC']]],
   ['pointwisemult_7',['PointwiseMult',['../class_v_e_c.html#aceb2d07eb6506218f8ad78ea4c884899',1,'VEC']]],
   ['postsolvers_8',['postSolvers',['../class_m_g.html#a1cc66fc37b6002f89c273ccfc9607aba',1,'MG']]],

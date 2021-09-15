@@ -242,12 +242,12 @@ void Parameters::SetSOLParams(SOLParams &solParam)
 }
 
 /// Set SOLParams for solvers and preconditioners.
-void Parameters::SetSOLParams(SOLParams &solParam, SOLParams &pcParam)
+void Parameters::SetSOLParams(SOLParams &solParam, SOLParams &pcdParam)
 {
     SetSOLParams(solParam);
 
-    this->AddParam("-pcIter", "Preconditioner steps", &pcParam.maxIter);
-    this->AddParam("-pcWeight", "Preconditioner weigth", &pcParam.weight);
+    this->AddParam("-pcdIter", "Preconditioner steps", &pcdParam.maxIter);
+    this->AddParam("-pcdWeight", "Preconditioner weigth", &pcdParam.weight);
 }
 
 void Parameters::PrintFileParams(std::ostream &out) const

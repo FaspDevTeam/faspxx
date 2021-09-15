@@ -48,7 +48,7 @@ struct SOLParams {
     SOLParams()
         : type(SOLType::CG)
         , algName("cg")
-        , maxIter(100)
+        , maxIter(1)
         , minIter(0)
         , safeIter(5000)
         , restart(30)
@@ -181,7 +181,7 @@ public:
     void SetSOLParams(SOLParams &solParam);
 
     /// Set SOLParams for solvers and preconditioners.
-    void SetSOLParams(SOLParams &solParam, SOLParams &pcParam);
+    void SetSOLParams(SOLParams &solParam, SOLParams &pcdParam);
 
     /// Print original params (before merge or parse) in user program.
     void PrintUserParams(std::ostream &out) const;

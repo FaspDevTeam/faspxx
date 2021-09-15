@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.5.0 July/18/2020</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.4 Sep/15/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -106,9 +106,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a522a8ec6d3001947d26434ea583443d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameters.html#a522a8ec6d3001947d26434ea583443d0">SetSOLParams</a> (<a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;solParam)</td></tr>
 <tr class="memdesc:a522a8ec6d3001947d26434ea583443d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="struct_s_o_l_params.html" title="Iterative solver parameters.">SOLParams</a> for solvers.  <a href="class_parameters.html#a522a8ec6d3001947d26434ea583443d0">More...</a><br /></td></tr>
 <tr class="separator:a522a8ec6d3001947d26434ea583443d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d79fdf4f87b80bf42844d6bfa3ff15a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameters.html#a9d79fdf4f87b80bf42844d6bfa3ff15a">SetSOLParams</a> (<a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;solParam, <a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;pcParam)</td></tr>
-<tr class="memdesc:a9d79fdf4f87b80bf42844d6bfa3ff15a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="struct_s_o_l_params.html" title="Iterative solver parameters.">SOLParams</a> for solvers and preconditioners.  <a href="class_parameters.html#a9d79fdf4f87b80bf42844d6bfa3ff15a">More...</a><br /></td></tr>
-<tr class="separator:a9d79fdf4f87b80bf42844d6bfa3ff15a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c89db0f62bb883b3308012906a0ccd7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameters.html#a3c89db0f62bb883b3308012906a0ccd7">SetSOLParams</a> (<a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;solParam, <a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;pcdParam)</td></tr>
+<tr class="memdesc:a3c89db0f62bb883b3308012906a0ccd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="struct_s_o_l_params.html" title="Iterative solver parameters.">SOLParams</a> for solvers and preconditioners.  <a href="class_parameters.html#a3c89db0f62bb883b3308012906a0ccd7">More...</a><br /></td></tr>
+<tr class="separator:a3c89db0f62bb883b3308012906a0ccd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adaf95dab05f8b4b5fceb8e69c053178f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_parameters.html#adaf95dab05f8b4b5fceb8e69c053178f">PrintUserParams</a> (std::ostream &amp;out) const</td></tr>
 <tr class="memdesc:adaf95dab05f8b4b5fceb8e69c053178f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print original params (before merge or parse) in user program.  <a href="class_parameters.html#adaf95dab05f8b4b5fceb8e69c053178f">More...</a><br /></td></tr>
 <tr class="separator:adaf95dab05f8b4b5fceb8e69c053178f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -693,8 +693,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9d79fdf4f87b80bf42844d6bfa3ff15a" name="a9d79fdf4f87b80bf42844d6bfa3ff15a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9d79fdf4f87b80bf42844d6bfa3ff15a">&#9670;&nbsp;</a></span>SetSOLParams() <span class="overload">[2/2]</span></h2>
+<a id="a3c89db0f62bb883b3308012906a0ccd7" name="a3c89db0f62bb883b3308012906a0ccd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c89db0f62bb883b3308012906a0ccd7">&#9670;&nbsp;</a></span>SetSOLParams() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -709,7 +709,7 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="struct_s_o_l_params.html">SOLParams</a> &amp;&#160;</td>
-          <td class="paramname"><em>pcParam</em>&#160;</td>
+          <td class="paramname"><em>pcdParam</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -723,8 +723,8 @@ Public Member Functions</h2></td></tr>
 <div class="fragment"><div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>{</div>
 <div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    <a class="code hl_function" href="class_parameters.html#a522a8ec6d3001947d26434ea583443d0">SetSOLParams</a>(solParam);</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    this-&gt;<a class="code hl_function" href="class_parameters.html#a040cc9ea007e1961b38be10304465aa3">AddParam</a>(<span class="stringliteral">&quot;-pcIter&quot;</span>, <span class="stringliteral">&quot;Preconditioner steps&quot;</span>, &amp;pcParam.<a class="code hl_variable" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">maxIter</a>);</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    this-&gt;<a class="code hl_function" href="class_parameters.html#a040cc9ea007e1961b38be10304465aa3">AddParam</a>(<span class="stringliteral">&quot;-pcWeight&quot;</span>, <span class="stringliteral">&quot;Preconditioner weigth&quot;</span>, &amp;pcParam.<a class="code hl_variable" href="struct_s_o_l_params.html#a804b595515b17cbd280eb86124d73a07">weight</a>);</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>    this-&gt;<a class="code hl_function" href="class_parameters.html#a040cc9ea007e1961b38be10304465aa3">AddParam</a>(<span class="stringliteral">&quot;-pcdIter&quot;</span>, <span class="stringliteral">&quot;Preconditioner steps&quot;</span>, &amp;pcdParam.<a class="code hl_variable" href="struct_s_o_l_params.html#ab7c9313d2ab03a1decaf566996904756">maxIter</a>);</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    this-&gt;<a class="code hl_function" href="class_parameters.html#a040cc9ea007e1961b38be10304465aa3">AddParam</a>(<span class="stringliteral">&quot;-pcdWeight&quot;</span>, <span class="stringliteral">&quot;Preconditioner weigth&quot;</span>, &amp;pcdParam.<a class="code hl_variable" href="struct_s_o_l_params.html#a804b595515b17cbd280eb86124d73a07">weight</a>);</div>
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>}</div>
 <div class="ttc" id="aclass_parameters_html_a522a8ec6d3001947d26434ea583443d0"><div class="ttname"><a href="class_parameters.html#a522a8ec6d3001947d26434ea583443d0">Parameters::SetSOLParams</a></div><div class="ttdeci">void SetSOLParams(SOLParams &amp;solParam)</div><div class="ttdoc">Set SOLParams for solvers.</div><div class="ttdef"><b>Definition:</b> Param.cxx:233</div></div>
 <div class="ttc" id="astruct_s_o_l_params_html_a804b595515b17cbd280eb86124d73a07"><div class="ttname"><a href="struct_s_o_l_params.html#a804b595515b17cbd280eb86124d73a07">SOLParams::weight</a></div><div class="ttdeci">double weight</div><div class="ttdoc">Weight for correction schemes.</div><div class="ttdef"><b>Definition:</b> Param.hxx:45</div></div>

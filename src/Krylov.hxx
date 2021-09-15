@@ -20,7 +20,7 @@
 #include "SOL.hxx"
 
 /// General interface to Krylov subspace methods.
-FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pc, SOLParams &params);
+FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pcd, SOLParams &params);
 
 #endif // __KRYLOV_HEADER__
 

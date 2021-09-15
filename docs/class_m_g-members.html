@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.5.0 July/18/2020</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.4 Sep/15/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -83,7 +83,7 @@ $(function() {
   <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">normInf</a></td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a></td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a></td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#ad44fa09bb5bbba4f7d9a13c45c49cdb0">pc</a></td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#a81ff7cd858cdf6ec719cc75944655ec8">pcd</a></td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_m_g.html#a1cc66fc37b6002f89c273ccfc9607aba">postSolvers</a></td><td class="entry"><a class="el" href="class_m_g.html">MG</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_m_g.html#a784fe4a632b4068b3b9a5d1485d045c8">preSolvers</a></td><td class="entry"><a class="el" href="class_m_g.html">MG</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#ad19901eb68a47c238247514a9d9e88b3">PrintFinal</a>(const int &amp;iter, const double &amp;resRel, const double &amp;resAbs, const double &amp;ratio, std::ostream &amp;out=std::cout) const</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
@@ -95,13 +95,13 @@ $(function() {
   <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#a573cc184cb2eb2852d0ff54ca0e90cb9">SetMaxIter</a>(int maxIter)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#adaa2d6da6c4d5c8ee4a99444c63acfb3">SetMinIter</a>(int minIter)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#abc657acf5e225b97cb5858634a7dad59">SetOutput</a>(Output verbose)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#a47077df64e53b5c79001e42075d82d09">SetPC</a>(SOL &amp;pc)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#a7b9363e587994fe08a73f7aad8731387">SetRelTol</a>(double relTol)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#aabd4ce20909487473b8651743e7940c2">SetRestart</a>(int restart)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#a54c5b76ede7b18f03b109b27c72801bb">SetSafeIter</a>(int safeIter)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a>(SOLType solver)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#a03cc0269ea99838cf3089ff0f789cf78">SetSolTypeFromName</a>(SOLParams &amp;params)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#a24c24fa6860e8860902557d2f89f4218">Setup</a>(const LOP &amp;A)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#a7b9363e587994fe08a73f7aad8731387">SetRelTol</a>(double relTol)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#aabd4ce20909487473b8651743e7940c2">SetRestart</a>(int restart)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#a54c5b76ede7b18f03b109b27c72801bb">SetSafeIter</a>(int safeIter)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a>(SOLType solver)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#a03cc0269ea99838cf3089ff0f789cf78">SetSolTypeFromName</a>(SOLParams &amp;params)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#a24c24fa6860e8860902557d2f89f4218">Setup</a>(const LOP &amp;A)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">inline</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_s_o_l.html#a859e7be928da5182940e27039b0707f8">SetupPCD</a>(SOL &amp;pc)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#aed64eaacd3992a2e4c349ee37cdeaf6f">SetWeight</a>(double alpha)</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_m_g.html#a3a0f086ee4d689b19b68f41399e1e52d">sizes</a></td><td class="entry"><a class="el" href="class_m_g.html">MG</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="class_s_o_l.html#ac6a8c3742d0e13589722d93556120aa4">SOL</a>()</td><td class="entry"><a class="el" href="class_s_o_l.html">SOL</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>

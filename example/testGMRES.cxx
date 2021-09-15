@@ -63,7 +63,7 @@ int main(int argc, const char *args[])
     timer.StopInfo("Reading Ax = b");
 
     // Setup preconditioner parameters
-    Identity pc; // pc = identity, no preconditioning used
+    Identity pcd; // no preconditioning used
 
     // Setup GMRES parameters
     class GMRES solver;
@@ -75,8 +75,7 @@ int main(int argc, const char *args[])
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
     solver.SetMaxMinRestart(solParam.restart, 5);
-    solver.SetPC(pc);
-
+    solver.SetupPCD(pcd);
     solver.Setup(mat);
 
     VEC x;
@@ -112,8 +111,7 @@ int main(int argc, const char *args[])
     fsolver.SetRelTol(solParam.relTol);
     fsolver.SetAbsTol(solParam.absTol);
     fsolver.SetMaxMinRestart(solParam.restart, 5);
-    fsolver.SetPC(pc);
-
+    fsolver.SetupPCD(pcd);
     fsolver.Setup(mat);
 
     x.SetValues(mcol, 1.0); // If initial guess not specified, set x0 = 1.0
