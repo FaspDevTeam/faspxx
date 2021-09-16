@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.4 Sep/15/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.5 Sep/16/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -122,9 +122,14 @@ $(function() {
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
 <div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#endif </span><span class="comment">/* end if for __MG_HEADER__ */</span><span class="preprocessor"></span></div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">/*---------------------------------*/</span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">/*--        End of File          --*/</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">/*---------------------------------*/</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="comment">/*  Brief Change History of This File                                         */</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">/*  Author              Date             Actions                              */</span></div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">/*  Chensong Zhang      Sep/12/2021      Create file                          */</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">/*  Chensong Zhang      Sep/16/2021      Restructure file                     */</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
 <div class="ttc" id="a_error_log_8hxx_html"><div class="ttname"><a href="_error_log_8hxx.html">ErrorLog.hxx</a></div><div class="ttdoc">Logging error and warning messages.</div></div>
 <div class="ttc" id="a_l_o_p_8hxx_html"><div class="ttname"><a href="_l_o_p_8hxx.html">LOP.hxx</a></div><div class="ttdoc">Linear operator class declaration.</div></div>
 <div class="ttc" id="a_m_a_t_8hxx_html"><div class="ttname"><a href="_m_a_t_8hxx.html">MAT.hxx</a></div><div class="ttdoc">Matrix class declaration.</div></div>
@@ -137,14 +142,14 @@ $(function() {
 <div class="ttc" id="aclass_m_g_html_a3c5d359adaefcccea4b3c30dca82de88"><div class="ttname"><a href="class_m_g.html#a3c5d359adaefcccea4b3c30dca82de88">MG::MG</a></div><div class="ttdeci">MG()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> MG.hxx:54</div></div>
 <div class="ttc" id="aclass_m_g_html_a4c9383836f14e4ac3d212a2796606111"><div class="ttname"><a href="class_m_g.html#a4c9383836f14e4ac3d212a2796606111">MG::wVectors</a></div><div class="ttdeci">vector&lt; VEC &gt; wVectors</div><div class="ttdoc">work vectors w at all levels</div><div class="ttdef"><b>Definition:</b> MG.hxx:43</div></div>
 <div class="ttc" id="aclass_m_g_html_a784fe4a632b4068b3b9a5d1485d045c8"><div class="ttname"><a href="class_m_g.html#a784fe4a632b4068b3b9a5d1485d045c8">MG::preSolvers</a></div><div class="ttdeci">vector&lt; SOL * &gt; preSolvers</div><div class="ttdoc">pointers to presmoothers at all levels</div><div class="ttdef"><b>Definition:</b> MG.hxx:45</div></div>
-<div class="ttc" id="aclass_m_g_html_a83631a5125e05362273060efc7333f04"><div class="ttname"><a href="class_m_g.html#a83631a5125e05362273060efc7333f04">MG::Clean</a></div><div class="ttdeci">void Clean() override</div><div class="ttdoc">Clean up MG data allocated during Setup.</div><div class="ttdef"><b>Definition:</b> MG.cxx:129</div></div>
+<div class="ttc" id="aclass_m_g_html_a83631a5125e05362273060efc7333f04"><div class="ttname"><a href="class_m_g.html#a83631a5125e05362273060efc7333f04">MG::Clean</a></div><div class="ttdeci">void Clean() override</div><div class="ttdoc">Clean up MG data allocated during Setup.</div><div class="ttdef"><b>Definition:</b> MG.cxx:133</div></div>
 <div class="ttc" id="aclass_m_g_html_a88b41c22ef97918e46e4850cec831d0c"><div class="ttname"><a href="class_m_g.html#a88b41c22ef97918e46e4850cec831d0c">MG::coarsestSolver</a></div><div class="ttdeci">SOL * coarsestSolver</div><div class="ttdoc">pointer to solver at coarsest level</div><div class="ttdef"><b>Definition:</b> MG.hxx:47</div></div>
 <div class="ttc" id="aclass_m_g_html_a8d2cb925082192bb8a8f0aca660fe761"><div class="ttname"><a href="class_m_g.html#a8d2cb925082192bb8a8f0aca660fe761">MG::~MG</a></div><div class="ttdeci">~MG()=default</div><div class="ttdoc">Default destructor.</div></div>
 <div class="ttc" id="aclass_m_g_html_ab9b28185eb6ea050f143410c27338f09"><div class="ttname"><a href="class_m_g.html#ab9b28185eb6ea050f143410c27338f09">MG::cycles</a></div><div class="ttdeci">vector&lt; unsigned &gt; cycles</div><div class="ttdoc">number of cycles at all levels</div><div class="ttdef"><b>Definition:</b> MG.hxx:40</div></div>
 <div class="ttc" id="aclass_m_g_html_ac2e993f7bc2bcd329e809a52ae86e068"><div class="ttname"><a href="class_m_g.html#ac2e993f7bc2bcd329e809a52ae86e068">MG::bVectors</a></div><div class="ttdeci">vector&lt; VEC &gt; bVectors</div><div class="ttdoc">right-hand side vectors b at all levels</div><div class="ttdef"><b>Definition:</b> MG.hxx:41</div></div>
 <div class="ttc" id="aclass_m_g_html_ac67507fce3dd147d59157a8fb1a6430d"><div class="ttname"><a href="class_m_g.html#ac67507fce3dd147d59157a8fb1a6430d">MG::Solve</a></div><div class="ttdeci">FaspRetCode Solve(const VEC &amp;b, VEC &amp;x) override</div><div class="ttdoc">Solve Ax=b using the MG method.</div><div class="ttdef"><b>Definition:</b> MG.cxx:75</div></div>
 <div class="ttc" id="aclass_s_o_l_html"><div class="ttname"><a href="class_s_o_l.html">SOL</a></div><div class="ttdoc">Base class for iterative solvers.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:25</div></div>
-<div class="ttc" id="aclass_v_e_c_html"><div class="ttname"><a href="class_v_e_c.html">VEC</a></div><div class="ttdoc">General vector class.</div><div class="ttdef"><b>Definition:</b> VEC.hxx:25</div></div>
+<div class="ttc" id="aclass_v_e_c_html"><div class="ttname"><a href="class_v_e_c.html">VEC</a></div><div class="ttdoc">General vector class.</div><div class="ttdef"><b>Definition:</b> VEC.hxx:26</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

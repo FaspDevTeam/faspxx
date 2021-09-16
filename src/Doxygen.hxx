@@ -1,4 +1,4 @@
-/*! \file    doxygen.hxx
+/*! \file    Doxygen.hxx
  *  \brief   Main page for Doxygen documentation
  *  \author  Chensong Zhang
  *  \date    Sep/29/2019
@@ -10,25 +10,25 @@
  */
 
 #ifndef __DOXYGEN_HXX__ /*-- allow multiple inclusions --*/
-#define __DOXYGEN_HXX__ /**< indicate doxygen.hxx has been included before */
+#define __DOXYGEN_HXX__ /**< indicate Doxygen.hxx has been included before */
 
 /** \mainpage Introduction
- *
- * This software distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
  *
  * The FASPxx is a C++ package designed for developing parallel iterative solvers
  * and preconditioners for PDEs and systems of PDEs. The main components of the
  * package are standard Krylov methods, algebraic multigrid methods, geometric
  * multigrid methods, Schwarz methods, and incomplete factorization methods.
  *
+ * This software distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+ *
  */
 
 /**
  * \page download How to obtain FASP++
  *
- * TBA
+ * The code is freely available on GitHub https://github.com/FaspDevTeam/faspxx.
  *
  */
 
@@ -45,6 +45,14 @@
  *
  * > $ make
  *
+ * You may config with different cmake options; for example:
+ * 
+ * > $ cmake -DCMAKE_BUILD_TYPE=Debug .             // build in Debug configuration
+ * 
+ * > $ cmake -DCMAKE_BUILD_TYPE=Debug -DGTEST=ON .  // build with GTEST support
+ * 
+ * > $ cmake -DCMAKE_VERBOSE_MAKEFILE=ON .          // build with verbose on
+ * 
  */
 
 /**
@@ -54,7 +62,7 @@
  *
  * - Zhang, Chensong (AMSS, Chinese Academy of Sciences, China)
  *
- * Current active developers (in alphabetic order):
+ * Developers (in alphabetic order):
  *
  * - Fan, Ronghong (AMSS, Chinese Academy of Sciences, China)
  *
@@ -78,6 +86,11 @@
 
 #endif /* end if for __DOXYGEN_HXX__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Chensong Zhang      Sep/29/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

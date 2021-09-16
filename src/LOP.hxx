@@ -66,18 +66,18 @@ public:
     };
 };
 
-/*! \class IdentityOper
+/*! \class IdentityOp
  *  \brief Identity operator.
  */
-class IdentityOper : public LOP
+class IdentityOp : public LOP
 {
 
 public:
     /// Default constructor
-    IdentityOper() = default;
+    IdentityOp() = default;
 
     /// Default destructor
-    ~IdentityOper() = default;
+    ~IdentityOp() = default;
 
     /// Iterator
     void Apply(const VEC &b, VEC &x) const override;
@@ -85,6 +85,11 @@ public:
 
 #endif /* end if for __LOP_HEADER__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Chensong Zhang      Sep/27/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

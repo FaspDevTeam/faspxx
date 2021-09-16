@@ -13,8 +13,8 @@
 #define __VECUTIL_HXX__ /**< indicate VECUtil.hxx has been included before */
 
 // FASPXX header files
+#include "Faspxx.hxx"
 #include "VEC.hxx"
-#include "faspxx.hxx"
 
 /// Check whether the size of VEC object is zero.
 FaspRetCode CheckVECSize(const VEC &v);
@@ -30,6 +30,11 @@ FaspRetCode CheckVECZero(const VEC &v, const DBL tol = SMALL_TOL);
 
 #endif /* end if for __VECUTIL_HXX__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Sep/24/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

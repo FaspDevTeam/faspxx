@@ -20,6 +20,9 @@ typedef unsigned long long uint64; ///< Unsigned long long int
 #include <iostream>
 #include <string>
 
+// FASPXX header files
+#include "Faspxx.hxx"
+
 /*! \class GetWallTime
  *  \brief Get elapsed wall-time in millisecond
  *
@@ -86,6 +89,11 @@ public:
 
 #endif /*-- end if for __TIMING_HEADER__ --*/
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Chensong Zhang      Sep/24/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

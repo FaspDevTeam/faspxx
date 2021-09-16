@@ -1,7 +1,7 @@
 /*! \file    testAMG.cxx
  *  \brief   Test performance of AMG method
  *  \author  Chensong Zhang
- *  \date    Oct/12/2021
+ *  \date    Sep/12/2021
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2021--present by the FASP++ team. All rights reserved.
@@ -86,6 +86,11 @@ int main(int argc, const char *args[])
     return retCode;
 }
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Chensong Zhang      Sep/12/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

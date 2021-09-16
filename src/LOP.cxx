@@ -49,8 +49,13 @@ INT LOP::GetRowSize() const { return this->nrow; }
 INT LOP::GetColSize() const { return this->mcol; }
 
 /// Identity operator.
-void IdentityOper::Apply(const VEC &b, VEC &x) const { x = b; }
+void IdentityOp::Apply(const VEC &b, VEC &x) const { x = b; }
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Chensong Zhang      Oct/27/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

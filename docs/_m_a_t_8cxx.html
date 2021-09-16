@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.4 Sep/15/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.5 Sep/16/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -132,15 +132,15 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a id="l00862" name="l00862"></a><span class="lineno">  862</span>    out.open(filename);</div>
 <div class="line"><a id="l00863" name="l00863"></a><span class="lineno">  863</span> </div>
 <div class="line"><a id="l00864" name="l00864"></a><span class="lineno">  864</span>    out &lt;&lt; mat.<a class="code hl_variable" href="class_l_o_p.html#a041656000dab81274b9c852e7413f887">nrow</a> &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; mat.<a class="code hl_variable" href="class_l_o_p.html#a300365edbf5682562c60fdba857e769f">mcol</a> &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; mat.nnz &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> j = 0; j &lt; mat.<a class="code hl_variable" href="class_l_o_p.html#a041656000dab81274b9c852e7413f887">nrow</a> + 1; ++j) out &lt;&lt; mat.rowPtr[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    for (<a class="code hl_typedef" href="faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> j = 0; j &lt; mat.nnz; ++j) out &lt;&lt; mat.colInd[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>    for (<a class="code hl_typedef" href="faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> j = 0; j &lt; mat.nnz; ++j) out &lt;&lt; mat.values[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00865" name="l00865"></a><span class="lineno">  865</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="_faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> j = 0; j &lt; mat.<a class="code hl_variable" href="class_l_o_p.html#a041656000dab81274b9c852e7413f887">nrow</a> + 1; ++j) out &lt;&lt; mat.rowPtr[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00866" name="l00866"></a><span class="lineno">  866</span>    for (<a class="code hl_typedef" href="_faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> j = 0; j &lt; mat.nnz; ++j) out &lt;&lt; mat.colInd[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00867" name="l00867"></a><span class="lineno">  867</span>    for (<a class="code hl_typedef" href="_faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> j = 0; j &lt; mat.nnz; ++j) out &lt;&lt; mat.values[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line"><a id="l00868" name="l00868"></a><span class="lineno">  868</span> </div>
 <div class="line"><a id="l00869" name="l00869"></a><span class="lineno">  869</span>    out.close();</div>
 <div class="line"><a id="l00870" name="l00870"></a><span class="lineno">  870</span>}</div>
+<div class="ttc" id="a_faspxx_8hxx_html_a2c1b481efcce2dbbd0dee644e335c69a"><div class="ttname"><a href="_faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a></div><div class="ttdeci">unsigned int INT</div><div class="ttdoc">Index type: Must be non-negative!</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:16</div></div>
 <div class="ttc" id="aclass_l_o_p_html_a041656000dab81274b9c852e7413f887"><div class="ttname"><a href="class_l_o_p.html#a041656000dab81274b9c852e7413f887">LOP::nrow</a></div><div class="ttdeci">INT nrow</div><div class="ttdoc">number of rows</div><div class="ttdef"><b>Definition:</b> LOP.hxx:26</div></div>
 <div class="ttc" id="aclass_l_o_p_html_a300365edbf5682562c60fdba857e769f"><div class="ttname"><a href="class_l_o_p.html#a300365edbf5682562c60fdba857e769f">LOP::mcol</a></div><div class="ttdeci">INT mcol</div><div class="ttdoc">number of columns</div><div class="ttdef"><b>Definition:</b> LOP.hxx:27</div></div>
-<div class="ttc" id="afaspxx_8hxx_html_a2c1b481efcce2dbbd0dee644e335c69a"><div class="ttname"><a href="faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a></div><div class="ttdeci">unsigned int INT</div><div class="ttdoc">Index type: Must be non-negative!</div><div class="ttdef"><b>Definition:</b> faspxx.hxx:16</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -173,7 +173,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <p>Write data to a disk file in MTX format. </p>
 <p >Write an <a class="el" href="class_m_a_t.html" title="Sparse matrix class.">MAT</a> matrix to a disk file in MTX format. </p>
 <div class="fragment"><div class="line"><a id="l00874" name="l00874"></a><span class="lineno">  874</span>{</div>
-<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>    <a class="code hl_typedef" href="faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a>           begin, end, j, k;</div>
+<div class="line"><a id="l00875" name="l00875"></a><span class="lineno">  875</span>    <a class="code hl_typedef" href="_faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a>           begin, end, j, k;</div>
 <div class="line"><a id="l00876" name="l00876"></a><span class="lineno">  876</span>    std::ofstream out;</div>
 <div class="line"><a id="l00877" name="l00877"></a><span class="lineno">  877</span>    out.open(filename);</div>
 <div class="line"><a id="l00878" name="l00878"></a><span class="lineno">  878</span>    <a class="code hl_class" href="class_m_a_t.html">MAT</a> tmp = mat;</div>
@@ -189,7 +189,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span> </div>
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>    out.close();</div>
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>}</div>
-<div class="ttc" id="aclass_m_a_t_html"><div class="ttname"><a href="class_m_a_t.html">MAT</a></div><div class="ttdoc">Sparse matrix class.</div><div class="ttdef"><b>Definition:</b> MAT.hxx:37</div></div>
+<div class="ttc" id="aclass_m_a_t_html"><div class="ttname"><a href="class_m_a_t.html">MAT</a></div><div class="ttdoc">Sparse matrix class.</div><div class="ttdef"><b>Definition:</b> MAT.hxx:40</div></div>
 <div class="ttc" id="aclass_m_a_t_html_a672e0b5c66fb774365c7616f50f8debd"><div class="ttname"><a href="class_m_a_t.html#a672e0b5c66fb774365c7616f50f8debd">MAT::Transpose</a></div><div class="ttdeci">void Transpose()</div><div class="ttdoc">Transpose of the matrix.</div><div class="ttdef"><b>Definition:</b> MAT.cxx:479</div></div>
 </div><!-- fragment -->
 </div>

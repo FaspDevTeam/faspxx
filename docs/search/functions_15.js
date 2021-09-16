@@ -7,7 +7,7 @@ var searchData=
   ['_7egmres_4',['~GMRES',['../class_g_m_r_e_s.html#a0d8289dded2ffc70450355c3d23acae0',1,'GMRES']]],
   ['_7eidentity_5',['~Identity',['../class_identity.html#a000c9c8ab07b8262e807d3de6a036aac',1,'Identity']]],
   ['_7eidentitymatrix_6',['~IdentityMatrix',['../class_identity_matrix.html#a9efcdef570e5a203430c0ca5decdac9c',1,'IdentityMatrix']]],
-  ['_7eidentityoper_7',['~IdentityOper',['../class_identity_oper.html#adfa4098118a9293e172e9148fd48cf3d',1,'IdentityOper']]],
+  ['_7eidentityop_7',['~IdentityOp',['../class_identity_op.html#ad4a49557cc6db2935659df82400c02d7',1,'IdentityOp']]],
   ['_7ejacobi_8',['~Jacobi',['../class_jacobi.html#a4251264683f064f8decdd5b35c153a9b',1,'Jacobi']]],
   ['_7elop_9',['~LOP',['../class_l_o_p.html#a73fabf5607a80efecdbfcd58850e4052',1,'LOP']]],
   ['_7emat_10',['~MAT',['../class_m_a_t.html#a4af5edb1c8d961267d37d8d64e6f05da',1,'MAT']]],

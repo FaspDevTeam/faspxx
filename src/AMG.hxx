@@ -1,12 +1,11 @@
 /*! \file    AMG.hxx
  *  \brief   Algebraic MG class declaration
  *  \author  Chensong Zhang
- *  \date    Oct/12/2021
+ *  \date    Sep/12/2021
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2021--present by the FASP++ team. All rights reserved.
- *  Released under the terms of the GNU Lesser General Public License 3.0 or
- *later.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
  *-----------------------------------------------------------------------------------
  */
 
@@ -64,6 +63,10 @@ public:
 
 #endif /* end if for __AMG_HEADER__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Chensong Zhang      Sep/12/2021      Create file                          */
+/*----------------------------------------------------------------------------*/

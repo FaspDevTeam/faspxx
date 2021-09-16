@@ -3,9 +3,9 @@ var searchData=
   ['_5f_5famg_5fheader_5f_5f_0',['__AMG_HEADER__',['../_a_m_g_8hxx.html#a5a5d176e82aa1582ddec9c36a1a479ca',1,'AMG.hxx']]],
   ['_5f_5fbicgstab_5fheader_5f_5f_1',['__BICGSTAB_HEADER__',['../_bi_c_g_stab_8hxx.html#a5cf116b5df742dd26a80709f2ba8bd6e',1,'BiCGStab.hxx']]],
   ['_5f_5fcg_5fheader_5f_5f_2',['__CG_HEADER__',['../_c_g_8hxx.html#a4ff256c4eb5fb71507b1779c3f81983c',1,'CG.hxx']]],
-  ['_5f_5fdoxygen_5fhxx_5f_5f_3',['__DOXYGEN_HXX__',['../doxygen_8hxx.html#ad777c2811bc173d20575f06617e9ea2d',1,'doxygen.hxx']]],
+  ['_5f_5fdoxygen_5fhxx_5f_5f_3',['__DOXYGEN_HXX__',['../_doxygen_8hxx.html#ad777c2811bc173d20575f06617e9ea2d',1,'Doxygen.hxx']]],
   ['_5f_5ferrorlog_5fhxx_5f_5f_4',['__ERRORLOG_HXX__',['../_error_log_8hxx.html#aa16445af8951d3266cb7579ec9d5daa4',1,'ErrorLog.hxx']]],
-  ['_5f_5ffaspxx_5fheader_5f_5f_5',['__FASPXX_HEADER__',['../faspxx_8hxx.html#ac5a6290b206a7e905bb1fca7b20ddc6c',1,'faspxx.hxx']]],
+  ['_5f_5ffaspxx_5fheader_5f_5f_5',['__FASPXX_HEADER__',['../_faspxx_8hxx.html#ac5a6290b206a7e905bb1fca7b20ddc6c',1,'Faspxx.hxx']]],
   ['_5f_5ffgmres_5fhxx_5f_5f_6',['__FGMRES_HXX__',['../_f_g_m_r_e_s_8hxx.html#a210d6eb37b01f7544d2d11393ab5f654',1,'FGMRES.hxx']]],
   ['_5f_5fgmres_5fhxx_5f_5f_7',['__GMRES_HXX__',['../_g_m_r_e_s_8hxx.html#ae151a2922dcde8094a67ec2e178a1d99',1,'GMRES.hxx']]],
   ['_5f_5fiter_5fheader_5f_5f_8',['__ITER_HEADER__',['../_iter_8hxx.html#a8f1bc0325dd1025fdaeb1cae7ea485ca',1,'Iter.hxx']]],
@@ -20,7 +20,5 @@ var searchData=
   ['_5f_5fsol_5fheader_5f_5f_17',['__SOL_HEADER__',['../_s_o_l_8hxx.html#af5b0e790b528b6e5cb23457b520b6f8f',1,'SOL.hxx']]],
   ['_5f_5ftiming_5fheader_5f_5f_18',['__TIMING_HEADER__',['../_timing_8hxx.html#a0f0856e92db2248e96dffb018ef7b416',1,'Timing.hxx']]],
   ['_5f_5fvec_5fheader_5f_5f_19',['__VEC_HEADER__',['../_v_e_c_8hxx.html#a42847a485cc533531d62529a9cfe6776',1,'VEC.hxx']]],
-  ['_5f_5fvecutil_5fhxx_5f_5f_20',['__VECUTIL_HXX__',['../_v_e_c_util_8hxx.html#a4c5f2dce559c2b37cf4ce7e9df8514e1',1,'VECUtil.hxx']]],
-  ['_5ffaspxx_5flocation_5f_21',['_FASPXX_LOCATION_',['../_error_log_8hxx.html#a4309ee0014f1e9a01fc4a69e5759ff15',1,'ErrorLog.hxx']]],
-  ['_5ffaspxx_5fmassage_5f_22',['_FASPXX_MASSAGE_',['../_error_log_8hxx.html#aecd69cd01d0fc8891cd12fad08672110',1,'ErrorLog.hxx']]]
+  ['_5f_5fvecutil_5fhxx_5f_5f_20',['__VECUTIL_HXX__',['../_v_e_c_util_8hxx.html#a4c5f2dce559c2b37cf4ce7e9df8514e1',1,'VECUtil.hxx']]]
 ];

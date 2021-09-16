@@ -1,7 +1,7 @@
 /*! \file    VEC.hxx
  *  \brief   Vector class declaration
  *  \author  Kailei Zhang, Chensong Zhang
- *  \date    09/01/2019
+ *  \date    Sep/01/2019
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
@@ -16,13 +16,14 @@
 #include <vector>
 
 // FASPXX header files
+#include "Faspxx.hxx"
 #include "RetCode.hxx"
-#include "faspxx.hxx"
 
 /*! \class VEC
  *  \brief General vector class.
  */
-class VEC {
+class VEC
+{
 
 private:
     std::vector<DBL> values; ///< Actual values of vector in DBL.
@@ -34,7 +35,9 @@ public:
     /// Default constructor.
     explicit VEC()
         : values(0)
-        , size(0) {}
+        , size(0)
+    {
+    }
 
     /// Construct a new VEC with the given size and a constant value.
     explicit VEC(const INT &size, const DBL &value = 0.0);
@@ -145,6 +148,11 @@ public:
 
 #endif /* end if for __VEC_HEADER__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Sep/01/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.4 Sep/15/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.5 Sep/16/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -145,10 +145,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aed64eaacd3992a2e4c349ee37cdeaf6f inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#aed64eaacd3992a2e4c349ee37cdeaf6f">SetWeight</a> (double alpha)</td></tr>
 <tr class="memdesc:aed64eaacd3992a2e4c349ee37cdeaf6f inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set weight for correction schemes.  <a href="class_s_o_l.html#aed64eaacd3992a2e4c349ee37cdeaf6f">More...</a><br /></td></tr>
 <tr class="separator:aed64eaacd3992a2e4c349ee37cdeaf6f inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a> (<a class="el" href="faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> solver)</td></tr>
+<tr class="memitem:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a> (<a class="el" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> solver)</td></tr>
 <tr class="memdesc:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set solver type.  <a href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">More...</a><br /></td></tr>
 <tr class="separator:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a402a9c7642afdf679e6b0e1eba245c83">GetSolType</a> (<a class="el" href="faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> type) const</td></tr>
+<tr class="memitem:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a402a9c7642afdf679e6b0e1eba245c83">GetSolType</a> (<a class="el" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> type) const</td></tr>
 <tr class="memdesc:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_class_s_o_l"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get solver type.  <a href="class_s_o_l.html#a402a9c7642afdf679e6b0e1eba245c83">More...</a><br /></td></tr>
 <tr class="separator:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_class_s_o_l"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06ff2eaf57fea0445a4dee844a87156d inherit pub_methods_class_s_o_l"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_o_l.html#a06ff2eaf57fea0445a4dee844a87156d">GetNorm2</a> () const</td></tr>
@@ -284,10 +284,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>numIter</b></td></tr>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<div class="fragment"><div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        : numLevelsMax(20)</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        , numLevelsUse(1)</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        , useSymmRoperator(<span class="keyword">true</span>)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        , useDefaultSolver(<span class="keyword">true</span>){};</div>
+<div class="fragment"><div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        : numLevelsMax(20)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        , numLevelsUse(1)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        , useSymmRoperator(<span class="keyword">true</span>)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        , useDefaultSolver(<span class="keyword">true</span>){};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -355,7 +355,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>numIter</b></td></tr>
 <p >Allocate memory, setup multigrid hierarical structure of the linear system. </p>
 <div class="fragment"><div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>{</div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="comment">// Set solver type</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <a class="code hl_function" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a>(<a class="code hl_enumvalue" href="faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066">SOLType::MG</a>);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <a class="code hl_function" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a>(<a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066">SOLType::MG</a>);</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
 <div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    <span class="comment">// Allocate memory for temporary vectors</span></div>
 <div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">try</span> {</div>
@@ -372,16 +372,16 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>numIter</b></td></tr>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066">MG</a></div><div class="ttdeci">@ MG</div><div class="ttdoc">Multigrid method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:50</div></div>
 <div class="ttc" id="a_ret_code_8hxx_html_aff468b46f5c4020989ad3bdbba54af50a7ace9acfa2f982f46ee7e526c342bdb0"><div class="ttname"><a href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50a7ace9acfa2f982f46ee7e526c342bdb0">ERROR_AMG_SETUP</a></div><div class="ttdeci">@ ERROR_AMG_SETUP</div><div class="ttdoc">AMG setup failed to complete.</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:44</div></div>
 <div class="ttc" id="a_ret_code_8hxx_html_aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8"><div class="ttname"><a href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">SUCCESS</a></div><div class="ttdeci">@ SUCCESS</div><div class="ttdoc">Everything is fine.</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:22</div></div>
 <div class="ttc" id="aclass_s_o_l_html_a370fa587c28e987a35fc3da59676b6d6"><div class="ttname"><a href="class_s_o_l.html#a370fa587c28e987a35fc3da59676b6d6">SOL::PrintParam</a></div><div class="ttdeci">void PrintParam(std::ostream &amp;out=std::cout) const</div><div class="ttdoc">Print parameters.</div><div class="ttdef"><b>Definition:</b> SOL.cxx:189</div></div>
 <div class="ttc" id="aclass_s_o_l_html_a627b490fa36929f82adba0e525fee10d"><div class="ttname"><a href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">SOL::A</a></div><div class="ttdeci">const LOP * A</div><div class="ttdoc">Coefficient matrix in Ax=b.</div><div class="ttdef"><b>Definition:</b> SOL.hxx:28</div></div>
 <div class="ttc" id="aclass_s_o_l_html_a72bb6330814ea7ea832f5823285d18c3"><div class="ttname"><a href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SOL::SetSolType</a></div><div class="ttdeci">void SetSolType(SOLType solver)</div><div class="ttdoc">Set solver type.</div><div class="ttdef"><b>Definition:</b> SOL.cxx:127</div></div>
 <div class="ttc" id="aclass_s_o_l_html_a9bc2a6d1e11250089c09235bfe6ae917"><div class="ttname"><a href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">SOL::params</a></div><div class="ttdeci">SOLParams params</div><div class="ttdoc">solver parameters</div><div class="ttdef"><b>Definition:</b> SOL.hxx:33</div></div>
-<div class="ttc" id="afaspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066"><div class="ttname"><a href="faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066">MG</a></div><div class="ttdeci">@ MG</div><div class="ttdoc">Multigrid method.</div><div class="ttdef"><b>Definition:</b> faspxx.hxx:50</div></div>
 <div class="ttc" id="astruct_s_o_l_params_html_a7546f71bcb93fc16f19cfd588908c46b"><div class="ttname"><a href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a></div><div class="ttdeci">Output verbose</div><div class="ttdoc">Output verbosity level.</div><div class="ttdef"><b>Definition:</b> Param.hxx:46</div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">SOL::A</a>, <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50a7ace9acfa2f982f46ee7e526c342bdb0">ERROR_AMG_SETUP</a>, <a class="el" href="faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066">MG</a>, <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">SOL::params</a>, <a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SOL::SetSolType()</a>, and <a class="el" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a>.</p>
+<p class="reference">References <a class="el" href="class_s_o_l.html#a627b490fa36929f82adba0e525fee10d">SOL::A</a>, <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50a7ace9acfa2f982f46ee7e526c342bdb0">ERROR_AMG_SETUP</a>, <a class="el" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066">MG</a>, <a class="el" href="class_s_o_l.html#a9bc2a6d1e11250089c09235bfe6ae917">SOL::params</a>, <a class="el" href="class_s_o_l.html#a72bb6330814ea7ea832f5823285d18c3">SOL::SetSolType()</a>, and <a class="el" href="struct_s_o_l_params.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a>.</p>
 
 </div>
 </div>

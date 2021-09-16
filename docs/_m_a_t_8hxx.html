@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.4 Sep/15/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.5 Sep/16/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -76,9 +76,9 @@ $(function() {
 
 <p>Matrix class declaration.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="_l_o_p_8hxx_source.html">LOP.hxx</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_faspxx_8hxx_source.html">Faspxx.hxx</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="_l_o_p_8hxx_source.html">LOP.hxx</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_v_e_c_8hxx_source.html">VEC.hxx</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="faspxx_8hxx_source.html">faspxx.hxx</a>&quot;</code><br />
 </div>
 <p><a href="_m_a_t_8hxx_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -116,7 +116,14 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
         </tr>
       </table>
 </div><div class="memdoc">
-<p >indicate <a class="el" href="_m_a_t_8hxx.html" title="Matrix class declaration.">MAT.hxx</a> has been included before </p>
+<h2><a class="anchor" id="autotoc_md42"></a>
+Important Note:</h2>
+<p >This class defines the basic <a class="el" href="class_m_a_t.html" title="Sparse matrix class.">MAT</a> data structure and its basic operations. The CSRx data structure is an extension of the wellknown CSR sparse matrix format. The differences lie in the following two aspects:</p>
+<ol type="1">
+<li>Unlike the classical CSR format, the CSRx format requires the column indices in each row are in a rough ascending order (namely, the nonzero entries should be ordered as lower trig, diag, uppper trig);</li>
+<li>The CSRx format has a diagPtr array which stores the locations of the diagonal entries in each row.</li>
+</ol>
+<p >Note that the CSRx format stores the diagonal entries even if they are zero. Furthermore, it is compatible with CSR subroutines! indicate <a class="el" href="_m_a_t_8hxx.html" title="Matrix class declaration.">MAT.hxx</a> has been included before </p>
 
 </div>
 </div>

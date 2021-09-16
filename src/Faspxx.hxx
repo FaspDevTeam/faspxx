@@ -1,4 +1,4 @@
-/** \file    faspxx.hxx
+/** \file    Faspxx.hxx
  *  \brief   Main FASP++ header file
  *  \author  Kailei Zhang, Chensong Zhang
  *  \date    Sep/01/2019
@@ -20,7 +20,7 @@ typedef double       DBL; ///< Double precision numbers
 const DBL SMALL_TOL  = 1e-14;  ///< Small positive real for tolerance
 const DBL LARGE      = 1e+60;  ///< Largest double number
 const DBL SMALL      = -1e+60; ///< Smallest double number
-const DBL CLOSE_ZERO = 1e-20;  ///< Tolerance for closeness to zero
+const DBL CLOSE_ZERO = 1e-20;  ///< Tolerance for almost zero
 
 // Definition of time units
 const DBL CLOCK_USE_SEC = 5000;   ///< Show clock time in seconds
@@ -53,6 +53,11 @@ enum SOLType {
 
 #endif /* end if for __FASPXX_HEADER__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Sep/01/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Add solver types                     */
+/*----------------------------------------------------------------------------*/

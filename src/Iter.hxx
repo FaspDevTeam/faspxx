@@ -16,9 +16,9 @@
 #include <cmath>
 
 // FASPXX header files
+#include "Faspxx.hxx"
 #include "MAT.hxx"
 #include "SOL.hxx"
-#include "faspxx.hxx"
 
 /*! \class Identity
  *  \brief Identity iterator, do nothing solver.
@@ -68,6 +68,11 @@ public:
 
 #endif /* end if for __ITER_HEADER__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Dec/02/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

@@ -11,7 +11,6 @@
 
 // FASPXX header files
 #include "Timing.hxx"
-#include "faspxx.hxx"
 
 /// Stop timer and print out the duration time in ms, s, or m
 void GetWallTime::StopInfo(const std::string &info, std::ostream &out) const {
@@ -28,6 +27,11 @@ void GetWallTime::StopInfo(const std::string &info, std::ostream &out) const {
     }
 }
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Chensong Zhang      Feb/22/2020      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

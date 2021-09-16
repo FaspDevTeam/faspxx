@@ -21,8 +21,8 @@ var searchData=
   ['getvalue_18',['GetValue',['../class_m_a_t.html#af0a9a3045d481cb6fa987ff3e21e6fcf',1,'MAT::GetValue()'],['../class_v_e_c.html#a67ac4ff52b11d47bbb048ce19ce7de76',1,'VEC::GetValue(const INT &amp;position) const']]],
   ['getvalues_19',['GetValues',['../class_v_e_c.html#a15877d0789a23912d539846d1543dc44',1,'VEC']]],
   ['getwalltime_20',['GetWallTime',['../class_get_wall_time.html',1,'']]],
-  ['gmres_21',['GMRES',['../class_g_m_r_e_s.html',1,'GMRES'],['../class_g_m_r_e_s.html#a9e1bb04c190a5917ba4cd0082e15fcce',1,'GMRES::GMRES()'],['../faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2',1,'GMRES():&#160;faspxx.hxx']]],
+  ['gmres_21',['GMRES',['../class_g_m_r_e_s.html',1,'GMRES'],['../class_g_m_r_e_s.html#a9e1bb04c190a5917ba4cd0082e15fcce',1,'GMRES::GMRES()'],['../_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2',1,'GMRES():&#160;Faspxx.hxx']]],
   ['gmres_2ecxx_22',['GMRES.cxx',['../_g_m_r_e_s_8cxx.html',1,'']]],
   ['gmres_2ehxx_23',['GMRES.hxx',['../_g_m_r_e_s_8hxx.html',1,'']]],
-  ['gs_24',['GS',['../faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a',1,'faspxx.hxx']]]
+  ['gs_24',['GS',['../_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a',1,'Faspxx.hxx']]]
 ];

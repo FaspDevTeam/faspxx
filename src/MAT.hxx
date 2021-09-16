@@ -9,26 +9,29 @@
  *-----------------------------------------------------------------------------------
  */
 
-/*
+/*! Important Note:
+ *-----------------------------------------------------------------------------------
  *  This class defines the basic MAT data structure and its basic operations. The
  *  CSRx data structure is an extension of the wellknown CSR sparse matrix format.
  *  The differences lie in the following two aspects:
- *      (1) Unlike the classical CSR format, the CSRx format requires the column
- *          indices in each row are in a rough ascending order (namely, the nonzero
- *          entries should be ordered as lower trig, diag, uppper trig);
- *      (2) The CSRx format has a diagPtr array which stores the locations of the
- *          diagonal entries in each row.
+ * 
+ *  1. Unlike the classical CSR format, the CSRx format requires the column indices 
+ *  in each row are in a rough ascending order (namely, the nonzero entries should be 
+ *  ordered as lower trig, diag, uppper trig);
+ *  2. The CSRx format has a diagPtr array which stores the locations of the diagonal 
+ *  entries in each row.
+ * 
  *  Note that the CSRx format stores the diagonal entries even if they are zero.
- *  Furthermore, it is compatible with all CSR subroutines!
+ *  Furthermore, it is compatible with CSR subroutines!
  */
 
 #ifndef __MAT_HEADER__ /*-- allow multiple inclusions --*/
 #define __MAT_HEADER__ /**< indicate MAT.hxx has been included before */
 
 // FASPXX header files
+#include "Faspxx.hxx"
 #include "LOP.hxx"
 #include "VEC.hxx"
-#include "faspxx.hxx"
 
 /*! \class MAT
  *  \brief Sparse matrix class.
@@ -219,6 +222,11 @@ public:
 
 #endif /* end if for __MAT_HEADER__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Sep/25/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file, fix Doxygen        */
+/*----------------------------------------------------------------------------*/

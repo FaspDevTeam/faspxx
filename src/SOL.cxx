@@ -235,6 +235,11 @@ void SOL::PrintTime(const double duration, std::ostream &out) const
 /// Build preconditioner operator.
 void SOL::SetupPCD(SOL &precond) { this->pcd = &precond; }
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Nov/25/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

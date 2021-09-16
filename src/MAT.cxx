@@ -1061,9 +1061,14 @@ void MAT::LUP_Solve_Inverse(const std::vector<DBL> A, INT N,
 /// Identity matrix.
 void IdentityMatrix::Apply(const VEC &b, VEC &x) const { x = b; }
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Sep/25/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/
 
 #if 0
 

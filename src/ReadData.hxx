@@ -13,8 +13,8 @@
 #define __READDATA__HEADER__ /**< indicate ReadData.hxx has been included before */
 
 // FASPXX header files
+#include "Faspxx.hxx"
 #include "MAT.hxx"
-#include "faspxx.hxx"
 
 /*
  *  This class defines the basic MAT data structure and its basic operations. The
@@ -79,6 +79,11 @@ FaspRetCode ReadMat(const char *filename, MAT &dst);
 
 #endif /* end if for __READDATA__HEADER__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Oct/11/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

@@ -1,7 +1,7 @@
 /*! \file    MG.cxx
  *  \brief   Abstract MG class definition
  *  \author  Chensong Zhang
- *  \date    Oct/12/2021
+ *  \date    Sep/12/2021
  *
  *-----------------------------------------------------------------------------------
  *  Copyright (C) 2021--present by the FASP++ team. All rights reserved.
@@ -106,17 +106,21 @@ FaspRetCode MG::Solve(const VEC &b, VEC &x)
         // Multigrid iteration starts from here
         //---------------------------------------------
 
-        ++numIter;               // iteration count
         oneCycleMultigrid(b, x); // MG cycle
+        ++numIter;               // iteration count
 
         //---------------------------------------------
-        // One step of Jacobi iteration ends here
+        // One step of Multigrid iteration ends here
         //---------------------------------------------
-
     } // End of main loop
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
     if (not(numIter == params.minIter && numIter == params.maxIter)) {
+        // Update residual r = b - A*x
+        A->Residual(b, x, wVectors[0]);
+        resAbs = wVectors[0].Norm2();
+        resRel        = resAbs / denAbs;
+        ratio         = resAbs / resAbsOld;
         this->norm2   = resAbs;
         this->normInf = wVectors[0].NormInf();
         PrintFinal(numIter, resRel, resAbs, ratio);
@@ -135,6 +139,11 @@ void MG::Clean()
     }
 }
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Chensong Zhang      Sep/12/2021      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

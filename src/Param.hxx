@@ -21,7 +21,7 @@
 using std::string;
 
 // FASPXX header files
-#include "faspxx.hxx"
+#include "Faspxx.hxx"
 
 /// Level of output
 enum Output {
@@ -201,6 +201,11 @@ public:
 
 #endif /* end if for __PARAM_HEADER__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Nov/25/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/

@@ -14,11 +14,11 @@
 
 // FASPXX header files
 #include "ErrorLog.hxx"
+#include "Faspxx.hxx"
 #include "LOP.hxx"
 #include "Param.hxx"
 #include "RetCode.hxx"
 #include "VEC.hxx"
-#include "faspxx.hxx"
 
 /// Base class for iterative solvers.
 class SOL
@@ -130,6 +130,11 @@ public:
 
 #endif /* end if for __SOL_HEADER__ */
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Kailei Zhang        Nov/25/2019      Create file                          */
+/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*----------------------------------------------------------------------------*/
