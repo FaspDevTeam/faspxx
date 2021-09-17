@@ -31,14 +31,22 @@ FaspRetCode UMFPACK::Setup(const MAT &A)
     n   = Atrans.GetColSize();
     m   = Atrans.GetRowSize();
     nnz = Atrans.GetNNZ();
-    Ap  = Atrans.GetRowPtr();
-    Ai  = Atrans.GetColInd();
-    Ax  = Atrans.GetValues();
+
+    if (Ap != nullptr) FASPXX_ABORT("Pointer Ap is not null!");
+    Ap = Atrans.GetRowPtr();
+
+    if (Ai != nullptr) FASPXX_ABORT("Pointer Ai is not null!");
+    Ai = Atrans.GetColInd();
+
+    if (Ax != nullptr) FASPXX_ABORT("Pointer Ax is not null!");
+    Ax = Atrans.GetValues();
 
     // Call factorizations; see 6.11 in UMFPACK manual for error code
+    if (Symbolic != nullptr) FASPXX_ABORT("Pointer Symbolic is not null!");
     status = umfpack_di_symbolic(n, n, Ap, Ai, Ax, &Symbolic, NULL, NULL);
     if (status != 0) return FaspRetCode::ERROR_DSOLVER_SETUP;
 
+    if (Numeric != nullptr) FASPXX_ABORT("Pointer Numeric is not null!");
     status = umfpack_di_numeric(Ap, Ai, Ax, Symbolic, &Numeric, NULL, NULL);
     if (status != 0) return FaspRetCode::ERROR_DSOLVER_SETUP;
 
@@ -63,11 +71,15 @@ FaspRetCode UMFPACK::Solve(const VEC &b, VEC &x)
 }
 
 /// Clean up temp memory allocated for UMFPACK.
+//! Note: Must be called before reusing the class.
 void UMFPACK::Clean()
 {
     delete[] Ap;
     delete[] Ai;
     delete[] Ax;
+    Ap = nullptr;
+    Ai = nullptr;
+    Ax = nullptr;
 
 #if WITH_UMFPACK
     umfpack_di_free_numeric(&Numeric);
