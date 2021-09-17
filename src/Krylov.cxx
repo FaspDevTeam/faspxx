@@ -11,7 +11,6 @@
 
 // FASPXX header files
 #include "Krylov.hxx"
-#include "SOL.hxx"
 
 /// All supported Krylov methods can be accessed using this interface
 FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pcd, SOLParams &params)
@@ -26,6 +25,12 @@ FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pcd, SOLParams &params)
             break;
         case SOLType::BICGSTAB:
             sol = new class BiCGStab();
+            break;
+        case SOLType::GMRES:
+            sol = new class GMRES();
+            break;
+        case SOLType::FGMRES:
+            sol = new class FGMRES();
             break;
         default:
             // Set default solver, should never reach here!!!

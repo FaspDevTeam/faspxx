@@ -134,6 +134,28 @@ void SOL::SetSolTypeFromName(SOLParams &params)
         params.type = SOLType::CG;
     else if (params.algName == "bicgstab")
         params.type = SOLType::BICGSTAB;
+    else if (params.algName == "minres")
+        params.type = SOLType::MINRES;
+    else if (params.algName == "gmres")
+        params.type = SOLType::GMRES;
+    else if (params.algName == "fgmres")
+        params.type = SOLType::FGMRES;
+    else if (params.algName == "vfgmres")
+        params.type = SOLType::VFGMRES;
+    else if (params.algName == "jacobi")
+        params.type = SOLType::Jacobi;
+    else if (params.algName == "gs")
+        params.type = SOLType::GS;
+    else if (params.algName == "sgs")
+        params.type = SOLType::SGS;
+    else if (params.algName == "sor")
+        params.type = SOLType::SOR;
+    else if (params.algName == "ssor")
+        params.type = SOLType::SSOR;
+    else if (params.algName == "mg")
+        params.type = SOLType::MG;
+    else if (params.algName == "fmg")
+        params.type = SOLType::FMG;
     else {
         params.type = SOLType::CG; // default solver type
         if (params.verbose > PRINT_NONE)
@@ -241,5 +263,5 @@ void SOL::SetupPCD(SOL &precond) { this->pcd = &precond; }
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        Nov/25/2019      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/17/2021      Add more Krylov methods as choices   */
 /*----------------------------------------------------------------------------*/

@@ -232,6 +232,7 @@ void Parameters::Parse()
 /// Set SOLParams for solvers.
 void Parameters::SetSOLParams(SOLParams &solParam)
 {
+    this->AddParam("-algName", "Name of solver", &solParam.algName);
     this->AddParam("-maxIter", "Max iteration steps", &solParam.maxIter);
     this->AddParam("-minIter", "Min iteration steps", &solParam.minIter);
     this->AddParam("-safeIter", "Safe-guard steps", &solParam.safeIter);

@@ -15,6 +15,8 @@
 // FASPXX header files
 #include "BiCGStab.hxx"
 #include "CG.hxx"
+#include "FGMRES.hxx"
+#include "GMRES.hxx"
 #include "Iter.hxx"
 #include "RetCode.hxx"
 #include "SOL.hxx"
@@ -30,5 +32,5 @@ FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pcd, SOLParams &params);
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        Dec/27/2019      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/17/2021      Add GMRES methods                    */
 /*----------------------------------------------------------------------------*/

@@ -13,7 +13,19 @@
 #include "GMRES.hxx"
 
 /// Solve Ax=b using the GMRES method.
-FaspRetCode GMRES::Solve(const VEC &b, VEC &x) { return FaspRetCode::SUCCESS; }
+FaspRetCode GMRES::Solve(const VEC &b, VEC &x)
+{
+    if (useRightPrecond)
+        return this->RSolve(b, x);
+    else
+        return this->LSolve(b, x);
+}
+
+/// Set GMRES to do right preconditioning.
+void GMRES::SetRightPrecond() { this->useRightPrecond = true; }
+
+/// Set GMRES to do left preconditioning.
+void GMRES::SetLeftPrecond() { this->useRightPrecond = false; }
 
 /// Set the maximum and minimum restart
 void GMRES::SetMaxMinRestart(const int maxRestart, const int minRestart)

@@ -18,7 +18,6 @@
 // FASPXX header files
 #include "ErrorLog.hxx"
 #include "LOP.hxx"
-#include "MAT.hxx"
 #include "SOL.hxx"
 
 /*! \class GMRES
@@ -35,13 +34,13 @@ private:
     std::vector<double>              hsin;
     std::vector<double>              hcos;
     std::vector<double>              var;
+    std::vector<VEC>                 V;
 
-    std::vector<VEC> V;
-
-    int maxRestart;
-    int minRestart;
-    int restart;
-    int len;
+    bool useRightPrecond;
+    int  maxRestart;
+    int  minRestart;
+    int  restart;
+    int  len;
 
     // Constants for variable restarting
     const double max_cr   = 0.99026806874157040;
@@ -58,26 +57,32 @@ public:
         , hsin(0)
         , hcos(0)
         , var(0)
-        , maxRestart{30}
+        , useRightPrecond(true)
+        , maxRestart(30)
         , minRestart(10){};
 
     /// Default destructor.
     ~GMRES() = default;
 
-    /// Set the maximum and minmum restart numbers for variable GMRES.
+    /// Set GMRES to do right preconditioning.
+    void SetRightPrecond();
+
+    /// Set GMRES to do left preconditioning.
+    void SetLeftPrecond();
+
+    /// Set the maximum and minmum restart numbers for GMRES.
     void SetMaxMinRestart(const int maxRestart, const int minRestart);
 
     /// Setup the GMRES method.
     FaspRetCode Setup(const LOP &A) override;
 
+    /// Solve Ax=b using the GMRES method.
+    FaspRetCode Solve(const VEC &b, VEC &x) override;
+
     /// Clean up GMRES data allocated during setup.
     void Clean() override;
 
 private:
-    /// Solve Ax=b using the GMRES method.
-    FaspRetCode Solve(const VEC &b, VEC &x) override;
-
-public:
     /// Right-preconditioned GMRES solver.
     FaspRetCode RSolve(const VEC &b, VEC &x);
 
@@ -93,5 +98,5 @@ public:
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        July/16/2020     Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/17/2021      Call right/left precond in Solve     */
 /*----------------------------------------------------------------------------*/

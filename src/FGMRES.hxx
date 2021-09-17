@@ -18,7 +18,6 @@
 // FASPXX header files
 #include "ErrorLog.hxx"
 #include "LOP.hxx"
-#include "MAT.hxx"
 #include "SOL.hxx"
 
 /*! \class FGMRES
@@ -59,7 +58,7 @@ public:
         , hsin(0)
         , hcos(0)
         , var(0)
-        , maxRestart{30}
+        , maxRestart(30)
         , minRestart(10){};
 
     /// Default destructor.
@@ -71,11 +70,11 @@ public:
     /// Setup the FGMRES method.
     FaspRetCode Setup(const LOP &A) override;
 
-    /// Clean up FGMRES data allocated during setup.
-    void Clean() override;
-
     /// Solve Ax=b using the FGMRES method.
     FaspRetCode Solve(const VEC &b, VEC &x) override;
+
+    /// Clean up FGMRES data allocated during setup.
+    void Clean() override;
 };
 
 #endif /* end if for __FGMRES_HEADER__ */

@@ -24,7 +24,7 @@ FaspRetCode FGMRES::Setup(const LOP &A)
 {
 
     // Set solver type
-    SetSolType(SOLType::GMRES);
+    SetSolType(SOLType::FGMRES);
 
     len        = A.GetColSize();
     restart    = params.restart;

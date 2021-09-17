@@ -15,7 +15,6 @@
 // FASPXX header files
 #include "ErrorLog.hxx"
 #include "LOP.hxx"
-#include "MAT.hxx"
 #include "SOL.hxx"
 
 using std::vector;

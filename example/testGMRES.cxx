@@ -84,7 +84,7 @@ int main(int argc, const char *args[])
 
     // Solve the linear system using GMRES with right preconditioner
     timer.Start();
-    retCode = solver.RSolve(b, x);
+    retCode = solver.Solve(b, x);
     solver.PrintTime(timer.Stop());
     std::cout << "Right preconditioned GMRES: residual = " << solver.GetNorm2()
               << "\n---------------------------------------------" << std::endl;
@@ -95,7 +95,8 @@ int main(int argc, const char *args[])
 
     // Solve the linear system using GMRES with right preconditioner
     timer.Start();
-    retCode = solver.LSolve(b, x);
+    solver.SetLeftPrecond();
+    retCode = solver.Solve(b, x);
     solver.PrintTime(timer.Stop());
     std::cout << "Left preconditioned GMRES: residual = " << solver.GetNorm2()
               << "\n---------------------------------------------" << std::endl;

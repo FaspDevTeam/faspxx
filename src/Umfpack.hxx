@@ -1,47 +1,40 @@
-/*! \file    CG.cxx
- *  \brief   Preconditioned CG class definition
- *  \author  Chensong Zhang, Kailei Zhang
- *  \date    Oct/11/2019
+/*! \file    Umfpack.hxx
+ *  \brief   UMFPACK direct solver class declaration
+ *  \author  Chensong Zhang
+ *  \date    Sep/17/2021
  *
  *-----------------------------------------------------------------------------------
- *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
+ *  Copyright (C) 2021--present by the FASP++ team. All rights reserved.
  *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
  *-----------------------------------------------------------------------------------
  */
 
-#ifndef __CG_HEADER__ /*-- allow multiple inclusions --*/
-#define __CG_HEADER__ /**< indicate CG.hxx has been included before */
+#ifndef __UMFPACK_HEADER__ /*-- allow multiple inclusions --*/
+#define __UMFPACK_HEADER__ /**< indicate UMFPACK.hxx has been included before */
 
 // FASPXX header files
 #include "ErrorLog.hxx"
 #include "LOP.hxx"
+#include "MAT.hxx"
 #include "SOL.hxx"
 
-/*! \class CG
- *  \brief Preconditioned conjugate gradient method.
+/*! \class UMFPACK
+ *  \brief Interface to external direct solver: Umfpack.
  */
-class CG : public SOL
+class UMFPACK : public SOL
 {
 private:
     int len;  ///< dimension of the solution vector
-    VEC rk;   ///< Work vector for residual
-    VEC pk;   ///< Work vector for preconditioned residual
-    VEC zk;   ///< Work vector for search direction
-    VEC ax;   ///< Work vector for A * pk
-    VEC safe; ///< Work vector for safe-guard
+    VEC work; ///< Work vector for residual
 
 public:
     /// Default constructor.
-    CG()
+    UMFPACK()
         : len(0)
-        , rk(0)
-        , pk(0)
-        , zk(0)
-        , ax(0)
-        , safe(0){};
+        , work(0){};
 
     /// Default destructor.
-    ~CG() = default;
+    ~UMFPACK() = default;
 
     /// Setup the CG method.
     FaspRetCode Setup(const LOP &A) override;
@@ -53,13 +46,12 @@ public:
     void Clean() override;
 };
 
-#endif /* end if for __CG_HEADER__ */
+#endif /* end if for __UMFPACK_HEADER__ */
 
 /*----------------------------------------------------------------------------*/
 /*  Brief Change History of This File                                         */
 /*----------------------------------------------------------------------------*/
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
-/*  Chensong Zhang      Oct/11/2019      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/17/2021      Create file                          */
 /*----------------------------------------------------------------------------*/
