@@ -14,13 +14,13 @@
  *  This class defines the basic MAT data structure and its basic operations. The
  *  CSRx data structure is an extension of the wellknown CSR sparse matrix format.
  *  The differences lie in the following two aspects:
- * 
- *  1. Unlike the classical CSR format, the CSRx format requires the column indices 
- *  in each row are in a rough ascending order (namely, the nonzero entries should be 
+ *
+ *  1. Unlike the classical CSR format, the CSRx format requires the column indices
+ *  in each row are in a rough ascending order (namely, the nonzero entries should be
  *  ordered as lower trig, diag, uppper trig);
- *  2. The CSRx format has a diagPtr array which stores the locations of the diagonal 
+ *  2. The CSRx format has a diagPtr array which stores the locations of the diagonal
  *  entries in each row.
- * 
+ *
  *  Note that the CSRx format stores the diagonal entries even if they are zero.
  *  Furthermore, it is compatible with CSR subroutines!
  */
@@ -142,14 +142,23 @@ public:
     /// Residual b - Ax.
     void Residual(const VEC &b, const VEC &x, VEC &r) const;
 
-    /// Transpose of the matrix.
-    void Transpose();
+    /// Form transpose of the matrix in place.
+    void TransInPlace();
 
     /// Compute transpose of A multiply by v1 plus v2.
     void MultTransposeAdd(const VEC &v1, const VEC &v2, VEC &v) const;
 
     /// Get the value of [i,j]-entry of the matrix
     DBL GetValue(const INT &row, const INT &col) const;
+
+    /// Get the values of the matrix
+    double *GetValues() const;
+
+    /// Get the row pointer of the matrix
+    int *GetRowPtr() const;
+
+    /// Get the column indices of the matrix
+    int *GetColInd() const;
 
     /// *this = a * mat1 + b * mat2
     void Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2);
@@ -180,12 +189,12 @@ private:
     void Empty();
 
     /// LUP decomposition
-    void LUP_Decomposition(std::vector<DBL> A, std::vector<DBL> &L, std::vector<DBL> &U,
-                           std::vector<INT> &P, INT N) const;
+    void LUPDecomp(std::vector<DBL> A, std::vector<DBL> &L, std::vector<DBL> &U,
+                   std::vector<INT> &P, INT N) const;
 
     /// LUP solver
-    void LUP_Solve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
-                   std::vector<DBL> b, INT N, std::vector<DBL> &x) const;
+    void LUPSolve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
+                  std::vector<DBL> b, INT N, std::vector<DBL> &x) const;
 
     /// successor
     INT GetNext(INT i, INT m, INT n) const;
@@ -200,7 +209,7 @@ private:
     void Rtranspose(std::vector<DBL> &mtx, INT m, INT n) const;
 
     /// LUP inversion (assemble each column x from each column B)
-    void LUP_Solve_Inverse(std::vector<DBL> A, INT N, std::vector<DBL> &inv_A) const;
+    void LUPSolveInverse(std::vector<DBL> A, INT N, std::vector<DBL> &inv_A) const;
 };
 
 /*! \class IdentityMatrix

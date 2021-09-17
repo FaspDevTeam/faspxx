@@ -6,6 +6,7 @@
 #   cmake -DCMAKE_BUILD_TYPE=Release .           // build in Release configuration
 #   cmake -DCMAKE_BUILD_TYPE=Debug .             // build in Debug configuration
 #   cmake -DCMAKE_BUILD_TYPE=Debug -DGTEST=ON .  // build with GTEST support
+#   cmake -DUSE_UMFPACK=ON .                     // build with UMFPACK support
 #   cmake -DCMAKE_VERBOSE_MAKEFILE=ON .          // build with verbose on
 
 #-----------------------------#
@@ -55,12 +56,16 @@ file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
 
 # Build faspxx library
 add_library(faspxx ${SRC_FILES})
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/modules)
 
 # Set install location for faspxx library
 set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
 install(TARGETS faspxx
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+# Look for external libraries (Optional)
+include(external)
 
 # Test vector-operations speed
 add_executable(testVecSpeed example/testVecSpeed.cxx)
@@ -69,6 +74,10 @@ target_link_libraries(testVecSpeed faspxx)
 # Test ReadData
 add_executable(testReadData example/testReadData.cxx)
 target_link_libraries(testReadData faspxx)
+
+# Test direct solvers
+add_executable(testSolver example/testSolver.cxx)
+target_link_libraries(testSolver faspxx ${UMFPACK_LIBRARIES})
 
 # Test AMG class
 add_executable(testAMG example/testAMG.cxx)

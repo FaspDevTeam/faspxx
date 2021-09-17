@@ -476,7 +476,7 @@ void MAT::Residual(const VEC &b, const VEC &x, VEC &r) const
 }
 
 /// Transpose *this in place
-void MAT::Transpose()
+void MAT::TransInPlace()
 {
     const INT n = this->nrow, m = this->mcol, nnz = this->nnz;
     INT       i, j, k, p;
@@ -621,6 +621,31 @@ DBL MAT::GetValue(const INT &irow, const INT &jcol) const
         }
     }
     return 0.0;
+}
+
+/// Get nonzero values of the sparse matrix as an array.
+double *MAT::GetValues() const
+{
+    double *val = new double[nnz];
+    for (INT j = 0; j < nnz; ++j) val[j] = this->values[j];
+    return val;
+}
+
+/// Get colInd values of the sparse matrix as an array.
+int *MAT::GetColInd() const
+{
+    int *val = new int[nnz];
+    for (INT j = 0; j < nnz; ++j) val[j] = this->colInd[j];
+    return val;
+}
+
+/// Get rowPtr values of the sparse matrix as an array.
+int *MAT::GetRowPtr() const
+{
+    const INT n   = GetRowSize();
+    int *     val = new int[n + 1];
+    for (INT j = 0; j <= n; ++j) val[j] = this->rowPtr[j];
+    return val;
 }
 
 /// *this = a * mat1 + b * mat2.
@@ -852,7 +877,7 @@ void MAT::Inverse(MAT &inv_mat) const
         }
     }
 
-    LUP_Solve_Inverse(mat.values, this->nrow, inv_mat.values);
+    LUPSolveInverse(mat.values, this->nrow, inv_mat.values);
 }
 
 /// Write data to a disk file in CSR format.
@@ -874,10 +899,10 @@ void WriteMTX(char *filename, MAT mat)
 {
     INT           begin, end, j, k;
     std::ofstream out;
-    out.open(filename);
-    MAT tmp = mat;
-    tmp.Transpose();
+    MAT           tmp = mat;
+    tmp.TransInPlace();
 
+    out.open(filename);
     out << tmp.nrow << " " << tmp.mcol << " " << tmp.nnz << "\n";
     for (j = 0; j < tmp.nrow; ++j) {
         begin = tmp.rowPtr[j];
@@ -885,7 +910,6 @@ void WriteMTX(char *filename, MAT mat)
         for (k = begin; k < end; ++k)
             out << j << " " << tmp.colInd[j] << " " << tmp.values[j] << std::endl;
     }
-
     out.close();
 }
 
@@ -916,8 +940,8 @@ void MAT::Empty()
 }
 
 /// LUP decomposition
-void MAT::LUP_Decomposition(std::vector<DBL> A, std::vector<DBL> &L,
-                            std::vector<DBL> &U, std::vector<INT> &P, INT N) const
+void MAT::LUPDecomp(std::vector<DBL> A, std::vector<DBL> &L, std::vector<DBL> &U,
+                    std::vector<INT> &P, INT N) const
 {
     INT row = 0;
     for (INT i = 0; i < N; i++) P[i] = i;
@@ -974,8 +998,8 @@ void MAT::LUP_Decomposition(std::vector<DBL> A, std::vector<DBL> &L,
 }
 
 /// LUP solver
-void MAT::LUP_Solve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
-                    std::vector<DBL> b, INT N, std::vector<DBL> &x) const
+void MAT::LUPSolve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
+                   std::vector<DBL> b, INT N, std::vector<DBL> &x) const
 {
     std::vector<DBL> y(N);
 
@@ -1024,8 +1048,8 @@ void MAT::Rtranspose(std::vector<DBL> &mtx, INT m, INT n) const
 }
 
 /// LUP inversion (assemble each column x from each column B)
-void MAT::LUP_Solve_Inverse(const std::vector<DBL> A, INT N,
-                            std::vector<DBL> &inv_A) const
+void MAT::LUPSolveInverse(const std::vector<DBL> A, INT N,
+                          std::vector<DBL> &inv_A) const
 {
     std::vector<DBL> A_mirror(N * N);
     std::vector<DBL> inv_A_each(N);
@@ -1045,9 +1069,9 @@ void MAT::LUP_Solve_Inverse(const std::vector<DBL> A, INT N,
         // Need to make a new copy of a every time
         for (INT k = 0; k < N * N; ++k) A_mirror[k] = A[k];
 
-        LUP_Decomposition(A_mirror, L, U, P, N);
+        LUPDecomp(A_mirror, L, U, P, N);
 
-        LUP_Solve(L, U, P, b, N, inv_A_each);
+        LUPSolve(L, U, P, b, N, inv_A_each);
         while (count < N) {
             inv_A[i * N + count] = inv_A_each[count];
             ++count;

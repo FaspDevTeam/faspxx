@@ -45,7 +45,7 @@ std::string GetRetCode(const FaspRetCode code)
             return "Unknown function dummy variables!";
         case ERROR_SOLVER_TYPE:
             return "Unknown solver type!";
-        case ERROR_SOLVER_PRECTYPE:
+        case ERROR_SOLVER_PCD_TYPE:
             return "Unknown preconditioner type!";
         case ERROR_SOLVER_STAG:
             return "Iterative solver stagnates!";
@@ -72,7 +72,11 @@ std::string GetRetCode(const FaspRetCode code)
         case ERROR_SWZ_TYPE:
             return "Unknown Schwarz method type";
         case ERROR_SWZ_SETUP:
-            return "Schwarz method setup failed to complete!";
+            return "Schwarz method setup step failed to complete!";
+        case ERROR_DSOLVER_SETUP:
+            return "Direct solver setup step failed to complete!";
+        case ERROR_DSOLVER_SOLVE:
+            return "Direct solver solve step failed to complete!";
         default:
             return "Unknown error type!";
     }
@@ -100,5 +104,5 @@ void FaspBadAlloc::LogExcep(std::ostream &stream) const
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        Sep/25/2019      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/17/2021      Add error for direct solvers         */
 /*----------------------------------------------------------------------------*/

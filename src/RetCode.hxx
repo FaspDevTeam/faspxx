@@ -32,7 +32,7 @@ enum FaspRetCode {
     ERROR_ALLOC_MEM       = -20, ///< Failed to allocate memory
     ERROR_DUMMY_VAR       = -23, ///< Unknown function dummy variables
     ERROR_SOLVER_TYPE     = -30, ///< Unknown solver type
-    ERROR_SOLVER_PRECTYPE = -31, ///< Unknown preconditioner type
+    ERROR_SOLVER_PCD_TYPE = -31, ///< Unknown preconditioner type
     ERROR_SOLVER_STAG     = -32, ///< Iterative solver stagnates
     ERROR_SOLVER_SOLSTAG  = -33, ///< Iterative solver's solution is too small
     ERROR_SOLVER_TOLSMALL = -34, ///< Iterative solver's tolerance is too small
@@ -46,6 +46,8 @@ enum FaspRetCode {
     ERROR_ILU_SETUP       = -59, ///< ILU setup failed to complete
     ERROR_SWZ_TYPE        = -60, ///< Unknown Schwarz method type
     ERROR_SWZ_SETUP       = -69, ///< Schwarz method setup failed to complete
+    ERROR_DSOLVER_SETUP   = -91, ///< Fail to setup in direct solver
+    ERROR_DSOLVER_SOLVE   = -92, ///< Fail to solve in direct solver
     PRINT_HELP            = 0,   ///< Print help message
 };
 
@@ -53,7 +55,8 @@ enum FaspRetCode {
 std::string GetRetCode(const FaspRetCode code);
 
 /// \brief Run-time exception capturing class
-class FaspRunTime : public std::runtime_error {
+class FaspRunTime : public std::runtime_error
+{
 
 private:
     const char *       file; ///< Which file throws exception
@@ -71,7 +74,9 @@ public:
         , file(file_)
         , func(func_)
         , line(line_)
-        , errorCode(code_) {}
+        , errorCode(code_)
+    {
+    }
 
     // Get exception location
     const char * GetFile() const { return file; } ///< return thrown file name
@@ -83,7 +88,8 @@ public:
 };
 
 /// \brief Allocation exception capturing class
-class FaspBadAlloc : public std::bad_alloc {
+class FaspBadAlloc : public std::bad_alloc
+{
 
 private:
     const char *       file; ///< Which file throws exception
@@ -99,7 +105,9 @@ public:
         : std::bad_alloc()
         , file(file_)
         , func(func_)
-        , line(line_) {}
+        , line(line_)
+    {
+    }
 
     // Get exception location
     const char * GetFile() const { return file; } ///< return thrown file name

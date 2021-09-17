@@ -14,9 +14,13 @@
 
 // FASPXX header files
 #include "ErrorLog.hxx"
-#include "LOP.hxx"
 #include "MAT.hxx"
 #include "SOL.hxx"
+
+// Other header files
+#if WITH_UMFPACK
+#include "umfpack.h"
+#endif
 
 /*! \class UMFPACK
  *  \brief Interface to external direct solver: Umfpack.
@@ -24,25 +28,37 @@
 class UMFPACK : public SOL
 {
 private:
-    int len;  ///< dimension of the solution vector
-    VEC work; ///< Work vector for residual
+    int     n;        ///< number of rows
+    int     m;        ///< number of columns
+    int     nnz;      ///< number of nonzeros
+    int *   Ap;       ///< CSR row pointer for Fortran
+    int *   Ai;       ///< CSR columen indices for Fortran
+    double *Ax;       ///< CSR values for Fortran
+    void *  Symbolic; ///< symbolic factorization from UMFPACK
+    void *  Numeric;  ///< numeric factorization from UMFPACK
 
 public:
     /// Default constructor.
     UMFPACK()
-        : len(0)
-        , work(0){};
+        : n(0)
+        , m(0)
+        , nnz(0)
+        , Ap(nullptr)
+        , Ai(nullptr)
+        , Ax(nullptr)
+        , Symbolic(nullptr)
+        , Numeric(nullptr){};
 
     /// Default destructor.
     ~UMFPACK() = default;
 
-    /// Setup the CG method.
-    FaspRetCode Setup(const LOP &A) override;
+    /// Setup the UMFPACK direct solver.
+    FaspRetCode Setup(const MAT &A);
 
-    /// Solve Ax=b using the CG method.
+    /// Solve Ax=b using the the UMFPACK direct solver.
     FaspRetCode Solve(const VEC &b, VEC &x) override;
 
-    /// Clean up CG data allocated during Setup.
+    /// Clean up UMFPACK data allocated during Setup.
     void Clean() override;
 };
 
