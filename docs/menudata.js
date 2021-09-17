@@ -48,6 +48,7 @@ var menudata={children:[
 {text:"r",url:"functions_r.html#index_r"},
 {text:"s",url:"functions_s.html#index_s"},
 {text:"t",url:"functions_t.html#index_t"},
+{text:"u",url:"functions_u.html#index_u"},
 {text:"v",url:"functions_v.html#index_v"},
 {text:"w",url:"functions_w.html#index_w"},
 {text:"x",url:"functions_x.html#index_x"},
@@ -70,6 +71,7 @@ var menudata={children:[
 {text:"r",url:"functions_func.html#index_r"},
 {text:"s",url:"functions_func.html#index_s"},
 {text:"t",url:"functions_func.html#index_t"},
+{text:"u",url:"functions_func.html#index_u"},
 {text:"v",url:"functions_func.html#index_v"},
 {text:"w",url:"functions_func.html#index_w"},
 {text:"x",url:"functions_func.html#index_x"},
@@ -121,5 +123,6 @@ var menudata={children:[
 {text:"m",url:"globals_eval.html#index_m"},
 {text:"p",url:"globals_eval.html#index_p"},
 {text:"s",url:"globals_eval.html#index_s"},
+{text:"u",url:"globals_eval.html#index_u"},
 {text:"v",url:"globals_eval.html#index_v"}]},
 {text:"Macros",url:"globals_defs.html"}]}]}]}

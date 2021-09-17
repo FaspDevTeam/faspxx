@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.5 Sep/16/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.6 Sep/17/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -88,9 +88,13 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a0b9c1fdae3c74d6080ffc1b22a9a827d"><td class="memItemLeft" align="right" valign="top"><a id="a0b9c1fdae3c74d6080ffc1b22a9a827d" name="a0b9c1fdae3c74d6080ffc1b22a9a827d"></a>
+typedef unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>INDEX</b></td></tr>
+<tr class="memdesc:a0b9c1fdae3c74d6080ffc1b22a9a827d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index type: Must be non-negative! <br /></td></tr>
+<tr class="separator:a0b9c1fdae3c74d6080ffc1b22a9a827d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c1b481efcce2dbbd0dee644e335c69a"><td class="memItemLeft" align="right" valign="top"><a id="a2c1b481efcce2dbbd0dee644e335c69a" name="a2c1b481efcce2dbbd0dee644e335c69a"></a>
 typedef unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>INT</b></td></tr>
-<tr class="memdesc:a2c1b481efcce2dbbd0dee644e335c69a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Index type: Must be non-negative! <br /></td></tr>
+<tr class="memdesc:a2c1b481efcce2dbbd0dee644e335c69a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Regular integer numbers. <br /></td></tr>
 <tr class="separator:a2c1b481efcce2dbbd0dee644e335c69a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe77621c09892bd17c5fdc9182f5b3ae"><td class="memItemLeft" align="right" valign="top"><a id="afe77621c09892bd17c5fdc9182f5b3ae" name="afe77621c09892bd17c5fdc9182f5b3ae"></a>
 typedef double&#160;</td><td class="memItemRight" valign="bottom"><b>DBL</b></td></tr>
@@ -116,9 +120,14 @@ Enumerations</h2></td></tr>
 , <a class="el" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a57df81bb36667bc510b4fe1bc9f8b066">MG</a> = 21
 , <br />
 &#160;&#160;<a class="el" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e">FMG</a> = 22
+, <a class="el" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a8ea5d76ebb0ed454a06211636c22776f">UMFPACK</a> = 91
+, <a class="el" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a">MUMPS</a> = 92
+, <a class="el" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94">SUPERLU</a> = 93
+, <br />
+&#160;&#160;<a class="el" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1">PARDISO</a> = 94
 <br />
  }</td></tr>
-<tr class="memdesc:a211350976404ebcc6715299193cc2ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Iterative solver type.  <a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7">More...</a><br /></td></tr>
+<tr class="memdesc:a211350976404ebcc6715299193cc2ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver types.  <a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7">More...</a><br /></td></tr>
 <tr class="separator:a211350976404ebcc6715299193cc2ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -166,7 +175,7 @@ const <a class="el" href="_faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">I
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Main FASP++ header file. </p>
-<dl class="section author"><dt>Author</dt><dd>Kailei Zhang, Chensong Zhang </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Chensong Zhang, Kailei Zhang </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>Sep/01/2019</dd></dl>
 <hr  />
 <p> Copyright (C) 2019&ndash;present by the FASP++ team. All rights reserved. </p>
@@ -201,7 +210,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
       </table>
 </div><div class="memdoc">
 
-<p>Iterative solver type. </p>
+<p>Solver types. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60" name="a211350976404ebcc6715299193cc2ea7ab675143c1d974b79ec45f725a4963d60"></a>CG&#160;</td><td class="fielddoc"><p >Conjugate Gradient. </p>
 </td></tr>
@@ -229,35 +238,51 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 </td></tr>
 <tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e" name="a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e"></a>FMG&#160;</td><td class="fielddoc"><p >Full multigrid method. </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7a8ea5d76ebb0ed454a06211636c22776f" name="a211350976404ebcc6715299193cc2ea7a8ea5d76ebb0ed454a06211636c22776f"></a>UMFPACK&#160;</td><td class="fielddoc"><p >Direct method from <a class="el" href="class_u_m_f_p_a_c_k.html" title="Interface to external direct solver: Umfpack.">UMFPACK</a>. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a" name="a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a"></a>MUMPS&#160;</td><td class="fielddoc"><p >Direct method from MUMPS. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94" name="a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94"></a>SUPERLU&#160;</td><td class="fielddoc"><p >Direct method from SUPERLU. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1" name="a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1"></a>PARDISO&#160;</td><td class="fielddoc"><p >Direct method from PARDISO. </p>
+</td></tr>
 </table>
-<div class="fragment"><div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>             {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_class" href="class_c_g.html">CG</a>       = 1,  </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a> = 2,  </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a>   = 3,  </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_class" href="class_g_m_r_e_s.html">GMRES</a>    = 4,  </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_class" href="class_f_g_m_r_e_s.html">FGMRES</a>   = 5,  </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a>  = 6,  </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_class" href="class_jacobi.html">Jacobi</a>   = 11, </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a">GS</a>       = 12, </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106">SGS</a>      = 13, </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285">SOR</a>      = 14, </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b">SSOR</a>     = 15, </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_class" href="class_m_g.html">MG</a>       = 21, </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e">FMG</a>      = 22  </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
-<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a></div><div class="ttdeci">@ BICGSTAB</div><div class="ttdoc">Bi-Conjugate Gradient Stabilized.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:40</div></div>
-<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a></div><div class="ttdeci">@ MINRES</div><div class="ttdoc">Minimal Residual.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:41</div></div>
-<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e">FMG</a></div><div class="ttdeci">@ FMG</div><div class="ttdoc">Full multigrid method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:51</div></div>
-<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a></div><div class="ttdeci">@ VFGMRES</div><div class="ttdoc">Variable-restarting FGMRES.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:44</div></div>
-<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a">GS</a></div><div class="ttdeci">@ GS</div><div class="ttdoc">Gauss-Seidel method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:46</div></div>
-<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b">SSOR</a></div><div class="ttdeci">@ SSOR</div><div class="ttdoc">Symmetrized successive over-relaxation method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:49</div></div>
-<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285">SOR</a></div><div class="ttdeci">@ SOR</div><div class="ttdoc">Successive over-relaxation method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:48</div></div>
-<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106">SGS</a></div><div class="ttdeci">@ SGS</div><div class="ttdoc">Symmetrized Gauss-Seidel method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:47</div></div>
-<div class="ttc" id="aclass_c_g_html"><div class="ttname"><a href="class_c_g.html">CG</a></div><div class="ttdoc">Preconditioned conjugate gradient method.</div><div class="ttdef"><b>Definition:</b> CG.hxx:25</div></div>
-<div class="ttc" id="aclass_f_g_m_r_e_s_html"><div class="ttname"><a href="class_f_g_m_r_e_s.html">FGMRES</a></div><div class="ttdoc">Preconditioned flexible generalized minimal residual method.</div><div class="ttdef"><b>Definition:</b> FGMRES.hxx:28</div></div>
-<div class="ttc" id="aclass_g_m_r_e_s_html"><div class="ttname"><a href="class_g_m_r_e_s.html">GMRES</a></div><div class="ttdoc">Preconditioned generalized minimal residual method.</div><div class="ttdef"><b>Definition:</b> GMRES.hxx:28</div></div>
+<div class="fragment"><div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>             {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <a class="code hl_class" href="class_c_g.html">CG</a>       = 1,  </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a> = 2,  </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a>   = 3,  </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_class" href="class_g_m_r_e_s.html">GMRES</a>    = 4,  </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_class" href="class_f_g_m_r_e_s.html">FGMRES</a>   = 5,  </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a>  = 6,  </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_class" href="class_jacobi.html">Jacobi</a>   = 11, </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a">GS</a>       = 12, </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106">SGS</a>      = 13, </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285">SOR</a>      = 14, </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b">SSOR</a>     = 15, </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_class" href="class_m_g.html">MG</a>       = 21, </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e">FMG</a>      = 22, </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_class" href="class_u_m_f_p_a_c_k.html">UMFPACK</a>  = 91, </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a">MUMPS</a>    = 92, </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94">SUPERLU</a>  = 93, </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_enumvalue" href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1">PARDISO</a>  = 94, </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a></div><div class="ttdeci">@ BICGSTAB</div><div class="ttdoc">Bi-Conjugate Gradient Stabilized.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:35</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a></div><div class="ttdeci">@ MINRES</div><div class="ttdoc">Minimal Residual.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:36</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e">FMG</a></div><div class="ttdeci">@ FMG</div><div class="ttdoc">Full multigrid method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:46</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a></div><div class="ttdeci">@ VFGMRES</div><div class="ttdoc">Variable-restarting FGMRES.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:39</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a">GS</a></div><div class="ttdeci">@ GS</div><div class="ttdoc">Gauss-Seidel method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:41</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a">MUMPS</a></div><div class="ttdeci">@ MUMPS</div><div class="ttdoc">Direct method from MUMPS.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:48</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b">SSOR</a></div><div class="ttdeci">@ SSOR</div><div class="ttdoc">Symmetrized successive over-relaxation method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:44</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285">SOR</a></div><div class="ttdeci">@ SOR</div><div class="ttdoc">Successive over-relaxation method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:43</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94">SUPERLU</a></div><div class="ttdeci">@ SUPERLU</div><div class="ttdoc">Direct method from SUPERLU.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:49</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106">SGS</a></div><div class="ttdeci">@ SGS</div><div class="ttdoc">Symmetrized Gauss-Seidel method.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:42</div></div>
+<div class="ttc" id="a_faspxx_8hxx_html_a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1"><div class="ttname"><a href="_faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1">PARDISO</a></div><div class="ttdeci">@ PARDISO</div><div class="ttdoc">Direct method from PARDISO.</div><div class="ttdef"><b>Definition:</b> Faspxx.hxx:50</div></div>
+<div class="ttc" id="aclass_c_g_html"><div class="ttname"><a href="class_c_g.html">CG</a></div><div class="ttdoc">Preconditioned conjugate gradient method.</div><div class="ttdef"><b>Definition:</b> CG.hxx:24</div></div>
+<div class="ttc" id="aclass_f_g_m_r_e_s_html"><div class="ttname"><a href="class_f_g_m_r_e_s.html">FGMRES</a></div><div class="ttdoc">Preconditioned flexible generalized minimal residual method.</div><div class="ttdef"><b>Definition:</b> FGMRES.hxx:27</div></div>
+<div class="ttc" id="aclass_g_m_r_e_s_html"><div class="ttname"><a href="class_g_m_r_e_s.html">GMRES</a></div><div class="ttdoc">Preconditioned generalized minimal residual method.</div><div class="ttdef"><b>Definition:</b> GMRES.hxx:27</div></div>
 <div class="ttc" id="aclass_jacobi_html"><div class="ttname"><a href="class_jacobi.html">Jacobi</a></div><div class="ttdoc">Jacobi iterator.</div><div class="ttdef"><b>Definition:</b> Iter.hxx:43</div></div>
-<div class="ttc" id="aclass_m_g_html"><div class="ttname"><a href="class_m_g.html">MG</a></div><div class="ttdoc">Multigrid method in an abstract setting.</div><div class="ttdef"><b>Definition:</b> MG.hxx:27</div></div>
+<div class="ttc" id="aclass_m_g_html"><div class="ttname"><a href="class_m_g.html">MG</a></div><div class="ttdoc">Multigrid method in an abstract setting.</div><div class="ttdef"><b>Definition:</b> MG.hxx:26</div></div>
+<div class="ttc" id="aclass_u_m_f_p_a_c_k_html"><div class="ttname"><a href="class_u_m_f_p_a_c_k.html">UMFPACK</a></div><div class="ttdoc">Interface to external direct solver: Umfpack.</div><div class="ttdef"><b>Definition:</b> Umfpack.hxx:29</div></div>
 </div><!-- fragment -->
 </div>
 </div>

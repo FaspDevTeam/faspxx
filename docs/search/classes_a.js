@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['sol_0',['SOL',['../class_s_o_l.html',1,'']]],
-  ['solparams_1',['SOLParams',['../struct_s_o_l_params.html',1,'']]]
+  ['sol_0',['SOL',['../classSOL.html',1,'']]],
+  ['solparams_1',['SOLParams',['../structSOLParams.html',1,'']]]
 ];

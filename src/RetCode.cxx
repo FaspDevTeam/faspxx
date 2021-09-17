@@ -1,4 +1,4 @@
-/** \file    RetCode.hxx
+/** \file    RetCode.cxx
  *  \brief   Decode return code into a readable string
  *  \author  Chensong Zhang
  *  \date    Sep/25/2019

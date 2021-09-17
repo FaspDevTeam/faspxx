@@ -1,5 +1,5 @@
-/*! \file    CG.cxx
- *  \brief   Preconditioned CG class definition
+/*! \file    CG.hxx
+ *  \brief   Preconditioned CG class declaration
  *  \author  Chensong Zhang, Kailei Zhang
  *  \date    Oct/11/2019
  *

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['parameters_0',['Parameters',['../class_parameters.html',1,'']]]
+  ['parameters_0',['Parameters',['../classParameters.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['transpose_0',['Transpose',['../class_m_a_t.html#a672e0b5c66fb774365c7616f50f8debd',1,'MAT']]]
+  ['transinplace_0',['TransInPlace',['../classMAT.html#a23975f5f91fc6a01056e825c37d5a621',1,'MAT']]]
 ];

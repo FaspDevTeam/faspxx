@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.5 Sep/16/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.6 Sep/17/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -154,10 +154,12 @@ const <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50"
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
-<div class="fragment"><div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        : std::bad_alloc()</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        , file(file_)</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        , func(func_)</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        , line(line_) {}</div>
+<div class="fragment"><div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        : std::bad_alloc()</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        , file(file_)</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        , func(func_)</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        , line(line_)</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -179,14 +181,14 @@ const <a class="el" href="_ret_code_8hxx.html#aff468b46f5c4020989ad3bdbba54af50"
 </div><div class="memdoc">
 
 <p>Log allocation error messages in a file or to the screen. </p>
-<div class="fragment"><div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>{</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    stream &lt;&lt; <span class="stringliteral">&quot;### ERROR: &quot;</span> &lt;&lt; this-&gt;what() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    stream &lt;&lt; <span class="stringliteral">&quot;### ERROR: Check &quot;</span> &lt;&lt; this-&gt;<a class="code hl_function" href="class_fasp_bad_alloc.html#ad6e3d00d2c461e7232dc160390fa8885">GetFile</a>() &lt;&lt; <span class="stringliteral">&quot; in &quot;</span> &lt;&lt; this-&gt;<a class="code hl_function" href="class_fasp_bad_alloc.html#a6558867d4033d0e75791852dc44959d7">GetFunc</a>()</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>           &lt;&lt; <span class="stringliteral">&quot;() at Line &quot;</span> &lt;&lt; this-&gt;<a class="code hl_function" href="class_fasp_bad_alloc.html#ae01846999fe087ced13ed07f705818f7">GetLine</a>() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>}</div>
-<div class="ttc" id="aclass_fasp_bad_alloc_html_a6558867d4033d0e75791852dc44959d7"><div class="ttname"><a href="class_fasp_bad_alloc.html#a6558867d4033d0e75791852dc44959d7">FaspBadAlloc::GetFunc</a></div><div class="ttdeci">const char * GetFunc() const</div><div class="ttdoc">return thrown function name</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:106</div></div>
-<div class="ttc" id="aclass_fasp_bad_alloc_html_ad6e3d00d2c461e7232dc160390fa8885"><div class="ttname"><a href="class_fasp_bad_alloc.html#ad6e3d00d2c461e7232dc160390fa8885">FaspBadAlloc::GetFile</a></div><div class="ttdeci">const char * GetFile() const</div><div class="ttdoc">return thrown file name</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:105</div></div>
-<div class="ttc" id="aclass_fasp_bad_alloc_html_ae01846999fe087ced13ed07f705818f7"><div class="ttname"><a href="class_fasp_bad_alloc.html#ae01846999fe087ced13ed07f705818f7">FaspBadAlloc::GetLine</a></div><div class="ttdeci">unsigned int GetLine() const</div><div class="ttdoc">return thrown line number</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:107</div></div>
+<div class="fragment"><div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>{</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    stream &lt;&lt; <span class="stringliteral">&quot;### ERROR: &quot;</span> &lt;&lt; this-&gt;what() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    stream &lt;&lt; <span class="stringliteral">&quot;### ERROR: Check &quot;</span> &lt;&lt; this-&gt;<a class="code hl_function" href="class_fasp_bad_alloc.html#ad6e3d00d2c461e7232dc160390fa8885">GetFile</a>() &lt;&lt; <span class="stringliteral">&quot; in &quot;</span> &lt;&lt; this-&gt;<a class="code hl_function" href="class_fasp_bad_alloc.html#a6558867d4033d0e75791852dc44959d7">GetFunc</a>()</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>           &lt;&lt; <span class="stringliteral">&quot;() at Line &quot;</span> &lt;&lt; this-&gt;<a class="code hl_function" href="class_fasp_bad_alloc.html#ae01846999fe087ced13ed07f705818f7">GetLine</a>() &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>}</div>
+<div class="ttc" id="aclass_fasp_bad_alloc_html_a6558867d4033d0e75791852dc44959d7"><div class="ttname"><a href="class_fasp_bad_alloc.html#a6558867d4033d0e75791852dc44959d7">FaspBadAlloc::GetFunc</a></div><div class="ttdeci">const char * GetFunc() const</div><div class="ttdoc">return thrown function name</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:114</div></div>
+<div class="ttc" id="aclass_fasp_bad_alloc_html_ad6e3d00d2c461e7232dc160390fa8885"><div class="ttname"><a href="class_fasp_bad_alloc.html#ad6e3d00d2c461e7232dc160390fa8885">FaspBadAlloc::GetFile</a></div><div class="ttdeci">const char * GetFile() const</div><div class="ttdoc">return thrown file name</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:113</div></div>
+<div class="ttc" id="aclass_fasp_bad_alloc_html_ae01846999fe087ced13ed07f705818f7"><div class="ttname"><a href="class_fasp_bad_alloc.html#ae01846999fe087ced13ed07f705818f7">FaspBadAlloc::GetLine</a></div><div class="ttdeci">unsigned int GetLine() const</div><div class="ttdoc">return thrown line number</div><div class="ttdef"><b>Definition:</b> RetCode.hxx:115</div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="class_fasp_bad_alloc.html#ad6e3d00d2c461e7232dc160390fa8885">GetFile()</a>, <a class="el" href="class_fasp_bad_alloc.html#a6558867d4033d0e75791852dc44959d7">GetFunc()</a>, and <a class="el" href="class_fasp_bad_alloc.html#ae01846999fe087ced13ed07f705818f7">GetLine()</a>.</p>
 
