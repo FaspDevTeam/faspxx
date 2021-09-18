@@ -73,6 +73,7 @@ int main()
     std::cout << "new VEC cycles : " << cycle.Stop() << std::endl;
     std::cout << "new VEC time   : " << timer.Stop() << "ms" << std::endl;
 
+    //! Timing pointer : 19.0365ms, vector : 19.2257ms, new VEC : 18.9041ms
     /*------------------------------------------------------------*/
     std::cout << "\n------ assignment ------" << std::endl;
     /*------------------------------------------------------------*/
@@ -103,6 +104,7 @@ int main()
     std::cout << "new VEC cycles : " << cycle.Stop() / count << std::endl;
     std::cout << "new VEC time   : " << timer.Stop() / count << "ms" << std::endl;
 
+    //! Timing pointer : 10.9632ms, vector : 11.0955ms, new VEC : 11.2195ms
     /*------------------------------------------------------------*/
     std::cout << "\n------ addition ------" << std::endl;
     /*------------------------------------------------------------*/
@@ -128,6 +130,7 @@ int main()
     std::cout << "new VEC cycles : " << cycle.Stop() / count << std::endl;
     std::cout << "new VEC time   : " << timer.Stop() / count << "ms" << std::endl;
 
+    //! Timing pointer : 23.7068ms, vector : 23.0305ms, new VEC : 9.61151ms
     /*------------------------------------------------------------*/
     std::cout << "\n------ dot product ------" << std::endl;
     /*------------------------------------------------------------*/
@@ -174,5 +177,5 @@ int main()
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        Oct/12/2019      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/17/2021      Test performance of new version      */
 /*----------------------------------------------------------------------------*/
