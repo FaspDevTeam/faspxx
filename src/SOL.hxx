@@ -30,7 +30,7 @@ protected:
     double     norm2;   ///< Euclidean norm
     double     normInf; ///< Infinity norm
     int        numIter; ///< Number of iterations when exit
-    SOLParams  params;  ///< solver parameters
+    SOLParams  params;  ///< Solver parameters
 
     /// Warning for actual relative residual
     void WarnRealRes(double relres) const;
@@ -73,9 +73,6 @@ public:
 
     /// Set tolerance for absolute residual.
     void SetAbsTol(double absTol);
-
-    /// Set weight for correction schemes.
-    void SetWeight(double alpha);
 
     /// Set solver type.
     void SetSolType(SOLType solver);

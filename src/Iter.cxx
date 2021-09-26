@@ -19,6 +19,9 @@ FaspRetCode Identity::Solve(const VEC& b, VEC& x)
     return FaspRetCode::SUCCESS;
 }
 
+/// Set the weight for the Jacobi method.
+void Jacobi::SetWeight(const DBL weight) { this->weight = weight; }
+
 /// Setup Jacobi preconditioner.
 FaspRetCode Jacobi::Setup(const MAT& A)
 {
@@ -27,19 +30,18 @@ FaspRetCode Jacobi::Setup(const MAT& A)
 
     // Allocate memory for temporary vectors
     try {
-        w.SetValues(A.GetColSize(), 0.0);
+        work.SetValues(A.GetColSize(), 0.0);
     } catch (std::bad_alloc& ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
     // Setup the coefficient matrix
-    this->A     = &A;
-    this->omega = params.weight;
+    this->A = &A;
 
-    // Get diagonal and compute its scaled reciprocal = 1 ./ diag * omega
+    // Get diagonal and compute its scaled reciprocal = 1 ./ diag * weight
     A.GetDiag(diagInv);
     diagInv.Reciprocal();
-    diagInv.Scale(omega);
+    diagInv.Scale(weight);
 
     // Print used parameters if necessary
     if (params.verbose > PRINT_MIN) PrintParam(std::cout);
@@ -64,11 +66,11 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
     while (numIter < params.maxIter) {
 
         // Update residual r = b - A*x
-        A->Residual(b, x, w);
+        A->Residual(b, x, work);
 
         // Compute norm of residual and check whether it converges
         if (numIter >= params.minIter) {
-            resAbs = w.Norm2();
+            resAbs = work.Norm2();
             if (numIter == params.minIter)
                 denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
@@ -83,9 +85,9 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
         // Jacobi iteration starts from here
         //---------------------------------------------
 
-        ++numIter;                // iteration count
-        w.PointwiseMult(diagInv); // r = omega * r ./ d
-        x += w;                   // x = x + omega * r
+        ++numIter;                   // iteration count
+        work.PointwiseMult(diagInv); // r = weight * r ./ d
+        x += work;                   // x = x + weight * r
 
         //---------------------------------------------
         // One step of Jacobi iteration ends here
@@ -95,8 +97,11 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
     if (not(numIter == params.minIter && numIter == params.maxIter)) {
-        this->norm2   = resAbs;
-        this->normInf = w.NormInf();
+        A->Residual(b, x, work); // Update final residual
+        this->norm2 = resAbs = work.Norm2();
+        this->normInf        = work.NormInf();
+        resRel               = resAbs / denAbs;
+        ratio                = resAbs / resAbsOld;
         PrintFinal(numIter, resRel, resAbs, ratio);
     }
 

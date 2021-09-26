@@ -20,6 +20,9 @@
 #include <vector>
 using std::string;
 
+// FASPXX header files
+#include "Faspxx.hxx"
+
 /// Level of output
 enum Output {
     PRINT_NONE = 0, // no output
@@ -56,11 +59,11 @@ struct SOLParams {
     string  algName;  ///< Algorithm name
     int     maxIter;  ///< Maximal number of iterations
     int     minIter;  ///< Minimal number of iterations
-    int     safeIter; ///< Minimal number of iterations before safe-guard
+    int     safeIter; ///< Beginning number of iterations with safe-guard
     int     restart;  ///< Restart number
     double  relTol;   ///< Tolerance for relative residual
     double  absTol;   ///< Tolerance for absolute residual
-    double  weight;   ///< Weight for correction schemes
+    //double  weight;   ///< Weight for correction schemes
     Output  verbose;  ///< Output verbosity level
 
     SOLParams()
@@ -68,11 +71,11 @@ struct SOLParams {
         , algName("cg")
         , maxIter(1)
         , minIter(0)
-        , safeIter(5000)
+        , safeIter(MAX_ITER_NUM)
         , restart(30)
         , relTol(1e-6)
         , absTol(1e-8)
-        , weight(1.0)
+      //  , weight(1.0)
         , verbose(PRINT_NONE)
     {
     }

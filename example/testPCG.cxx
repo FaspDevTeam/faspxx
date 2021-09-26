@@ -70,7 +70,7 @@ int main(int argc, const char *args[])
     // Setup preconditioner parameters
     class Jacobi pcd;
     pcd.SetOutput(PRINT_NONE);
-    pcd.SetWeight(pcdParam.weight);   // weight for weighted Jacobi
+    pcd.SetWeight(0.8);   // weight for weighted Jacobi
     pcd.SetMaxIter(pcdParam.maxIter); // number of iterations
     pcd.SetMinIter(pcdParam.maxIter); // for preconditioning, use minIter = maxIter!
     pcd.Setup(mat); // setup preconditioner: a different matrix could be used!

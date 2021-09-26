@@ -72,7 +72,7 @@ int main(int argc, const char *args[])
     solver.SetMinIter(solParam.minIter);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
-    solver.SetWeight(solParam.weight);
+    solver.SetWeight(0.8);  // TODO: Read from cmd
     solver.Setup(mat);
 
     // Solve the linear system using Jacobi iteration

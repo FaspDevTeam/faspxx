@@ -120,9 +120,6 @@ void SOL::SetRelTol(double relTol) { params.relTol = relTol; }
 /// Set value for absTol.
 void SOL::SetAbsTol(double absTol) { params.absTol = absTol; }
 
-/// Set value for weight.
-void SOL::SetWeight(double alpha) { params.weight = alpha; }
-
 /// Set SOLType.
 void SOL::SetSolType(SOLType type) { params.type = type; }
 
@@ -225,12 +222,6 @@ void SOL::PrintParam(std::ostream& out) const
     // Parameters for Krylov solvers
     if (0 < params.type && params.type < 10) {
         out << "    Restart number:       " << params.restart << "\n";
-    }
-
-    // Parameters for relaxation solvers
-    if (10 < params.type && params.type < 20) {
-        out << std::fixed << std::setprecision(3)
-            << "    Relaxation weight:    " << params.weight << "\n";
     }
 
     out << std::endl;

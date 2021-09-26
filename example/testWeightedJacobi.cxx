@@ -9,6 +9,9 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Sample usages:
+//   ./testWeightedJacobi
+
 // Standard header files
 #include <iostream>
 #include <vector>
@@ -106,13 +109,14 @@ int main()
     VEC x1(2);
     VEC x2(3);
 
-    DBL wei1 = 0.5;
-    DBL wei2 = 0.5;
+    DBL weight1 = 0.5;
+    DBL weight2 = 0.7;
 
     class Jacobi j1;
     j1.SetOutput(Output::PRINT_SOME);
     j1.SetRelTol(1e-9);
-    j1.SetWeight(wei1);
+    j1.SetWeight(weight1);
+    j1.SetMaxIter(100);
     j1.Setup(mat1);
     j1.Solve(vec1, x1);
 
@@ -124,7 +128,8 @@ int main()
     class Jacobi j2;
     j2.SetOutput(Output::PRINT_SOME);
     j2.SetRelTol(1e-9);
-    j2.SetWeight(wei2);
+    j2.SetWeight(weight2);
+    j2.SetMaxIter(100);
     j2.Setup(mat2);
     j2.Solve(vec2, x2);
 
@@ -142,5 +147,5 @@ int main()
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        Dec/12/2019      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/26/2021      Fix Jacobi output                    */
 /*----------------------------------------------------------------------------*/

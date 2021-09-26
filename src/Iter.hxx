@@ -42,19 +42,22 @@ public:
 class Jacobi : public SOL
 {
 private:
-    double omega;   ///< Weight for damped or weighted Jacobi
+    double weight;  ///< Weight for damped or weighted Jacobi
     VEC    diagInv; ///< Inverse of diagonal entries
-    VEC    w;       ///< Work array for the residual
+    VEC    work;       ///< Work array for the residual
 
 public:
     /// Default constructor.
     Jacobi()
-        : omega(1.0)
+        : weight(1.0)
         , diagInv(1.0)
-        , w(0.0){};
+        , work(0.0){};
 
     /// Default destructor.
     ~Jacobi() = default;
+
+    /// Set the weight for the Jacobi method.
+    void SetWeight(const DBL weight);
 
     /// Setup the Jacobi method.
     FaspRetCode Setup(const MAT& A);
