@@ -82,6 +82,7 @@ $(function() {
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;map&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="Faspxx_8hxx_source.html">Faspxx.hxx</a>&quot;</code><br />
 </div>
 <p><a href="Param_8hxx_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -145,7 +146,7 @@ Enumerations</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>Nov/25/2019</dd></dl>
 <hr  />
 <p> Copyright (C) 2019&ndash;present by the FASP++ team. All rights reserved. </p>
-<h2><a class="anchor" id="autotoc_md52"></a>
+<h2><a class="anchor" id="autotoc_md54"></a>
 Released under the terms of the GNU Lesser General Public License 3.0 or later.</h2>
 
 <p class="definition">Definition in file <a class="el" href="Param_8hxx_source.html">Param.hxx</a>.</p>
@@ -182,14 +183,14 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 
 <p>Level of output. </p>
 
-<p class="definition">Definition at line <a class="el" href="Param_8hxx_source.html#l00024">24</a> of file <a class="el" href="Param_8hxx_source.html">Param.hxx</a>.</p>
-<div class="fragment"><div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>            {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    PRINT_NONE = 0, <span class="comment">// no output</span></div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    PRINT_MIN  = 2, <span class="comment">// minimal output</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    PRINT_SOME = 4, <span class="comment">// some output</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    PRINT_MORE = 6, <span class="comment">// more output</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    PRINT_MAX  = 8  <span class="comment">// maximal output</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>};</div>
+<p class="definition">Definition at line <a class="el" href="Param_8hxx_source.html#l00027">27</a> of file <a class="el" href="Param_8hxx_source.html">Param.hxx</a>.</p>
+<div class="fragment"><div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>            {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    PRINT_NONE = 0, <span class="comment">// no output</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    PRINT_MIN  = 2, <span class="comment">// minimal output</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    PRINT_SOME = 4, <span class="comment">// some output</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    PRINT_MORE = 6, <span class="comment">// more output</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    PRINT_MAX  = 8  <span class="comment">// maximal output</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -243,37 +244,37 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="Param_8hxx_source.html#l00033">33</a> of file <a class="el" href="Param_8hxx_source.html">Param.hxx</a>.</p>
-<div class="fragment"><div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>             {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <a class="code hl_class" href="classCG.html">CG</a>       = 1,  </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a> = 2,  </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a>   = 3,  </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_class" href="classGMRES.html">GMRES</a>    = 4,  </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_class" href="classFGMRES.html">FGMRES</a>   = 5,  </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a>  = 6,  </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_class" href="classJacobi.html">Jacobi</a>   = 11, </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a">GS</a>       = 12, </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106">SGS</a>      = 13, </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285">SOR</a>      = 14, </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b">SSOR</a>     = 15, </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_class" href="classMG.html">MG</a>       = 21, </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e">FMG</a>      = 22, </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_class" href="classUMFPACK.html">UMFPACK</a>  = 91, </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a">MUMPS</a>    = 92, </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94">SUPERLU</a>  = 93, </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1">PARDISO</a>  = 94  </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a></div><div class="ttdeci">@ BICGSTAB</div><div class="ttdoc">Bi-Conjugate Gradient Stabilized.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00035">Param.hxx:35</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a></div><div class="ttdeci">@ MINRES</div><div class="ttdoc">Minimal Residual.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00036">Param.hxx:36</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e">FMG</a></div><div class="ttdeci">@ FMG</div><div class="ttdoc">Full multigrid method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00046">Param.hxx:46</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a></div><div class="ttdeci">@ VFGMRES</div><div class="ttdoc">Variable-restarting FGMRES.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00039">Param.hxx:39</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a">GS</a></div><div class="ttdeci">@ GS</div><div class="ttdoc">Gauss-Seidel method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00041">Param.hxx:41</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a">MUMPS</a></div><div class="ttdeci">@ MUMPS</div><div class="ttdoc">Direct method from MUMPS.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00048">Param.hxx:48</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b">SSOR</a></div><div class="ttdeci">@ SSOR</div><div class="ttdoc">Symmetrized successive over-relaxation method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00044">Param.hxx:44</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285">SOR</a></div><div class="ttdeci">@ SOR</div><div class="ttdoc">Successive over-relaxation method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00043">Param.hxx:43</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94">SUPERLU</a></div><div class="ttdeci">@ SUPERLU</div><div class="ttdoc">Direct method from SUPERLU.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00049">Param.hxx:49</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106">SGS</a></div><div class="ttdeci">@ SGS</div><div class="ttdoc">Symmetrized Gauss-Seidel method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00042">Param.hxx:42</a></div></div>
-<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1">PARDISO</a></div><div class="ttdeci">@ PARDISO</div><div class="ttdoc">Direct method from PARDISO.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00051">Param.hxx:50</a></div></div>
+<p class="definition">Definition at line <a class="el" href="Param_8hxx_source.html#l00036">36</a> of file <a class="el" href="Param_8hxx_source.html">Param.hxx</a>.</p>
+<div class="fragment"><div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>             {</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_class" href="classCG.html">CG</a>       = 1,  </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a> = 2,  </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a>   = 3,  </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <a class="code hl_class" href="classGMRES.html">GMRES</a>    = 4,  </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <a class="code hl_class" href="classFGMRES.html">FGMRES</a>   = 5,  </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a>  = 6,  </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <a class="code hl_class" href="classJacobi.html">Jacobi</a>   = 11, </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a">GS</a>       = 12, </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106">SGS</a>      = 13, </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285">SOR</a>      = 14, </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b">SSOR</a>     = 15, </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <a class="code hl_class" href="classMG.html">MG</a>       = 21, </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e">FMG</a>      = 22, </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_class" href="classUMFPACK.html">UMFPACK</a>  = 91, </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a">MUMPS</a>    = 92, </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94">SUPERLU</a>  = 93, </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <a class="code hl_enumvalue" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1">PARDISO</a>  = 94  </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a35bb27443a5135dd245916d00ac921c0">BICGSTAB</a></div><div class="ttdeci">@ BICGSTAB</div><div class="ttdoc">Bi-Conjugate Gradient Stabilized.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00038">Param.hxx:38</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a3bf0b3bd6144ea534f4d7a460594e973">MINRES</a></div><div class="ttdeci">@ MINRES</div><div class="ttdoc">Minimal Residual.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00039">Param.hxx:39</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e">FMG</a></div><div class="ttdeci">@ FMG</div><div class="ttdoc">Full multigrid method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00049">Param.hxx:49</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c">VFGMRES</a></div><div class="ttdeci">@ VFGMRES</div><div class="ttdoc">Variable-restarting FGMRES.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00042">Param.hxx:42</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a">GS</a></div><div class="ttdeci">@ GS</div><div class="ttdoc">Gauss-Seidel method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00044">Param.hxx:44</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a9f703baf994e98419687f19e6c1ebb4a">MUMPS</a></div><div class="ttdeci">@ MUMPS</div><div class="ttdoc">Direct method from MUMPS.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00051">Param.hxx:51</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7ad00b05f9b6dbe32d5079de216bf24b7b">SSOR</a></div><div class="ttdeci">@ SSOR</div><div class="ttdoc">Symmetrized successive over-relaxation method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00047">Param.hxx:47</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7adfd5525f34e42f4a5e5856e0d63d0285">SOR</a></div><div class="ttdeci">@ SOR</div><div class="ttdoc">Successive over-relaxation method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00046">Param.hxx:46</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7aec595aea9ace49b64ef7fa33c250ed94">SUPERLU</a></div><div class="ttdeci">@ SUPERLU</div><div class="ttdoc">Direct method from SUPERLU.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00052">Param.hxx:52</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7af43bb73bb710dd029a7f9e5a5866f106">SGS</a></div><div class="ttdeci">@ SGS</div><div class="ttdoc">Symmetrized Gauss-Seidel method.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00045">Param.hxx:45</a></div></div>
+<div class="ttc" id="aParam_8hxx_html_a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1"><div class="ttname"><a href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7afff8ce488af8c0184f7a016e6644b4c1">PARDISO</a></div><div class="ttdeci">@ PARDISO</div><div class="ttdoc">Direct method from PARDISO.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00054">Param.hxx:53</a></div></div>
 <div class="ttc" id="aclassCG_html"><div class="ttname"><a href="classCG.html">CG</a></div><div class="ttdoc">Preconditioned conjugate gradient method.</div><div class="ttdef"><b>Definition:</b> <a href="CG_8hxx_source.html#l00023">CG.hxx:24</a></div></div>
 <div class="ttc" id="aclassFGMRES_html"><div class="ttname"><a href="classFGMRES.html">FGMRES</a></div><div class="ttdoc">Preconditioned flexible generalized minimal residual method.</div><div class="ttdef"><b>Definition:</b> <a href="FGMRES_8hxx_source.html#l00026">FGMRES.hxx:27</a></div></div>
 <div class="ttc" id="aclassGMRES_html"><div class="ttname"><a href="classGMRES.html">GMRES</a></div><div class="ttdoc">Preconditioned generalized minimal residual method.</div><div class="ttdef"><b>Definition:</b> <a href="GMRES_8hxx_source.html#l00026">GMRES.hxx:27</a></div></div>

@@ -1,5 +1,5 @@
 /** \file    VECUtil.hxx
- *  \brief   Tools for checking and manipulating VEC
+ *  \brief   Tools declaration for checking and manipulating VEC
  *  \author  Chensong Zhang, Kailei Zhang
  *  \date    Sep/24/2019
  *

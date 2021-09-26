@@ -108,8 +108,8 @@ void SOL::SetMaxIter(int maxIter) { params.maxIter = maxIter; }
 /// Set value for minIter.
 void SOL::SetMinIter(int minIter) { params.minIter = minIter; }
 
-/// Set value for safeIter.
-void SOL::SetSafeIter(int safeIter) { params.safeIter = safeIter; }
+/// Set value for savIter.
+void SOL::SetSavIter(int savIter) { params.savIter = savIter; }
 
 /// Set value for restart.
 void SOL::SetRestart(int restart) { params.restart = restart; }
@@ -214,7 +214,7 @@ void SOL::PrintParam(std::ostream& out) const
         << "    Output level:         " << params.verbose << "\n"
         << "    Max num of iteration: " << params.maxIter << "\n"
         << "    Min num of iteration: " << params.minIter << "\n"
-        << "    Safe-guard iteration: " << params.safeIter << "\n"
+        << "    Safe-guard iteration: " << params.savIter << "\n"
         << std::scientific << std::setprecision(5)
         << "    Relative tolerance:   " << params.relTol << "\n"
         << "    Absolute tolerance:   " << params.absTol << "\n";

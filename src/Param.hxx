@@ -59,11 +59,10 @@ struct SOLParams {
     string  algName;  ///< Algorithm name
     int     maxIter;  ///< Maximal number of iterations
     int     minIter;  ///< Minimal number of iterations
-    int     safeIter; ///< Beginning number of iterations with safe-guard
-    int     restart;  ///< Restart number
+    int     savIter; ///< Starting safe-guard iteration for Krylov subspace methods
+    int     restart;  ///< Restart number for Krylov subspace methods
     double  relTol;   ///< Tolerance for relative residual
     double  absTol;   ///< Tolerance for absolute residual
-    //double  weight;   ///< Weight for correction schemes
     Output  verbose;  ///< Output verbosity level
 
     SOLParams()
@@ -71,11 +70,10 @@ struct SOLParams {
         , algName("cg")
         , maxIter(1)
         , minIter(0)
-        , safeIter(MAX_ITER_NUM)
+        , savIter(MAX_ITER_NUM)
         , restart(30)
         , relTol(1e-6)
         , absTol(1e-8)
-      //  , weight(1.0)
         , verbose(PRINT_NONE)
     {
     }

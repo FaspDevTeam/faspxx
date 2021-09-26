@@ -72,7 +72,7 @@ int main(int argc, const char *args[])
     solver.SetOutput(solParam.verbose);
     solver.SetMaxIter(solParam.maxIter);
     solver.SetMinIter(solParam.minIter);
-    solver.SetSafeIter(solParam.safeIter);
+    solver.SetSavIter(solParam.savIter);
     solver.SetRestart(solParam.restart);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);

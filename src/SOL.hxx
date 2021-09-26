@@ -48,7 +48,8 @@ public:
         , pcd(nullptr)
         , norm2(LARGE)
         , normInf(LARGE)
-        , numIter(0){};
+        , numIter(0)
+        , params(){};
 
     /// Default destructor.
     ~SOL();
@@ -63,7 +64,7 @@ public:
     void SetMinIter(int minIter);
 
     /// Set number of safe-guard iterations.
-    void SetSafeIter(int safeIter);
+    void SetSavIter(int savIter);
 
     /// Set restart number for Krylov methods.
     void SetRestart(int restart);

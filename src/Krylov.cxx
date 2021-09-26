@@ -42,10 +42,10 @@ FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pcd, SOLParams& params)
     sol->SetOutput(params.verbose);
     sol->SetMaxIter(params.maxIter);
     sol->SetMinIter(params.minIter);
+    sol->SetSavIter(params.savIter);
     sol->SetRestart(params.restart);
     sol->SetRelTol(params.relTol);
     sol->SetAbsTol(params.absTol);
-    sol->SetSafeIter(params.safeIter);
     sol->Setup(A);
     sol->SetupPCD(pcd);
 

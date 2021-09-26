@@ -231,7 +231,7 @@ FaspRetCode GMRES::RSolve(const VEC& b, VEC& x)
         x.AXPY(1.0, tmp);
 
         // Save the best solution so far
-        if (numIter >= params.safeIter && resAbs < resAbsOld) safe = x;
+        if (numIter >= params.savIter && resAbs < resAbsOld) safe = x;
 
         // Check whether exceeds maximal number of iterations
         if (numIter > params.maxIter) {
@@ -274,7 +274,7 @@ FaspRetCode GMRES::RSolve(const VEC& b, VEC& x)
     }
 
     // Restore the saved best iteration if needed
-    if (numIter > params.safeIter) x = safe;
+    if (numIter > params.savIter) x = safe;
 
     return errorCode;
 }
@@ -399,7 +399,7 @@ FaspRetCode GMRES::LSolve(const VEC& b, VEC& x)
         x.AXPY(1.0, wk);
 
         // Save the best solution so far
-        if (numIter >= params.safeIter && resAbs < resAbsOld) safe = x;
+        if (numIter >= params.savIter && resAbs < resAbsOld) safe = x;
 
         // Check whether exceeds maximal number of iterations
         if (numIter > params.maxIter) {
@@ -447,7 +447,7 @@ FaspRetCode GMRES::LSolve(const VEC& b, VEC& x)
     }
 
     // Restore the saved best iteration if needed
-    if (numIter > params.safeIter) x = safe;
+    if (numIter > params.savIter) x = safe;
 
     return errorCode;
 }

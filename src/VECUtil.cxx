@@ -1,5 +1,5 @@
 /*! \file    VECUtil.cxx
- *  \brief   Some auxiliary functions for VEC
+ *  \brief   Tools definition for checking and manipulating VEC
  *  \author  Kailei Zhang
  *  \date    Sep/25/2019
  *

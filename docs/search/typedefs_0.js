@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['uint64_0',['uint64',['../Timing_8hxx.html#a29940ae63ec06c9998bba873e25407ad',1,'Timing.hxx']]]
+  ['dbl_0',['DBL',['../Faspxx_8hxx.html#afe77621c09892bd17c5fdc9182f5b3ae',1,'Faspxx.hxx']]]
 ];

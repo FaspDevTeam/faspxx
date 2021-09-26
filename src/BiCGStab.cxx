@@ -158,7 +158,7 @@ FaspRetCode BiCGStab::Solve(const VEC& b, VEC& x)
             ratio  = resAbs / resAbsOld;
 
             // Save the best solution so far
-            if (numIter >= params.safeIter && resAbs < resAbsOld) safe = x;
+            if (numIter >= params.savIter && resAbs < resAbsOld) safe = x;
 
             // Apply stagnation checks if it converges slowly
             if (ratio > KSM_CHK_RATIO && numIter > params.minIter) {
@@ -264,7 +264,7 @@ FaspRetCode BiCGStab::Solve(const VEC& b, VEC& x)
     }
 
     // Restore the saved best iteration if needed
-    if (numIter > params.safeIter) x = safe;
+    if (numIter > params.savIter) x = safe;
 
     return errorCode;
 }

@@ -70,7 +70,7 @@ int main(int argc, const char *args[])
     solver.SetOutput(solParam.verbose);
     solver.SetMaxIter(solParam.maxIter);
     solver.SetMinIter(solParam.minIter);
-    solver.SetSafeIter(solParam.safeIter);
+    solver.SetSavIter(solParam.savIter);
     solver.SetRestart(solParam.restart);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
@@ -107,7 +107,7 @@ int main(int argc, const char *args[])
     fsolver.SetOutput(solParam.verbose);
     fsolver.SetMaxIter(solParam.maxIter);
     fsolver.SetMinIter(solParam.minIter);
-    fsolver.SetSafeIter(solParam.safeIter);
+    fsolver.SetSavIter(solParam.savIter);
     fsolver.SetRestart(solParam.restart);
     fsolver.SetRelTol(solParam.relTol);
     fsolver.SetAbsTol(solParam.absTol);

@@ -128,7 +128,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
             ratio  = resAbs / resAbsOld; // convergence ratio between two steps
 
             // Save the best solution so far
-            if (numIter >= params.safeIter && resAbs < resAbsOld) safe = x;
+            if (numIter >= params.savIter && resAbs < resAbsOld) safe = x;
 
             // Apply stagnation checks if it converges slowly
             if (ratio > KSM_CHK_RATIO) {
@@ -236,7 +236,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     }
 
     // Restore the saved best iteration if needed
-    if (numIter > params.safeIter) x = safe;
+    if (numIter > params.savIter) x = safe;
 
     return errorCode;
 }
@@ -247,5 +247,5 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        Oct/13/2019      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/26/2021      Restructure file                     */
 /*----------------------------------------------------------------------------*/
