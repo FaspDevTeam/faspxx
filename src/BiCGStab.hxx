@@ -58,13 +58,13 @@ public:
     ~BiCGStab() = default;
 
     /// Setup the BiCGStab method.
-    FaspRetCode Setup(const LOP &A) override;
+    FaspRetCode Setup(const LOP& A) override;
 
     /// Clean up CG data allocated during Setup.
     void Clean() override;
 
     /// Solve Ax=b using the BiCGStab method.
-    FaspRetCode Solve(const VEC &b, VEC &x) override;
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 };
 
 #endif /* end if for __BICGSTAB_HEADER__ */

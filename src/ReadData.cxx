@@ -18,7 +18,7 @@
 #include "ReadData.hxx"
 
 /// Read a VEC data file stored as val[i], i=0:end-1.
-FaspRetCode ReadVEC(const char *fileName, VEC &dst)
+FaspRetCode ReadVEC(const char* fileName, VEC& dst)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
@@ -41,7 +41,7 @@ FaspRetCode ReadVEC(const char *fileName, VEC &dst)
     char *buffer, *next;
     try {                          // catch bad allocation error if it happens
         buffer = new char[length]; // allocate memory for buffer
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         in.close();
         retCode = FaspRetCode::ERROR_ALLOC_MEM;
         return retCode;
@@ -92,9 +92,9 @@ FaspRetCode ReadVEC(const char *fileName, VEC &dst)
 }
 
 /// Read (rowInd, colInd, values) from the MTX (MatrixMarket) file.
-FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
-                    std::vector<INT> &rowInd, std::vector<INT> &colInd,
-                    std::vector<DBL> &values)
+FaspRetCode ReadMTX(const char* fileName, INT& row, INT& col, INT& nnz,
+                    std::vector<INT>& rowInd, std::vector<INT>& colInd,
+                    std::vector<DBL>& values)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
@@ -118,7 +118,7 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
     // Allocate temp space for storing the whole file
     try { // catch bad allocation if it happens
         buffer = new char[length];
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         in.close();
         retCode = FaspRetCode::ERROR_ALLOC_MEM;
         return retCode;
@@ -173,7 +173,7 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
         rowInd.resize(nnz);
         colInd.resize(nnz);
         values.resize(nnz);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         delete[] buffer; // if bad allocation happens, free up the memory space
         retCode = FaspRetCode::ERROR_ALLOC_MEM;
         return retCode;
@@ -218,9 +218,9 @@ FaspRetCode ReadMTX(const char *fileName, INT &row, INT &col, INT &nnz,
 }
 
 /// Read (rowPtr, colInd, values) from the CSR file.
-FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
-                    std::vector<INT> &rowPtr, std::vector<INT> &colInd,
-                    std::vector<DBL> &values)
+FaspRetCode ReadCSR(const char* fileName, INT& row, INT& col, INT& nnz,
+                    std::vector<INT>& rowPtr, std::vector<INT>& colInd,
+                    std::vector<DBL>& values)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
 
@@ -244,7 +244,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
     // Allocate memory space for storing the whole file
     try { // catch the bad allocation if it happens
         buffer = new char[length];
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         in.close();
         retCode = FaspRetCode::ERROR_ALLOC_MEM;
         return retCode;
@@ -278,7 +278,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
     // Read row pointers
     try { // catch bad allocation if it happens
         rowPtr.resize(row + 1);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         retCode = FaspRetCode::ERROR_ALLOC_MEM;
         return retCode;
     }
@@ -306,7 +306,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
         nnz = rowPtr[row] - rowPtr[0];
         colInd.resize(nnz);
         values.resize(nnz);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         retCode = FaspRetCode::ERROR_ALLOC_MEM;
         return retCode;
     }
@@ -358,7 +358,7 @@ FaspRetCode ReadCSR(const char *fileName, INT &row, INT &col, INT &nnz,
 }
 
 /// Read data from CSR or MTX file and store it in the MAT format.
-FaspRetCode ReadMat(const char *fileName, MAT &dst)
+FaspRetCode ReadMat(const char* fileName, MAT& dst)
 {
     const int   len     = strlen(fileName);
     FaspRetCode retCode = FaspRetCode::SUCCESS;
@@ -389,7 +389,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
                 retCode = ReadCSR(fileName, row, col, nnz, rowPtr, colInd, values);
                 if (retCode < 0)
                     throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
-            } catch (FaspRunTime &ex) {
+            } catch (FaspRunTime& ex) {
                 ex.LogExcep();
                 break;
             }
@@ -399,7 +399,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
                 retCode = SortCSRRow(row, col, nnz, rowPtr, colInd, values);
                 if (retCode < 0)
                     throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
-            } catch (FaspRunTime &ex) {
+            } catch (FaspRunTime& ex) {
                 ex.LogExcep();
                 break;
             }
@@ -409,7 +409,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
                 retCode = CSRtoMAT(row, col, nnz, values, colInd, rowPtr, dst);
                 if (retCode < 0)
                     throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
-            } catch (FaspRunTime &ex) {
+            } catch (FaspRunTime& ex) {
                 ex.LogExcep();
                 break;
             }
@@ -420,7 +420,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
                 retCode = ReadMTX(fileName, row, col, nnz, rowInd, colInd, values);
                 if (retCode < 0)
                     throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
-            } catch (FaspRunTime &ex) {
+            } catch (FaspRunTime& ex) {
                 ex.LogExcep();
                 break;
             }
@@ -430,7 +430,7 @@ FaspRetCode ReadMat(const char *fileName, MAT &dst)
                 retCode = MTXtoMAT(row, col, nnz, rowInd, colInd, values, dst);
                 if (retCode < 0)
                     throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
-            } catch (FaspRunTime &ex) {
+            } catch (FaspRunTime& ex) {
                 ex.LogExcep();
                 break;
             }

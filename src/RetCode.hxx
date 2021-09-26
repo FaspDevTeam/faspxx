@@ -59,8 +59,8 @@ class FaspRunTime : public std::runtime_error
 {
 
 private:
-    const char *       file; ///< Which file throws exception
-    const char *       func; ///< Which function throws exception
+    const char*        file; ///< Which file throws exception
+    const char*        func; ///< Which function throws exception
     const unsigned int line; ///< Which line throws exception
 
 public:
@@ -68,7 +68,7 @@ public:
 
 public:
     /// Default constructor
-    FaspRunTime(const FaspRetCode code_, const char *file_, const char *func_,
+    FaspRunTime(const FaspRetCode code_, const char* file_, const char* func_,
                 const unsigned int line_)
         : std::runtime_error(GetRetCode(code_))
         , file(file_)
@@ -79,12 +79,12 @@ public:
     }
 
     // Get exception location
-    const char * GetFile() const { return file; } ///< return thrown file name
-    const char * GetFunc() const { return func; } ///< return thrown function name
+    const char*  GetFile() const { return file; } ///< return thrown file name
+    const char*  GetFunc() const { return func; } ///< return thrown function name
     unsigned int GetLine() const { return line; } ///< return thrown line number
 
     // Standard output
-    void LogExcep(std::ostream &stream = std::cout) const;
+    void LogExcep(std::ostream& stream = std::cout) const;
 };
 
 /// \brief Allocation exception capturing class
@@ -92,8 +92,8 @@ class FaspBadAlloc : public std::bad_alloc
 {
 
 private:
-    const char *       file; ///< Which file throws exception
-    const char *       func; ///< Which function throws exception
+    const char*        file; ///< Which file throws exception
+    const char*        func; ///< Which function throws exception
     const unsigned int line; ///< Which line throws exception
 
 public:
@@ -101,7 +101,7 @@ public:
 
 public:
     /// Default constructor
-    FaspBadAlloc(const char *file_, const char *func_, const unsigned int line_)
+    FaspBadAlloc(const char* file_, const char* func_, const unsigned int line_)
         : std::bad_alloc()
         , file(file_)
         , func(func_)
@@ -110,12 +110,12 @@ public:
     }
 
     // Get exception location
-    const char * GetFile() const { return file; } ///< return thrown file name
-    const char * GetFunc() const { return func; } ///< return thrown function name
+    const char*  GetFile() const { return file; } ///< return thrown file name
+    const char*  GetFunc() const { return func; } ///< return thrown function name
     unsigned int GetLine() const { return line; } ///< return thrown line number
 
     // Standard output
-    void LogExcep(std::ostream &stream = std::cout) const;
+    void LogExcep(std::ostream& stream = std::cout) const;
 };
 
 #endif /* end if for __RETCODE_HEADER__ */

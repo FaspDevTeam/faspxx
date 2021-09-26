@@ -44,10 +44,10 @@ public:
     ~CG() = default;
 
     /// Setup the CG method.
-    FaspRetCode Setup(const LOP &A) override;
+    FaspRetCode Setup(const LOP& A) override;
 
     /// Solve Ax=b using the CG method.
-    FaspRetCode Solve(const VEC &b, VEC &x) override;
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 
     /// Clean up CG data allocated during Setup.
     void Clean() override;

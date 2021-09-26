@@ -66,66 +66,66 @@ public:
     };
 
     /// Construct sparse matrix from a CSRx matrix.
-    MAT(const INT &nrow, const INT &mcol, const INT &nnz,
-        const std::vector<DBL> &values, const std::vector<INT> &colInd,
-        const std::vector<INT> &rowPtr, const std::vector<INT> &diagPtr);
+    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
+        const std::vector<DBL>& values, const std::vector<INT>& colInd,
+        const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
 
     /// Construct sparse matrix from a CSR matrix.
-    MAT(const INT &nrow, const INT &mcol, const INT &nnz,
-        const std::vector<DBL> &values, const std::vector<INT> &colInd,
-        const std::vector<INT> &rowPtr);
+    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
+        const std::vector<DBL>& values, const std::vector<INT>& colInd,
+        const std::vector<INT>& rowPtr);
 
     /// Construct sparsity structure from a CSR matrix.
-    MAT(const INT &nrow, const INT &mcol, const INT &nnz,
-        const std::vector<INT> &colInd, const std::vector<INT> &rowPtr);
+    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
+        const std::vector<INT>& colInd, const std::vector<INT>& rowPtr);
 
     /// Construct sparsity structure from a CSRx matrix.
-    MAT(const INT &nrow, const INT &mcol, const INT &nnz,
-        const std::vector<INT> &colInd, const std::vector<INT> &rowPtr,
-        const std::vector<INT> &diagPtr);
+    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
+        const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
+        const std::vector<INT>& diagPtr);
 
     /// Construct diagonal MAT matrix from a VEC object.
-    explicit MAT(const VEC &v);
+    explicit MAT(const VEC& v);
 
     /// Construct diagonal MAT matrix from a vector object.
-    explicit MAT(const std::vector<DBL> &v);
+    explicit MAT(const std::vector<DBL>& v);
 
     /// Clone from another MAT.
-    MAT(const MAT &mat);
+    MAT(const MAT& mat);
 
     /// Default destructor.
     ~MAT() = default;
 
     /// Overload = operator.
-    MAT &operator=(const MAT &mat);
+    MAT& operator=(const MAT& mat);
 
     /// Set values of the matrix with CSRx format.
-    void SetValues(const INT &nrow, const INT &mcol, const INT &nnz,
-                   const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                   const std::vector<INT> &rowPtr, const std::vector<INT> &diagPtr);
+    void SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
+                   const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                   const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
 
     /// Set values of the matrix with CSR format.
-    void SetValues(const INT &nrow, const INT &mcol, const INT &nnz,
-                   const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                   const std::vector<INT> &rowPtr);
+    void SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
+                   const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                   const std::vector<INT>& rowPtr);
 
     /// Get number of nonzeros of the matrix.
     INT GetNNZ() const;
 
     /// Get the diagonal entries of *this and save them in a VEC object.
-    void GetDiag(VEC &v) const;
+    void GetDiag(VEC& v) const;
 
     /// Get reciprocal diagonal entries and save them in a MAT object.
-    void GetDiagInv(MAT &m) const;
+    void GetDiagInv(MAT& m) const;
 
     /// Get the lower triangular matrix.
-    void GetLowerTri(MAT &lTri) const;
+    void GetLowerTri(MAT& lTri) const;
 
     /// Get the upper triangular matrix.
-    void GetUpperTri(MAT &uTri) const;
+    void GetUpperTri(MAT& uTri) const;
 
     /// Copy the matrix to another MAT object.
-    void CopyTo(MAT &mat) const;
+    void CopyTo(MAT& mat) const;
 
     /// Scale the matrix with a scalar.
     void Scale(const DBL a);
@@ -137,49 +137,49 @@ public:
     void Zero();
 
     /// Sparse matrix-vector multiplication.
-    void Apply(const VEC &v, VEC &w) const;
+    void Apply(const VEC& v, VEC& w) const;
 
     /// Residual b - Ax.
-    void Residual(const VEC &b, const VEC &x, VEC &r) const;
+    void Residual(const VEC& b, const VEC& x, VEC& r) const;
 
     /// Form transpose of the matrix in place.
     void TransInPlace();
 
     /// Compute transpose of A multiply by v1 plus v2.
-    void MultTransposeAdd(const VEC &v1, const VEC &v2, VEC &v) const;
+    void MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const;
 
     /// Get the value of [i,j]-entry of the matrix
-    DBL GetValue(const INT &row, const INT &col) const;
+    DBL GetValue(const INT& row, const INT& col) const;
 
     /// Get the values of the matrix
-    double *GetValues() const;
+    double* GetValues() const;
 
     /// Get the row pointer of the matrix
-    int *GetRowPtr() const;
+    int* GetRowPtr() const;
 
     /// Get the column indices of the matrix
-    int *GetColInd() const;
+    int* GetColInd() const;
 
     /// *this = a * mat1 + b * mat2
-    void Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2);
+    void Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2);
 
     /// *this = matl * matr
-    void Mult(const MAT &matl, const MAT &matr);
+    void Mult(const MAT& matl, const MAT& matr);
 
     /// *this = *this * mat
-    void MultLeft(const MAT &mat);
+    void MultLeft(const MAT& mat);
 
     /// *this = mat * *this
-    void MultRight(const MAT &mat);
+    void MultRight(const MAT& mat);
 
     /// invmat = Inverse(*this)
-    void Inverse(MAT &invmat) const;
+    void Inverse(MAT& invmat) const;
 
     /// Write an MAT matrix to a disk file in CSR format.
-    friend void WriteCSR(char *filename, MAT mat);
+    friend void WriteCSR(char* filename, MAT mat);
 
     /// Write an MAT matrix to a disk file in MTX format.
-    friend void WriteMTX(char *filename, MAT mat);
+    friend void WriteMTX(char* filename, MAT mat);
 
 private:
     /// Form diagPtr according to colInd and rowPtr.
@@ -189,12 +189,12 @@ private:
     void Empty();
 
     /// LUP decomposition
-    void LUPDecomp(std::vector<DBL> A, std::vector<DBL> &L, std::vector<DBL> &U,
-                   std::vector<INT> &P, INT N) const;
+    void LUPDecomp(std::vector<DBL> A, std::vector<DBL>& L, std::vector<DBL>& U,
+                   std::vector<INT>& P, INT N) const;
 
     /// LUP solver
     void LUPSolve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
-                  std::vector<DBL> b, INT N, std::vector<DBL> &x) const;
+                  std::vector<DBL> b, INT N, std::vector<DBL>& x) const;
 
     /// successor
     INT GetNext(INT i, INT m, INT n) const;
@@ -203,13 +203,13 @@ private:
     INT GetPre(INT i, INT m, INT n) const;
 
     /// Handle rings starting with i
-    void MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n) const;
+    void MoveData(std::vector<DBL>& mtx, INT i, INT m, INT n) const;
 
     /// Transpose, i.e. cycle all rings
-    void Rtranspose(std::vector<DBL> &mtx, INT m, INT n) const;
+    void Rtranspose(std::vector<DBL>& mtx, INT m, INT n) const;
 
     /// LUP inversion (assemble each column x from each column B)
-    void LUPSolveInverse(std::vector<DBL> A, INT N, std::vector<DBL> &inv_A) const;
+    void LUPSolveInverse(std::vector<DBL> A, INT N, std::vector<DBL>& inv_A) const;
 };
 
 /*! \class IdentityMatrix
@@ -226,7 +226,7 @@ public:
     ~IdentityMatrix() = default;
 
     /// Iterator
-    void Apply(const VEC &b, VEC &x) const override;
+    void Apply(const VEC& b, VEC& x) const override;
 };
 
 #endif /* end if for __MAT_HEADER__ */

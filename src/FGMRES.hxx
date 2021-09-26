@@ -68,10 +68,10 @@ public:
     void SetMaxMinRestart(const int maxRestart, const int minRestart);
 
     /// Setup the FGMRES method.
-    FaspRetCode Setup(const LOP &A) override;
+    FaspRetCode Setup(const LOP& A) override;
 
     /// Solve Ax=b using the FGMRES method.
-    FaspRetCode Solve(const VEC &b, VEC &x) override;
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 
     /// Clean up FGMRES data allocated during setup.
     void Clean() override;

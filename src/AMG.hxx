@@ -30,15 +30,15 @@ private:
     bool     useDefaultSolver; ///< use default smoothers and coarsest solver
     unsigned len;              ///< dimension of the solution vector
 
-    vector<MAT>   coeffMatrices; ///< coefficient matrices at all levels
-    vector<MAT *> prolongations; ///< pointers to prolongations at all levels
-    vector<MAT *> restrictions;  ///< pointers to restrictions at all levels
+    vector<MAT>  coeffMatrices; ///< coefficient matrices at all levels
+    vector<MAT*> prolongations; ///< pointers to prolongations at all levels
+    vector<MAT*> restrictions;  ///< pointers to restrictions at all levels
 
 private:
-    FaspRetCode SetupOneLevel(const MAT &A);      ///< default setup for one-level AMG
+    FaspRetCode SetupOneLevel(const MAT& A);      ///< default setup for one-level AMG
     vector<IdentityMatrix> defaultTrans;          ///< default transfer operators
     vector<class Jacobi>   defaultSolvers;        ///< default smoothers at all levels
-    class Jacobi           dafaultCoarsestSolver; ///< default solver at coarsest level
+    class Jacobi           defaultCoarsestSolver; ///< default solver at coarsest level
 
 public:
     /// Default constructor.
@@ -52,7 +52,7 @@ public:
     ~AMG() = default;
 
     /// Setup the AMG method using coefficient matrix A.
-    FaspRetCode Setup(const MAT &A);
+    FaspRetCode Setup(const MAT& A);
 
     /// Solve Ax=b using the AMG method.
     // FaspRetCode Solve(const VEC &b, VEC &x) override;

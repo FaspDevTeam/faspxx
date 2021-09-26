@@ -19,9 +19,9 @@
 #include "MATUtil.hxx"
 
 /// Assign nrow, mcol, nnz, values, colInd, rowPtr, diagPtr to *this.
-MAT::MAT(const INT &nrow, const INT &mcol, const INT &nnz,
-         const std::vector<DBL> &values, const std::vector<INT> &colInd,
-         const std::vector<INT> &rowPtr, const std::vector<INT> &diagPtr)
+MAT::MAT(const INT& nrow, const INT& mcol, const INT& nnz,
+         const std::vector<DBL>& values, const std::vector<INT>& colInd,
+         const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr)
 {
     if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
@@ -38,9 +38,9 @@ MAT::MAT(const INT &nrow, const INT &mcol, const INT &nnz,
 }
 
 /// Assign nrow, mcol, nnz, values, colInd, rowPtr to *this and generate diagPtr.
-MAT::MAT(const INT &nrow, const INT &mcol, const INT &nnz,
-         const std::vector<DBL> &values, const std::vector<INT> &colInd,
-         const std::vector<INT> &rowPtr)
+MAT::MAT(const INT& nrow, const INT& mcol, const INT& nnz,
+         const std::vector<DBL>& values, const std::vector<INT>& colInd,
+         const std::vector<INT>& rowPtr)
 {
     if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
@@ -57,8 +57,8 @@ MAT::MAT(const INT &nrow, const INT &mcol, const INT &nnz,
 }
 
 /// Assign nrow, mcol, nnz, colInd, rowPtr to *this and generate diagPtr.
-MAT::MAT(const INT &nrow, const INT &mcol, const INT &nnz,
-         const std::vector<INT> &colInd, const std::vector<INT> &rowPtr)
+MAT::MAT(const INT& nrow, const INT& mcol, const INT& nnz,
+         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr)
 {
     if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
@@ -75,9 +75,9 @@ MAT::MAT(const INT &nrow, const INT &mcol, const INT &nnz,
 }
 
 /// Assign nrow, mcol, nnz, colInd, rowPtr, diagPtr to *this.
-MAT::MAT(const INT &nrow, const INT &mcol, const INT &nnz,
-         const std::vector<INT> &colInd, const std::vector<INT> &rowPtr,
-         const std::vector<INT> &diagPtr)
+MAT::MAT(const INT& nrow, const INT& mcol, const INT& nnz,
+         const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
+         const std::vector<INT>& diagPtr)
 {
     if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
@@ -94,7 +94,7 @@ MAT::MAT(const INT &nrow, const INT &mcol, const INT &nnz,
 }
 
 /// Assign diagonal values from a VEC to *this.
-MAT::MAT(const VEC &v)
+MAT::MAT(const VEC& v)
 {
     INT size = v.GetSize();
 
@@ -109,10 +109,10 @@ MAT::MAT(const VEC &v)
     this->mcol = size;
     this->nnz  = size;
 
-    INT *p;
+    INT* p;
     try {
         p = new INT[size + 1];
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         this->nrow = 0;
         this->mcol = 0;
         this->nnz  = 0;
@@ -140,7 +140,7 @@ MAT::MAT(const VEC &v)
 }
 
 /// Assign diagonal values from a vector to *this.
-MAT::MAT(const std::vector<DBL> &vt)
+MAT::MAT(const std::vector<DBL>& vt)
 {
     const INT size = vt.size();
 
@@ -155,10 +155,10 @@ MAT::MAT(const std::vector<DBL> &vt)
     this->mcol = size;
     this->nnz  = size;
 
-    INT *p;
+    INT* p;
     try {
         p = new INT[size + 1];
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         this->nrow = 0;
         this->mcol = 0;
         this->nnz  = 0;
@@ -186,7 +186,7 @@ MAT::MAT(const std::vector<DBL> &vt)
 }
 
 /// Assign MAT object to *this.
-MAT::MAT(const MAT &mat)
+MAT::MAT(const MAT& mat)
 {
     this->nrow    = mat.nrow;
     this->mcol    = mat.mcol;
@@ -198,7 +198,7 @@ MAT::MAT(const MAT &mat)
 }
 
 /// Assignment for the MAT object.
-MAT &MAT::operator=(const MAT &mat)
+MAT& MAT::operator=(const MAT& mat)
 {
     if (this == &mat) return *this; // self-assignment
     this->nrow    = mat.nrow;
@@ -212,9 +212,9 @@ MAT &MAT::operator=(const MAT &mat)
 }
 
 /// Set values of nrow, mcol, nnz, values, colInd, rowPtr, diagPtr.
-void MAT::SetValues(const INT &nrow, const INT &mcol, const INT &nnz,
-                    const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                    const std::vector<INT> &rowPtr, const std::vector<INT> &diagPtr)
+void MAT::SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
+                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                    const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr)
 {
     if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
@@ -231,9 +231,9 @@ void MAT::SetValues(const INT &nrow, const INT &mcol, const INT &nnz,
 }
 
 /// Set values of nrow, mcol, nnz, values, rowPtr, colInd.
-void MAT::SetValues(const INT &nrow, const INT &mcol, const INT &nnz,
-                    const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                    const std::vector<INT> &rowPtr)
+void MAT::SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
+                    const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                    const std::vector<INT>& rowPtr)
 {
     if (nrow == 0 || mcol == 0 || nnz == 0) {
         this->Empty();
@@ -253,7 +253,7 @@ void MAT::SetValues(const INT &nrow, const INT &mcol, const INT &nnz,
 INT MAT::GetNNZ() const { return this->nnz; }
 
 /// Get the diagonal entries of *this and save them in a VEC object.
-void MAT::GetDiag(VEC &v) const
+void MAT::GetDiag(VEC& v) const
 {
     INT len = this->nrow;
     v.size  = len;
@@ -267,7 +267,7 @@ void MAT::GetDiag(VEC &v) const
 }
 
 /// Get the diagonal entries' reciprocal of *this and save them in a MAT object.
-void MAT::GetDiagInv(MAT &m) const
+void MAT::GetDiagInv(MAT& m) const
 {
     m.nrow = this->nrow;
     m.mcol = this->mcol;
@@ -287,7 +287,7 @@ void MAT::GetDiagInv(MAT &m) const
 }
 
 // Get the lower triangular matrix
-void MAT::GetLowerTri(MAT &lTri) const
+void MAT::GetLowerTri(MAT& lTri) const
 {
     lTri.nrow = this->nrow;
     lTri.mcol = this->mcol;
@@ -316,7 +316,7 @@ void MAT::GetLowerTri(MAT &lTri) const
 }
 
 // Get the upper triangular matrix
-void MAT::GetUpperTri(MAT &uTri) const
+void MAT::GetUpperTri(MAT& uTri) const
 {
     uTri.nrow = this->nrow;
     uTri.mcol = this->mcol;
@@ -345,7 +345,7 @@ void MAT::GetUpperTri(MAT &uTri) const
 }
 
 /// Copy *this to mat.
-void MAT::CopyTo(MAT &mat) const { mat = *this; }
+void MAT::CopyTo(MAT& mat) const { mat = *this; }
 
 /// Scale *this *= a
 void MAT::Scale(const DBL a)
@@ -370,7 +370,7 @@ void MAT::Zero()
 }
 
 /// Compute w = *this * v.
-void MAT::Apply(const VEC &v, VEC &w) const
+void MAT::Apply(const VEC& v, VEC& w) const
 {
     INT begin, i, k;
 
@@ -452,7 +452,7 @@ void MAT::Apply(const VEC &v, VEC &w) const
 }
 
 /// Compute r = b - *this * x.
-void MAT::Residual(const VEC &b, const VEC &x, VEC &r) const
+void MAT::Residual(const VEC& b, const VEC& x, VEC& r) const
 {
     INT begin, i, k;
 
@@ -489,14 +489,14 @@ void MAT::TransInPlace()
     try {
         tmp.rowPtr.resize(this->mcol + 1);
         tmp.colInd.resize(nnz);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw(FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
     if (not this->values.empty()) {
         try {
             tmp.values.resize(nnz);
-        } catch (std::bad_alloc &ex) {
+        } catch (std::bad_alloc& ex) {
             throw(FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
         }
     } else {
@@ -538,7 +538,7 @@ void MAT::TransInPlace()
 }
 
 /// Compute v = A'*v1 + v2.
-void MAT::MultTransposeAdd(const VEC &v1, const VEC &v2, VEC &v) const
+void MAT::MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const
 {
     const INT n = this->nrow, m = this->mcol, nnz = this->nnz;
     INT       i, j, k, p;
@@ -551,14 +551,14 @@ void MAT::MultTransposeAdd(const VEC &v1, const VEC &v2, VEC &v) const
     try {
         tmp.rowPtr.resize(m + 1);
         tmp.colInd.resize(nnz);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw(FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
     if (not this->values.empty()) {
         try {
             tmp.values.resize(nnz);
-        } catch (std::bad_alloc &ex) {
+        } catch (std::bad_alloc& ex) {
             throw(FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
         }
     } else {
@@ -607,7 +607,7 @@ void MAT::MultTransposeAdd(const VEC &v1, const VEC &v2, VEC &v) const
 
 /// Get (*this)[i][j].
 /// \note If *this is a sparse structure, it will return 1.0 for nonzero entries.
-DBL MAT::GetValue(const INT &irow, const INT &jcol) const
+DBL MAT::GetValue(const INT& irow, const INT& jcol) const
 {
     if (this->colInd[this->rowPtr[irow]] <= jcol &&
         this->colInd[this->rowPtr[irow + 1] - 1] >= jcol) {
@@ -624,32 +624,32 @@ DBL MAT::GetValue(const INT &irow, const INT &jcol) const
 }
 
 /// Get nonzero values of the sparse matrix as an array.
-double *MAT::GetValues() const
+double* MAT::GetValues() const
 {
-    double *val = new double[nnz];
+    double* val = new double[nnz];
     for (INT j = 0; j < nnz; ++j) val[j] = this->values[j];
     return val;
 }
 
 /// Get colInd values of the sparse matrix as an array.
-int *MAT::GetColInd() const
+int* MAT::GetColInd() const
 {
-    int *val = new int[nnz];
+    int* val = new int[nnz];
     for (INT j = 0; j < nnz; ++j) val[j] = this->colInd[j];
     return val;
 }
 
 /// Get rowPtr values of the sparse matrix as an array.
-int *MAT::GetRowPtr() const
+int* MAT::GetRowPtr() const
 {
     const INT n   = GetRowSize();
-    int *     val = new int[n + 1];
+    int*      val = new int[n + 1];
     for (INT j = 0; j <= n; ++j) val[j] = this->rowPtr[j];
     return val;
 }
 
 /// *this = a * mat1 + b * mat2.
-void MAT::Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2)
+void MAT::Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2)
 {
 
     MAT tmpMat;
@@ -719,10 +719,10 @@ void MAT::Add(const DBL a, const MAT &mat1, const DBL b, const MAT &mat2)
 }
 
 /// *this = matl * matr.
-void MAT::Mult(const MAT &matl, const MAT &matr)
+void MAT::Mult(const MAT& matl, const MAT& matr)
 {
     INT  l, count;
-    INT *tmp = new INT[matr.mcol];
+    INT* tmp = new INT[matr.mcol];
 
     MAT mat;
 
@@ -800,7 +800,7 @@ void MAT::Mult(const MAT &matl, const MAT &matr)
 }
 
 /// *this = *this * mat.
-void MAT::MultLeft(const MAT &mat)
+void MAT::MultLeft(const MAT& mat)
 {
     MAT tmp;
     tmp = *this;
@@ -809,7 +809,7 @@ void MAT::MultLeft(const MAT &mat)
 }
 
 /// *this = mat * *this.
-void MAT::MultRight(const MAT &mat)
+void MAT::MultRight(const MAT& mat)
 {
     MAT tmp;
     tmp = *this;
@@ -818,7 +818,7 @@ void MAT::MultRight(const MAT &mat)
 }
 
 /// mat = Inverse(*this)
-void MAT::Inverse(MAT &inv_mat) const
+void MAT::Inverse(MAT& inv_mat) const
 {
 
     MAT mat;
@@ -881,7 +881,7 @@ void MAT::Inverse(MAT &inv_mat) const
 }
 
 /// Write data to a disk file in CSR format.
-void WriteCSR(char *filename, MAT mat)
+void WriteCSR(char* filename, MAT mat)
 {
     std::ofstream out;
     out.open(filename);
@@ -895,7 +895,7 @@ void WriteCSR(char *filename, MAT mat)
 }
 
 /// Write data to a disk file in MTX format.
-void WriteMTX(char *filename, MAT mat)
+void WriteMTX(char* filename, MAT mat)
 {
     INT           begin, end, j, k;
     std::ofstream out;
@@ -940,8 +940,8 @@ void MAT::Empty()
 }
 
 /// LUP decomposition
-void MAT::LUPDecomp(std::vector<DBL> A, std::vector<DBL> &L, std::vector<DBL> &U,
-                    std::vector<INT> &P, INT N) const
+void MAT::LUPDecomp(std::vector<DBL> A, std::vector<DBL>& L, std::vector<DBL>& U,
+                    std::vector<INT>& P, INT N) const
 {
     INT row = 0;
     for (INT i = 0; i < N; i++) P[i] = i;
@@ -999,7 +999,7 @@ void MAT::LUPDecomp(std::vector<DBL> A, std::vector<DBL> &L, std::vector<DBL> &U
 
 /// LUP solver
 void MAT::LUPSolve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
-                   std::vector<DBL> b, INT N, std::vector<DBL> &x) const
+                   std::vector<DBL> b, INT N, std::vector<DBL>& x) const
 {
     std::vector<DBL> y(N);
 
@@ -1024,7 +1024,7 @@ INT MAT::GetNext(INT i, INT m, INT n) const { return (i % n) * m + i / n; }
 INT MAT::GetPre(INT i, INT m, INT n) const { return (i % m) * n + i / m; }
 
 /// Handle rings starting with i
-void MAT::MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n) const
+void MAT::MoveData(std::vector<DBL>& mtx, INT i, INT m, INT n) const
 {
     DBL temp = mtx[i];
     INT cur  = i;
@@ -1038,7 +1038,7 @@ void MAT::MoveData(std::vector<DBL> &mtx, INT i, INT m, INT n) const
 }
 
 /// Transpose, i.e. cycle all rings
-void MAT::Rtranspose(std::vector<DBL> &mtx, INT m, INT n) const
+void MAT::Rtranspose(std::vector<DBL>& mtx, INT m, INT n) const
 {
     for (INT i = 0; i < m * n; ++i) {
         INT next = GetNext(i, m, n);
@@ -1049,7 +1049,7 @@ void MAT::Rtranspose(std::vector<DBL> &mtx, INT m, INT n) const
 
 /// LUP inversion (assemble each column x from each column B)
 void MAT::LUPSolveInverse(const std::vector<DBL> A, INT N,
-                          std::vector<DBL> &inv_A) const
+                          std::vector<DBL>& inv_A) const
 {
     std::vector<DBL> A_mirror(N * N);
     std::vector<DBL> inv_A_each(N);
@@ -1083,7 +1083,7 @@ void MAT::LUPSolveInverse(const std::vector<DBL> A, INT N,
 }
 
 /// Identity matrix.
-void IdentityMatrix::Apply(const VEC &b, VEC &x) const { x = b; }
+void IdentityMatrix::Apply(const VEC& b, VEC& x) const { x = b; }
 
 /*----------------------------------------------------------------------------*/
 /*  Brief Change History of This File                                         */

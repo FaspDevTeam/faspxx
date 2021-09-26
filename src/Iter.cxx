@@ -13,14 +13,14 @@
 #include "Iter.hxx"
 
 /// Does nothing in preconditioning
-FaspRetCode Identity::Solve(const VEC &b, VEC &x)
+FaspRetCode Identity::Solve(const VEC& b, VEC& x)
 {
     x = b;
     return FaspRetCode::SUCCESS;
 }
 
 /// Setup Jacobi preconditioner.
-FaspRetCode Jacobi::Setup(const MAT &A)
+FaspRetCode Jacobi::Setup(const MAT& A)
 {
     // Set solver type
     SetSolType(SOLType::Jacobi);
@@ -28,7 +28,7 @@ FaspRetCode Jacobi::Setup(const MAT &A)
     // Allocate memory for temporary vectors
     try {
         w.SetValues(A.GetColSize(), 0.0);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
@@ -48,7 +48,7 @@ FaspRetCode Jacobi::Setup(const MAT &A)
 }
 
 /// Solve Ax=b using the Jacobi method. Don't check problem sizes.
-FaspRetCode Jacobi::Solve(const VEC &b, VEC &x)
+FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
 {
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 

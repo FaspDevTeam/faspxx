@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.6 Sep/18/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.7 Sep/26/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -118,8 +118,8 @@ Public Member Functions</h2></td></tr>
 
 <p>Start the timer. </p>
 
-<p class="definition">Definition at line <a class="el" href="Timing_8hxx_source.html#l00038">38</a> of file <a class="el" href="Timing_8hxx_source.html">Timing.hxx</a>.</p>
-<div class="fragment"><div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>{ timeStamp = std::chrono::system_clock::now(); }</div>
+<p class="definition">Definition at line <a class="el" href="Timing_8hxx_source.html#l00039">39</a> of file <a class="el" href="Timing_8hxx_source.html">Timing.hxx</a>.</p>
+<div class="fragment"><div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>{ timeStamp = std::chrono::system_clock::now(); }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -148,11 +148,11 @@ Public Member Functions</h2></td></tr>
 
 <p>Stop the timer and return duration from start() in ms. </p>
 
-<p class="definition">Definition at line <a class="el" href="Timing_8hxx_source.html#l00041">41</a> of file <a class="el" href="Timing_8hxx_source.html">Timing.hxx</a>.</p>
-<div class="fragment"><div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                                   {</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keyword">auto</span> elapsedTime = std::chrono::system_clock::now() - timeStamp;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">return</span> std::chrono::duration&lt;double, std::milli&gt;(elapsedTime).count();</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="Timing_8hxx_source.html#l00042">42</a> of file <a class="el" href="Timing_8hxx_source.html">Timing.hxx</a>.</p>
+<div class="fragment"><div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keyword">auto</span> elapsedTime = std::chrono::system_clock::now() - timeStamp;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">return</span> std::chrono::duration&lt;double, std::milli&gt;(elapsedTime).count();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -186,24 +186,22 @@ Public Member Functions</h2></td></tr>
 <p >Stop timer and print out the duration time in ms, s, or m. </p>
 
 <p class="definition">Definition at line <a class="el" href="Timing_8cxx_source.html#l00016">16</a> of file <a class="el" href="Timing_8cxx_source.html">Timing.cxx</a>.</p>
-<div class="fragment"><div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                                                                       {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> duration = <a class="code hl_function" href="classGetWallTime.html#a6554ac2f01206c503f15a5efa39c5605">Stop</a>();</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">if</span> (duration &lt; <a class="code hl_variable" href="Faspxx_8hxx.html#ac797c05844f71240d2e36e7541f8a73c">CLOCK_USE_SEC</a>) {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        std::cout &lt;&lt; info &lt;&lt; <span class="stringliteral">&quot; costs &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::setprecision(3) &lt;&lt; duration</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>                  &lt;&lt; <span class="stringliteral">&quot;ms&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; <a class="code hl_variable" href="Faspxx_8hxx.html#a94661240e4abc736561c72e4c8a86b9e">CLOCK_USE_MIN</a>) {</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>        std::cout &lt;&lt; info &lt;&lt; <span class="stringliteral">&quot; costs &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::setprecision(3)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                  &lt;&lt; duration / 1000.0 &lt;&lt; <span class="stringliteral">&quot;s&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        std::cout &lt;&lt; info &lt;&lt; <span class="stringliteral">&quot; costs &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::setprecision(3)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                  &lt;&lt; duration / 60000.0 &lt;&lt; <span class="stringliteral">&quot;m&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    }</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>}</div>
-<div class="ttc" id="aFaspxx_8hxx_html_a94661240e4abc736561c72e4c8a86b9e"><div class="ttname"><a href="Faspxx_8hxx.html#a94661240e4abc736561c72e4c8a86b9e">CLOCK_USE_MIN</a></div><div class="ttdeci">const DBL CLOCK_USE_MIN</div><div class="ttdoc">Show clock time in minutes.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00026">Faspxx.hxx:26</a></div></div>
-<div class="ttc" id="aFaspxx_8hxx_html_ac797c05844f71240d2e36e7541f8a73c"><div class="ttname"><a href="Faspxx_8hxx.html#ac797c05844f71240d2e36e7541f8a73c">CLOCK_USE_SEC</a></div><div class="ttdeci">const DBL CLOCK_USE_SEC</div><div class="ttdoc">Show clock time in seconds.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00025">Faspxx.hxx:25</a></div></div>
-<div class="ttc" id="aclassGetWallTime_html_a6554ac2f01206c503f15a5efa39c5605"><div class="ttname"><a href="classGetWallTime.html#a6554ac2f01206c503f15a5efa39c5605">GetWallTime::Stop</a></div><div class="ttdeci">__inline__ double Stop() const</div><div class="ttdoc">Stop the timer and return duration from start() in ms.</div><div class="ttdef"><b>Definition:</b> <a href="Timing_8hxx_source.html#l00041">Timing.hxx:41</a></div></div>
+<div class="fragment"><div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> duration = <a class="code hl_function" href="classGetWallTime.html#a6554ac2f01206c503f15a5efa39c5605">Stop</a>();</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordflow">if</span> (duration &lt; CLOCK_USE_SEC) {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        std::cout &lt;&lt; info &lt;&lt; <span class="stringliteral">&quot; costs &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::setprecision(3) &lt;&lt; duration</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                  &lt;&lt; <span class="stringliteral">&quot;ms&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (duration &lt; CLOCK_USE_MIN) {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        std::cout &lt;&lt; info &lt;&lt; <span class="stringliteral">&quot; costs &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::setprecision(3)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                  &lt;&lt; duration / 1000.0 &lt;&lt; <span class="stringliteral">&quot;s&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        std::cout &lt;&lt; info &lt;&lt; <span class="stringliteral">&quot; costs &quot;</span> &lt;&lt; std::fixed &lt;&lt; std::setprecision(3)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                  &lt;&lt; duration / 60000.0 &lt;&lt; <span class="stringliteral">&quot;m&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+<div class="ttc" id="aclassGetWallTime_html_a6554ac2f01206c503f15a5efa39c5605"><div class="ttname"><a href="classGetWallTime.html#a6554ac2f01206c503f15a5efa39c5605">GetWallTime::Stop</a></div><div class="ttdeci">__inline__ double Stop() const</div><div class="ttdoc">Stop the timer and return duration from start() in ms.</div><div class="ttdef"><b>Definition:</b> <a href="Timing_8hxx_source.html#l00042">Timing.hxx:42</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="Faspxx_8hxx_source.html#l00026">CLOCK_USE_MIN</a>, <a class="el" href="Faspxx_8hxx_source.html#l00025">CLOCK_USE_SEC</a>, and <a class="el" href="Timing_8hxx_source.html#l00041">Stop()</a>.</p>
+<p class="reference">References <a class="el" href="Timing_8hxx_source.html#l00042">Stop()</a>.</p>
 
 </div>
 </div>

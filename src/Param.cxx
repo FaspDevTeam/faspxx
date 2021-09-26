@@ -18,7 +18,7 @@
 #include "RetCode.hxx"
 
 /// Process a line. Return false if the line is a comment or empty.
-static bool ProcessLine(std::string &line, std::string &param, std::string &value)
+static bool ProcessLine(std::string& line, std::string& param, std::string& value)
 {
     // Remove spaces in the beginning and end of each line
     line.erase(0, line.find_first_not_of(' '));
@@ -35,7 +35,7 @@ static bool ProcessLine(std::string &line, std::string &param, std::string &valu
 }
 
 /// Convert a string of true or false to bool.
-static bool JudgeBool(const std::string &value)
+static bool JudgeBool(const std::string& value)
 {
     std::string copy(value);
     std::transform(value.begin(), value.end(), copy.begin(),
@@ -51,10 +51,10 @@ static bool JudgeBool(const std::string &value)
 }
 
 /// Save the user specified parameters.
-void Parameters::SaveUserParams(std::string &save) const
+void Parameters::SaveUserParams(std::string& save) const
 {
     size_t max_len = 0;
-    for (const auto &itm : paramsUser) {
+    for (const auto& itm : paramsUser) {
         if (itm.paramName.length() > max_len) max_len = itm.paramName.length();
     }
 
@@ -63,24 +63,24 @@ void Parameters::SaveUserParams(std::string &save) const
     out << "Original parameters in user program:\n"
         << "---------------------------------------------\n";
 
-    for (auto &itm : paramsUser) {
+    for (auto& itm : paramsUser) {
         out << indent << std::setw(max_len) << std::left << itm.paramName << " [";
         switch (itm.paramType) {
             case BoolType:
-                out << std::boolalpha << *((bool *)(itm.paramPtr))
+                out << std::boolalpha << *((bool*)(itm.paramPtr))
                     << std::resetiosflags(out.flags());
                 break;
             case IntType:
-                out << *((int *)itm.paramPtr);
+                out << *((int*)itm.paramPtr);
                 break;
             case DoubleType:
-                out << *((double *)itm.paramPtr);
+                out << *((double*)itm.paramPtr);
                 break;
             case StringType:
-                out << *((std::string *)itm.paramPtr);
+                out << *((std::string*)itm.paramPtr);
                 break;
             case OutputType:
-                out << *((Output *)(itm.paramPtr));
+                out << *((Output*)(itm.paramPtr));
                 break;
         }
         out << "]\n";
@@ -118,7 +118,7 @@ void Parameters::ReadFromCommandLine()
 /// Read user parameters from an input file.
 void Parameters::ReadFromFile()
 {
-    for (auto &itm : paramsUser) {
+    for (auto& itm : paramsUser) {
         if (itm.paramMarker == 2) {
             std::ifstream file;
 
@@ -126,7 +126,7 @@ void Parameters::ReadFromFile()
             if (paramsCML.find(itm.paramName) != paramsCML.end()) {
                 file.open(paramsCML.find(itm.paramName)->second);
             } else {
-                file.open(*((std::string *)itm.paramPtr)); // find param_file
+                file.open(*((std::string*)itm.paramPtr)); // find param_file
             }
 
             if (!file.is_open()) FASPXX_WARNING("File not found!");
@@ -148,7 +148,7 @@ void Parameters::ReadFromFile()
 void Parameters::MergeParams()
 {
     std::map<std::string, std::string>::iterator iter;
-    for (auto &prm : paramsUser) {
+    for (auto& prm : paramsUser) {
         iter = paramsFile.find(prm.paramName);
         if (iter != paramsFile.end()) UpdateParamValue(iter, prm);
 
@@ -158,24 +158,24 @@ void Parameters::MergeParams()
 }
 
 /// Update parameter value and give warning if unknown type is specified.
-void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator &iter,
-                                  ParamHolder &                                 prm)
+void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator& iter,
+                                  ParamHolder&                                  prm)
 {
     switch (prm.paramType) {
         case BoolType:
-            *(bool *)prm.paramPtr = JudgeBool(iter->second);
+            *(bool*)prm.paramPtr = JudgeBool(iter->second);
             break;
         case IntType:
-            *(int *)prm.paramPtr = std::stoi(iter->second);
+            *(int*)prm.paramPtr = std::stoi(iter->second);
             break;
         case DoubleType:
-            *(double *)prm.paramPtr = std::stod(iter->second);
+            *(double*)prm.paramPtr = std::stod(iter->second);
             break;
         case StringType:
-            *(std::string *)prm.paramPtr = iter->second;
+            *(std::string*)prm.paramPtr = iter->second;
             break;
         case OutputType:
-            *(Output *)prm.paramPtr = (Output)std::stoi(iter->second);
+            *(Output*)prm.paramPtr = (Output)std::stoi(iter->second);
             break;
         default:
             FASPXX_WARNING("Unknown parameter type!");
@@ -183,35 +183,35 @@ void Parameters::UpdateParamValue(std::map<std::string, std::string>::iterator &
 }
 
 /// Bool type parameter.
-void Parameters::AddParam(const std::string &name, const std::string &help, bool *ptr,
+void Parameters::AddParam(const std::string& name, const std::string& help, bool* ptr,
                           int marker)
 {
     paramsUser.emplace_back(BoolType, name, help, ptr, marker);
 }
 
 /// Int type parameter.
-void Parameters::AddParam(const std::string &name, const std::string &help, int *ptr,
+void Parameters::AddParam(const std::string& name, const std::string& help, int* ptr,
                           int marker)
 {
     paramsUser.emplace_back(IntType, name, help, ptr, marker);
 }
 
 /// Double type parameter.
-void Parameters::AddParam(const std::string &name, const std::string &help, double *ptr,
+void Parameters::AddParam(const std::string& name, const std::string& help, double* ptr,
                           int marker)
 {
     paramsUser.emplace_back(DoubleType, name, help, ptr, marker);
 }
 
 /// String type parameter.
-void Parameters::AddParam(const std::string &name, const std::string &help,
-                          std::string *ptr, int marker)
+void Parameters::AddParam(const std::string& name, const std::string& help,
+                          std::string* ptr, int marker)
 {
     paramsUser.emplace_back(StringType, name, help, ptr, marker);
 }
 
 /// Output type parameter.
-void Parameters::AddParam(const std::string &name, const std::string &help, Output *ptr,
+void Parameters::AddParam(const std::string& name, const std::string& help, Output* ptr,
                           int marker)
 {
     paramsUser.emplace_back(OutputType, name, help, ptr, marker);
@@ -230,7 +230,7 @@ void Parameters::Parse()
 }
 
 /// Set SOLParams for solvers.
-void Parameters::SetSOLParams(SOLParams &solParam)
+void Parameters::SetSOLParams(SOLParams& solParam)
 {
     this->AddParam("-algName", "Name of solver", &solParam.algName);
     this->AddParam("-maxIter", "Max iteration steps", &solParam.maxIter);
@@ -243,7 +243,7 @@ void Parameters::SetSOLParams(SOLParams &solParam)
 }
 
 /// Set SOLParams for solvers and preconditioners.
-void Parameters::SetSOLParams(SOLParams &solParam, SOLParams &pcdParam)
+void Parameters::SetSOLParams(SOLParams& solParam, SOLParams& pcdParam)
 {
     SetSOLParams(solParam);
 
@@ -251,33 +251,33 @@ void Parameters::SetSOLParams(SOLParams &solParam, SOLParams &pcdParam)
     this->AddParam("-pcdWeight", "Preconditioner weigth", &pcdParam.weight);
 }
 
-void Parameters::PrintFileParams(std::ostream &out) const
+void Parameters::PrintFileParams(std::ostream& out) const
 {
     size_t max_len = 0;
-    for (const auto &itm : paramsFile) {
+    for (const auto& itm : paramsFile) {
         if (itm.first.length() > max_len) max_len = itm.first.length();
     }
 
     std::string options_file;
-    for (const auto &itm : paramsUser) {
-        if (itm.paramMarker == 2) options_file = *(std::string *)itm.paramPtr;
+    for (const auto& itm : paramsUser) {
+        if (itm.paramMarker == 2) options_file = *(std::string*)itm.paramPtr;
     }
 
     static std::string indent = "   ";
     out << "---------------------------------------------\n"
         << "Parameters from file " << options_file << ":\n"
         << "---------------------------------------------\n";
-    for (const auto &itm : paramsFile) {
+    for (const auto& itm : paramsFile) {
         out << indent << std::setw(max_len) << std::left << itm.first << " ["
             << itm.second << "]\n";
     }
     out << std::endl;
 }
 
-void Parameters::PrintCommandLineParams(std::ostream &out) const
+void Parameters::PrintCommandLineParams(std::ostream& out) const
 {
     size_t max_len = 0;
-    for (const auto &itm : paramsCML) {
+    for (const auto& itm : paramsCML) {
         if (itm.first.length() > max_len) max_len = itm.first.length();
     }
 
@@ -285,23 +285,23 @@ void Parameters::PrintCommandLineParams(std::ostream &out) const
     out << "---------------------------------------------\n"
         << "Parameters from the command line input\n"
         << "---------------------------------------------\n";
-    for (const auto &itm : paramsCML) {
+    for (const auto& itm : paramsCML) {
         out << indent << std::setw(max_len) << std::left << itm.first << " ["
             << itm.second << "]\n";
     }
     out << std::endl;
 }
 
-void Parameters::PrintUserParams(std::ostream &out) const
+void Parameters::PrintUserParams(std::ostream& out) const
 {
     out << paramsUserOrg << std::endl;
 }
 
 /// Print parameters used with width adapt to the names.
-void Parameters::Print(std::ostream &out) const
+void Parameters::Print(std::ostream& out) const
 {
     size_t max_len = 0;
-    for (const auto &itm : paramsUser) {
+    for (const auto& itm : paramsUser) {
         if (itm.paramName.length() > max_len) max_len = itm.paramName.length();
     }
 
@@ -310,24 +310,24 @@ void Parameters::Print(std::ostream &out) const
         << "Parameters used in the program\n"
         << "---------------------------------------------\n";
 
-    for (const auto &itm : paramsUser) {
+    for (const auto& itm : paramsUser) {
         out << indent << std::setw(max_len) << std::left << itm.paramName << " [";
         switch (itm.paramType) {
             case BoolType:
-                out << std::boolalpha << *((bool *)(itm.paramPtr))
+                out << std::boolalpha << *((bool*)(itm.paramPtr))
                     << std::resetiosflags(out.flags());
                 break;
             case IntType:
-                out << *((int *)itm.paramPtr);
+                out << *((int*)itm.paramPtr);
                 break;
             case DoubleType:
-                out << *((double *)itm.paramPtr);
+                out << *((double*)itm.paramPtr);
                 break;
             case StringType:
-                out << *((std::string *)itm.paramPtr);
+                out << *((std::string*)itm.paramPtr);
                 break;
             case OutputType:
-                out << *((Output *)(itm.paramPtr));
+                out << *((Output*)(itm.paramPtr));
                 break;
         }
         out << "]\n";
@@ -336,21 +336,21 @@ void Parameters::Print(std::ostream &out) const
 }
 
 /// Print out usage help for command line.
-void Parameters::PrintHelp(std::ostream &out) const
+void Parameters::PrintHelp(std::ostream& out) const
 {
-    static const char *indent  = "   ";
-    static const char *types[] = {"<bool>", "<int>", "<double>", "<string>",
+    static const char* indent  = "   ";
+    static const char* types[] = {"<bool>", "<int>", "<double>", "<string>",
                                   "<Output>"};
 
     size_t max_len = 0;
-    for (const auto &itm : paramsUser) {
+    for (const auto& itm : paramsUser) {
         if (itm.paramName.length() > max_len) max_len = itm.paramName.length();
     }
 
     out << "Usage: " << argv[0] << " [options] ...\n"
         << "Options:\n";
 
-    for (const auto &itm : paramsUser) {
+    for (const auto& itm : paramsUser) {
         out << indent << std::setw(max_len) << std::left << itm.paramName << " "
             << std::setw(8) << types[itm.paramType];
         if (itm.paramMarker == 0)
@@ -364,20 +364,20 @@ void Parameters::PrintHelp(std::ostream &out) const
         out << ", default = [";
         switch (itm.paramType) {
             case BoolType:
-                out << std::boolalpha << *(bool *)(itm.paramPtr)
+                out << std::boolalpha << *(bool*)(itm.paramPtr)
                     << std::setiosflags(out.flags());
                 break;
             case IntType:
-                out << *(int *)(itm.paramPtr);
+                out << *(int*)(itm.paramPtr);
                 break;
             case DoubleType:
-                out << *(double *)(itm.paramPtr);
+                out << *(double*)(itm.paramPtr);
                 break;
             case StringType:
-                out << *((std::string *)itm.paramPtr);
+                out << *((std::string*)itm.paramPtr);
                 break;
             case OutputType:
-                out << *(Output *)(itm.paramPtr);
+                out << *(Output*)(itm.paramPtr);
                 break;
         }
         out << "]\n";

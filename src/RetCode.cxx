@@ -83,7 +83,7 @@ std::string GetRetCode(const FaspRetCode code)
 }
 
 /// Log exception messages in a file or to the screen.
-void FaspRunTime::LogExcep(std::ostream &stream) const
+void FaspRunTime::LogExcep(std::ostream& stream) const
 {
     stream << "### ERROR: " << this->what() << std::endl;
     stream << "### ERROR: Check " << this->GetFile() << " in " << this->GetFunc()
@@ -91,7 +91,7 @@ void FaspRunTime::LogExcep(std::ostream &stream) const
 }
 
 /// Log allocation error messages in a file or to the screen.
-void FaspBadAlloc::LogExcep(std::ostream &stream) const
+void FaspBadAlloc::LogExcep(std::ostream& stream) const
 {
     stream << "### ERROR: " << this->what() << std::endl;
     stream << "### ERROR: Check " << this->GetFile() << " in " << this->GetFunc()

@@ -20,9 +20,6 @@
 #include <vector>
 using std::string;
 
-// FASPXX header files
-#include "Faspxx.hxx"
-
 /// Level of output
 enum Output {
     PRINT_NONE = 0, // no output
@@ -30,6 +27,27 @@ enum Output {
     PRINT_SOME = 4, // some output
     PRINT_MORE = 6, // more output
     PRINT_MAX  = 8  // maximal output
+};
+
+/// Solver types avaiable.
+enum SOLType {
+    CG       = 1,  ///< Conjugate Gradient
+    BICGSTAB = 2,  ///< Bi-Conjugate Gradient Stabilized
+    MINRES   = 3,  ///< Minimal Residual
+    GMRES    = 4,  ///< Generalized Minimal Residual
+    FGMRES   = 5,  ///< Flexible GMRES
+    VFGMRES  = 6,  ///< Variable-restarting FGMRES
+    Jacobi   = 11, ///< Jacobi method
+    GS       = 12, ///< Gauss-Seidel method
+    SGS      = 13, ///< Symmetrized Gauss-Seidel method
+    SOR      = 14, ///< Successive over-relaxation method
+    SSOR     = 15, ///< Symmetrized successive over-relaxation method
+    MG       = 21, ///< Multigrid method
+    FMG      = 22, ///< Full multigrid method
+    UMFPACK  = 91, ///< Direct method from UMFPACK
+    MUMPS    = 92, ///< Direct method from MUMPS
+    SUPERLU  = 93, ///< Direct method from SUPERLU
+    PARDISO  = 94  ///< Direct method from PARDISO
 };
 
 /// Iterative solver parameters.
@@ -207,5 +225,5 @@ public:
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        Nov/25/2019      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/26/2021      Restructure file                     */
 /*----------------------------------------------------------------------------*/

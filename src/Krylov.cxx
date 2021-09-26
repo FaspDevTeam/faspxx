@@ -13,7 +13,7 @@
 #include "Krylov.hxx"
 
 /// All supported Krylov methods can be accessed using this interface
-FaspRetCode Krylov(LOP &A, VEC &b, VEC &x, SOL &pcd, SOLParams &params)
+FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pcd, SOLParams& params)
 {
     SOL solver;
     solver.SetSolTypeFromName(params); // get solver type

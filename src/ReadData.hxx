@@ -62,20 +62,20 @@ const unsigned FILE_CSR = 1; ///< CSR file format
 const unsigned FILE_MTX = 2; ///< MTX file format
 
 /// Read a VEC data file and store it in dst
-FaspRetCode ReadVEC(const char *filename, VEC &dst);
+FaspRetCode ReadVEC(const char* filename, VEC& dst);
 
 /// Read an MTX data file and store it in (rowInd, colInd, values)
-FaspRetCode ReadMTX(const char *filename, INT &row, INT &col, INT &nnz,
-                    std::vector<INT> &rowInd, std::vector<INT> &colInd,
-                    std::vector<DBL> &values);
+FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
+                    std::vector<INT>& rowInd, std::vector<INT>& colInd,
+                    std::vector<DBL>& values);
 
 /// Read a CSR data file and store it in (rowPtr, colInd, values)
-FaspRetCode ReadCSR(const char *filename, INT &row, INT &col, INT &nnz,
-                    std::vector<INT> &rowPtr, std::vector<INT> &colInd,
-                    std::vector<DBL> &values);
+FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
+                    std::vector<INT>& rowPtr, std::vector<INT>& colInd,
+                    std::vector<DBL>& values);
 
 /// Read a MAT data file and store it in MAT
-FaspRetCode ReadMat(const char *filename, MAT &dst);
+FaspRetCode ReadMat(const char* filename, MAT& dst);
 
 #endif /* end if for __READDATA__HEADER__ */
 

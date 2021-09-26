@@ -14,7 +14,7 @@
 #include "RetCode.hxx"
 
 /// Check whether two matrices have same sizes for addition
-FaspRetCode CheckMATAddSize(const MAT &mat1, const MAT &mat2)
+FaspRetCode CheckMATAddSize(const MAT& mat1, const MAT& mat2)
 {
     try {
         if (mat1.GetRowSize() != mat2.GetRowSize() ||
@@ -23,7 +23,7 @@ FaspRetCode CheckMATAddSize(const MAT &mat1, const MAT &mat2)
             auto errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
             throw(FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch (FaspRunTime &ex) {
+    } catch (FaspRunTime& ex) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -31,7 +31,7 @@ FaspRetCode CheckMATAddSize(const MAT &mat1, const MAT &mat2)
 }
 
 /// Check MAT-MAT multiplication sizes
-FaspRetCode CheckMATMultSize(const MAT &mat1, const MAT &mat2)
+FaspRetCode CheckMATMultSize(const MAT& mat1, const MAT& mat2)
 {
     try {
         if (mat1.GetColSize() != mat2.GetRowSize() || mat1.GetColSize() <= 0 ||
@@ -39,7 +39,7 @@ FaspRetCode CheckMATMultSize(const MAT &mat1, const MAT &mat2)
             auto errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
             throw(FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch (FaspRunTime &ex) {
+    } catch (FaspRunTime& ex) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -47,14 +47,14 @@ FaspRetCode CheckMATMultSize(const MAT &mat1, const MAT &mat2)
 }
 
 /// Check whether (row,col) is out of bound
-FaspRetCode CheckMATSize(const MAT &mat, const INT &row, const INT &col)
+FaspRetCode CheckMATSize(const MAT& mat, const INT& row, const INT& col)
 {
     try {
         if (row < 0 || row >= mat.GetRowSize() || col < 0 || col >= mat.GetColSize()) {
             auto errorCode = FaspRetCode::ERROR_MAT_SIZE;
             throw(FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch (FaspRunTime &ex) {
+    } catch (FaspRunTime& ex) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -62,14 +62,14 @@ FaspRetCode CheckMATSize(const MAT &mat, const INT &row, const INT &col)
 }
 
 /// Check whether (row,:) is out of bound
-FaspRetCode CheckMATRowSize(const MAT &mat, const INT &row)
+FaspRetCode CheckMATRowSize(const MAT& mat, const INT& row)
 {
     try {
         if (row < 0 || row >= mat.GetRowSize()) {
             auto errorCode = FaspRetCode::ERROR_MAT_SIZE;
             throw(FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch (FaspRunTime &ex) {
+    } catch (FaspRunTime& ex) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -77,14 +77,14 @@ FaspRetCode CheckMATRowSize(const MAT &mat, const INT &row)
 }
 
 /// Check whether (:,col) is out of bound
-FaspRetCode CheckMATColSize(const MAT &mat, const INT &col)
+FaspRetCode CheckMATColSize(const MAT& mat, const INT& col)
 {
     try {
         if (col < 0 || col >= mat.GetColSize()) {
             auto errorCode = FaspRetCode::ERROR_MAT_SIZE;
             throw(FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch (FaspRunTime &ex) {
+    } catch (FaspRunTime& ex) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -92,14 +92,14 @@ FaspRetCode CheckMATColSize(const MAT &mat, const INT &col)
 }
 
 /// Check MAT-VEC multiplication sizes
-FaspRetCode CheckMATVECSize(const MAT &mat, const VEC &vec)
+FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec)
 {
     try {
         if (mat.GetColSize() != vec.GetSize()) {
             auto errorCode = FaspRetCode::ERROR_NONMATCH_SIZE;
             throw(FaspRunTime(errorCode, __FILE__, __FUNCTION__, __LINE__));
         }
-    } catch (FaspRunTime &ex) {
+    } catch (FaspRunTime& ex) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -107,9 +107,9 @@ FaspRetCode CheckMATVECSize(const MAT &mat, const VEC &vec)
 }
 
 /// Check whether the data is good for CSR
-FaspRetCode CheckCSR(const INT &row, const INT &col, const INT &nnz,
-                     const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                     const std::vector<INT> &rowPtr)
+FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
+                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                     const std::vector<INT>& rowPtr)
 {
     if (row == 0 || col == 0 || nnz == 0) return FaspRetCode ::SUCCESS;
 
@@ -174,9 +174,9 @@ WRONG_CSR:
 }
 
 /// Check whether the data is good for CSRx
-FaspRetCode CheckCSRx(const INT &row, const INT &col, const INT &nnz,
-                      const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                      const std::vector<INT> &rowPtr, const std::vector<INT> &diagPtr)
+FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
+                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                      const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr)
 {
     if (row == 0 || col == 0 || nnz == 0) return FaspRetCode::SUCCESS;
 
@@ -249,11 +249,11 @@ Return:
 }
 
 /// Convert MTX data (indices from 0) to CSR data structure (private)
-static FaspRetCode MTXtoCSR(const INT &row, const INT &col, const INT &nnz,
-                            const std::vector<INT> &rowInd,
-                            const std::vector<INT> &colInd,
-                            const std::vector<DBL> &values, std::vector<DBL> &valuesCSR,
-                            std::vector<INT> &colIndCSR, std::vector<INT> &rowPtrCSR)
+static FaspRetCode MTXtoCSR(const INT& row, const INT& col, const INT& nnz,
+                            const std::vector<INT>& rowInd,
+                            const std::vector<INT>& colInd,
+                            const std::vector<DBL>& values, std::vector<DBL>& valuesCSR,
+                            std::vector<INT>& colIndCSR, std::vector<INT>& rowPtrCSR)
 {
     FaspRetCode retCode;
 
@@ -261,7 +261,7 @@ static FaspRetCode MTXtoCSR(const INT &row, const INT &col, const INT &nnz,
         valuesCSR.assign(nnz, 0);
         colIndCSR.assign(nnz, 0);
         rowPtrCSR.assign(row + 1, 0);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw(FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
@@ -291,7 +291,7 @@ static FaspRetCode MTXtoCSR(const INT &row, const INT &col, const INT &nnz,
     try {
         retCode = CheckCSR(row, col, nnz, valuesCSR, colIndCSR, rowPtrCSR);
         if (retCode < 0) throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
-    } catch (FaspRunTime &ex) {
+    } catch (FaspRunTime& ex) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -300,9 +300,9 @@ static FaspRetCode MTXtoCSR(const INT &row, const INT &col, const INT &nnz,
 }
 
 /// Convert a CSR matrix to MAT (private)
-FaspRetCode CSRtoMAT(const INT &row, const INT &col, const INT &nnz,
-                     const std::vector<DBL> &values, const std::vector<INT> &colInd,
-                     const std::vector<INT> &rowPtr, MAT &mat)
+FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
+                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
+                     const std::vector<INT>& rowPtr, MAT& mat)
 {
     FaspRetCode       retCode;
     INT               begin, end, numZeroDiag = 0;
@@ -329,7 +329,7 @@ FaspRetCode CSRtoMAT(const INT &row, const INT &col, const INT &nnz,
                 throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
             else
                 mat.SetValues(row, col, nnz, values, colInd, rowPtr);
-        } catch (FaspRunTime &ex) {
+        } catch (FaspRunTime& ex) {
             ex.LogExcep();
             return ex.errorCode;
         }
@@ -347,7 +347,7 @@ FaspRetCode CSRtoMAT(const INT &row, const INT &col, const INT &nnz,
         colIndNew.resize(nnzNew);
         valuesNew.resize(nnzNew);
         rowPtrNew.resize(row + 1);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         throw(FaspBadAlloc(__FILE__, __FUNCTION__, __LINE__));
     }
 
@@ -404,7 +404,7 @@ FaspRetCode CSRtoMAT(const INT &row, const INT &col, const INT &nnz,
             throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
         else
             mat.SetValues(row, col, nnzNew, valuesNew, colIndNew, rowPtrNew);
-    } catch (FaspRunTime &ex) {
+    } catch (FaspRunTime& ex) {
         ex.LogExcep();
         return ex.errorCode;
     }
@@ -413,9 +413,9 @@ FaspRetCode CSRtoMAT(const INT &row, const INT &col, const INT &nnz,
 }
 
 /// Convert MTX data to MAT
-FaspRetCode MTXtoMAT(const INT &row, const INT &col, const INT &nnz,
-                     const std::vector<INT> &rowInd, const std::vector<INT> &colInd,
-                     const std::vector<DBL> &values, MAT &mat)
+FaspRetCode MTXtoMAT(const INT& row, const INT& col, const INT& nnz,
+                     const std::vector<INT>& rowInd, const std::vector<INT>& colInd,
+                     const std::vector<DBL>& values, MAT& mat)
 {
     auto retCode = FaspRetCode::SUCCESS;
 
@@ -436,9 +436,9 @@ FaspRetCode MTXtoMAT(const INT &row, const INT &col, const INT &nnz,
 }
 
 /// Sort "colInd" of each row in ascending order and rearrange "values" accordingly
-FaspRetCode SortCSRRow(const INT &row, const INT &col, const INT &nnz,
-                       const std::vector<INT> &rowPtr, std::vector<INT> &colInd,
-                       std::vector<DBL> &values)
+FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
+                       const std::vector<INT>& rowPtr, std::vector<INT>& colInd,
+                       std::vector<DBL>& values)
 {
     FaspRetCode retCode;
     INT         l, begin, end, index;
@@ -467,7 +467,7 @@ FaspRetCode SortCSRRow(const INT &row, const INT &col, const INT &nnz,
     try {
         retCode = CheckCSR(row, col, nnz, values, colInd, rowPtr);
         if (retCode < 0) throw(FaspRunTime(retCode, __FILE__, __FUNCTION__, __LINE__));
-    } catch (FaspRunTime &ex) {
+    } catch (FaspRunTime& ex) {
         ex.LogExcep();
         return ex.errorCode;
     }

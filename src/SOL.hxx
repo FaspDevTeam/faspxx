@@ -25,8 +25,8 @@ class SOL
 {
 
 protected:
-    const LOP *A;       ///< Coefficient matrix in Ax=b
-    SOL *      pcd;     ///< Preconditioner for this solver
+    const LOP* A;       ///< Coefficient matrix in Ax=b
+    SOL*       pcd;     ///< Preconditioner for this solver
     double     norm2;   ///< Euclidean norm
     double     normInf; ///< Infinity norm
     int        numIter; ///< Number of iterations when exit
@@ -81,10 +81,10 @@ public:
     void SetSolType(SOLType solver);
 
     /// Set solver type from its name.
-    static void SetSolTypeFromName(SOLParams &params);
+    static void SetSolTypeFromName(SOLParams& params);
 
     /// Get solver type.
-    const char *GetSolType(SOLType type) const;
+    const char* GetSolType(SOLType type) const;
 
     /// Get Euclidean norm of residual.
     double GetNorm2() const;
@@ -96,30 +96,30 @@ public:
     int GetIterations() const;
 
     /// Print parameters.
-    void PrintParam(std::ostream &out = std::cout) const;
+    void PrintParam(std::ostream& out = std::cout) const;
 
     /// Print out iteration information table header.
-    void PrintHead(std::ostream &out = std::cout) const;
+    void PrintHead(std::ostream& out = std::cout) const;
 
     /// Print out iteration information for iterative solvers.
-    void PrintInfo(const int &iter, const double &resRel, const double &resAbs,
-                   const double &factor, std::ostream &out = std::cout) const;
+    void PrintInfo(const int& iter, const double& resRel, const double& resAbs,
+                   const double& factor, std::ostream& out = std::cout) const;
 
     /// Print out final status of an iterative method.
-    void PrintFinal(const int &iter, const double &resRel, const double &resAbs,
-                    const double &ratio, std::ostream &out = std::cout) const;
+    void PrintFinal(const int& iter, const double& resRel, const double& resAbs,
+                    const double& ratio, std::ostream& out = std::cout) const;
 
     /// Print out duration of solver.
-    void PrintTime(const double duration, std::ostream &out = std::cout) const;
+    void PrintTime(const double duration, std::ostream& out = std::cout) const;
 
     /// Setup preconditioner operator.
-    virtual void SetupPCD(SOL &pc);
+    virtual void SetupPCD(SOL& pc);
 
     /// Setup the iterative method using linear opeartor.
-    virtual FaspRetCode Setup(const LOP &A) { FASPXX_ABORT("Should be over-written!"); }
+    virtual FaspRetCode Setup(const LOP& A) { FASPXX_ABORT("Should be over-written!"); }
 
     /// Solve Ax=b using the iterative method.
-    virtual FaspRetCode Solve(const VEC &b, VEC &x)
+    virtual FaspRetCode Solve(const VEC& b, VEC& x)
     {
         FASPXX_ABORT("Should be over-written!");
     }

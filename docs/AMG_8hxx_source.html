@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.6 Sep/18/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.7 Sep/26/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -88,15 +88,15 @@ $(function() {
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordtype">bool</span>     useDefaultSolver; </div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordtype">unsigned</span> len;              </div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    vector&lt;MAT&gt;   coeffMatrices; </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    vector&lt;MAT *&gt; prolongations; </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    vector&lt;MAT *&gt; restrictions;  </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    vector&lt;MAT&gt;  coeffMatrices; </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    vector&lt;MAT*&gt; prolongations; </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    vector&lt;MAT*&gt; restrictions;  </div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> SetupOneLevel(<span class="keyword">const</span> <a class="code hl_class" href="classMAT.html">MAT</a> &amp;<a class="code hl_variable" href="classSOL.html#a627b490fa36929f82adba0e525fee10d">A</a>);      </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> SetupOneLevel(<span class="keyword">const</span> <a class="code hl_class" href="classMAT.html">MAT</a>&amp; <a class="code hl_variable" href="classSOL.html#a627b490fa36929f82adba0e525fee10d">A</a>);      </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    vector&lt;IdentityMatrix&gt; defaultTrans;          </div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    vector&lt;class Jacobi&gt;   defaultSolvers;        </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">class </span><a class="code hl_class" href="classJacobi.html">Jacobi</a>           dafaultCoarsestSolver; </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">class </span><a class="code hl_class" href="classJacobi.html">Jacobi</a>           defaultCoarsestSolver; </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classAMG.html#abcbe0de3d25b992d6c984e2a01a294ac">   45</a></span>    <a class="code hl_function" href="classAMG.html#abcbe0de3d25b992d6c984e2a01a294ac">AMG</a>()</div>
@@ -107,7 +107,7 @@ $(function() {
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classAMG.html#a617e949965acc17bd6e1e13b5c9fa3a1">   52</a></span>    <a class="code hl_function" href="classAMG.html#a617e949965acc17bd6e1e13b5c9fa3a1">~AMG</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="classAMG.html#a21cd69e7d3a32a3b3c6927c3ca59eb31">Setup</a>(<span class="keyword">const</span> <a class="code hl_class" href="classMAT.html">MAT</a> &amp;<a class="code hl_variable" href="classSOL.html#a627b490fa36929f82adba0e525fee10d">A</a>);</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="classAMG.html#a21cd69e7d3a32a3b3c6927c3ca59eb31">Setup</a>(<span class="keyword">const</span> <a class="code hl_class" href="classMAT.html">MAT</a>&amp; <a class="code hl_variable" href="classSOL.html#a627b490fa36929f82adba0e525fee10d">A</a>);</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="comment">// FaspRetCode Solve(const VEC &amp;b, VEC &amp;x) override;</span></div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
@@ -127,9 +127,9 @@ $(function() {
 <div class="ttc" id="aMG_8hxx_html"><div class="ttname"><a href="MG_8hxx.html">MG.hxx</a></div><div class="ttdoc">Abstract MG class declaration.</div></div>
 <div class="ttc" id="aRetCode_8hxx_html_aff468b46f5c4020989ad3bdbba54af50"><div class="ttname"><a href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a></div><div class="ttdeci">FaspRetCode</div><div class="ttdoc">Return code definition.</div><div class="ttdef"><b>Definition:</b> <a href="RetCode_8hxx_source.html#l00021">RetCode.hxx:21</a></div></div>
 <div class="ttc" id="aclassAMG_html"><div class="ttname"><a href="classAMG.html">AMG</a></div><div class="ttdoc">Algebraic multigrid method.</div><div class="ttdef"><b>Definition:</b> <a href="AMG_8hxx_source.html#l00024">AMG.hxx:25</a></div></div>
-<div class="ttc" id="aclassAMG_html_a21cd69e7d3a32a3b3c6927c3ca59eb31"><div class="ttname"><a href="classAMG.html#a21cd69e7d3a32a3b3c6927c3ca59eb31">AMG::Setup</a></div><div class="ttdeci">FaspRetCode Setup(const MAT &amp;A)</div><div class="ttdoc">Setup the AMG method using coefficient matrix A.</div><div class="ttdef"><b>Definition:</b> <a href="AMG_8cxx_source.html#l00080">AMG.cxx:80</a></div></div>
+<div class="ttc" id="aclassAMG_html_a21cd69e7d3a32a3b3c6927c3ca59eb31"><div class="ttname"><a href="classAMG.html#a21cd69e7d3a32a3b3c6927c3ca59eb31">AMG::Setup</a></div><div class="ttdeci">FaspRetCode Setup(const MAT &amp;A)</div><div class="ttdoc">Setup the AMG method using coefficient matrix A.</div><div class="ttdef"><b>Definition:</b> <a href="AMG_8cxx_source.html#l00078">AMG.cxx:78</a></div></div>
 <div class="ttc" id="aclassAMG_html_a617e949965acc17bd6e1e13b5c9fa3a1"><div class="ttname"><a href="classAMG.html#a617e949965acc17bd6e1e13b5c9fa3a1">AMG::~AMG</a></div><div class="ttdeci">~AMG()=default</div><div class="ttdoc">Default destructor.</div></div>
-<div class="ttc" id="aclassAMG_html_ab20543c88d3141fbfcb76169391f4780"><div class="ttname"><a href="classAMG.html#ab20543c88d3141fbfcb76169391f4780">AMG::Clean</a></div><div class="ttdeci">void Clean() override</div><div class="ttdoc">Solve Ax=b using the AMG method.</div><div class="ttdef"><b>Definition:</b> <a href="AMG_8cxx_source.html#l00102">AMG.cxx:102</a></div></div>
+<div class="ttc" id="aclassAMG_html_ab20543c88d3141fbfcb76169391f4780"><div class="ttname"><a href="classAMG.html#ab20543c88d3141fbfcb76169391f4780">AMG::Clean</a></div><div class="ttdeci">void Clean() override</div><div class="ttdoc">Solve Ax=b using the AMG method.</div><div class="ttdef"><b>Definition:</b> <a href="AMG_8cxx_source.html#l00100">AMG.cxx:100</a></div></div>
 <div class="ttc" id="aclassAMG_html_abcbe0de3d25b992d6c984e2a01a294ac"><div class="ttname"><a href="classAMG.html#abcbe0de3d25b992d6c984e2a01a294ac">AMG::AMG</a></div><div class="ttdeci">AMG()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> <a href="AMG_8hxx_source.html#l00045">AMG.hxx:45</a></div></div>
 <div class="ttc" id="aclassJacobi_html"><div class="ttname"><a href="classJacobi.html">Jacobi</a></div><div class="ttdoc">Jacobi iterator.</div><div class="ttdef"><b>Definition:</b> <a href="Iter_8hxx_source.html#l00042">Iter.hxx:43</a></div></div>
 <div class="ttc" id="aclassMAT_html"><div class="ttname"><a href="classMAT.html">MAT</a></div><div class="ttdoc">Sparse matrix class.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8hxx_source.html#l00039">MAT.hxx:40</a></div></div>

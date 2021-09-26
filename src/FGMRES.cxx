@@ -20,7 +20,7 @@ void FGMRES::SetMaxMinRestart(const int maxRestart, const int minRestart)
 }
 
 /// Set up the FGMRES method.
-FaspRetCode FGMRES::Setup(const LOP &A)
+FaspRetCode FGMRES::Setup(const LOP& A)
 {
 
     // Set solver type
@@ -42,7 +42,7 @@ FaspRetCode FGMRES::Setup(const LOP &A)
         hsin.resize(maxRestart);
         hh.resize(maxRestart + 1);
         for (int j = 0; j < maxRestart + 1; ++j) hh[j].resize(maxRestart);
-    } catch (std::bad_alloc &ex) {
+    } catch (std::bad_alloc& ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
@@ -54,7 +54,7 @@ FaspRetCode FGMRES::Setup(const LOP &A)
                 Z.push_back(safe);
             }
             break;
-        } catch (std::bad_alloc &ex) {
+        } catch (std::bad_alloc& ex) {
             maxRestart -= decrease;
             while (!V.empty()) {
                 V.resize(0);
@@ -105,7 +105,7 @@ void FGMRES::Clean()
 }
 
 /// Right-preconditioned FGMRES solver.
-FaspRetCode FGMRES::Solve(const VEC &b, VEC &x)
+FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
 {
 
     FaspRetCode errorCode = FaspRetCode::SUCCESS;

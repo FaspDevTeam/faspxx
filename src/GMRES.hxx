@@ -74,20 +74,20 @@ public:
     void SetMaxMinRestart(const int maxRestart, const int minRestart);
 
     /// Setup the GMRES method.
-    FaspRetCode Setup(const LOP &A) override;
+    FaspRetCode Setup(const LOP& A) override;
 
     /// Solve Ax=b using the GMRES method.
-    FaspRetCode Solve(const VEC &b, VEC &x) override;
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 
     /// Clean up GMRES data allocated during setup.
     void Clean() override;
 
 private:
     /// Right-preconditioned GMRES solver.
-    FaspRetCode RSolve(const VEC &b, VEC &x);
+    FaspRetCode RSolve(const VEC& b, VEC& x);
 
     /// Left-preconditioned GMRES slover.
-    FaspRetCode LSolve(const VEC &b, VEC &x);
+    FaspRetCode LSolve(const VEC& b, VEC& x);
 };
 
 #endif /* end if for __GMRES_HEADER__ */

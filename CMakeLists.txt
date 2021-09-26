@@ -48,6 +48,7 @@ message(STATUS "Set build type to ${CMAKE_BUILD_TYPE} configuration")
 project(faspxx CXX C)
 
 # Add include directory
+include_directories(${PROJECT_SOURCE_DIR}/include/)
 include_directories(${PROJECT_SOURCE_DIR}/src/)
 include_directories(${PROJECT_SOURCE_DIR}/example/)
 

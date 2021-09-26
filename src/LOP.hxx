@@ -33,16 +33,16 @@ public:
         , mcol(0){};
 
     /// Make an LOP from VEC(mcol) to VEC(nrow).
-    LOP(const INT &nrow, const INT &mcol);
+    LOP(const INT& nrow, const INT& mcol);
 
     /// Make an LOP from VEC(nrow) to VEC(nrow).
-    explicit LOP(const INT &nrow);
+    explicit LOP(const INT& nrow);
 
     /// Make an LOP from another LOP.
-    LOP(const LOP &lop);
+    LOP(const LOP& lop);
 
     /// Overload the = operator.
-    LOP &operator=(const LOP &lop);
+    LOP& operator=(const LOP& lop);
 
     /// Default destructor.
     ~LOP() = default;
@@ -54,13 +54,13 @@ public:
     INT GetColSize() const;
 
     /// Action of the linear operator to a vector.
-    virtual void Apply(const VEC &x, VEC &y) const
+    virtual void Apply(const VEC& x, VEC& y) const
     {
         FASPXX_ABORT("Should be over-written!");
     };
 
     /// Compute residual of a linear operator equation.
-    virtual void Residual(const VEC &b, const VEC &x, VEC &r) const
+    virtual void Residual(const VEC& b, const VEC& x, VEC& r) const
     {
         FASPXX_ABORT("Should be over-written!");
     };
@@ -80,7 +80,7 @@ public:
     ~IdentityOp() = default;
 
     /// Iterator
-    void Apply(const VEC &b, VEC &x) const override;
+    void Apply(const VEC& b, VEC& x) const override;
 };
 
 #endif /* end if for __LOP_HEADER__ */

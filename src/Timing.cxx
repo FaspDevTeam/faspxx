@@ -13,7 +13,8 @@
 #include "Timing.hxx"
 
 /// Stop timer and print out the duration time in ms, s, or m
-void GetWallTime::StopInfo(const std::string &info, std::ostream &out) const {
+void GetWallTime::StopInfo(const std::string& info, std::ostream& out) const
+{
     const double duration = Stop();
     if (duration < CLOCK_USE_SEC) {
         std::cout << info << " costs " << std::fixed << std::setprecision(3) << duration

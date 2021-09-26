@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.6 Sep/18/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.7 Sep/26/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -132,10 +132,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aed64eaacd3992a2e4c349ee37cdeaf6f inherit pub_methods_classSOL"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSOL.html#aed64eaacd3992a2e4c349ee37cdeaf6f">SetWeight</a> (double alpha)</td></tr>
 <tr class="memdesc:aed64eaacd3992a2e4c349ee37cdeaf6f inherit pub_methods_classSOL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set weight for correction schemes.  <a href="classSOL.html#aed64eaacd3992a2e4c349ee37cdeaf6f">More...</a><br /></td></tr>
 <tr class="separator:aed64eaacd3992a2e4c349ee37cdeaf6f inherit pub_methods_classSOL"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_classSOL"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSOL.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a> (<a class="el" href="Faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> solver)</td></tr>
+<tr class="memitem:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_classSOL"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSOL.html#a72bb6330814ea7ea832f5823285d18c3">SetSolType</a> (<a class="el" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> solver)</td></tr>
 <tr class="memdesc:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_classSOL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set solver type.  <a href="classSOL.html#a72bb6330814ea7ea832f5823285d18c3">More...</a><br /></td></tr>
 <tr class="separator:a72bb6330814ea7ea832f5823285d18c3 inherit pub_methods_classSOL"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_classSOL"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSOL.html#a402a9c7642afdf679e6b0e1eba245c83">GetSolType</a> (<a class="el" href="Faspxx_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> type) const</td></tr>
+<tr class="memitem:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_classSOL"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSOL.html#a402a9c7642afdf679e6b0e1eba245c83">GetSolType</a> (<a class="el" href="Param_8hxx.html#a211350976404ebcc6715299193cc2ea7">SOLType</a> type) const</td></tr>
 <tr class="memdesc:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_classSOL"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get solver type.  <a href="classSOL.html#a402a9c7642afdf679e6b0e1eba245c83">More...</a><br /></td></tr>
 <tr class="separator:a402a9c7642afdf679e6b0e1eba245c83 inherit pub_methods_classSOL"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06ff2eaf57fea0445a4dee844a87156d inherit pub_methods_classSOL"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSOL.html#a06ff2eaf57fea0445a4dee844a87156d">GetNorm2</a> () const</td></tr>
@@ -186,12 +186,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a4c9383836f14e4ac3d212a2796606111"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classVEC.html">VEC</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMG.html#a4c9383836f14e4ac3d212a2796606111">wVectors</a></td></tr>
 <tr class="memdesc:a4c9383836f14e4ac3d212a2796606111"><td class="mdescLeft">&#160;</td><td class="mdescRight">work vectors w at all levels  <a href="classMG.html#a4c9383836f14e4ac3d212a2796606111">More...</a><br /></td></tr>
 <tr class="separator:a4c9383836f14e4ac3d212a2796606111"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a784fe4a632b4068b3b9a5d1485d045c8"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classSOL.html">SOL</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMG.html#a784fe4a632b4068b3b9a5d1485d045c8">preSolvers</a></td></tr>
-<tr class="memdesc:a784fe4a632b4068b3b9a5d1485d045c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointers to presmoothers at all levels  <a href="classMG.html#a784fe4a632b4068b3b9a5d1485d045c8">More...</a><br /></td></tr>
-<tr class="separator:a784fe4a632b4068b3b9a5d1485d045c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cc66fc37b6002f89c273ccfc9607aba"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classSOL.html">SOL</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMG.html#a1cc66fc37b6002f89c273ccfc9607aba">postSolvers</a></td></tr>
-<tr class="memdesc:a1cc66fc37b6002f89c273ccfc9607aba"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointers to presmoothers at all levels  <a href="classMG.html#a1cc66fc37b6002f89c273ccfc9607aba">More...</a><br /></td></tr>
-<tr class="separator:a1cc66fc37b6002f89c273ccfc9607aba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa621e51b72a0a51114d262f89b7714d3"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classSOL.html">SOL</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMG.html#aa621e51b72a0a51114d262f89b7714d3">preSolvers</a></td></tr>
+<tr class="memdesc:aa621e51b72a0a51114d262f89b7714d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointers to presmoothers at all levels  <a href="classMG.html#aa621e51b72a0a51114d262f89b7714d3">More...</a><br /></td></tr>
+<tr class="separator:aa621e51b72a0a51114d262f89b7714d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbd32d7c8ab9531195d074cf053f6968"><td class="memItemLeft" align="right" valign="top">vector&lt; <a class="el" href="classSOL.html">SOL</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMG.html#abbd32d7c8ab9531195d074cf053f6968">postSolvers</a></td></tr>
+<tr class="memdesc:abbd32d7c8ab9531195d074cf053f6968"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointers to presmoothers at all levels  <a href="classMG.html#abbd32d7c8ab9531195d074cf053f6968">More...</a><br /></td></tr>
+<tr class="separator:abbd32d7c8ab9531195d074cf053f6968"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88b41c22ef97918e46e4850cec831d0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSOL.html">SOL</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMG.html#a88b41c22ef97918e46e4850cec831d0c">coarsestSolver</a></td></tr>
 <tr class="memdesc:a88b41c22ef97918e46e4850cec831d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">pointer to solver at coarsest level  <a href="classMG.html#a88b41c22ef97918e46e4850cec831d0c">More...</a><br /></td></tr>
 <tr class="separator:a88b41c22ef97918e46e4850cec831d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -374,7 +374,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSOL.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a> &gt;= <a class="code hl_variable" href="classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code hl_variable" href="structSOLParams.html#a52df36265b22d4dafe941c624b3f56c7">minIter</a>) {</div>
 <div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            resAbs = <a class="code hl_variable" href="classMG.html#a4c9383836f14e4ac3d212a2796606111">wVectors</a>[0].Norm2();</div>
 <div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="classSOL.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a> == <a class="code hl_variable" href="classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code hl_variable" href="structSOLParams.html#a52df36265b22d4dafe941c624b3f56c7">minIter</a>)</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                denAbs = (<a class="code hl_variable" href="Faspxx_8hxx.html#a90933e3ce6651e67e6d62514b37b4211">CLOSE_ZERO</a> &gt; resAbs) ? <a class="code hl_variable" href="Faspxx_8hxx.html#a90933e3ce6651e67e6d62514b37b4211">CLOSE_ZERO</a> : resAbs;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                denAbs = (CLOSE_ZERO &gt; resAbs) ? CLOSE_ZERO : resAbs;</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>            resRel = resAbs / denAbs;</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <span class="keywordflow">if</span> (resRel &lt; <a class="code hl_variable" href="classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code hl_variable" href="structSOLParams.html#a4c49319d1f1ded022df46fb70bdd6077">relTol</a> || resAbs &lt; <a class="code hl_variable" href="classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code hl_variable" href="structSOLParams.html#a7c7dfefa3e9f1735fada6cea88824618">absTol</a>) <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
@@ -399,7 +399,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordflow">if</span> (not(<a class="code hl_variable" href="classSOL.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a> == <a class="code hl_variable" href="classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code hl_variable" href="structSOLParams.html#a52df36265b22d4dafe941c624b3f56c7">minIter</a> &amp;&amp; <a class="code hl_variable" href="classSOL.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a> == <a class="code hl_variable" href="classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>.<a class="code hl_variable" href="structSOLParams.html#ab7c9313d2ab03a1decaf566996904756">maxIter</a>)) {</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="comment">// Update residual r = b - A*x</span></div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <a class="code hl_variable" href="classSOL.html#a627b490fa36929f82adba0e525fee10d">A</a>-&gt;<a class="code hl_function" href="classLOP.html#a0223c477f32e9d0a24683e887b341dc3">Residual</a>(b, x, <a class="code hl_variable" href="classMG.html#a4c9383836f14e4ac3d212a2796606111">wVectors</a>[0]);</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        resAbs = <a class="code hl_variable" href="classMG.html#a4c9383836f14e4ac3d212a2796606111">wVectors</a>[0].Norm2();</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        resAbs        = <a class="code hl_variable" href="classMG.html#a4c9383836f14e4ac3d212a2796606111">wVectors</a>[0].Norm2();</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        resRel        = resAbs / denAbs;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        ratio         = resAbs / resAbsOld;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        this-&gt;<a class="code hl_variable" href="classSOL.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a>   = resAbs;</div>
@@ -409,7 +409,6 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
 <div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keywordflow">return</span> errorCode;</div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>}</div>
-<div class="ttc" id="aFaspxx_8hxx_html_a90933e3ce6651e67e6d62514b37b4211"><div class="ttname"><a href="Faspxx_8hxx.html#a90933e3ce6651e67e6d62514b37b4211">CLOSE_ZERO</a></div><div class="ttdeci">const DBL CLOSE_ZERO</div><div class="ttdoc">Tolerance for almost zero.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00024">Faspxx.hxx:24</a></div></div>
 <div class="ttc" id="aRetCode_8hxx_html_aff468b46f5c4020989ad3bdbba54af50"><div class="ttname"><a href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a></div><div class="ttdeci">FaspRetCode</div><div class="ttdoc">Return code definition.</div><div class="ttdef"><b>Definition:</b> <a href="RetCode_8hxx_source.html#l00021">RetCode.hxx:21</a></div></div>
 <div class="ttc" id="aRetCode_8hxx_html_aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8"><div class="ttname"><a href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">SUCCESS</a></div><div class="ttdeci">@ SUCCESS</div><div class="ttdoc">Everything is fine.</div><div class="ttdef"><b>Definition:</b> <a href="RetCode_8hxx_source.html#l00022">RetCode.hxx:22</a></div></div>
 <div class="ttc" id="aclassLOP_html_a0223c477f32e9d0a24683e887b341dc3"><div class="ttname"><a href="classLOP.html#a0223c477f32e9d0a24683e887b341dc3">LOP::Residual</a></div><div class="ttdeci">virtual void Residual(const VEC &amp;b, const VEC &amp;x, VEC &amp;r) const</div><div class="ttdoc">Compute residual of a linear operator equation.</div><div class="ttdef"><b>Definition:</b> <a href="LOP_8hxx_source.html#l00063">LOP.hxx:63</a></div></div>
@@ -421,12 +420,12 @@ Additional Inherited Members</h2></td></tr>
 <div class="ttc" id="aclassSOL_html_ad19901eb68a47c238247514a9d9e88b3"><div class="ttname"><a href="classSOL.html#ad19901eb68a47c238247514a9d9e88b3">SOL::PrintFinal</a></div><div class="ttdeci">void PrintFinal(const int &amp;iter, const double &amp;resRel, const double &amp;resAbs, const double &amp;ratio, std::ostream &amp;out=std::cout) const</div><div class="ttdoc">Print out final status of an iterative method.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8cxx_source.html#l00067">SOL.cxx:67</a></div></div>
 <div class="ttc" id="aclassSOL_html_ad6d67412a7eaa80248f6e4d64fe8f81b"><div class="ttname"><a href="classSOL.html#ad6d67412a7eaa80248f6e4d64fe8f81b">SOL::PrintHead</a></div><div class="ttdeci">void PrintHead(std::ostream &amp;out=std::cout) const</div><div class="ttdoc">Print out iteration information table header.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8cxx_source.html#l00036">SOL.cxx:36</a></div></div>
 <div class="ttc" id="aclassSOL_html_af1f116f6dd0dc05bc3cdc14c5f9feee7"><div class="ttname"><a href="classSOL.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">SOL::normInf</a></div><div class="ttdeci">double normInf</div><div class="ttdoc">Infinity norm.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8hxx_source.html#l00031">SOL.hxx:31</a></div></div>
-<div class="ttc" id="astructSOLParams_html_a4c49319d1f1ded022df46fb70bdd6077"><div class="ttname"><a href="structSOLParams.html#a4c49319d1f1ded022df46fb70bdd6077">SOLParams::relTol</a></div><div class="ttdeci">double relTol</div><div class="ttdoc">Tolerance for relative residual.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00043">Param.hxx:43</a></div></div>
-<div class="ttc" id="astructSOLParams_html_a52df36265b22d4dafe941c624b3f56c7"><div class="ttname"><a href="structSOLParams.html#a52df36265b22d4dafe941c624b3f56c7">SOLParams::minIter</a></div><div class="ttdeci">int minIter</div><div class="ttdoc">Minimal number of iterations.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00040">Param.hxx:40</a></div></div>
-<div class="ttc" id="astructSOLParams_html_a7c7dfefa3e9f1735fada6cea88824618"><div class="ttname"><a href="structSOLParams.html#a7c7dfefa3e9f1735fada6cea88824618">SOLParams::absTol</a></div><div class="ttdeci">double absTol</div><div class="ttdoc">Tolerance for absolute residual.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00044">Param.hxx:44</a></div></div>
-<div class="ttc" id="astructSOLParams_html_ab7c9313d2ab03a1decaf566996904756"><div class="ttname"><a href="structSOLParams.html#ab7c9313d2ab03a1decaf566996904756">SOLParams::maxIter</a></div><div class="ttdeci">int maxIter</div><div class="ttdoc">Maximal number of iterations.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00039">Param.hxx:39</a></div></div>
+<div class="ttc" id="astructSOLParams_html_a4c49319d1f1ded022df46fb70bdd6077"><div class="ttname"><a href="structSOLParams.html#a4c49319d1f1ded022df46fb70bdd6077">SOLParams::relTol</a></div><div class="ttdeci">double relTol</div><div class="ttdoc">Tolerance for relative residual.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00061">Param.hxx:61</a></div></div>
+<div class="ttc" id="astructSOLParams_html_a52df36265b22d4dafe941c624b3f56c7"><div class="ttname"><a href="structSOLParams.html#a52df36265b22d4dafe941c624b3f56c7">SOLParams::minIter</a></div><div class="ttdeci">int minIter</div><div class="ttdoc">Minimal number of iterations.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00058">Param.hxx:58</a></div></div>
+<div class="ttc" id="astructSOLParams_html_a7c7dfefa3e9f1735fada6cea88824618"><div class="ttname"><a href="structSOLParams.html#a7c7dfefa3e9f1735fada6cea88824618">SOLParams::absTol</a></div><div class="ttdeci">double absTol</div><div class="ttdoc">Tolerance for absolute residual.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00062">Param.hxx:62</a></div></div>
+<div class="ttc" id="astructSOLParams_html_ab7c9313d2ab03a1decaf566996904756"><div class="ttname"><a href="structSOLParams.html#ab7c9313d2ab03a1decaf566996904756">SOLParams::maxIter</a></div><div class="ttdeci">int maxIter</div><div class="ttdoc">Maximal number of iterations.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00057">Param.hxx:57</a></div></div>
 </div><!-- fragment -->
-<p class="reference">References <a class="el" href="SOL_8hxx_source.html#l00028">SOL::A</a>, <a class="el" href="Param_8hxx_source.html#l00044">SOLParams::absTol</a>, <a class="el" href="Faspxx_8hxx_source.html#l00024">CLOSE_ZERO</a>, <a class="el" href="Param_8hxx_source.html#l00039">SOLParams::maxIter</a>, <a class="el" href="Param_8hxx_source.html#l00040">SOLParams::minIter</a>, <a class="el" href="SOL_8hxx_source.html#l00030">SOL::norm2</a>, <a class="el" href="SOL_8hxx_source.html#l00031">SOL::normInf</a>, <a class="el" href="SOL_8hxx_source.html#l00032">SOL::numIter</a>, <a class="el" href="SOL_8hxx_source.html#l00033">SOL::params</a>, <a class="el" href="SOL_8cxx_source.html#l00067">SOL::PrintFinal()</a>, <a class="el" href="SOL_8cxx_source.html#l00036">SOL::PrintHead()</a>, <a class="el" href="SOL_8cxx_source.html#l00046">SOL::PrintInfo()</a>, <a class="el" href="Param_8hxx_source.html#l00043">SOLParams::relTol</a>, <a class="el" href="LOP_8hxx_source.html#l00063">LOP::Residual()</a>, <a class="el" href="RetCode_8hxx_source.html#l00022">SUCCESS</a>, and <a class="el" href="MG_8hxx_source.html#l00042">wVectors</a>.</p>
+<p class="reference">References <a class="el" href="SOL_8hxx_source.html#l00028">SOL::A</a>, <a class="el" href="Param_8hxx_source.html#l00062">SOLParams::absTol</a>, <a class="el" href="Param_8hxx_source.html#l00057">SOLParams::maxIter</a>, <a class="el" href="Param_8hxx_source.html#l00058">SOLParams::minIter</a>, <a class="el" href="SOL_8hxx_source.html#l00030">SOL::norm2</a>, <a class="el" href="SOL_8hxx_source.html#l00031">SOL::normInf</a>, <a class="el" href="SOL_8hxx_source.html#l00032">SOL::numIter</a>, <a class="el" href="SOL_8hxx_source.html#l00033">SOL::params</a>, <a class="el" href="SOL_8cxx_source.html#l00067">SOL::PrintFinal()</a>, <a class="el" href="SOL_8cxx_source.html#l00036">SOL::PrintHead()</a>, <a class="el" href="SOL_8cxx_source.html#l00046">SOL::PrintInfo()</a>, <a class="el" href="Param_8hxx_source.html#l00061">SOLParams::relTol</a>, <a class="el" href="LOP_8hxx_source.html#l00063">LOP::Residual()</a>, <a class="el" href="RetCode_8hxx_source.html#l00022">SUCCESS</a>, and <a class="el" href="MG_8hxx_source.html#l00042">wVectors</a>.</p>
 
 </div>
 </div>
@@ -485,14 +484,14 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a1cc66fc37b6002f89c273ccfc9607aba" name="a1cc66fc37b6002f89c273ccfc9607aba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cc66fc37b6002f89c273ccfc9607aba">&#9670;&nbsp;</a></span>postSolvers</h2>
+<a id="abbd32d7c8ab9531195d074cf053f6968" name="abbd32d7c8ab9531195d074cf053f6968"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbd32d7c8ab9531195d074cf053f6968">&#9670;&nbsp;</a></span>postSolvers</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">vector&lt;<a class="el" href="classSOL.html">SOL</a> *&gt; MG::postSolvers</td>
+          <td class="memname">vector&lt;<a class="el" href="classSOL.html">SOL</a>*&gt; MG::postSolvers</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -503,14 +502,14 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a784fe4a632b4068b3b9a5d1485d045c8" name="a784fe4a632b4068b3b9a5d1485d045c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a784fe4a632b4068b3b9a5d1485d045c8">&#9670;&nbsp;</a></span>preSolvers</h2>
+<a id="aa621e51b72a0a51114d262f89b7714d3" name="aa621e51b72a0a51114d262f89b7714d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa621e51b72a0a51114d262f89b7714d3">&#9670;&nbsp;</a></span>preSolvers</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">vector&lt;<a class="el" href="classSOL.html">SOL</a> *&gt; MG::preSolvers</td>
+          <td class="memname">vector&lt;<a class="el" href="classSOL.html">SOL</a>*&gt; MG::preSolvers</td>
         </tr>
       </table>
 </div><div class="memdoc">

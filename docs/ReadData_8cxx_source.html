@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.6 Sep/18/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.7 Sep/26/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -79,7 +79,7 @@ $(function() {
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="MATUtil_8hxx.html">MATUtil.hxx</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="ReadData_8hxx.html">ReadData.hxx</a>&quot;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="ReadData_8cxx.html#a9b9ff914e0db4bc89e2f53d4ab3272b7">   21</a></span><a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="ReadData_8cxx.html#a9b9ff914e0db4bc89e2f53d4ab3272b7">ReadVEC</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *fileName, <a class="code hl_class" href="classVEC.html">VEC</a> &amp;dst)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="ReadData_8cxx.html#a9b9ff914e0db4bc89e2f53d4ab3272b7">   21</a></span><a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="ReadData_8cxx.html#a9b9ff914e0db4bc89e2f53d4ab3272b7">ReadVEC</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName, <a class="code hl_class" href="classVEC.html">VEC</a>&amp; dst)</div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
@@ -102,7 +102,7 @@ $(function() {
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">char</span> *buffer, *next;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordflow">try</span> {                          <span class="comment">// catch bad allocation error if it happens</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[length]; <span class="comment">// allocate memory for buffer</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    } <span class="keywordflow">catch</span> (std::bad_alloc &amp;ex) {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    } <span class="keywordflow">catch</span> (std::bad_alloc&amp; ex) {</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        in.close();</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07">FaspRetCode::ERROR_ALLOC_MEM</a>;</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">return</span> retCode;</div>
@@ -152,9 +152,9 @@ $(function() {
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keywordflow">return</span> retCode;</div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>}</div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="ReadData_8cxx.html#aa90ba25aadaa365f01799f638a5be120">   95</a></span><a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="ReadData_8cxx.html#aa90ba25aadaa365f01799f638a5be120">ReadMTX</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *fileName, <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> &amp;row, <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> &amp;col, <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> &amp;nnz,</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                    std::vector&lt;INT&gt; &amp;rowInd, std::vector&lt;INT&gt; &amp;colInd,</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    std::vector&lt;DBL&gt; &amp;values)</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="ReadData_8cxx.html#aa90ba25aadaa365f01799f638a5be120">   95</a></span><a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="ReadData_8cxx.html#aa90ba25aadaa365f01799f638a5be120">ReadMTX</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName, INT&amp; row, INT&amp; col, INT&amp; nnz,</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                    std::vector&lt;INT&gt;&amp; rowInd, std::vector&lt;INT&gt;&amp; colInd,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    std::vector&lt;DBL&gt;&amp; values)</div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>{</div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
@@ -178,7 +178,7 @@ $(function() {
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="comment">// Allocate temp space for storing the whole file</span></div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">try</span> { <span class="comment">// catch bad allocation if it happens</span></div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[length];</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    } <span class="keywordflow">catch</span> (std::bad_alloc &amp;ex) {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    } <span class="keywordflow">catch</span> (std::bad_alloc&amp; ex) {</div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        in.close();</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07">FaspRetCode::ERROR_ALLOC_MEM</a>;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">return</span> retCode;</div>
@@ -233,14 +233,14 @@ $(function() {
 <div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        rowInd.resize(nnz);</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        colInd.resize(nnz);</div>
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        values.resize(nnz);</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    } <span class="keywordflow">catch</span> (std::bad_alloc &amp;ex) {</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    } <span class="keywordflow">catch</span> (std::bad_alloc&amp; ex) {</div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="keyword">delete</span>[] buffer; <span class="comment">// if bad allocation happens, free up the memory space</span></div>
 <div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07">FaspRetCode::ERROR_ALLOC_MEM</a>;</div>
 <div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="keywordflow">return</span> retCode;</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    }</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <span class="comment">// Put MTX data into rowInd, colInd, and values</span></div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a>      locate = 0; <span class="comment">// mark the position in rowInd, colInd and values</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    INT      locate = 0; <span class="comment">// mark the position in rowInd, colInd and values</span></div>
 <div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keywordtype">long</span> <span class="keywordtype">int</span> tmp    = 0;</div>
 <div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keywordflow">if</span> (buffer[position] != <span class="charliteral">&#39; &#39;</span> &amp;&amp; buffer[position] != <span class="charliteral">&#39;\n&#39;</span> &amp;&amp;</div>
@@ -277,9 +277,9 @@ $(function() {
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    <span class="keywordflow">return</span> retCode;</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>}</div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno"><a class="line" href="ReadData_8cxx.html#ad3c3aff3c5da77f28132a010ba3ca9d7">  221</a></span><a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="ReadData_8cxx.html#ad3c3aff3c5da77f28132a010ba3ca9d7">ReadCSR</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *fileName, <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> &amp;row, <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> &amp;col, <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> &amp;nnz,</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                    std::vector&lt;INT&gt; &amp;rowPtr, std::vector&lt;INT&gt; &amp;colInd,</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>                    std::vector&lt;DBL&gt; &amp;values)</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno"><a class="line" href="ReadData_8cxx.html#ad3c3aff3c5da77f28132a010ba3ca9d7">  221</a></span><a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="ReadData_8cxx.html#ad3c3aff3c5da77f28132a010ba3ca9d7">ReadCSR</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName, INT&amp; row, INT&amp; col, INT&amp; nnz,</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                    std::vector&lt;INT&gt;&amp; rowPtr, std::vector&lt;INT&gt;&amp; colInd,</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>                    std::vector&lt;DBL&gt;&amp; values)</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>{</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span> </div>
@@ -303,7 +303,7 @@ $(function() {
 <div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="comment">// Allocate memory space for storing the whole file</span></div>
 <div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    <span class="keywordflow">try</span> { <span class="comment">// catch the bad allocation if it happens</span></div>
 <div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        buffer = <span class="keyword">new</span> <span class="keywordtype">char</span>[length];</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    } <span class="keywordflow">catch</span> (std::bad_alloc &amp;ex) {</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    } <span class="keywordflow">catch</span> (std::bad_alloc&amp; ex) {</div>
 <div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        in.close();</div>
 <div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07">FaspRetCode::ERROR_ALLOC_MEM</a>;</div>
 <div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        <span class="keywordflow">return</span> retCode;</div>
@@ -312,7 +312,7 @@ $(function() {
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    in.close();              <span class="comment">// close the file stream</span></div>
 <div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
 <div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    <span class="comment">// Read number of rows</span></div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a>           count    = 0;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    INT           count    = 0;</div>
 <div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> position = 0; <span class="comment">// mark the position of file pointer</span></div>
 <div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        <span class="keywordflow">if</span> (buffer[position] != <span class="charliteral">&#39;\n&#39;</span>) {</div>
@@ -337,13 +337,13 @@ $(function() {
 <div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>    <span class="comment">// Read row pointers</span></div>
 <div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>    <span class="keywordflow">try</span> { <span class="comment">// catch bad allocation if it happens</span></div>
 <div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        rowPtr.resize(row + 1);</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    } <span class="keywordflow">catch</span> (std::bad_alloc &amp;ex) {</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>    } <span class="keywordflow">catch</span> (std::bad_alloc&amp; ex) {</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07">FaspRetCode::ERROR_ALLOC_MEM</a>;</div>
 <div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        <span class="keywordflow">return</span> retCode;</div>
 <div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    }</div>
 <div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
 <div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>    <span class="comment">// Read the rowPtr of CSRx matrix</span></div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> locate = 0;</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    INT locate = 0;</div>
 <div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    count      = 0;</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        <span class="keywordflow">if</span> (buffer[position] != <span class="charliteral">&#39;\n&#39;</span>) {</div>
@@ -365,7 +365,7 @@ $(function() {
 <div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>        nnz = rowPtr[row] - rowPtr[0];</div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>        colInd.resize(nnz);</div>
 <div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>        values.resize(nnz);</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    } <span class="keywordflow">catch</span> (std::bad_alloc &amp;ex) {</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>    } <span class="keywordflow">catch</span> (std::bad_alloc&amp; ex) {</div>
 <div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50abc7395e3633a36c3364c5c35f32fcf07">FaspRetCode::ERROR_ALLOC_MEM</a>;</div>
 <div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        <span class="keywordflow">return</span> retCode;</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    }</div>
@@ -416,7 +416,7 @@ $(function() {
 <div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>    <span class="keywordflow">return</span> retCode;</div>
 <div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>}</div>
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno"><a class="line" href="ReadData_8cxx.html#aabb9b3709c28b28a84604fdfb2e6c00c">  361</a></span><a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="ReadData_8cxx.html#aabb9b3709c28b28a84604fdfb2e6c00c">ReadMat</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *fileName, <a class="code hl_class" href="classMAT.html">MAT</a> &amp;dst)</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno"><a class="line" href="ReadData_8cxx.html#aabb9b3709c28b28a84604fdfb2e6c00c">  361</a></span><a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> <a class="code hl_function" href="ReadData_8cxx.html#aabb9b3709c28b28a84604fdfb2e6c00c">ReadMat</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName, <a class="code hl_class" href="classMAT.html">MAT</a>&amp; dst)</div>
 <div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>{</div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>    <span class="keyword">const</span> <span class="keywordtype">int</span>   len     = strlen(fileName);</div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>    <a class="code hl_enumeration" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50">FaspRetCode</a> retCode = <a class="code hl_enumvalue" href="RetCode_8hxx.html#aff468b46f5c4020989ad3bdbba54af50ac7f69f7c9e5aea9b8f54cf02870e2bf8">FaspRetCode::SUCCESS</a>;</div>
@@ -437,7 +437,7 @@ $(function() {
 <div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (strcmp(fileExt, <span class="stringliteral">&quot;mtx&quot;</span>) == 0)</div>
 <div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>        flag = <a class="code hl_variable" href="ReadData_8hxx.html#ab190505c17ea7c8e42449544c6f593ac">FILE_MTX</a>; <span class="comment">// MTX file</span></div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span> </div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a>              row, col, nnz;</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    INT              row, col, nnz;</div>
 <div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    std::vector&lt;INT&gt; rowPtr, colInd, rowInd;</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    std::vector&lt;DBL&gt; values;</div>
 <div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span> </div>
@@ -447,7 +447,7 @@ $(function() {
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>                retCode = <a class="code hl_function" href="ReadData_8cxx.html#ad3c3aff3c5da77f28132a010ba3ca9d7">ReadCSR</a>(fileName, row, col, nnz, rowPtr, colInd, values);</div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>                <span class="keywordflow">if</span> (retCode &lt; 0)</div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>                    <span class="keywordflow">throw</span>(<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a> &amp;ex) {</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>&amp; ex) {</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>                ex.<a class="code hl_function" href="classFaspRunTime.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>                <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>            }</div>
@@ -457,7 +457,7 @@ $(function() {
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                retCode = <a class="code hl_function" href="MATUtil_8cxx.html#a5c19d923cc85471207d8fdd969950418">SortCSRRow</a>(row, col, nnz, rowPtr, colInd, values);</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>                <span class="keywordflow">if</span> (retCode &lt; 0)</div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>                    <span class="keywordflow">throw</span>(<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a> &amp;ex) {</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>&amp; ex) {</div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>                ex.<a class="code hl_function" href="classFaspRunTime.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>                <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>            }</div>
@@ -467,7 +467,7 @@ $(function() {
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>                retCode = <a class="code hl_function" href="MATUtil_8cxx.html#af875442f94023d6a822663d180a6e544">CSRtoMAT</a>(row, col, nnz, values, colInd, rowPtr, dst);</div>
 <div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>                <span class="keywordflow">if</span> (retCode &lt; 0)</div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>                    <span class="keywordflow">throw</span>(<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a> &amp;ex) {</div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>&amp; ex) {</div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>                ex.<a class="code hl_function" href="classFaspRunTime.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
 <div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>                <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>            }</div>
@@ -478,7 +478,7 @@ $(function() {
 <div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>                retCode = <a class="code hl_function" href="ReadData_8cxx.html#aa90ba25aadaa365f01799f638a5be120">ReadMTX</a>(fileName, row, col, nnz, rowInd, colInd, values);</div>
 <div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>                <span class="keywordflow">if</span> (retCode &lt; 0)</div>
 <div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>                    <span class="keywordflow">throw</span>(<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a> &amp;ex) {</div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>&amp; ex) {</div>
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>                ex.<a class="code hl_function" href="classFaspRunTime.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>                <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>            }</div>
@@ -488,7 +488,7 @@ $(function() {
 <div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>                retCode = <a class="code hl_function" href="MATUtil_8cxx.html#a28c0f3936e34986fe1fed08d0186f5e0">MTXtoMAT</a>(row, col, nnz, rowInd, colInd, values, dst);</div>
 <div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span>                <span class="keywordflow">if</span> (retCode &lt; 0)</div>
 <div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span>                    <span class="keywordflow">throw</span>(<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>(retCode, __FILE__, __FUNCTION__, __LINE__));</div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a> &amp;ex) {</div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span>            } <span class="keywordflow">catch</span> (<a class="code hl_class" href="classFaspRunTime.html">FaspRunTime</a>&amp; ex) {</div>
 <div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>                ex.<a class="code hl_function" href="classFaspRunTime.html#aa0a5c4216a3a4bdec521a54c9a336f4c">LogExcep</a>();</div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>                <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>            }</div>
@@ -512,7 +512,6 @@ $(function() {
 <div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="comment">/*  Chensong Zhang      Sep/16/2021      Restructure file                     */</span></div>
 <div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
 <div class="ttc" id="aErrorLog_8hxx_html_a020ddf6943d94778b6ebeff22d0f0cac"><div class="ttname"><a href="ErrorLog_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac">FASPXX_WARNING</a></div><div class="ttdeci">#define FASPXX_WARNING(msg)</div><div class="ttdoc">Log warning messages.</div><div class="ttdef"><b>Definition:</b> <a href="ErrorLog_8hxx_source.html#l00039">ErrorLog.hxx:39</a></div></div>
-<div class="ttc" id="aFaspxx_8hxx_html_a2c1b481efcce2dbbd0dee644e335c69a"><div class="ttname"><a href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a></div><div class="ttdeci">unsigned int INT</div><div class="ttdoc">Regular integer numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00017">Faspxx.hxx:17</a></div></div>
 <div class="ttc" id="aMATUtil_8cxx_html_a28c0f3936e34986fe1fed08d0186f5e0"><div class="ttname"><a href="MATUtil_8cxx.html#a28c0f3936e34986fe1fed08d0186f5e0">MTXtoMAT</a></div><div class="ttdeci">FaspRetCode MTXtoMAT(const INT &amp;row, const INT &amp;col, const INT &amp;nnz, const std::vector&lt; INT &gt; &amp;rowInd, const std::vector&lt; INT &gt; &amp;colInd, const std::vector&lt; DBL &gt; &amp;values, MAT &amp;mat)</div><div class="ttdoc">Convert MTX data to MAT.</div><div class="ttdef"><b>Definition:</b> <a href="MATUtil_8cxx_source.html#l00416">MATUtil.cxx:416</a></div></div>
 <div class="ttc" id="aMATUtil_8cxx_html_a5c19d923cc85471207d8fdd969950418"><div class="ttname"><a href="MATUtil_8cxx.html#a5c19d923cc85471207d8fdd969950418">SortCSRRow</a></div><div class="ttdeci">FaspRetCode SortCSRRow(const INT &amp;row, const INT &amp;col, const INT &amp;nnz, const std::vector&lt; INT &gt; &amp;rowPtr, std::vector&lt; INT &gt; &amp;colInd, std::vector&lt; DBL &gt; &amp;values)</div><div class="ttdoc">Sort &quot;colInd&quot; of each row in ascending order and rearrange &quot;values&quot; accordingly.</div><div class="ttdef"><b>Definition:</b> <a href="MATUtil_8cxx_source.html#l00439">MATUtil.cxx:439</a></div></div>
 <div class="ttc" id="aMATUtil_8cxx_html_af875442f94023d6a822663d180a6e544"><div class="ttname"><a href="MATUtil_8cxx.html#af875442f94023d6a822663d180a6e544">CSRtoMAT</a></div><div class="ttdeci">FaspRetCode CSRtoMAT(const INT &amp;row, const INT &amp;col, const INT &amp;nnz, const std::vector&lt; DBL &gt; &amp;values, const std::vector&lt; INT &gt; &amp;colInd, const std::vector&lt; INT &gt; &amp;rowPtr, MAT &amp;mat)</div><div class="ttdoc">Convert a CSR matrix to MAT (private)</div><div class="ttdef"><b>Definition:</b> <a href="MATUtil_8cxx_source.html#l00303">MATUtil.cxx:303</a></div></div>
@@ -534,7 +533,7 @@ $(function() {
 <div class="ttc" id="aclassFaspRunTime_html_aa0a5c4216a3a4bdec521a54c9a336f4c"><div class="ttname"><a href="classFaspRunTime.html#aa0a5c4216a3a4bdec521a54c9a336f4c">FaspRunTime::LogExcep</a></div><div class="ttdeci">void LogExcep(std::ostream &amp;stream=std::cout) const</div><div class="ttdoc">Log exception messages in a file or to the screen.</div><div class="ttdef"><b>Definition:</b> <a href="RetCode_8cxx_source.html#l00086">RetCode.cxx:86</a></div></div>
 <div class="ttc" id="aclassMAT_html"><div class="ttname"><a href="classMAT.html">MAT</a></div><div class="ttdoc">Sparse matrix class.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8hxx_source.html#l00039">MAT.hxx:40</a></div></div>
 <div class="ttc" id="aclassVEC_html"><div class="ttname"><a href="classVEC.html">VEC</a></div><div class="ttdoc">General vector class.</div><div class="ttdef"><b>Definition:</b> <a href="VEC_8hxx_source.html#l00025">VEC.hxx:26</a></div></div>
-<div class="ttc" id="aclassVEC_html_af4eff2233a6644183f03af5cc8bf4846"><div class="ttname"><a href="classVEC.html#af4eff2233a6644183f03af5cc8bf4846">VEC::SetValues</a></div><div class="ttdeci">void SetValues(const INT &amp;size, const DBL &amp;value=0.0)</div><div class="ttdoc">Assign the size and the same value to a VEC object.</div><div class="ttdef"><b>Definition:</b> <a href="VEC_8cxx_source.html#l00092">VEC.cxx:92</a></div></div>
+<div class="ttc" id="aclassVEC_html_af4eff2233a6644183f03af5cc8bf4846"><div class="ttname"><a href="classVEC.html#af4eff2233a6644183f03af5cc8bf4846">VEC::SetValues</a></div><div class="ttdeci">void SetValues(const INT &amp;size, const DBL &amp;value=0.0)</div><div class="ttdoc">Assign the size and the same value to a VEC object.</div><div class="ttdef"><b>Definition:</b> <a href="VEC_8cxx_source.html#l00099">VEC.cxx:99</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

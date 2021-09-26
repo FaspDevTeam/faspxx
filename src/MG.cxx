@@ -16,7 +16,7 @@
 
 using std::vector;
 
-void MG::oneCycleMultigrid(const VEC &b, VEC &x)
+void MG::oneCycleMultigrid(const VEC& b, VEC& x)
 {
     // local variables
     unsigned l                      = 0; // level index
@@ -72,7 +72,7 @@ ForwardSweep:
 }
 
 /// Using the multigrid method. Don't check problem sizes.
-FaspRetCode MG::Solve(const VEC &b, VEC &x)
+FaspRetCode MG::Solve(const VEC& b, VEC& x)
 {
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
@@ -118,7 +118,7 @@ FaspRetCode MG::Solve(const VEC &b, VEC &x)
     if (not(numIter == params.minIter && numIter == params.maxIter)) {
         // Update residual r = b - A*x
         A->Residual(b, x, wVectors[0]);
-        resAbs = wVectors[0].Norm2();
+        resAbs        = wVectors[0].Norm2();
         resRel        = resAbs / denAbs;
         ratio         = resAbs / resAbsOld;
         this->norm2   = resAbs;

@@ -31,11 +31,11 @@ private:
     int     n;        ///< number of rows
     int     m;        ///< number of columns
     int     nnz;      ///< number of nonzeros
-    int *   Ap;       ///< CSR row pointer for Fortran
-    int *   Ai;       ///< CSR columen indices for Fortran
-    double *Ax;       ///< CSR values for Fortran
-    void *  Symbolic; ///< symbolic factorization from UMFPACK
-    void *  Numeric;  ///< numeric factorization from UMFPACK
+    int*    Ap;       ///< CSR row pointer for Fortran
+    int*    Ai;       ///< CSR columen indices for Fortran
+    double* Ax;       ///< CSR values for Fortran
+    void*   Symbolic; ///< symbolic factorization from UMFPACK
+    void*   Numeric;  ///< numeric factorization from UMFPACK
 
 public:
     /// Default constructor.
@@ -53,10 +53,10 @@ public:
     ~UMFPACK() = default;
 
     /// Setup the UMFPACK direct solver.
-    FaspRetCode Setup(const MAT &A);
+    FaspRetCode Setup(const MAT& A);
 
     /// Solve Ax=b using the the UMFPACK direct solver.
-    FaspRetCode Solve(const VEC &b, VEC &x) override;
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 
     /// Clean up UMFPACK data allocated during Setup.
     void Clean() override;

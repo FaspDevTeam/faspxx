@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['verbose_0',['verbose',['../structSOLParams.html#a7546f71bcb93fc16f19cfd588908c46b',1,'SOLParams']]]
+  ['xvectors_0',['xVectors',['../classMG.html#a280726dae15d439be8a9cb858d251159',1,'MG']]]
 ];

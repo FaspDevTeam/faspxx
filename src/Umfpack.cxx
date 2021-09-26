@@ -13,7 +13,7 @@
 #include "Umfpack.hxx"
 
 /// Allocate memory, setup coefficient matrix of the linear system.
-FaspRetCode UMFPACK::Setup(const MAT &A)
+FaspRetCode UMFPACK::Setup(const MAT& A)
 {
 #if WITH_UMFPACK
     int status;
@@ -58,7 +58,7 @@ FaspRetCode UMFPACK::Setup(const MAT &A)
 }
 
 /// Using the UMFPACK direct solver. Don't check problem sizes.
-FaspRetCode UMFPACK::Solve(const VEC &b, VEC &x)
+FaspRetCode UMFPACK::Solve(const VEC& b, VEC& x)
 {
 #if WITH_UMFPACK
     int status;

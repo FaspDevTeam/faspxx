@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.6 Sep/18/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.7 Sep/26/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -98,7 +98,7 @@ Functions</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>Sep/25/2019</dd></dl>
 <hr  />
 <p> Copyright (C) 2019&ndash;present by the FASP++ team. All rights resized. </p>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 Released under the terms of the GNU Lesser General Public License 3.0 or later.</h2>
 
 <p class="definition">Definition in file <a class="el" href="MAT_8cxx_source.html">MAT.cxx</a>.</p>
@@ -138,13 +138,12 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 <div class="line"><a id="l00887" name="l00887"></a><span class="lineno">  887</span>    out.open(filename);</div>
 <div class="line"><a id="l00888" name="l00888"></a><span class="lineno">  888</span> </div>
 <div class="line"><a id="l00889" name="l00889"></a><span class="lineno">  889</span>    out &lt;&lt; mat.<a class="code hl_variable" href="classLOP.html#a041656000dab81274b9c852e7413f887">nrow</a> &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; mat.<a class="code hl_variable" href="classLOP.html#a300365edbf5682562c60fdba857e769f">mcol</a> &lt;&lt; <span class="stringliteral">&quot; &quot;</span> &lt;&lt; mat.nnz &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> j = 0; j &lt; mat.<a class="code hl_variable" href="classLOP.html#a041656000dab81274b9c852e7413f887">nrow</a> + 1; ++j) out &lt;&lt; mat.rowPtr[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    for (<a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> j = 0; j &lt; mat.nnz; ++j) out &lt;&lt; mat.colInd[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    for (<a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a> j = 0; j &lt; mat.nnz; ++j) out &lt;&lt; mat.values[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span>    <span class="keywordflow">for</span> (INT j = 0; j &lt; mat.<a class="code hl_variable" href="classLOP.html#a041656000dab81274b9c852e7413f887">nrow</a> + 1; ++j) out &lt;&lt; mat.rowPtr[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    for (INT j = 0; j &lt; mat.nnz; ++j) out &lt;&lt; mat.colInd[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    for (INT j = 0; j &lt; mat.nnz; ++j) out &lt;&lt; mat.values[j] &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
 <div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span> </div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>    out.close();</div>
 <div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>}</div>
-<div class="ttc" id="aFaspxx_8hxx_html_a2c1b481efcce2dbbd0dee644e335c69a"><div class="ttname"><a href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a></div><div class="ttdeci">unsigned int INT</div><div class="ttdoc">Regular integer numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00017">Faspxx.hxx:17</a></div></div>
 <div class="ttc" id="aclassLOP_html_a041656000dab81274b9c852e7413f887"><div class="ttname"><a href="classLOP.html#a041656000dab81274b9c852e7413f887">LOP::nrow</a></div><div class="ttdeci">INT nrow</div><div class="ttdoc">number of rows</div><div class="ttdef"><b>Definition:</b> <a href="LOP_8hxx_source.html#l00026">LOP.hxx:26</a></div></div>
 <div class="ttc" id="aclassLOP_html_a300365edbf5682562c60fdba857e769f"><div class="ttname"><a href="classLOP.html#a300365edbf5682562c60fdba857e769f">LOP::mcol</a></div><div class="ttdeci">INT mcol</div><div class="ttdoc">number of columns</div><div class="ttdef"><b>Definition:</b> <a href="LOP_8hxx_source.html#l00027">LOP.hxx:27</a></div></div>
 </div><!-- fragment -->
@@ -181,7 +180,7 @@ Released under the terms of the GNU Lesser General Public License 3.0 or later.<
 
 <p class="definition">Definition at line <a class="el" href="MAT_8cxx_source.html#l00898">898</a> of file <a class="el" href="MAT_8cxx_source.html">MAT.cxx</a>.</p>
 <div class="fragment"><div class="line"><a id="l00899" name="l00899"></a><span class="lineno">  899</span>{</div>
-<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a2c1b481efcce2dbbd0dee644e335c69a">INT</a>           begin, end, j, k;</div>
+<div class="line"><a id="l00900" name="l00900"></a><span class="lineno">  900</span>    INT           begin, end, j, k;</div>
 <div class="line"><a id="l00901" name="l00901"></a><span class="lineno">  901</span>    std::ofstream out;</div>
 <div class="line"><a id="l00902" name="l00902"></a><span class="lineno">  902</span>    <a class="code hl_class" href="classMAT.html">MAT</a>           tmp = mat;</div>
 <div class="line"><a id="l00903" name="l00903"></a><span class="lineno">  903</span>    tmp.<a class="code hl_function" href="classMAT.html#a23975f5f91fc6a01056e825c37d5a621">TransInPlace</a>();</div>

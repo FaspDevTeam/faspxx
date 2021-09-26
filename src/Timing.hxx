@@ -28,7 +28,8 @@ typedef unsigned long long uint64; ///< Unsigned long long int
  *
  *  Read the current wall-time and return duration from start() to stop().
  */
-class GetWallTime {
+class GetWallTime
+{
 
 private:
     std::chrono::system_clock::time_point timeStamp; ///< Current CPU time
@@ -38,13 +39,14 @@ public:
     __inline__ void Start() { timeStamp = std::chrono::system_clock::now(); }
 
     /// Stop the timer and return duration from start() in ms
-    __inline__ double Stop() const {
+    __inline__ double Stop() const
+    {
         auto elapsedTime = std::chrono::system_clock::now() - timeStamp;
         return std::chrono::duration<double, std::milli>(elapsedTime).count();
     }
 
     /// Stop the timer and print out duration time
-    void StopInfo(const std::string &info, std::ostream &out = std::cout) const;
+    void StopInfo(const std::string& info, std::ostream& out = std::cout) const;
 };
 
 /*! \class GetCycleNum
@@ -52,13 +54,15 @@ public:
  *
  *  Read the CPU cycles and return number of cycles from start() to stop().
  */
-class GetCycleNum {
+class GetCycleNum
+{
 
 private:
     uint64 cycleClock = 0; ///< Current CPU cycle counter
 
     /// Read Time Stamp Counter (TSC)
-    static __inline__ uint64 startRDTSC() {
+    static __inline__ uint64 startRDTSC()
+    {
         unsigned cycleLow, cycleHigh;
         asm volatile("CPUID\n\t"
                      "RDTSC\n\t"
@@ -69,7 +73,8 @@ private:
     }
 
     /// Read Time Stamp Counter and Processor ID (TSCP)
-    static __inline__ uint64 stopRDTSCP() {
+    static __inline__ uint64 stopRDTSCP()
+    {
         unsigned cycleLow, cycleHigh;
         asm volatile("RDTSCP\n\t"
                      "mov %%edx, %0\n\t"

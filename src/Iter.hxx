@@ -33,7 +33,7 @@ public:
     ~Identity() = default;
 
     /// Iterator
-    FaspRetCode Solve(const VEC &b, VEC &x) override;
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 };
 
 /*! \class Jacobi
@@ -57,13 +57,13 @@ public:
     ~Jacobi() = default;
 
     /// Setup the Jacobi method.
-    FaspRetCode Setup(const MAT &A);
+    FaspRetCode Setup(const MAT& A);
 
     /// Clean up Jacobi data allocated during Setup.
     void Clean() override{};
 
     /// Solve Ax=b using the Jacobi method.
-    FaspRetCode Solve(const VEC &b, VEC &x) override;
+    FaspRetCode Solve(const VEC& b, VEC& x) override;
 };
 
 #endif /* end if for __ITER_HEADER__ */

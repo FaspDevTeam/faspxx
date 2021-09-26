@@ -33,7 +33,7 @@ void SOL::WarnDiffRes(double reldiff, double relres) const
 }
 
 /// Print out iteration information table head.
-void SOL::PrintHead(std::ostream &out) const
+void SOL::PrintHead(std::ostream& out) const
 {
     if (params.verbose >= PRINT_MIN && params.minIter < params.maxIter) {
         out << "---------------------------------------------\n";
@@ -43,8 +43,8 @@ void SOL::PrintHead(std::ostream &out) const
 }
 
 /// Print out iteration information for iterative solvers
-void SOL::PrintInfo(const int &iter, const double &resRel, const double &resAbs,
-                    const double &ratio, std::ostream &out) const
+void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
+                    const double& ratio, std::ostream& out) const
 {
     if (params.verbose > PRINT_SOME ||
         (params.verbose >= PRINT_MIN && iter % PRT_STEP_NUM == 0) ||
@@ -64,8 +64,8 @@ void SOL::PrintInfo(const int &iter, const double &resRel, const double &resAbs,
 }
 
 /// Print out final status of an iterative method.
-void SOL::PrintFinal(const int &iter, const double &resRel, const double &resAbs,
-                     const double &ratio, std::ostream &out) const
+void SOL::PrintFinal(const int& iter, const double& resRel, const double& resAbs,
+                     const double& ratio, std::ostream& out) const
 {
     if (params.minIter >= params.maxIter) return;
 
@@ -127,9 +127,9 @@ void SOL::SetWeight(double alpha) { params.weight = alpha; }
 void SOL::SetSolType(SOLType type) { params.type = type; }
 
 /// Set value for SOLType using algName.
-void SOL::SetSolTypeFromName(SOLParams &params)
+void SOL::SetSolTypeFromName(SOLParams& params)
 {
-    for (char &c : params.algName) c = std::tolower(c); // Change to lowercase
+    for (char& c : params.algName) c = std::tolower(c); // Change to lowercase
     if (params.algName == "cg")
         params.type = SOLType::CG;
     else if (params.algName == "bicgstab")
@@ -164,7 +164,7 @@ void SOL::SetSolTypeFromName(SOLParams &params)
 }
 
 /// Get solver type.
-const char *SOL::GetSolType(SOLType type) const
+const char* SOL::GetSolType(SOLType type) const
 {
     switch (type) {
         case CG:
@@ -208,7 +208,7 @@ double SOL::GetInfNorm() const { return this->normInf; }
 int SOL::GetIterations() const { return this->numIter; }
 
 /// Print parameters.
-void SOL::PrintParam(std::ostream &out) const
+void SOL::PrintParam(std::ostream& out) const
 {
     // General solver parameters
     out << "\n---------------------------------------------\n"
@@ -237,7 +237,7 @@ void SOL::PrintParam(std::ostream &out) const
 }
 
 /// Print solver time.
-void SOL::PrintTime(const double duration, std::ostream &out) const
+void SOL::PrintTime(const double duration, std::ostream& out) const
 {
     if (duration < CLOCK_USE_SEC) {
         std::cout << "Solving linear system with " << GetSolType(params.type)
@@ -255,7 +255,7 @@ void SOL::PrintTime(const double duration, std::ostream &out) const
 }
 
 /// Build preconditioner operator.
-void SOL::SetupPCD(SOL &precond) { this->pcd = &precond; }
+void SOL::SetupPCD(SOL& precond) { this->pcd = &precond; }
 
 /*----------------------------------------------------------------------------*/
 /*  Brief Change History of This File                                         */
