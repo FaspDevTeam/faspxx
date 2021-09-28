@@ -24,29 +24,19 @@ using std::vector;
 class AMG : public MG
 {
 private:
-    unsigned numLevelsMax;     ///< max number of levels
-    unsigned numLevelsUse;     ///< number of levels in use <= max_levels
-    bool     useSymmRoperator; ///< use symmetric restriction operator
-    bool     useDefaultSolver; ///< use default smoothers and coarsest solver
-    unsigned len;              ///< dimension of the solution vector
-
-    vector<MAT>  coeffMatrices; ///< coefficient matrices at all levels
-    vector<MAT*> prolongations; ///< pointers to prolongations at all levels
-    vector<MAT*> restrictions;  ///< pointers to restrictions at all levels
+    bool            useDefaultSolver; ///< use default smoothers and coarsest solver
+    vector<HL<MAT>> infoHL;           ///< hierarichal info at all coarse levels
 
 private:
-    FaspRetCode SetupOneLevel(const MAT& A);      ///< default setup for one-level AMG
-    vector<IdentityMatrix> defaultTrans;          ///< default transfer operators
-    vector<class Jacobi>   defaultSolvers;        ///< default smoothers at all levels
-    class Jacobi           defaultCoarsestSolver; ///< default solver at coarsest level
+    FaspRetCode SetupOneLevel(const MAT& A);     ///< default setup for one-level AMG
+    vector<IdentityMatrix> defaultTrans;         ///< default transfer operators
+    vector<class Jacobi>   defaultSolvers;       ///< default smoothers at coarse levels
+    vector<class Jacobi>   defaultCoarseSolvers; ///< default solver at coarse levels
 
 public:
     /// Default constructor.
     AMG()
-        : numLevelsMax(20)
-        , numLevelsUse(1)
-        , useSymmRoperator(true)
-        , useDefaultSolver(true){};
+        : useDefaultSolver(true){};
 
     /// Default destructor.
     ~AMG() = default;

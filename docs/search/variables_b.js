@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['saviter_0',['savIter',['../structSOLParams.html#a2702bb4247e28faef55866bb81c6fc0a',1,'SOLParams']]],
-  ['sizes_1',['sizes',['../classMG.html#a3a0f086ee4d689b19b68f41399e1e52d',1,'MG']]],
-  ['small_2',['SMALL',['../Faspxx_8hxx.html#acde3cce0ed661489d9e52620dd0e6538',1,'Faspxx.hxx']]],
-  ['small_5ftol_3',['SMALL_TOL',['../Faspxx_8hxx.html#a0d6bf263ec5abd3453344ed163e29c55',1,'Faspxx.hxx']]]
+  ['reltol_0',['relTol',['../structSOLParams.html#a4c49319d1f1ded022df46fb70bdd6077',1,'SOLParams']]],
+  ['restart_1',['restart',['../structSOLParams.html#a0d6813849e79fb8997058847d2b635a3',1,'SOLParams']]],
+  ['restriction_2',['restriction',['../structHL.html#a08676949c3c0206c218c9f28a1eec18f',1,'HL']]]
 ];

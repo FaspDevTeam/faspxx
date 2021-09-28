@@ -14,14 +14,14 @@
 //   ./testAMG -maxIter 200 -minIter 0 -mat ../data/fdm_1023X1023.csr -verbose 3
 
 // FASPXX header files
-#include "AMG.hxx"
 #include "Iter.hxx"
 #include "LOP.hxx"
+#include "MG.hxx"
 #include "Param.hxx"
 #include "ReadData.hxx"
 #include "Timing.hxx"
 
-int main(int argc, const char *args[])
+int main(int argc, const char* args[])
 {
     // User default parameters
     std::string parFile = "../data/input.param";
@@ -68,7 +68,7 @@ int main(int argc, const char *args[])
     timer.StopInfo("Reading Ax = b");
 
     // Setup solver parameters
-    class AMG solver;
+    class MG<class MAT> solver;
     solver.SetOutput(solParam.verbose);
     solver.SetMaxIter(solParam.maxIter);
     solver.SetMinIter(solParam.minIter);

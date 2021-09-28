@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['amg_0',['AMG',['../classAMG.html',1,'']]]
+  ['bicgstab_0',['BiCGStab',['../classBiCGStab.html',1,'']]]
 ];

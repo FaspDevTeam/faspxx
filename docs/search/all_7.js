@@ -10,7 +10,7 @@ var searchData=
   ['getfunc_7',['GetFunc',['../classFaspBadAlloc.html#a6558867d4033d0e75791852dc44959d7',1,'FaspBadAlloc::GetFunc()'],['../classFaspRunTime.html#a373a18ddf6f8d7d2b0dc9cdfd6cf7fa3',1,'FaspRunTime::GetFunc()']]],
   ['getinfnorm_8',['GetInfNorm',['../classSOL.html#a4b919b0465941b62afc904e20abc2f83',1,'SOL']]],
   ['getiterations_9',['GetIterations',['../classSOL.html#a12f401af5b9849a29d306af064d305fd',1,'SOL']]],
-  ['getline_10',['GetLine',['../classFaspBadAlloc.html#ae01846999fe087ced13ed07f705818f7',1,'FaspBadAlloc::GetLine()'],['../classFaspRunTime.html#a448bc4f406ab556a8a4abbecebac0f26',1,'FaspRunTime::GetLine()']]],
+  ['getline_10',['GetLine',['../classFaspRunTime.html#a448bc4f406ab556a8a4abbecebac0f26',1,'FaspRunTime::GetLine()'],['../classFaspBadAlloc.html#ae01846999fe087ced13ed07f705818f7',1,'FaspBadAlloc::GetLine()']]],
   ['getlowertri_11',['GetLowerTri',['../classMAT.html#a1919fafad88b2233beea7f869bc2f869',1,'MAT']]],
   ['getnnz_12',['GetNNZ',['../classMAT.html#a12a6413f9922b716bc63d1b42400f551',1,'MAT']]],
   ['getnorm2_13',['GetNorm2',['../classSOL.html#a06ff2eaf57fea0445a4dee844a87156d',1,'SOL']]],
@@ -23,8 +23,7 @@ var searchData=
   ['getvalue_20',['GetValue',['../classMAT.html#af0a9a3045d481cb6fa987ff3e21e6fcf',1,'MAT::GetValue()'],['../classVEC.html#a67ac4ff52b11d47bbb048ce19ce7de76',1,'VEC::GetValue()']]],
   ['getvalues_21',['GetValues',['../classMAT.html#abcf9b76e512928d10ed1990f4d2e08f2',1,'MAT::GetValues()'],['../classVEC.html#a15877d0789a23912d539846d1543dc44',1,'VEC::GetValues()']]],
   ['getwalltime_22',['GetWallTime',['../classGetWallTime.html',1,'']]],
-  ['gmres_23',['GMRES',['../classGMRES.html',1,'GMRES'],['../classGMRES.html#a9e1bb04c190a5917ba4cd0082e15fcce',1,'GMRES::GMRES()'],['../Param_8hxx.html#a211350976404ebcc6715299193cc2ea7ac8f49d1c89cf479bb8dc2878524b71d2',1,'GMRES():&#160;Param.hxx']]],
+  ['gmres_23',['GMRES',['../classGMRES.html',1,'GMRES'],['../classGMRES.html#a9e1bb04c190a5917ba4cd0082e15fcce',1,'GMRES::GMRES()']]],
   ['gmres_2ecxx_24',['GMRES.cxx',['../GMRES_8cxx.html',1,'']]],
-  ['gmres_2ehxx_25',['GMRES.hxx',['../GMRES_8hxx.html',1,'']]],
-  ['gs_26',['GS',['../Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a9c922c72676cab2b540d081a8bb3788a',1,'Param.hxx']]]
+  ['gmres_2ehxx_25',['GMRES.hxx',['../GMRES_8hxx.html',1,'']]]
 ];

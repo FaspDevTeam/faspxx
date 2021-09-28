@@ -11,6 +11,7 @@ var searchData=
   ['reserve_8',['Reserve',['../classVEC.html#a6964bb6c728fccdce73bf696937348b9',1,'VEC']]],
   ['residual_9',['Residual',['../classLOP.html#a0223c477f32e9d0a24683e887b341dc3',1,'LOP::Residual()'],['../classMAT.html#add546a8c2a4e5673a95867de04626c60',1,'MAT::Residual()']]],
   ['restart_10',['restart',['../structSOLParams.html#a0d6813849e79fb8997058847d2b635a3',1,'SOLParams']]],
-  ['retcode_2ecxx_11',['RetCode.cxx',['../RetCode_8cxx.html',1,'']]],
-  ['retcode_2ehxx_12',['RetCode.hxx',['../RetCode_8hxx.html',1,'']]]
+  ['restriction_11',['restriction',['../structHL.html#a08676949c3c0206c218c9f28a1eec18f',1,'HL']]],
+  ['retcode_2ecxx_12',['RetCode.cxx',['../RetCode_8cxx.html',1,'']]],
+  ['retcode_2ehxx_13',['RetCode.hxx',['../RetCode_8hxx.html',1,'']]]
 ];

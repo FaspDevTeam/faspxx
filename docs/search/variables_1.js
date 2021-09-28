@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bvectors_0',['bVectors',['../classMG.html#ac2e993f7bc2bcd329e809a52ae86e068',1,'MG']]]
+  ['b_0',['b',['../structHL.html#a593ffd84b9b9f5ee25126254abed9286',1,'HL']]]
 ];

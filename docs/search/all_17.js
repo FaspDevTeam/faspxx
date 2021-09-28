@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['xpay_0',['XPAY',['../classVEC.html#a801ce6e4a4873d587ccbbd2a6925317d',1,'VEC']]],
-  ['xvectors_1',['xVectors',['../classMG.html#a280726dae15d439be8a9cb858d251159',1,'MG']]]
+  ['x_0',['x',['../structHL.html#ab6a6cdecc61da7fdb20d5bd15cc13270',1,'HL']]],
+  ['xpay_1',['XPAY',['../classVEC.html#a801ce6e4a4873d587ccbbd2a6925317d',1,'VEC']]]
 ];

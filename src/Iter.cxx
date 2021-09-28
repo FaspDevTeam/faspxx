@@ -26,7 +26,7 @@ void Jacobi::SetWeight(const DBL weight) { this->weight = weight; }
 FaspRetCode Jacobi::Setup(const MAT& A)
 {
     // Set solver type
-    SetSolType(SOLType::Jacobi);
+    SetSolType(SOLType::SOLVER_JACOBI);
 
     // Allocate memory for temporary vectors
     try {
@@ -85,9 +85,9 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
         // Jacobi iteration starts from here
         //---------------------------------------------
 
-        ++numIter;                   // iteration count
         work.PointwiseMult(diagInv); // r = weight * r ./ d
         x += work;                   // x = x + weight * r
+        ++numIter;                   // iteration count
 
         //---------------------------------------------
         // One step of Jacobi iteration ends here

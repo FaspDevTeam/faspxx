@@ -1,7 +1,9 @@
 var searchData=
 [
-  ['norm2_0',['norm2',['../classSOL.html#a8e74012c98efc558ff96ea4819f6cc05',1,'SOL']]],
-  ['norminf_1',['normInf',['../classSOL.html#af1f116f6dd0dc05bc3cdc14c5f9feee7',1,'SOL']]],
-  ['nrow_2',['nrow',['../classLOP.html#a041656000dab81274b9c852e7413f887',1,'LOP']]],
-  ['numiter_3',['numIter',['../classSOL.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2',1,'SOL']]]
+  ['max_5fiter_5fnum_0',['MAX_ITER_NUM',['../Faspxx_8hxx.html#ae5d607decb07e1cf4d163a85166d3117',1,'Faspxx.hxx']]],
+  ['max_5fmg_5flevel_1',['MAX_MG_LEVEL',['../Faspxx_8hxx.html#a8d4c9e974aed3312341fa9f7100ab3b1',1,'Faspxx.hxx']]],
+  ['max_5fstag_5fnum_2',['MAX_STAG_NUM',['../Faspxx_8hxx.html#a934268e17aa6e0376efc3103e7686258',1,'Faspxx.hxx']]],
+  ['maxiter_3',['maxIter',['../structSOLParams.html#ab7c9313d2ab03a1decaf566996904756',1,'SOLParams']]],
+  ['mcol_4',['mcol',['../classLOP.html#a300365edbf5682562c60fdba857e769f',1,'LOP']]],
+  ['miniter_5',['minIter',['../structSOLParams.html#a52df36265b22d4dafe941c624b3f56c7',1,'SOLParams']]]
 ];

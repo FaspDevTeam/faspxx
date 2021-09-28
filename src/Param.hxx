@@ -34,23 +34,23 @@ enum Output {
 
 /// Solver types avaiable.
 enum SOLType {
-    CG       = 1,  ///< Conjugate Gradient
-    BICGSTAB = 2,  ///< Bi-Conjugate Gradient Stabilized
-    MINRES   = 3,  ///< Minimal Residual
-    GMRES    = 4,  ///< Generalized Minimal Residual
-    FGMRES   = 5,  ///< Flexible GMRES
-    VFGMRES  = 6,  ///< Variable-restarting FGMRES
-    Jacobi   = 11, ///< Jacobi method
-    GS       = 12, ///< Gauss-Seidel method
-    SGS      = 13, ///< Symmetrized Gauss-Seidel method
-    SOR      = 14, ///< Successive over-relaxation method
-    SSOR     = 15, ///< Symmetrized successive over-relaxation method
-    MG       = 21, ///< Multigrid method
-    FMG      = 22, ///< Full multigrid method
-    UMFPACK  = 91, ///< Direct method from UMFPACK
-    MUMPS    = 92, ///< Direct method from MUMPS
-    SUPERLU  = 93, ///< Direct method from SUPERLU
-    PARDISO  = 94  ///< Direct method from PARDISO
+    SOLVER_CG       = 1,  ///< Conjugate Gradient
+    SOLVER_BICGSTAB = 2,  ///< Bi-Conjugate Gradient Stabilized
+    SOLVER_MINRES   = 3,  ///< Minimal Residual
+    SOLVER_GMRES    = 4,  ///< Generalized Minimal Residual
+    SOLVER_FGMRES   = 5,  ///< Flexible GMRES
+    SOLVER_VFGMRES  = 6,  ///< Variable-restarting FGMRES
+    SOLVER_JACOBI   = 11, ///< Jacobi method
+    SOLVER_GS       = 12, ///< Gauss-Seidel method
+    SOLVER_SGS      = 13, ///< Symmetrized Gauss-Seidel method
+    SOLVER_SOR      = 14, ///< Successive over-relaxation method
+    SOLVER_SSOR     = 15, ///< Symmetrized successive over-relaxation method
+    SOLVER_MG       = 21, ///< Multigrid method
+    SOLVER_FMG      = 22, ///< Full multigrid method
+    SOLVER_UMFPACK  = 91, ///< Direct method from UMFPACK
+    SOLVER_MUMPS    = 92, ///< Direct method from MUMPS
+    SOLVER_SUPERLU  = 93, ///< Direct method from SUPERLU
+    SOLVER_PARDISO  = 94  ///< Direct method from PARDISO
 };
 
 /// Iterative solver parameters.
@@ -66,7 +66,7 @@ struct SOLParams {
     Output  verbose;  ///< Output verbosity level
 
     SOLParams()
-        : type(SOLType::CG)
+        : type(SOLType::SOLVER_CG)
         , algName("cg")
         , maxIter(1)
         , minIter(0)

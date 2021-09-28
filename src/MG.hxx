@@ -14,49 +14,65 @@
 
 // FASPXX header files
 #include "ErrorLog.hxx"
+#include "Iter.hxx"
 #include "LOP.hxx"
 #include "SOL.hxx"
 
 using std::vector;
 
+/*! \struct HL
+ *  \brief  Hierarchical information for one level.
+ */
+template <class TTT>
+struct HL {
+    TTT* restriction;  ///< restriction to a coarser level
+    TTT* prolongation; ///< prolongation from a coarser level
+
+    SOL* preSolver;    ///< pre-smoother before CGC
+    SOL* coarseSolver; ///< coarse solver for CGC
+    SOL* postSolver;   ///< post-smoother after CGC
+
+    INT fineSpaceSize; ///< fine-space dimension
+    INT coarSpaceSize; ///< coarse-space dimension
+    VEC b;             ///< right-hand side vector b at coarser level
+    VEC x;             ///< solution vector x at coarser level
+    VEC work;          ///< solution vector x at coarser level
+};
+
 /*! \class MG
  *  \brief Multigrid method in an abstract setting.
  */
+template <class TTT>
 class MG : public SOL
 {
 private:
-    unsigned numLevelsMax;     ///< max number of levels
-    unsigned numLevelsUse;     ///< number of levels in use <= max_levels
-    bool     useSymmRoperator; ///< use symmetric restriction operator
-    unsigned len;              ///< dimension of the solution vector
-
-    vector<LOP>  coeffMatrices; ///< coefficient matrices at all levels
-    vector<LOP*> prolongations; ///< pointers to prolongations at all levels
-    vector<LOP*> restrictions;  ///< pointers to restrictions at all levels
+    int              level;           ///< currecnt level number
+    unsigned         numLevelsMax;    ///< max number of levels
+    unsigned         numLevelsCoarse; ///< number of coarse levels in use <= max_levels
+    bool             useSymmOper;     ///< use symmetric operator
+    vector<unsigned> numCycles;       ///< number of cycles for each coarse level
+    VEC              work;            ///< work vector
 
 public:
-    vector<unsigned> sizes;    ///< problem sizes at all levels
-    vector<unsigned> cycles;   ///< number of cycles at all levels
-    vector<VEC>      bVectors; ///< right-hand side vectors b at all levels
-    vector<VEC>      xVectors; ///< solution vectors x at all levels
-    vector<VEC>      wVectors; ///< work vectors w at all levels
-
-    vector<SOL*> preSolvers;     ///< pointers to presmoothers at all levels
-    vector<SOL*> postSolvers;    ///< pointers to presmoothers at all levels
-    SOL*         coarsestSolver; ///< pointer to solver at coarsest level
+    vector<HL<TTT>> infoHL; ///< hierarichal info at all coarse levels
 
 private:
-    void oneCycleMultigrid(const VEC& b, VEC& x); ///< one multigrid cycle
+    void        MGCycle(const VEC& b, VEC& x); ///< one multigrid cycle
+    FaspRetCode SetupSimple(const TTT& A);     ///< simple test setup
 
 public:
     /// Default constructor.
     MG()
-        : numLevelsMax(20)
-        , numLevelsUse(1)
-        , useSymmRoperator(true){};
+        : level(-1)
+        , numLevelsMax(20)
+        , numLevelsCoarse(0)
+        , useSymmOper(true){};
 
     /// Default destructor.
     ~MG() = default;
+
+    /// Setup the MG method using coefficient matrix A.
+    FaspRetCode Setup(const TTT& A);
 
     /// Solve Ax=b using the MG method.
     FaspRetCode Solve(const VEC& b, VEC& x) override;
@@ -73,5 +89,5 @@ public:
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Chensong Zhang      Sep/12/2021      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/27/2021      Restructure file                     */
 /*----------------------------------------------------------------------------*/

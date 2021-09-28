@@ -38,7 +38,7 @@ void GMRES::SetMaxMinRestart(const int maxRestart, const int minRestart)
 FaspRetCode GMRES::Setup(const LOP& A)
 {
     // Set solver type
-    SetSolType(SOLType::GMRES);
+    SetSolType(SOLType::SOLVER_GMRES);
 
     len        = A.GetColSize();
     restart    = params.restart;

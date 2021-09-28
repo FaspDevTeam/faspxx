@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['faspbadalloc_0',['FaspBadAlloc',['../classFaspBadAlloc.html',1,'']]],
-  ['faspruntime_1',['FaspRunTime',['../classFaspRunTime.html',1,'']]],
-  ['fgmres_2',['FGMRES',['../classFGMRES.html',1,'']]]
+  ['getcyclenum_0',['GetCycleNum',['../classGetCycleNum.html',1,'']]],
+  ['getwalltime_1',['GetWallTime',['../classGetWallTime.html',1,'']]],
+  ['gmres_2',['GMRES',['../classGMRES.html',1,'']]]
 ];

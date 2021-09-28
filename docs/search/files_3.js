@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['doxygen_2ehxx_0',['Doxygen.hxx',['../Doxygen_8hxx.html',1,'']]]
+  ['errorlog_2ehxx_0',['ErrorLog.hxx',['../ErrorLog_8hxx.html',1,'']]]
 ];

@@ -11,13 +11,12 @@
 
 // FASPXX header files
 #include "CG.hxx"
-#include "Iter.hxx"
 
 /// Allocate memory, setup coefficient matrix of the linear system.
 FaspRetCode CG::Setup(const LOP& A)
 {
     // Set solver type
-    SetSolType(SOLType::CG);
+    SetSolType(SOLType::SOLVER_CG);
 
     // Allocate memory for temporary vectors
     try {

@@ -17,7 +17,7 @@
 FaspRetCode BiCGStab::Setup(const LOP& A)
 {
     // Set solver type
-    SetSolType(SOLType::BICGSTAB);
+    SetSolType(SOLType::SOLVER_BICGSTAB);
 
     // Allocate memory for temporary vectors
     try {

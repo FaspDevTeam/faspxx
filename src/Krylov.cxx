@@ -20,16 +20,16 @@ FaspRetCode Krylov(LOP& A, VEC& b, VEC& x, SOL& pcd, SOLParams& params)
     auto sol = &solver;
 
     switch (params.type) {
-        case SOLType::CG:
+        case SOLType::SOLVER_CG:
             sol = new class CG();
             break;
-        case SOLType::BICGSTAB:
+        case SOLType::SOLVER_BICGSTAB:
             sol = new class BiCGStab();
             break;
-        case SOLType::GMRES:
+        case SOLType::SOLVER_GMRES:
             sol = new class GMRES();
             break;
-        case SOLType::FGMRES:
+        case SOLType::SOLVER_FGMRES:
             sol = new class FGMRES();
             break;
         default:

@@ -5,6 +5,5 @@ var searchData=
   ['vec_2ehxx_2',['VEC.hxx',['../VEC_8hxx.html',1,'']]],
   ['vecutil_2ecxx_3',['VECUtil.cxx',['../VECUtil_8cxx.html',1,'']]],
   ['vecutil_2ehxx_4',['VECUtil.hxx',['../VECUtil_8hxx.html',1,'']]],
-  ['verbose_5',['verbose',['../structSOLParams.html#a7546f71bcb93fc16f19cfd588908c46b',1,'SOLParams']]],
-  ['vfgmres_6',['VFGMRES',['../Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a8a430c0cf9fe40434d8afde3e34ebb9c',1,'Param.hxx']]]
+  ['verbose_5',['verbose',['../structSOLParams.html#a7546f71bcb93fc16f19cfd588908c46b',1,'SOLParams']]]
 ];

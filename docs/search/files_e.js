@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['timing_2ecxx_0',['Timing.cxx',['../Timing_8cxx.html',1,'']]],
-  ['timing_2ehxx_1',['Timing.hxx',['../Timing_8hxx.html',1,'']]]
+  ['umfpack_2ecxx_0',['Umfpack.cxx',['../Umfpack_8cxx.html',1,'']]],
+  ['umfpack_2ehxx_1',['Umfpack.hxx',['../Umfpack_8hxx.html',1,'']]]
 ];

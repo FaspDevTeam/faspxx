@@ -14,6 +14,7 @@
 
 // FASPXX header files
 #include "ErrorLog.hxx"
+#include "Iter.hxx"
 #include "LOP.hxx"
 #include "SOL.hxx"
 

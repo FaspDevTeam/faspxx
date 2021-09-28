@@ -11,68 +11,107 @@
 
 // FASPXX header files
 #include "MG.hxx"
-#include "Iter.hxx"
-#include "LOP.hxx"
 
 using std::vector;
 
-void MG::oneCycleMultigrid(const VEC& b, VEC& x)
+/// Setup the one-level "MG" method using linear operator A
+template <class TTT>
+FaspRetCode MG<TTT>::SetupSimple(const TTT& A)
 {
-    // local variables
-    unsigned l                      = 0; // level index
-    unsigned numCycle[numLevelsUse] = {0};
+    const INT probSize = A.GetColSize();
+    numLevelsCoarse    = 1;    // only one coarse level used
+    useSymmOper        = true; // symmetric restriction based on prolongation
 
-    // initialize linear system information
-    bVectors[0] = b;
-    xVectors[0] = x;
+    // Step 0. Allocate memory for temporary vectors
+    try {
+        infoHL.resize(numLevelsCoarse);
+        // defaultTrans.resize(numLevelsCoarse);
+        // defaultSolvers.resize(numLevelsCoarse);
+        // defaultCoarseSolvers.resize(numLevelsCoarse);
+    } catch (std::bad_alloc& ex) {
+        return FaspRetCode::ERROR_ALLOC_MEM;
+    }
 
-ForwardSweep:
-    while (l < numLevelsUse - 1) {
-        numCycle[l]++;
+    // Step 1. Set problems and temp space for all levels
+    work.SetValues(probSize, 0.0);
+    infoHL[0].fineSpaceSize = infoHL[0].coarSpaceSize = probSize;
+    infoHL[0].b.SetValues(infoHL[0].coarSpaceSize, 0.0);
+    infoHL[0].x.SetValues(infoHL[0].coarSpaceSize, 0.0);
+    infoHL[0].work.SetValues(infoHL[0].coarSpaceSize, 0.0);
 
-        // apply pre-smoothing solver
-        preSolvers[l]->Solve(bVectors[l], xVectors[l]);
+    // Step 2. Set transfer operators and problems for all levels
+    // infoHL[0].prolongation = &defaultTrans[0]; // set prolongation as identity
+    // infoHL[0].restriction  = &defaultTrans[0]; // set restriction as identity
 
+    // Setp 3. Set solvers for all levels
+    // defaultSolvers[0].Setup(A);
+    // infoHL[0].preSolver  = &defaultSolvers[0]; // presmoother
+    // infoHL[0].postSolver = &defaultSolvers[0]; // postsmoother
+    // defaultCoarseSolvers[0].Setup(A);
+    // infoHL[0].coarseSolver = &defaultCoarseSolvers[0]; // solver at coarsest level
+
+    return FaspRetCode::SUCCESS;
+}
+
+/// Allocate memory, setup multigrid hierarical structure of the linear system.
+template <class TTT>
+FaspRetCode MG<TTT>::Setup(const TTT& A)
+{
+    // Set solver type
+    SetSolType(SOLType::SOLVER_MG);
+
+    // Allocate memory for temporary vectors
+    try {
+        SetupSimple(A); // TODO: Need to be replaced!
+    } catch (std::bad_alloc& ex) {
+        return FaspRetCode::ERROR_AMG_SETUP;
+    }
+
+    // Setup the coefficient matrix
+    this->A = &A;
+
+    // Print used parameters
+    if (params.verbose > PRINT_MIN) PrintParam(std::cout);
+
+    return FaspRetCode::SUCCESS;
+}
+
+template <class TTT>
+void MG<TTT>::MGCycle(const VEC& b, VEC& x)
+{
+    ++level;
+
+    // apply pre-smoothing solver
+    infoHL[level].preSolver->Solve(b, x);
+
+    // skip coarse levels if there is only one level
+    if (numLevelsCoarse > 0) {
         // form residual r = b - A x
-        A->Apply(xVectors[l], wVectors[l]);  // SpMV, main computational work
-        bVectors[l].AXPY(-1.0, wVectors[l]); // b = b - A*x
+        A->Residual(b, x, work);
 
         // restrict residual to coarser level r1 = R*r0
-        restrictions[l]->Apply(bVectors[l], bVectors[l + 1]);
+        infoHL[level].restriction->Apply(work, infoHL[level].b);
 
-        // prepare for next coarser level
-        ++l;
-        xVectors[l].SetValues(sizes[l], 0.0);
+        // set coarse initial guess to zero
+        infoHL[level].x.SetValues(infoHL[level].coarSpaceSize, 0.0);
+
+        // call the coarse space solver
+        infoHL[level].coarseSolver->Solve(infoHL[level].b, infoHL[level].x);
+
+        // prolongate the coarse correction back x = x + P*e1
+        infoHL[level].prolongation->Apply(infoHL[level].x, work);
+        x.AXPY(1.0, work);
     }
 
-    // Call the coarsest space solver
-    coarsestSolver->Solve(bVectors[numLevelsUse - 1], xVectors[numLevelsUse - 1]);
+    // apply post-smoothing solver
+    infoHL[level].postSolver->Solve(b, x);
 
-    ////BackwardSweep:
-    while (l > 0) {
-        --l;
-
-        // prolongate to the next finer level x = x + P*e1
-        prolongations[l]->Apply(xVectors[l + 1], wVectors[l]);
-        xVectors[l].AXPY(1.0, wVectors[l]);
-
-        // apply post-smoothing solver
-        postSolvers[l]->Solve(bVectors[l], xVectors[l]);
-
-        // General cycling on each level
-        if (numCycle[l] < cycles[l])
-            break;
-        else
-            numCycle[l] = 0;
-    }
-
-    if (l > 0) goto ForwardSweep;
-
-    x = xVectors[0];
+    --level;
 }
 
 /// Using the multigrid method. Don't check problem sizes.
-FaspRetCode MG::Solve(const VEC& b, VEC& x)
+template <class TTT>
+FaspRetCode MG<TTT>::Solve(const VEC& b, VEC& x)
 {
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
@@ -84,14 +123,15 @@ FaspRetCode MG::Solve(const VEC& b, VEC& x)
     // Initialize iterative method
     numIter = 0;
 
-    // Main Jacobi loop
+    // Main MG loop
     while (numIter < params.maxIter) {
+
         // Update residual r = b - A*x
-        A->Residual(b, x, wVectors[0]);
+        A->Residual(b, x, work);
 
         // Compute norm of residual and check whether it converges
         if (numIter >= params.minIter) {
-            resAbs = wVectors[0].Norm2();
+            resAbs = work.Norm2();
             if (numIter == params.minIter)
                 denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
@@ -106,8 +146,8 @@ FaspRetCode MG::Solve(const VEC& b, VEC& x)
         // Multigrid iteration starts from here
         //---------------------------------------------
 
-        oneCycleMultigrid(b, x); // MG cycle
-        ++numIter;               // iteration count
+        MGCycle(b, x); // MG cycle
+        ++numIter;     // iteration count
 
         //---------------------------------------------
         // One step of Multigrid iteration ends here
@@ -116,13 +156,11 @@ FaspRetCode MG::Solve(const VEC& b, VEC& x)
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
     if (not(numIter == params.minIter && numIter == params.maxIter)) {
-        // Update residual r = b - A*x
-        A->Residual(b, x, wVectors[0]);
-        resAbs        = wVectors[0].Norm2();
-        resRel        = resAbs / denAbs;
-        ratio         = resAbs / resAbsOld;
-        this->norm2   = resAbs;
-        this->normInf = wVectors[0].NormInf();
+        A->Residual(b, x, work); // Update final residual
+        this->norm2 = resAbs = work.Norm2();
+        this->normInf        = work.NormInf();
+        resRel               = resAbs / denAbs;
+        ratio                = resAbs / resAbsOld;
         PrintFinal(numIter, resRel, resAbs, ratio);
     }
 
@@ -130,14 +168,14 @@ FaspRetCode MG::Solve(const VEC& b, VEC& x)
 }
 
 /// Clean up temp memory allocated for MG.
-void MG::Clean()
+template <class TTT>
+void MG<TTT>::Clean()
 {
-    for (unsigned i = 0; i < numLevelsUse; ++i) {
-        bVectors[i].SetValues(len, 0.0);
-        xVectors[i].SetValues(len, 0.0);
-        wVectors[i].SetValues(len, 0.0);
-    }
+    // TODO: do something here
 }
+
+template class MG<LOP>;
+template class MG<MAT>;
 
 /*----------------------------------------------------------------------------*/
 /*  Brief Change History of This File                                         */
@@ -145,5 +183,5 @@ void MG::Clean()
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Chensong Zhang      Sep/12/2021      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/27/2021      Restructure file                     */
 /*----------------------------------------------------------------------------*/

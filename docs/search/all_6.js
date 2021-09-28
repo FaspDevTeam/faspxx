@@ -9,10 +9,10 @@ var searchData=
   ['faspxx_5flocation_6',['FASPXX_LOCATION',['../ErrorLog_8hxx.html#a22ae052de1b70cb3383c5d6f2a1d5855',1,'ErrorLog.hxx']]],
   ['faspxx_5fmassage_7',['FASPXX_MASSAGE',['../ErrorLog_8hxx.html#aaac53e922c42f1baac0eb8be01b2d04d',1,'ErrorLog.hxx']]],
   ['faspxx_5fwarning_8',['FASPXX_WARNING',['../ErrorLog_8hxx.html#a020ddf6943d94778b6ebeff22d0f0cac',1,'ErrorLog.hxx']]],
-  ['fgmres_9',['FGMRES',['../classFGMRES.html',1,'FGMRES'],['../classFGMRES.html#ac2db7467bb4ced0fd40d97e4cd1df53d',1,'FGMRES::FGMRES()'],['../Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a299bb791a6ea0692682aaa703242e646',1,'FGMRES():&#160;Param.hxx']]],
+  ['fgmres_9',['FGMRES',['../classFGMRES.html',1,'FGMRES'],['../classFGMRES.html#ac2db7467bb4ced0fd40d97e4cd1df53d',1,'FGMRES::FGMRES()']]],
   ['fgmres_2ecxx_10',['FGMRES.cxx',['../FGMRES_8cxx.html',1,'']]],
   ['fgmres_2ehxx_11',['FGMRES.hxx',['../FGMRES_8hxx.html',1,'']]],
   ['file_5fcsr_12',['FILE_CSR',['../ReadData_8hxx.html#a594144869e614133f8c1645ace0b05d8',1,'ReadData.hxx']]],
   ['file_5fmtx_13',['FILE_MTX',['../ReadData_8hxx.html#ab190505c17ea7c8e42449544c6f593ac',1,'ReadData.hxx']]],
-  ['fmg_14',['FMG',['../Param_8hxx.html#a211350976404ebcc6715299193cc2ea7a87286fe00e444e790e15c8aeb4f26e6e',1,'Param.hxx']]]
+  ['finespacesize_14',['fineSpaceSize',['../structHL.html#a1f77c5147258d4fb2cc1aa96f838a2f7',1,'HL']]]
 ];

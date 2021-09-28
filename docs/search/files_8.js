@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['krylov_2ecxx_0',['Krylov.cxx',['../Krylov_8cxx.html',1,'']]],
-  ['krylov_2ehxx_1',['Krylov.hxx',['../Krylov_8hxx.html',1,'']]]
+  ['lop_2ecxx_0',['LOP.cxx',['../LOP_8cxx.html',1,'']]],
+  ['lop_2ehxx_1',['LOP.hxx',['../LOP_8hxx.html',1,'']]]
 ];

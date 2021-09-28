@@ -15,58 +15,38 @@
 /// Setup the one-level "MG" method using linear operator A
 FaspRetCode AMG::SetupOneLevel(const MAT& A)
 {
-    len              = A.GetColSize(); // size of the solution vector
-    numLevelsUse     = 1;              // only one level
-    useSymmRoperator = true;           // symmetric restriction based on prolongation
+    const INT probSize = A.GetColSize();
+    numLevelsCoarse = 1;    // only one coarse level used
+    useSymmOper     = true; // symmetric restriction based on prolongation
 
     // Step 0. Allocate memory for temporary vectors
     try {
-        sizes.resize(numLevelsUse);
-        cycles.resize(numLevelsUse);
-        preSolvers.resize(numLevelsUse);
-        postSolvers.resize(numLevelsUse);
-        coeffMatrices.resize(numLevelsUse);
-        bVectors.resize(numLevelsUse);
-        xVectors.resize(numLevelsUse);
-        wVectors.resize(numLevelsUse);
-
-        prolongations.resize(numLevelsUse - 1);
-        restrictions.resize(numLevelsUse - 1);
-        defaultSolvers.resize(numLevelsUse - 1);
-        defaultTrans.resize(numLevelsUse - 1);
+        infoHL.resize(numLevelsCoarse);
+        defaultTrans.resize(numLevelsCoarse);
+        defaultSolvers.resize(numLevelsCoarse);
+        defaultCoarseSolvers.resize(numLevelsCoarse);
     } catch (std::bad_alloc& ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
 
     // Step 1. Set problems and temp space for all levels
-    sizes[0] = len;
-    for (unsigned i = 0; i < numLevelsUse; ++i) {
-        bVectors[i].SetValues(sizes[i], 0.0);
-        xVectors[i].SetValues(sizes[i], 0.0);
-        wVectors[i].SetValues(sizes[i], 0.0);
-    }
+    work.SetValues(probSize, 0.0);
+    infoHL[0].fineSpaceSize = infoHL[0].coarSpaceSize = probSize;
+    infoHL[0].b.SetValues(infoHL[0].coarSpaceSize, 0.0);
+    infoHL[0].x.SetValues(infoHL[0].coarSpaceSize, 0.0);
+    infoHL[0].work.SetValues(infoHL[0].coarSpaceSize, 0.0);
 
     // Step 2. Set transfer operators and problems for all levels
-    coeffMatrices[0] = A;
-    for (unsigned i = 0; i < numLevelsUse - 1; ++i) {
-        prolongations[i] = &defaultTrans[i]; // set prolongation as identity
-        restrictions[i]  = &defaultTrans[i]; // set restriction as identity
-        // coeffMatrices[i + 1] = ;        // TODO: form coarse level matrices
-    }
-
-    defaultCoarsestSolver.Setup(coeffMatrices[numLevelsUse - 1]);
-    coarsestSolver = &defaultCoarsestSolver; // solver at coarsest level
+    infoHL[0].prolongation = &defaultTrans[0]; // set prolongation as identity
+    infoHL[0].restriction  = &defaultTrans[0]; // set restriction as identity
 
     // Setp 3. Set solvers for all levels
     if (useDefaultSolver) {
-        for (unsigned i = 0; i < numLevelsUse - 1; ++i) {
-            defaultSolvers[i].Setup(coeffMatrices[i]);
-            preSolvers[i]  = &defaultSolvers[i]; // presmoother
-            postSolvers[i] = &defaultSolvers[i]; // postsmoother
-        }
-
-        defaultCoarsestSolver.Setup(coeffMatrices[numLevelsUse - 1]);
-        coarsestSolver = &defaultCoarsestSolver; // solver at coarsest level
+        defaultSolvers[0].Setup(A);
+        infoHL[0].preSolver  = &defaultSolvers[0]; // presmoother
+        infoHL[0].postSolver = &defaultSolvers[0]; // postsmoother
+        defaultCoarseSolvers[0].Setup(A);
+        infoHL[0].coarseSolver = &defaultCoarseSolvers[0]; // solver at coarsest level
     } else {
         FASPXX_ABORT("User-defined smoothers not implemented yet!");
     }
@@ -97,14 +77,7 @@ FaspRetCode AMG::Setup(const MAT& A)
 }
 
 /// Clean up temp memory allocated for MG.
-void AMG::Clean()
-{
-    for (unsigned i = 0; i < numLevelsUse; ++i) {
-        bVectors[i].SetValues(len, 0.0);
-        xVectors[i].SetValues(len, 0.0);
-        wVectors[i].SetValues(len, 0.0);
-    }
-}
+void AMG::Clean() {}
 
 /*----------------------------------------------------------------------------*/
 /*  Brief Change History of This File                                         */

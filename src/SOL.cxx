@@ -128,33 +128,33 @@ void SOL::SetSolTypeFromName(SOLParams& params)
 {
     for (char& c : params.algName) c = std::tolower(c); // Change to lowercase
     if (params.algName == "cg")
-        params.type = SOLType::CG;
+        params.type = SOLType::SOLVER_CG;
     else if (params.algName == "bicgstab")
-        params.type = SOLType::BICGSTAB;
+        params.type = SOLType::SOLVER_BICGSTAB;
     else if (params.algName == "minres")
-        params.type = SOLType::MINRES;
+        params.type = SOLType::SOLVER_MINRES;
     else if (params.algName == "gmres")
-        params.type = SOLType::GMRES;
+        params.type = SOLType::SOLVER_GMRES;
     else if (params.algName == "fgmres")
-        params.type = SOLType::FGMRES;
+        params.type = SOLType::SOLVER_FGMRES;
     else if (params.algName == "vfgmres")
-        params.type = SOLType::VFGMRES;
+        params.type = SOLType::SOLVER_VFGMRES;
     else if (params.algName == "jacobi")
-        params.type = SOLType::Jacobi;
+        params.type = SOLType::SOLVER_JACOBI;
     else if (params.algName == "gs")
-        params.type = SOLType::GS;
+        params.type = SOLType::SOLVER_GS;
     else if (params.algName == "sgs")
-        params.type = SOLType::SGS;
+        params.type = SOLType::SOLVER_SGS;
     else if (params.algName == "sor")
-        params.type = SOLType::SOR;
+        params.type = SOLType::SOLVER_SOR;
     else if (params.algName == "ssor")
-        params.type = SOLType::SSOR;
+        params.type = SOLType::SOLVER_SSOR;
     else if (params.algName == "mg")
-        params.type = SOLType::MG;
+        params.type = SOLType::SOLVER_MG;
     else if (params.algName == "fmg")
-        params.type = SOLType::FMG;
+        params.type = SOLType::SOLVER_FMG;
     else {
-        params.type = SOLType::CG; // default solver type
+        params.type = SOLType::SOLVER_CG; // default solver type
         if (params.verbose > PRINT_NONE)
             FASPXX_WARNING("Unknown solver type. Using default solver!");
     }
@@ -164,31 +164,31 @@ void SOL::SetSolTypeFromName(SOLParams& params)
 const char* SOL::GetSolType(SOLType type) const
 {
     switch (type) {
-        case CG:
+        case SOLVER_CG:
             return "CG";
-        case BICGSTAB:
+        case SOLVER_BICGSTAB:
             return "BiCGStab";
-        case MINRES:
+        case SOLVER_MINRES:
             return "MinRes";
-        case GMRES:
+        case SOLVER_GMRES:
             return "GMRES";
-        case FGMRES:
+        case SOLVER_FGMRES:
             return "FGMRES";
-        case VFGMRES:
+        case SOLVER_VFGMRES:
             return "VFGMRES";
-        case Jacobi:
-            return "Jacobi";
-        case GS:
+        case SOLVER_JACOBI:
+            return "JACOBI";
+        case SOLVER_GS:
             return "GS";
-        case SGS:
+        case SOLVER_SGS:
             return "SGS";
-        case SOR:
+        case SOLVER_SOR:
             return "SOR";
-        case SSOR:
+        case SOLVER_SSOR:
             return "SSOR";
-        case MG:
+        case SOLVER_MG:
             return "MG";
-        case FMG:
+        case SOLVER_FMG:
             return "FMG";
         default:
             FASPXX_ABORT("Unknown solver type!");

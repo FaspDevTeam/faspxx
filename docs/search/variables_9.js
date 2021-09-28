@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['params_0',['params',['../classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917',1,'SOL']]],
-  ['pcd_1',['pcd',['../classSOL.html#a81ff7cd858cdf6ec719cc75944655ec8',1,'SOL']]],
-  ['postsolvers_2',['postSolvers',['../classMG.html#abbd32d7c8ab9531195d074cf053f6968',1,'MG']]],
-  ['presolvers_3',['preSolvers',['../classMG.html#aa621e51b72a0a51114d262f89b7714d3',1,'MG']]],
-  ['prt_5fstep_5fnum_4',['PRT_STEP_NUM',['../Faspxx_8hxx.html#aa8065a70c9dd634229844b07dbccd6d7',1,'Faspxx.hxx']]]
+  ['norm2_0',['norm2',['../classSOL.html#a8e74012c98efc558ff96ea4819f6cc05',1,'SOL']]],
+  ['norminf_1',['normInf',['../classSOL.html#af1f116f6dd0dc05bc3cdc14c5f9feee7',1,'SOL']]],
+  ['nrow_2',['nrow',['../classLOP.html#a041656000dab81274b9c852e7413f887',1,'LOP']]],
+  ['numiter_3',['numIter',['../classSOL.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2',1,'SOL']]]
 ];
