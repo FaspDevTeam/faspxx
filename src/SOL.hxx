@@ -48,8 +48,7 @@ public:
         , pcd(nullptr)
         , norm2(LARGE)
         , normInf(LARGE)
-        , numIter(0)
-        , params(){};
+        , numIter(0){};
 
     /// Default destructor.
     ~SOL();

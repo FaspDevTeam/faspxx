@@ -1,7 +1,7 @@
 var searchData=
 [
   ['identity_0',['Identity',['../classIdentity.html',1,'Identity'],['../classIdentity.html#a0953e88dc5c3a2217175722d9ba9c0ef',1,'Identity::Identity()']]],
-  ['identitymatrix_1',['IdentityMatrix',['../classIdentityMatrix.html',1,'IdentityMatrix'],['../classIdentityMatrix.html#ab4c496dec7c9b7337ce520f7e22a714e',1,'IdentityMatrix::IdentityMatrix()']]],
+  ['identitymatrix_1',['IdentityMatrix',['../classIdentityMatrix.html',1,'IdentityMatrix'],['../classIdentityMatrix.html#ab4c496dec7c9b7337ce520f7e22a714e',1,'IdentityMatrix::IdentityMatrix()=default'],['../classIdentityMatrix.html#af3fb1cd147423b36b692cea6bee7a4d2',1,'IdentityMatrix::IdentityMatrix(INT size)']]],
   ['identityop_2',['IdentityOp',['../classIdentityOp.html',1,'IdentityOp'],['../classIdentityOp.html#a4ea575a2e1df729d00870662c51d0256',1,'IdentityOp::IdentityOp()']]],
   ['index_3',['INDEX',['../Faspxx_8hxx.html#a0b9c1fdae3c74d6080ffc1b22a9a827d',1,'Faspxx.hxx']]],
   ['infohl_4',['infoHL',['../classMG.html#a99c2d077402db560c6ce0dc65be9c0ea',1,'MG']]],

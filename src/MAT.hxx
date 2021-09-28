@@ -217,15 +217,17 @@ private:
  */
 class IdentityMatrix : public MAT
 {
-
 public:
-    /// Default constructor
+    /// Default constructor, all size.
     IdentityMatrix() = default;
 
-    /// Default destructor
+    /// Constructor with fixed problem size.
+    IdentityMatrix(INT size);
+
+    /// Default destructor.
     ~IdentityMatrix() = default;
 
-    /// Iterator
+    /// Iterator for identity.
     void Apply(const VEC& b, VEC& x) const override;
 };
 

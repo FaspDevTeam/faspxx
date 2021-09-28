@@ -21,7 +21,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.7 Sep/26/2021</span>
+   <div id="projectname">FASP++<span id="projectnumber">&#160;0.1.8 Sep/29/2021</span>
    </div>
    <div id="projectbrief">FASP Solver Project in C++</div>
   </td>
@@ -240,14 +240,12 @@ Protected Attributes</h2></td></tr>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        , <a class="code hl_variable" href="classSOL.html#a81ff7cd858cdf6ec719cc75944655ec8">pcd</a>(<span class="keyword">nullptr</span>)</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        , <a class="code hl_variable" href="classSOL.html#a8e74012c98efc558ff96ea4819f6cc05">norm2</a>(<a class="code hl_variable" href="Faspxx_8hxx.html#a3eb000fc129c8d09e47d3289fb424b83">LARGE</a>)</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        , <a class="code hl_variable" href="classSOL.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">normInf</a>(<a class="code hl_variable" href="Faspxx_8hxx.html#a3eb000fc129c8d09e47d3289fb424b83">LARGE</a>)</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        , <a class="code hl_variable" href="classSOL.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a>(0)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        , <a class="code hl_variable" href="classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917">params</a>(){};</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        , <a class="code hl_variable" href="classSOL.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">numIter</a>(0){};</div>
 <div class="ttc" id="aFaspxx_8hxx_html_a3eb000fc129c8d09e47d3289fb424b83"><div class="ttname"><a href="Faspxx_8hxx.html#a3eb000fc129c8d09e47d3289fb424b83">LARGE</a></div><div class="ttdeci">const DBL LARGE</div><div class="ttdoc">Largest double number.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00028">Faspxx.hxx:28</a></div></div>
 <div class="ttc" id="aclassSOL_html_a02d87f5a8e29f07e1de03ff7ea3cbfc2"><div class="ttname"><a href="classSOL.html#a02d87f5a8e29f07e1de03ff7ea3cbfc2">SOL::numIter</a></div><div class="ttdeci">int numIter</div><div class="ttdoc">Number of iterations when exit.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8hxx_source.html#l00032">SOL.hxx:32</a></div></div>
 <div class="ttc" id="aclassSOL_html_a627b490fa36929f82adba0e525fee10d"><div class="ttname"><a href="classSOL.html#a627b490fa36929f82adba0e525fee10d">SOL::A</a></div><div class="ttdeci">const LOP * A</div><div class="ttdoc">Coefficient matrix in Ax=b.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8hxx_source.html#l00028">SOL.hxx:28</a></div></div>
 <div class="ttc" id="aclassSOL_html_a81ff7cd858cdf6ec719cc75944655ec8"><div class="ttname"><a href="classSOL.html#a81ff7cd858cdf6ec719cc75944655ec8">SOL::pcd</a></div><div class="ttdeci">SOL * pcd</div><div class="ttdoc">Preconditioner for this solver.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8hxx_source.html#l00029">SOL.hxx:29</a></div></div>
 <div class="ttc" id="aclassSOL_html_a8e74012c98efc558ff96ea4819f6cc05"><div class="ttname"><a href="classSOL.html#a8e74012c98efc558ff96ea4819f6cc05">SOL::norm2</a></div><div class="ttdeci">double norm2</div><div class="ttdoc">Euclidean norm.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8hxx_source.html#l00030">SOL.hxx:30</a></div></div>
-<div class="ttc" id="aclassSOL_html_a9bc2a6d1e11250089c09235bfe6ae917"><div class="ttname"><a href="classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917">SOL::params</a></div><div class="ttdeci">SOLParams params</div><div class="ttdoc">Solver parameters.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8hxx_source.html#l00033">SOL.hxx:33</a></div></div>
 <div class="ttc" id="aclassSOL_html_af1f116f6dd0dc05bc3cdc14c5f9feee7"><div class="ttname"><a href="classSOL.html#af1f116f6dd0dc05bc3cdc14c5f9feee7">SOL::normInf</a></div><div class="ttdeci">double normInf</div><div class="ttdoc">Infinity norm.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8hxx_source.html#l00031">SOL.hxx:31</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -304,8 +302,8 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classBiCGStab.html#a1cc8f95cb2ade1e7fd8a5f7f0c80be4a">BiCGStab</a>, <a class="el" href="classCG.html#add4f5b21c724420c440968d9310d9753">CG</a>, <a class="el" href="classFGMRES.html#aeccac74540f67dff25e457c98d429f34">FGMRES</a>, <a class="el" href="classGMRES.html#a8f519769068e94ea4a81ae62a92b77ff">GMRES</a>, <a class="el" href="classJacobi.html#adbdab01efa45f2ed3aafb5958a6d6b20">Jacobi</a>, <a class="el" href="classMG.html#adf3492b5fa6bc62389046f815fe01bde">MG&lt; TTT &gt;</a>, and <a class="el" href="classUMFPACK.html#a4acf6d7223824f1b67a70bb8099dfc89">UMFPACK</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="SOL_8hxx_source.html#l00126">126</a> of file <a class="el" href="SOL_8hxx_source.html">SOL.hxx</a>.</p>
-<div class="fragment"><div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>{ <a class="code hl_define" href="ErrorLog_8hxx.html#a26fd9b7e178b7f248135b983a7795ae4">FASPXX_ABORT</a>(<span class="stringliteral">&quot;Should be over-written!&quot;</span>); }</div>
+<p class="definition">Definition at line <a class="el" href="SOL_8hxx_source.html#l00125">125</a> of file <a class="el" href="SOL_8hxx_source.html">SOL.hxx</a>.</p>
+<div class="fragment"><div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>{ <a class="code hl_define" href="ErrorLog_8hxx.html#a26fd9b7e178b7f248135b983a7795ae4">FASPXX_ABORT</a>(<span class="stringliteral">&quot;Should be over-written!&quot;</span>); }</div>
 <div class="ttc" id="aErrorLog_8hxx_html_a26fd9b7e178b7f248135b983a7795ae4"><div class="ttname"><a href="ErrorLog_8hxx.html#a26fd9b7e178b7f248135b983a7795ae4">FASPXX_ABORT</a></div><div class="ttdeci">#define FASPXX_ABORT(msg)</div><div class="ttdoc">Abort if critical error happens.</div><div class="ttdef"><b>Definition:</b> <a href="ErrorLog_8hxx_source.html#l00047">ErrorLog.hxx:47</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="ErrorLog_8hxx_source.html#l00047">FASPXX_ABORT</a>.</p>
@@ -533,6 +531,7 @@ Protected Attributes</h2></td></tr>
 <div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    }</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>}</div>
 <div class="ttc" id="aclassSOL_html_a402a9c7642afdf679e6b0e1eba245c83"><div class="ttname"><a href="classSOL.html#a402a9c7642afdf679e6b0e1eba245c83">SOL::GetSolType</a></div><div class="ttdeci">const char * GetSolType(SOLType type) const</div><div class="ttdoc">Get solver type.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8cxx_source.html#l00164">SOL.cxx:164</a></div></div>
+<div class="ttc" id="aclassSOL_html_a9bc2a6d1e11250089c09235bfe6ae917"><div class="ttname"><a href="classSOL.html#a9bc2a6d1e11250089c09235bfe6ae917">SOL::params</a></div><div class="ttdeci">SOLParams params</div><div class="ttdoc">Solver parameters.</div><div class="ttdef"><b>Definition:</b> <a href="SOL_8hxx_source.html#l00033">SOL.hxx:33</a></div></div>
 <div class="ttc" id="astructSOLParams_html_a52df36265b22d4dafe941c624b3f56c7"><div class="ttname"><a href="structSOLParams.html#a52df36265b22d4dafe941c624b3f56c7">SOLParams::minIter</a></div><div class="ttdeci">int minIter</div><div class="ttdoc">Minimal number of iterations.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00061">Param.hxx:61</a></div></div>
 <div class="ttc" id="astructSOLParams_html_a6669dbb8b999387f627457762944670a"><div class="ttname"><a href="structSOLParams.html#a6669dbb8b999387f627457762944670a">SOLParams::type</a></div><div class="ttdeci">SOLType type</div><div class="ttdoc">Algorithm type.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00058">Param.hxx:58</a></div></div>
 <div class="ttc" id="astructSOLParams_html_a7546f71bcb93fc16f19cfd588908c46b"><div class="ttname"><a href="structSOLParams.html#a7546f71bcb93fc16f19cfd588908c46b">SOLParams::verbose</a></div><div class="ttdeci">Output verbose</div><div class="ttdoc">Output verbosity level.</div><div class="ttdef"><b>Definition:</b> <a href="Param_8hxx_source.html#l00066">Param.hxx:66</a></div></div>
@@ -1049,8 +1048,8 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classBiCGStab.html#ad37c0c34b8fa03d2dda4ecd0771f9e55">BiCGStab</a>, <a class="el" href="classCG.html#a7abfcdd42272497dfc1f64c81c0babdf">CG</a>, <a class="el" href="classFGMRES.html#a6a9a9f6ae02fcc1bfe32e0f0d7b61a31">FGMRES</a>, and <a class="el" href="classGMRES.html#a0f2f62bdd024f5c679b86ed831e041bf">GMRES</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="SOL_8hxx_source.html#l00117">117</a> of file <a class="el" href="SOL_8hxx_source.html">SOL.hxx</a>.</p>
-<div class="fragment"><div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>{ <a class="code hl_define" href="ErrorLog_8hxx.html#a26fd9b7e178b7f248135b983a7795ae4">FASPXX_ABORT</a>(<span class="stringliteral">&quot;Should be over-written!&quot;</span>); }</div>
+<p class="definition">Definition at line <a class="el" href="SOL_8hxx_source.html#l00116">116</a> of file <a class="el" href="SOL_8hxx_source.html">SOL.hxx</a>.</p>
+<div class="fragment"><div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>{ <a class="code hl_define" href="ErrorLog_8hxx.html#a26fd9b7e178b7f248135b983a7795ae4">FASPXX_ABORT</a>(<span class="stringliteral">&quot;Should be over-written!&quot;</span>); }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="ErrorLog_8hxx_source.html#l00047">FASPXX_ABORT</a>.</p>
 
@@ -1128,10 +1127,10 @@ Protected Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classBiCGStab.html#ae2c4508da0db1445d9db1a7be55272b6">BiCGStab</a>, <a class="el" href="classCG.html#ab56ba23f5a5b0b14e77e474ca85377e9">CG</a>, <a class="el" href="classFGMRES.html#a18e1a89f1f785860de073b898be572ad">FGMRES</a>, <a class="el" href="classGMRES.html#ae16c84be611383f4228046d9582d46ee">GMRES</a>, <a class="el" href="classIdentity.html#ae2021590d7a25108be9ea9974e2c0c59">Identity</a>, <a class="el" href="classJacobi.html#a0ca219cb4925298e81be46bdbf9b2306">Jacobi</a>, <a class="el" href="classMG.html#a61dfa20597982af0ca78ce9fdf579f6a">MG&lt; TTT &gt;</a>, and <a class="el" href="classUMFPACK.html#a142dbe5b841179a1a1dbf7df565206cc">UMFPACK</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="SOL_8hxx_source.html#l00120">120</a> of file <a class="el" href="SOL_8hxx_source.html">SOL.hxx</a>.</p>
-<div class="fragment"><div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    {</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <a class="code hl_define" href="ErrorLog_8hxx.html#a26fd9b7e178b7f248135b983a7795ae4">FASPXX_ABORT</a>(<span class="stringliteral">&quot;Should be over-written!&quot;</span>);</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="SOL_8hxx_source.html#l00119">119</a> of file <a class="el" href="SOL_8hxx_source.html">SOL.hxx</a>.</p>
+<div class="fragment"><div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <a class="code hl_define" href="ErrorLog_8hxx.html#a26fd9b7e178b7f248135b983a7795ae4">FASPXX_ABORT</a>(<span class="stringliteral">&quot;Should be over-written!&quot;</span>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    }</div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="ErrorLog_8hxx_source.html#l00047">FASPXX_ABORT</a>.</p>
 

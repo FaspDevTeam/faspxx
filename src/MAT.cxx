@@ -1082,6 +1082,13 @@ void MAT::LUPSolveInverse(const std::vector<DBL> A, INT N,
     Rtranspose(inv_A, N, N);
 }
 
+/// Constructor with fixed problem size.
+IdentityMatrix::IdentityMatrix(INT size)
+{
+    this->mcol = size;
+    this->nrow = size;
+}
+
 /// Identity matrix.
 void IdentityMatrix::Apply(const VEC& b, VEC& x) const { x = b; }
 

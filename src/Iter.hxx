@@ -53,6 +53,9 @@ public:
         , diagInv(1.0)
         , work(0.0){};
 
+    /// Default constructor with specified weight.
+    Jacobi(DBL weight);
+
     /// Default destructor.
     ~Jacobi() = default;
 

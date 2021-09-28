@@ -21,7 +21,6 @@
  */
 class LOP
 {
-
 protected:
     INT nrow; ///< number of rows
     INT mcol; ///< number of columns

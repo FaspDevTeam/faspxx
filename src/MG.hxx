@@ -27,7 +27,6 @@ template <class TTT>
 struct HL {
     TTT* restriction;  ///< restriction to a coarser level
     TTT* prolongation; ///< prolongation from a coarser level
-
     SOL* preSolver;    ///< pre-smoother before CGC
     SOL* coarseSolver; ///< coarse solver for CGC
     SOL* postSolver;   ///< post-smoother after CGC
@@ -36,7 +35,7 @@ struct HL {
     INT coarSpaceSize; ///< coarse-space dimension
     VEC b;             ///< right-hand side vector b at coarser level
     VEC x;             ///< solution vector x at coarser level
-    VEC work;          ///< solution vector x at coarser level
+    VEC r;             ///< residual vector r at coarser level
 };
 
 /*! \class MG
@@ -51,14 +50,23 @@ private:
     unsigned         numLevelsCoarse; ///< number of coarse levels in use <= max_levels
     bool             useSymmOper;     ///< use symmetric operator
     vector<unsigned> numCycles;       ///< number of cycles for each coarse level
-    VEC              work;            ///< work vector
+    VEC              r;               ///< work vector for current residual
 
 public:
     vector<HL<TTT>> infoHL; ///< hierarichal info at all coarse levels
 
 private:
-    void        MGCycle(const VEC& b, VEC& x); ///< one multigrid cycle
-    FaspRetCode SetupSimple(const TTT& A);     ///< simple test setup
+    /// One multigrid V or W or variable cycle.
+    void MGCycle(const VEC& b, VEC& x);
+
+    /// One multigrid F cycle.
+    // TODO: void FCycle(const VEC& b, VEC& x);
+
+    /// One multigrid AMLI cycle.
+    // TODO: void AMLICycle(const VEC& b, VEC& x);
+
+    /// One multigrid K cycle.
+    // TODO: void KCycle(const VEC& b, VEC& x);
 
 public:
     /// Default constructor.
@@ -66,13 +74,32 @@ public:
         : level(-1)
         , numLevelsMax(20)
         , numLevelsCoarse(0)
-        , useSymmOper(true){};
+        , useSymmOper(true)
+    {
+        SetNumCycles(1);
+    };
 
     /// Default destructor.
     ~MG() = default;
 
+    /// Set number of cycles for each coarse level.
+    void SetNumCycles(unsigned ncycle);
+
     /// Setup the MG method using coefficient matrix A.
     FaspRetCode Setup(const TTT& A);
+
+    /// Simple setup for test purpose.
+    FaspRetCode SetupSimple(const TTT& A);
+
+    /// Setup multilevel solver level by level.
+    FaspRetCode SetupLevel(const TTT& A, const unsigned level, TTT* tranOpers,
+                           SOL* smoothers, SOL* coarseSolvers);
+
+    /// Setup multilevel solver by hand.
+    FaspRetCode SetupALL(const TTT& A, const unsigned numLevels);
+
+    /// Setup classical AMG.
+    // TODO: FaspRetCode SetupCAMG(const MAT& A);
 
     /// Solve Ax=b using the MG method.
     FaspRetCode Solve(const VEC& b, VEC& x) override;
@@ -89,5 +116,5 @@ public:
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Chensong Zhang      Sep/12/2021      Create file                          */
-/*  Chensong Zhang      Sep/27/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/29/2021      Add hierarical info struct           */
 /*----------------------------------------------------------------------------*/

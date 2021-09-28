@@ -14,6 +14,14 @@
 
 using std::vector;
 
+/// Set number of cycles for each coarse level
+template <class TTT>
+void MG<TTT>::SetNumCycles(unsigned ncycle)
+{
+    numCycles.resize(numLevelsCoarse);
+    for (unsigned i = 0; i < numLevelsCoarse; ++i) numCycles[i] = ncycle;
+}
+
 /// Setup the one-level "MG" method using linear operator A
 template <class TTT>
 FaspRetCode MG<TTT>::SetupSimple(const TTT& A)
@@ -33,22 +41,78 @@ FaspRetCode MG<TTT>::SetupSimple(const TTT& A)
     }
 
     // Step 1. Set problems and temp space for all levels
-    work.SetValues(probSize, 0.0);
+    r.SetValues(probSize, 0.0);
     infoHL[0].fineSpaceSize = infoHL[0].coarSpaceSize = probSize;
     infoHL[0].b.SetValues(infoHL[0].coarSpaceSize, 0.0);
     infoHL[0].x.SetValues(infoHL[0].coarSpaceSize, 0.0);
-    infoHL[0].work.SetValues(infoHL[0].coarSpaceSize, 0.0);
+    infoHL[0].r.SetValues(infoHL[0].coarSpaceSize, 0.0);
 
     // Step 2. Set transfer operators and problems for all levels
-    // infoHL[0].prolongation = &defaultTrans[0]; // set prolongation as identity
-    // infoHL[0].restriction  = &defaultTrans[0]; // set restriction as identity
+    // infoHL[i].prolongation = &defaultTrans[i]; // set prolongation as identity
+    // infoHL[i].restriction  = &defaultTrans[i]; // set restriction as identity
 
     // Setp 3. Set solvers for all levels
-    // defaultSolvers[0].Setup(A);
-    // infoHL[0].preSolver  = &defaultSolvers[0]; // presmoother
-    // infoHL[0].postSolver = &defaultSolvers[0]; // postsmoother
-    // defaultCoarseSolvers[0].Setup(A);
-    // infoHL[0].coarseSolver = &defaultCoarseSolvers[0]; // solver at coarsest level
+    // defaultSolvers[i].Setup(A);
+    // infoHL[i].preSolver  = &defaultSolvers[i]; // presmoother
+    // infoHL[i].postSolver = &defaultSolvers[i]; // postsmoother
+    // defaultCoarseSolvers[i].Setup(A);
+    // infoHL[i].coarseSolver = &defaultCoarseSolvers[i]; // solver at coarsest level
+
+    return FaspRetCode::SUCCESS;
+}
+
+/// Setup multilevel solver level by level.
+template <class TTT>
+FaspRetCode MG<TTT>::SetupLevel(const TTT& A, const unsigned level, TTT* tranOpers,
+                                SOL* smoothers, SOL* coarseSolvers)
+{
+    if (level > numLevelsCoarse) FASPXX_ABORT("Too many levels specified!");
+
+    // Step 1. Set problem sizes and work spaces for coarse levels
+    infoHL[level].fineSpaceSize = tranOpers->GetColSize();
+    infoHL[level].coarSpaceSize = tranOpers->GetRowSize();
+    infoHL[level].b.SetValues(infoHL[level].coarSpaceSize, 0.0);
+    infoHL[level].x.SetValues(infoHL[level].coarSpaceSize, 0.0);
+    infoHL[level].r.SetValues(infoHL[level].coarSpaceSize, 0.0);
+
+    // Step 2. Set transfer operators and problems for all levels
+    infoHL[level].prolongation = tranOpers; // set prolongation as identity
+    infoHL[level].restriction  = tranOpers; // set restriction as identity'
+
+    // Setp 3. Set smoothers for all levels
+    infoHL[level].preSolver = smoothers; // set presmoother
+    infoHL[level].postSolver = smoothers; // set postsmoother
+
+    // Setp 4. Set coarse solvers for all levels
+    infoHL[level].coarseSolver = coarseSolvers; // set coarse solver
+
+    return FaspRetCode::SUCCESS;
+}
+
+/// Setup the one-level "MG" method using linear operator A
+template <class TTT>
+FaspRetCode MG<TTT>::SetupALL(const TTT& A, const unsigned numLevels)
+{
+    const INT probSize = A.GetColSize();
+    useSymmOper        = true;      // symmetric restriction based on prolongation
+    numLevelsCoarse    = numLevels; // only one coarse level used
+
+    // Set solver type
+    SetSolType(SOLType::SOLVER_MG);
+
+    // Step 0. Allocate memory for temporary vectors
+    try {
+        infoHL.resize(numLevelsCoarse);
+        r.SetValues(probSize, 0.0);
+    } catch (std::bad_alloc& ex) {
+        return FaspRetCode::ERROR_ALLOC_MEM;
+    }
+
+    // Setup the coefficient matrix
+    this->A = &A;
+
+    // Print used parameters
+    if (params.verbose > PRINT_MIN) PrintParam(std::cout);
 
     return FaspRetCode::SUCCESS;
 }
@@ -76,37 +140,53 @@ FaspRetCode MG<TTT>::Setup(const TTT& A)
     return FaspRetCode::SUCCESS;
 }
 
+/// One multigrid V or W or variable cycle.
 template <class TTT>
 void MG<TTT>::MGCycle(const VEC& b, VEC& x)
 {
-    ++level;
-
-    // apply pre-smoothing solver
-    infoHL[level].preSolver->Solve(b, x);
-
-    // skip coarse levels if there is only one level
     if (numLevelsCoarse > 0) {
+
+        ++level;
+
+        // return if out of HL range
+        if (level - numLevelsCoarse == 0) return;
+
+        // pre-smoothing
+        infoHL[level].preSolver->Solve(b, x);
+
         // form residual r = b - A x
-        A->Residual(b, x, work);
+        A->Residual(b, x, r);
 
         // restrict residual to coarser level r1 = R*r0
-        infoHL[level].restriction->Apply(work, infoHL[level].b);
+        infoHL[level].restriction->Apply(r, infoHL[level].b);
 
-        // set coarse initial guess to zero
+        // prepare for coarser level
         infoHL[level].x.SetValues(infoHL[level].coarSpaceSize, 0.0);
 
-        // call the coarse space solver
-        infoHL[level].coarseSolver->Solve(infoHL[level].b, infoHL[level].x);
+        if (level + 1 - numLevelsCoarse == 0) {
+            // call coarsest space solver
+            infoHL[level].coarseSolver->Solve(infoHL[level].b, infoHL[level].x);
+        } else {
+            // call multigrid cycle recursivley
+            MGCycle(infoHL[level].b, infoHL[level].x);
+        }
 
-        // prolongate the coarse correction back x = x + P*e1
-        infoHL[level].prolongation->Apply(infoHL[level].x, work);
-        x.AXPY(1.0, work);
+        // prolongation P*e1
+        infoHL[level].prolongation->Apply(infoHL[level].x, r);
+
+        // correction x = x + P*e1
+        x.AXPY(1.0, r);
+
+        // post-smoothing
+        infoHL[level].postSolver->Solve(b, x);
+
+        --level;
+
+    } else {
+        // if no HL information, skip MG cycle and return
+        FASPXX_WARNING("No multilevel info available! Do nothing!!!");
+        x = b;
     }
-
-    // apply post-smoothing solver
-    infoHL[level].postSolver->Solve(b, x);
-
-    --level;
 }
 
 /// Using the multigrid method. Don't check problem sizes.
@@ -127,11 +207,11 @@ FaspRetCode MG<TTT>::Solve(const VEC& b, VEC& x)
     while (numIter < params.maxIter) {
 
         // Update residual r = b - A*x
-        A->Residual(b, x, work);
+        A->Residual(b, x, r);
 
         // Compute norm of residual and check whether it converges
         if (numIter >= params.minIter) {
-            resAbs = work.Norm2();
+            resAbs = r.Norm2();
             if (numIter == params.minIter)
                 denAbs = (CLOSE_ZERO > resAbs) ? CLOSE_ZERO : resAbs;
             resRel = resAbs / denAbs;
@@ -156,9 +236,9 @@ FaspRetCode MG<TTT>::Solve(const VEC& b, VEC& x)
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
     if (not(numIter == params.minIter && numIter == params.maxIter)) {
-        A->Residual(b, x, work); // Update final residual
-        this->norm2 = resAbs = work.Norm2();
-        this->normInf        = work.NormInf();
+        A->Residual(b, x, r); // Update final residual
+        this->norm2 = resAbs = r.Norm2();
+        this->normInf        = r.NormInf();
         resRel               = resAbs / denAbs;
         ratio                = resAbs / resAbsOld;
         PrintFinal(numIter, resRel, resAbs, ratio);
@@ -174,7 +254,8 @@ void MG<TTT>::Clean()
     // TODO: do something here
 }
 
-template class MG<LOP>;
+// Explicitly instantiate the MG template
+// template class MG<LOP>;
 template class MG<MAT>;
 
 /*----------------------------------------------------------------------------*/
@@ -183,5 +264,5 @@ template class MG<MAT>;
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Chensong Zhang      Sep/12/2021      Create file                          */
-/*  Chensong Zhang      Sep/27/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/29/2021      Restructure file                     */
 /*----------------------------------------------------------------------------*/

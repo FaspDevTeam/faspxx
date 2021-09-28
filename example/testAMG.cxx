@@ -76,7 +76,23 @@ int main(int argc, const char* args[])
     solver.SetRestart(solParam.restart);
     solver.SetRelTol(solParam.relTol);
     solver.SetAbsTol(solParam.absTol);
-    solver.Setup(mat);
+
+    // Setup HL levels
+    const unsigned numLevels = 3;            // number of coarse levels
+    class Jacobi   smoothers[numLevels];     // smoothers at coarse levels
+    class Jacobi   coarseSolvers[numLevels]; // solver at coarse levels
+
+    // Transfer operators
+    IdentityMatrix tranOpers[numLevels];
+    for (INT i = 0; i < numLevels; ++i) tranOpers[i] = IdentityMatrix(mat.GetRowSize());
+
+    // Smoothers and coarse solvers
+    solver.SetupALL(mat, numLevels);
+    for (INT i = 0; i < numLevels; ++i) {
+        smoothers[i].Setup(mat);
+        coarseSolvers[i].Setup(mat);
+        solver.SetupLevel(mat, i, &tranOpers[i], &smoothers[i], &coarseSolvers[i]);
+    }
 
     // Solve the linear system using AMG
     timer.Start();

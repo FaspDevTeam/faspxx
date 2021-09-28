@@ -12,12 +12,15 @@
 // FASPXX header files
 #include "Iter.hxx"
 
-/// Does nothing in preconditioning
+/// Does nothing in preconditioning.
 FaspRetCode Identity::Solve(const VEC& b, VEC& x)
 {
     x = b;
     return FaspRetCode::SUCCESS;
 }
+
+/// Default constructor with specified weight.
+Jacobi::Jacobi(DBL weight) { this->weight = weight; }
 
 /// Set the weight for the Jacobi method.
 void Jacobi::SetWeight(const DBL weight) { this->weight = weight; }
