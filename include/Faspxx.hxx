@@ -25,8 +25,8 @@ typedef double       DBL; ///< Double precision numbers
 /*----------------------------------------------------------------------------*/
 
 const DBL SMALL_TOL     = 1e-14;  ///< Small positive real for tolerance
-const DBL LARGE         = 1e+60;  ///< Largest double number
-const DBL SMALL         = -1e+60; ///< Smallest double number
+const DBL LARGE_DBL     = 1e+60;  ///< Largest double number
+const DBL SMALL_DBL     = -1e+60; ///< Smallest double number
 const DBL CLOSE_ZERO    = 1e-20;  ///< Tolerance for almost zero
 const DBL CLOCK_USE_SEC = 5000;   ///< Show clock time in seconds
 const DBL CLOCK_USE_MIN = 200000; ///< Show clock time in minutes

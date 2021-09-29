@@ -138,7 +138,7 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
         }
 
         // Initial search direction: r/||r||
-        if (resAbs < SMALL) break; // Resiudal is too small
+        if (resAbs < SMALL_DBL) break; // Resiudal is too small
         var[0] = resAbs;
         V[0].Scale(1 / resAbs);
 
@@ -169,7 +169,7 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
             hh[count][count_1] = t;
 
             // If t=0, we get solution subspace
-            if (fabs(t) > SMALL)
+            if (fabs(t) > SMALL_DBL)
                 V[count].Scale(1.0 / t);
             else
                 break;
@@ -184,7 +184,7 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
             t += hh[count_1][count_1] * hh[count_1][count_1];
             t = sqrt(t);
 
-            gamma                = t > SMALL ? t : SMALL;
+            gamma                = t > SMALL_DBL ? t : SMALL_DBL;
             hcos[count_1]        = hh[count_1][count_1] / gamma;
             hsin[count_1]        = hh[count][count_1] / gamma;
             hh[count_1][count_1] = hsin[count_1] * hh[count][count_1] +

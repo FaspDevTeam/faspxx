@@ -369,9 +369,9 @@ void VEC::WAXPBY(const DBL& a, const VEC& v1, const DBL& b, const VEC& v2)
 /// Find maximal value, unroll long for loops.
 DBL VEC::Max() const
 {
-    DBL max1 = SMALL, max2 = SMALL, max3 = SMALL, max4 = SMALL;
+    DBL max1 = SMALL_DBL, max2 = SMALL_DBL, max3 = SMALL_DBL, max4 = SMALL_DBL;
+    USI i;
 
-    USI       i;
     const USI len = this->size - this->size % 4;
     for (i = 0; i < len; i += 4) {
         if (max1 < this->values[i]) max1 = this->values[i];
@@ -390,9 +390,9 @@ DBL VEC::Max() const
 /// Find min(*this), unroll long for loops.
 DBL VEC::Min() const
 {
-    DBL min1 = LARGE, min2 = LARGE, min3 = LARGE, min4 = LARGE;
+    DBL min1 = LARGE_DBL, min2 = LARGE_DBL, min3 = LARGE_DBL, min4 = LARGE_DBL;
+    USI i;
 
-    USI       i;
     const USI len = this->size - this->size % 4;
     for (i = 0; i < len; i += 4) {
         if (min1 > this->values[i]) min1 = this->values[i];

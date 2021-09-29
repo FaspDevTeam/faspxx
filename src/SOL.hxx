@@ -46,8 +46,8 @@ public:
     SOL()
         : A(nullptr)
         , pcd(nullptr)
-        , norm2(LARGE)
-        , normInf(LARGE)
+        , norm2(LARGE_DBL)
+        , normInf(LARGE_DBL)
         , numIter(0){};
 
     /// Default destructor.
