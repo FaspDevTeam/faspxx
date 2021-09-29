@@ -22,45 +22,6 @@ void MG<TTT>::SetNumCycles(USI ncycle)
     for (USI i = 0; i < numLevelsCoarse; ++i) numCycles[i] = ncycle;
 }
 
-/// Setup the one-level "MG" method using linear operator A
-template <class TTT>
-FaspRetCode MG<TTT>::SetupSimple(const TTT& A)
-{
-    const USI probSize = A.GetColSize();
-    numLevelsCoarse    = 1;    // only one coarse level used
-    useSymmOper        = true; // symmetric restriction based on prolongation
-
-    // Step 0. Allocate memory for temporary vectors
-    try {
-        infoHL.resize(numLevelsCoarse);
-        // defaultTrans.resize(numLevelsCoarse);
-        // defaultSolvers.resize(numLevelsCoarse);
-        // defaultCoarseSolvers.resize(numLevelsCoarse);
-    } catch (std::bad_alloc& ex) {
-        return FaspRetCode::ERROR_ALLOC_MEM;
-    }
-
-    // Step 1. Set problems and temp space for all levels
-    r.SetValues(probSize, 0.0);
-    infoHL[0].fineSpaceSize = infoHL[0].coarSpaceSize = probSize;
-    infoHL[0].b.SetValues(infoHL[0].coarSpaceSize, 0.0);
-    infoHL[0].x.SetValues(infoHL[0].coarSpaceSize, 0.0);
-    infoHL[0].r.SetValues(infoHL[0].coarSpaceSize, 0.0);
-
-    // Step 2. Set transfer operators and problems for all levels
-    // infoHL[i].prolongation = &defaultTrans[i]; // set prolongation as identity
-    // infoHL[i].restriction  = &defaultTrans[i]; // set restriction as identity
-
-    // Setp 3. Set solvers for all levels
-    // defaultSolvers[i].Setup(A);
-    // infoHL[i].preSolver  = &defaultSolvers[i]; // presmoother
-    // infoHL[i].postSolver = &defaultSolvers[i]; // postsmoother
-    // defaultCoarseSolvers[i].Setup(A);
-    // infoHL[i].coarseSolver = &defaultCoarseSolvers[i]; // solver at coarsest level
-
-    return FaspRetCode::SUCCESS;
-}
-
 /// Setup multilevel solver level by level.
 template <class TTT>
 FaspRetCode MG<TTT>::SetupLevel(const TTT& A, const USI level, TTT* tranOpers,
@@ -126,7 +87,7 @@ FaspRetCode MG<TTT>::Setup(const TTT& A)
 
     // Allocate memory for temporary vectors
     try {
-        SetupSimple(A); // TODO: Need to be replaced!
+        // TODO: Need to be replaced!
     } catch (std::bad_alloc& ex) {
         return FaspRetCode::ERROR_AMG_SETUP;
     }
@@ -168,7 +129,8 @@ void MG<TTT>::MGCycle(const VEC& b, VEC& x)
             infoHL[level].coarseSolver->Solve(infoHL[level].b, infoHL[level].x);
         } else {
             // call multigrid cycle recursivley
-            MGCycle(infoHL[level].b, infoHL[level].x);
+            for (USI i = 0; i < numCycles[level]; ++i)
+                MGCycle(infoHL[level].b, infoHL[level].x);
         }
 
         // prolongation P*e1
@@ -264,5 +226,5 @@ template class MG<MAT>;
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Chensong Zhang      Sep/12/2021      Create file                          */
-/*  Chensong Zhang      Sep/29/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/29/2021      Restructure MG method                */
 /*----------------------------------------------------------------------------*/

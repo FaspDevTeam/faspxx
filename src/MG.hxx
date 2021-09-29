@@ -88,9 +88,6 @@ public:
     /// Setup the MG method using coefficient matrix A.
     FaspRetCode Setup(const TTT& A);
 
-    /// Simple setup for test purpose.
-    FaspRetCode SetupSimple(const TTT& A);
-
     /// Setup multilevel solver level by level.
     FaspRetCode SetupLevel(const TTT& A, const USI level, TTT* tranOpers,
                            SOL* smoothers, SOL* coarseSolvers);

@@ -35,7 +35,7 @@ public:
     /// Default constructor.
     explicit VEC()
         : size(0)
-        , values(0)
+        , values(0.0)
     {
     }
 
@@ -45,11 +45,11 @@ public:
     /// Construct a VEC by copying values from a vector.
     explicit VEC(const std::vector<DBL>& src);
 
+    /// Construct a new VEC by copying values from a pointer.
+    explicit VEC(const USI& size, const DBL* src);
+
     /// Clone from another VEC.
     VEC(const VEC& src);
-
-    /// Construct a new VEC by copying values from a poUSIer.
-    explicit VEC(const USI& size, const DBL* src);
 
     /// Default destructor.
     ~VEC() = default;
@@ -88,10 +88,10 @@ public:
     /// \note Users should allocate memory for array before calling this function!
     void GetValues(const USI& size, const USI* index, DBL* array) const;
 
-    /// Get poUSIer to this->values.
+    /// Get pointer to this->values.
     void GetArray(DBL** array);
 
-    /// Get poUSIer to this->values, entries cannot be modified.
+    /// Get pointer to this->values, entries cannot be modified.
     void GetArray(const DBL** array) const;
 
     /// Get the size of *this.
@@ -100,34 +100,34 @@ public:
     /// Scale by a scalar.
     void Scale(const DBL& a);
 
-    /// Compute reciprocal poUSIwise.
+    /// Compute reciprocal pointwise.
     void Reciprocal();
 
-    /// Scale by a vector poUSIwise.
+    /// Scale by a vector pointwise.
     void PointwiseMult(const VEC& v);
 
-    /// Divide poUSIwise by a nonzero vector.
+    /// Divide pointwise by a nonzero vector.
     void PointwiseDivide(const VEC& v);
 
     /// Copy *this to another VEC.
     void CopyTo(VEC& dst) const;
 
-    /// Shift by a scalar poUSIwise.
+    /// Shift by a scalar pointwise.
     void Shift(const DBL& a);
 
-    /// Compute absolute values poUSIwise.
+    /// Compute absolute values pointwise.
     void Abs();
 
-    /// y = a * x + y.
+    /// *this += a * x.
     void AXPY(const DBL& a, const VEC& x);
 
-    /// y = x + a * y.
+    /// *this = x + a * *this.
     void XPAY(const DBL& a, const VEC& x);
 
-    /// x = a * x + b * y.
+    /// *this = a * *this + b * y.
     void AXPBY(const DBL& a, const DBL& b, const VEC& y);
 
-    /// *this = a * v1 + b * v2.
+    /// *this = a * x + b * *this.
     void WAXPBY(const DBL& a, const VEC& x, const DBL& b, const VEC& y);
 
     /// Find maximal value.

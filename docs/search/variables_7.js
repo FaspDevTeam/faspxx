@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['large_0',['LARGE',['../Faspxx_8hxx.html#a3eb000fc129c8d09e47d3289fb424b83',1,'Faspxx.hxx']]]
+  ['large_5fdbl_0',['LARGE_DBL',['../Faspxx_8hxx.html#aaf4dadec90f06cb723f5642dfceabcc1',1,'Faspxx.hxx']]]
 ];

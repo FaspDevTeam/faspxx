@@ -22,22 +22,22 @@
 class LOP
 {
 protected:
-    USI nrow; ///< number of rows
-    USI mcol; ///< number of columns
+    USI nrow; ///< dimension of image space
+    USI mcol; ///< dimension of origin space
 
 public:
     /// Default constructor.
-    LOP()
+    explicit LOP()
         : nrow(0)
         , mcol(0){};
 
     /// Make an LOP from VEC(mcol) to VEC(nrow).
-    LOP(const USI& nrow, const USI& mcol);
+    explicit LOP(const USI& nrow, const USI& mcol);
 
     /// Make an LOP from VEC(nrow) to VEC(nrow).
     explicit LOP(const USI& nrow);
 
-    /// Make an LOP from another LOP.
+    /// Clone from another LOP.
     LOP(const LOP& lop);
 
     /// Overload the = operator.

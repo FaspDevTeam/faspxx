@@ -80,9 +80,9 @@ target_link_libraries(testReadData faspxx)
 add_executable(testSolver example/testSolver.cxx)
 target_link_libraries(testSolver faspxx ${UMFPACK_LIBRARIES})
 
-# Test AMG class
-add_executable(testAMG example/testAMG.cxx)
-target_link_libraries(testAMG faspxx)
+# Test MG class
+add_executable(testMG example/testMG.cxx)
+target_link_libraries(testMG faspxx)
 
 # Test CG class
 add_executable(testCG example/testCG.cxx)

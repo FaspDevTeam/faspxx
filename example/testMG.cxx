@@ -1,5 +1,5 @@
-/*! \file    testAMG.cxx
- *  \brief   Test performance of AMG method
+/*! \file    testMG.cxx
+ *  \brief   Test framework of abstract MG method
  *  \author  Chensong Zhang
  *  \date    Sep/12/2021
  *
@@ -10,8 +10,7 @@
  */
 
 // Sample usages:
-//   ./testAMG -maxIter 200 -minIter 100
-//   ./testAMG -maxIter 200 -minIter 0 -mat ../data/fdm_1023X1023.csr -verbose 3
+//   ./testMG -maxIter 200 -minIter 100
 
 // FASPXX header files
 #include "Iter.hxx"
@@ -86,13 +85,16 @@ int main(int argc, const char* args[])
     IdentityMatrix tranOpers[numLevels];
     for (USI i = 0; i < numLevels; ++i) tranOpers[i] = IdentityMatrix(mat.GetRowSize());
 
-    // Smoothers and coarse solvers
+    // Set smoothers and coarse solvers
     solver.SetupALL(mat, numLevels);
     for (USI i = 0; i < numLevels; ++i) {
         smoothers[i].Setup(mat);
         coarseSolvers[i].Setup(mat);
         solver.SetupLevel(mat, i, &tranOpers[i], &smoothers[i], &coarseSolvers[i]);
     }
+
+    // Set number of cycles for each coarse level
+    solver.SetNumCycles(1);
 
     // Solve the linear system using AMG
     timer.Start();
@@ -108,5 +110,5 @@ int main(int argc, const char* args[])
 /*  Author              Date             Actions                              */
 /*----------------------------------------------------------------------------*/
 /*  Chensong Zhang      Sep/12/2019      Create file                          */
-/*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/29/2021      Restructure MG method                */
 /*----------------------------------------------------------------------------*/

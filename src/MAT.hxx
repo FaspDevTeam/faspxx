@@ -48,7 +48,7 @@ private:
 
 public:
     //------------------- Default Constructor Behavior -----------------------//
-    // If "row == 0", "col ==0 " or "nnz == 0", set *this as an empty matrix. //
+    // If "nrow == 0", "mcol ==0 " or "nnz == 0", set *this as empty matrix.  //
     // If these parameters can't form a CSRx data type, throw an exception.   //
     // If "values" are not assigned, the matrix is just a sparse structure.   //
     //------------------------------------------------------------------------//
@@ -66,23 +66,23 @@ public:
     };
 
     /// Construct sparse matrix from a CSRx matrix.
-    MAT(const USI& nrow, const USI& mcol, const USI& nnz,
-        const std::vector<DBL>& values, const std::vector<USI>& colInd,
-        const std::vector<USI>& rowPtr, const std::vector<USI>& diagPtr);
+    explicit MAT(const USI& nrow, const USI& mcol, const USI& nnz,
+                 const std::vector<DBL>& values, const std::vector<USI>& colInd,
+                 const std::vector<USI>& rowPtr, const std::vector<USI>& diagPtr);
 
     /// Construct sparse matrix from a CSR matrix.
-    MAT(const USI& nrow, const USI& mcol, const USI& nnz,
-        const std::vector<DBL>& values, const std::vector<USI>& colInd,
-        const std::vector<USI>& rowPtr);
+    explicit MAT(const USI& nrow, const USI& mcol, const USI& nnz,
+                 const std::vector<DBL>& values, const std::vector<USI>& colInd,
+                 const std::vector<USI>& rowPtr);
 
     /// Construct sparsity structure from a CSR matrix.
-    MAT(const USI& nrow, const USI& mcol, const USI& nnz,
-        const std::vector<USI>& colInd, const std::vector<USI>& rowPtr);
+    explicit MAT(const USI& nrow, const USI& mcol, const USI& nnz,
+                 const std::vector<USI>& colInd, const std::vector<USI>& rowPtr);
 
     /// Construct sparsity structure from a CSRx matrix.
-    MAT(const USI& nrow, const USI& mcol, const USI& nnz,
-        const std::vector<USI>& colInd, const std::vector<USI>& rowPtr,
-        const std::vector<USI>& diagPtr);
+    explicit MAT(const USI& nrow, const USI& mcol, const USI& nnz,
+                 const std::vector<USI>& colInd, const std::vector<USI>& rowPtr,
+                 const std::vector<USI>& diagPtr);
 
     /// Construct diagonal MAT matrix from a VEC object.
     explicit MAT(const VEC& v);

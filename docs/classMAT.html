@@ -202,7 +202,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a50efa9b111db2ddd45b1dca9086e4061 inherit pub_methods_classLOP"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make an <a class="el" href="classLOP.html" title="Linear operator virtual class.">LOP</a> from <a class="el" href="classVEC.html" title="General vector class.">VEC(nrow)</a> to <a class="el" href="classVEC.html" title="General vector class.">VEC(nrow)</a>.  <a href="classLOP.html#a50efa9b111db2ddd45b1dca9086e4061">More...</a><br /></td></tr>
 <tr class="separator:a50efa9b111db2ddd45b1dca9086e4061 inherit pub_methods_classLOP"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55c9cee1e64a40f8fc61e44373b55971 inherit pub_methods_classLOP"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLOP.html#a55c9cee1e64a40f8fc61e44373b55971">LOP</a> (const <a class="el" href="classLOP.html">LOP</a> &amp;lop)</td></tr>
-<tr class="memdesc:a55c9cee1e64a40f8fc61e44373b55971 inherit pub_methods_classLOP"><td class="mdescLeft">&#160;</td><td class="mdescRight">Make an <a class="el" href="classLOP.html" title="Linear operator virtual class.">LOP</a> from another <a class="el" href="classLOP.html" title="Linear operator virtual class.">LOP</a>.  <a href="classLOP.html#a55c9cee1e64a40f8fc61e44373b55971">More...</a><br /></td></tr>
+<tr class="memdesc:a55c9cee1e64a40f8fc61e44373b55971 inherit pub_methods_classLOP"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clone from another <a class="el" href="classLOP.html" title="Linear operator virtual class.">LOP</a>.  <a href="classLOP.html#a55c9cee1e64a40f8fc61e44373b55971">More...</a><br /></td></tr>
 <tr class="separator:a55c9cee1e64a40f8fc61e44373b55971 inherit pub_methods_classLOP"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affe57462359dd68392d0d7224de5d570 inherit pub_methods_classLOP"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLOP.html">LOP</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLOP.html#affe57462359dd68392d0d7224de5d570">operator=</a> (const <a class="el" href="classLOP.html">LOP</a> &amp;lop)</td></tr>
 <tr class="memdesc:affe57462359dd68392d0d7224de5d570 inherit pub_methods_classLOP"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload the = operator.  <a href="classLOP.html#affe57462359dd68392d0d7224de5d570">More...</a><br /></td></tr>
@@ -231,10 +231,10 @@ Friends</h2></td></tr>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classLOP"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classLOP')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classLOP.html">LOP</a></td></tr>
 <tr class="memitem:aad69380dea64ddc00626c60b8e81f0df inherit pro_attribs_classLOP"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a></td></tr>
-<tr class="memdesc:aad69380dea64ddc00626c60b8e81f0df inherit pro_attribs_classLOP"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of rows  <a href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">More...</a><br /></td></tr>
+<tr class="memdesc:aad69380dea64ddc00626c60b8e81f0df inherit pro_attribs_classLOP"><td class="mdescLeft">&#160;</td><td class="mdescRight">dimension of image space  <a href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">More...</a><br /></td></tr>
 <tr class="separator:aad69380dea64ddc00626c60b8e81f0df inherit pro_attribs_classLOP"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a991c665620eab3b47060eceb90fee7f9 inherit pro_attribs_classLOP"><td class="memItemLeft" align="right" valign="top"><a class="el" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a></td></tr>
-<tr class="memdesc:a991c665620eab3b47060eceb90fee7f9 inherit pro_attribs_classLOP"><td class="mdescLeft">&#160;</td><td class="mdescRight">number of columns  <a href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">More...</a><br /></td></tr>
+<tr class="memdesc:a991c665620eab3b47060eceb90fee7f9 inherit pro_attribs_classLOP"><td class="mdescLeft">&#160;</td><td class="mdescRight">dimension of origin space  <a href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">More...</a><br /></td></tr>
 <tr class="separator:a991c665620eab3b47060eceb90fee7f9 inherit pro_attribs_classLOP"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -277,8 +277,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a> = 0;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a> = 0;</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    };</div>
-<div class="ttc" id="aclassLOP_html_a991c665620eab3b47060eceb90fee7f9"><div class="ttname"><a href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">LOP::mcol</a></div><div class="ttdeci">USI mcol</div><div class="ttdoc">number of columns</div><div class="ttdef"><b>Definition:</b> <a href="LOP_8hxx_source.html#l00026">LOP.hxx:26</a></div></div>
-<div class="ttc" id="aclassLOP_html_aad69380dea64ddc00626c60b8e81f0df"><div class="ttname"><a href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">LOP::nrow</a></div><div class="ttdeci">USI nrow</div><div class="ttdoc">number of rows</div><div class="ttdef"><b>Definition:</b> <a href="LOP_8hxx_source.html#l00025">LOP.hxx:25</a></div></div>
+<div class="ttc" id="aclassLOP_html_a991c665620eab3b47060eceb90fee7f9"><div class="ttname"><a href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">LOP::mcol</a></div><div class="ttdeci">USI mcol</div><div class="ttdoc">dimension of origin space</div><div class="ttdef"><b>Definition:</b> <a href="LOP_8hxx_source.html#l00026">LOP.hxx:26</a></div></div>
+<div class="ttc" id="aclassLOP_html_aad69380dea64ddc00626c60b8e81f0df"><div class="ttname"><a href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">LOP::nrow</a></div><div class="ttdeci">USI nrow</div><div class="ttdoc">dimension of image space</div><div class="ttdef"><b>Definition:</b> <a href="LOP_8hxx_source.html#l00025">LOP.hxx:25</a></div></div>
 </div><!-- fragment -->
 <p class="reference">References <a class="el" href="LOP_8hxx_source.html#l00026">LOP::mcol</a>, and <a class="el" href="LOP_8hxx_source.html#l00025">LOP::nrow</a>.</p>
 
@@ -289,6 +289,9 @@ Additional Inherited Members</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">MAT::MAT </td>
@@ -338,6 +341,11 @@ Additional Inherited Members</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Construct sparse matrix from a CSRx matrix. </p>
@@ -368,6 +376,9 @@ Additional Inherited Members</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">MAT::MAT </td>
@@ -411,6 +422,11 @@ Additional Inherited Members</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Construct sparse matrix from a CSR matrix. </p>
@@ -441,6 +457,9 @@ Additional Inherited Members</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">MAT::MAT </td>
@@ -478,6 +497,11 @@ Additional Inherited Members</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Construct sparsity structure from a CSR matrix. </p>
@@ -508,6 +532,9 @@ Additional Inherited Members</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">MAT::MAT </td>
@@ -551,6 +578,11 @@ Additional Inherited Members</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Construct sparsity structure from a CSRx matrix. </p>
