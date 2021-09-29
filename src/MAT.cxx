@@ -648,7 +648,7 @@ int* MAT::GetRowPtr() const
     return val;
 }
 
-/// *this = a * mat1 + b * mat2.
+/// Compute *this = a * mat1 + b * mat2.
 void MAT::Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2)
 {
 
@@ -718,7 +718,7 @@ void MAT::Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2)
     *this = tmpMat;
 }
 
-/// *this = matl * matr.
+/// Compute *this = matl * matr.
 void MAT::Mult(const MAT& matl, const MAT& matr)
 {
     USI  l, count;
@@ -799,7 +799,7 @@ void MAT::Mult(const MAT& matl, const MAT& matr)
     this->FormDiagPtr();
 }
 
-/// *this = *this * mat.
+/// Compute *this = *this * mat.
 void MAT::MultLeft(const MAT& mat)
 {
     MAT tmp;
@@ -808,7 +808,7 @@ void MAT::MultLeft(const MAT& mat)
     Mult(tmp, mat);
 }
 
-/// *this = mat * *this.
+/// Compute *this = mat * *this.
 void MAT::MultRight(const MAT& mat)
 {
     MAT tmp;
@@ -817,7 +817,7 @@ void MAT::MultRight(const MAT& mat)
     Mult(mat, tmp);
 }
 
-/// mat = Inverse(*this)
+/// Compute mat = Inverse(*this).
 void MAT::Inverse(MAT& inv_mat) const
 {
 
@@ -1003,18 +1003,19 @@ void MAT::LUPSolve(std::vector<DBL> L, std::vector<DBL> U, std::vector<USI> P,
 {
     std::vector<DBL> y(N);
 
-    // forward substitute
+    // forward substitution
     for (USI i = 0; i < N; ++i) {
-        y[i] = b[P[i]];
-        for (USI j = 0; j < i; ++j) y[i] = y[i] - L[i * N + j] * y[j];
+        USI iN = i * N;
+        y[i]   = b[P[i]];
+        for (USI j = 0; j < i; ++j) y[i] -= L[iN + j] * y[j];
     }
 
-    // TODO: Check this with USI
-    // backward substitute
-    for (int i = N - 1; i >= 0; --i) { // can't change int into USI
-        x[i] = y[i];
-        for (int j = N - 1; j > i; --j) x[i] = x[i] - U[i * N + j] * x[j];
-        x[i] /= U[i * N + i];
+    // backward substitution
+    for (INT i = N - 1; i >= 0; --i) { // To compare with 0. Need signed INT!
+        INT iN = i * N;
+        x[i]   = y[i];
+        for (INT j = N - 1; j > i; --j) x[i] -= U[iN + j] * x[j];
+        x[i] /= U[iN + i];
     }
 }
 

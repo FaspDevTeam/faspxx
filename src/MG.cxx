@@ -217,7 +217,7 @@ void MG<TTT>::Clean()
 }
 
 // Explicitly instantiate the MG template
-// template class MG<LOP>;
+template class MG<LOP>;
 template class MG<MAT>;
 
 /*----------------------------------------------------------------------------*/

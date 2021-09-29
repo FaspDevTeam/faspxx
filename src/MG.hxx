@@ -21,7 +21,7 @@
 using std::vector;
 
 /*! \struct HL
- *  \brief  Hierarchical information for one level.
+ *  \brief  Hierarchical level information for one level.
  */
 template <class TTT>
 struct HL {

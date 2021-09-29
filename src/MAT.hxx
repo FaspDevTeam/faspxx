@@ -148,31 +148,31 @@ public:
     /// Compute transpose of A multiply by v1 plus v2.
     void MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const;
 
-    /// Get the value of [i,j]-entry of the matrix
+    /// Get the value of [i,j]-entry of the matrix.
     DBL GetValue(const USI& row, const USI& col) const;
 
-    /// Get the values of the matrix
+    /// Get the values of the matrix.
     double* GetValues() const;
 
-    /// Get the row pointer of the matrix
+    /// Get the row pointer of the matrix.
     int* GetRowPtr() const;
 
-    /// Get the column indices of the matrix
+    /// Get the column indices of the matrix.
     int* GetColInd() const;
 
-    /// *this = a * mat1 + b * mat2
+    /// Compute *this = a * mat1 + b * mat2.
     void Add(const DBL a, const MAT& mat1, const DBL b, const MAT& mat2);
 
-    /// *this = matl * matr
+    /// Compute *this = matl * matr.
     void Mult(const MAT& matl, const MAT& matr);
 
-    /// *this = *this * mat
+    /// Compute *this = *this * mat.
     void MultLeft(const MAT& mat);
 
-    /// *this = mat * *this
+    /// Compute *this = mat * *this.
     void MultRight(const MAT& mat);
 
-    /// invmat = Inverse(*this)
+    /// Compute invmat = Inverse(*this).
     void Inverse(MAT& invmat) const;
 
     /// Write an MAT matrix to a disk file in CSR format.

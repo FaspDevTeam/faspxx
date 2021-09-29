@@ -1028,234 +1028,236 @@ $(function() {
 <div class="line"><a id="l01003" name="l01003"></a><span class="lineno"> 1003</span><span class="keyword"></span>{</div>
 <div class="line"><a id="l01004" name="l01004"></a><span class="lineno"> 1004</span>    std::vector&lt;DBL&gt; y(N);</div>
 <div class="line"><a id="l01005" name="l01005"></a><span class="lineno"> 1005</span> </div>
-<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span>    <span class="comment">// forward substitute</span></div>
+<div class="line"><a id="l01006" name="l01006"></a><span class="lineno"> 1006</span>    <span class="comment">// forward substitution</span></div>
 <div class="line"><a id="l01007" name="l01007"></a><span class="lineno"> 1007</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; N; ++i) {</div>
-<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>        y[i] = b[P[i]];</div>
-<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = 0; j &lt; i; ++j) y[i] = y[i] - L[i * N + j] * y[j];</div>
-<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>    }</div>
-<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span> </div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>    <span class="comment">// TODO: Check this with USI</span></div>
-<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>    <span class="comment">// backward substitute</span></div>
-<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = N - 1; i &gt;= 0; --i) { <span class="comment">// can&#39;t change int into USI</span></div>
-<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>        x[i] = y[i];</div>
-<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j = N - 1; j &gt; i; --j) x[i] = x[i] - U[i * N + j] * x[j];</div>
-<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>        x[i] /= U[i * N + i];</div>
-<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>    }</div>
-<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>}</div>
-<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span> </div>
-<div class="line"><a id="l01022" name="l01022"></a><span class="lineno"> 1022</span><a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> MAT::GetNext(<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> m, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> n)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (i % n) * m + i / n; }</div>
-<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span> </div>
-<div class="line"><a id="l01025" name="l01025"></a><span class="lineno"> 1025</span><a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> MAT::GetPre(<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> m, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> n)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (i % m) * n + i / m; }</div>
-<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span> </div>
-<div class="line"><a id="l01028" name="l01028"></a><span class="lineno"> 1028</span><span class="keywordtype">void</span> MAT::MoveData(std::vector&lt;DBL&gt;&amp; mtx, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> m, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> n)<span class="keyword"> const</span></div>
-<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#afe77621c09892bd17c5fdc9182f5b3ae">DBL</a> temp = mtx[i];</div>
-<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> cur  = i;</div>
-<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> pre  = GetPre(cur, m, n);</div>
-<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span>    <span class="keywordflow">while</span> (pre != i) {</div>
-<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>        mtx[cur] = mtx[pre];</div>
-<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span>        cur      = pre;</div>
-<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span>        pre      = GetPre(cur, m, n);</div>
-<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>    }</div>
-<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>    mtx[cur] = temp;</div>
-<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>}</div>
-<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span> </div>
-<div class="line"><a id="l01042" name="l01042"></a><span class="lineno"> 1042</span><span class="keywordtype">void</span> MAT::Rtranspose(std::vector&lt;DBL&gt;&amp; mtx, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> m, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> n)<span class="keyword"> const</span></div>
-<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; m * n; ++i) {</div>
-<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>        <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> next = GetNext(i, m, n);</div>
-<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>        <span class="keywordflow">while</span> (next &gt; i) next = GetNext(next, m, n);</div>
-<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>        <span class="keywordflow">if</span> (next == i) MoveData(mtx, i, m, n);</div>
-<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>    }</div>
-<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>}</div>
-<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span> </div>
-<div class="line"><a id="l01052" name="l01052"></a><span class="lineno"> 1052</span><span class="keywordtype">void</span> MAT::LUPSolveInverse(<span class="keyword">const</span> std::vector&lt;DBL&gt; A, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> N,</div>
-<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span>                          std::vector&lt;DBL&gt;&amp; inv_A)<span class="keyword"> const</span></div>
-<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span><span class="keyword"></span>{</div>
-<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span>    std::vector&lt;DBL&gt; A_mirror(N * N);</div>
-<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span>    std::vector&lt;DBL&gt; inv_A_each(N);</div>
-<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span>    std::vector&lt;DBL&gt; b(N);</div>
-<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span> </div>
-<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> count = 0;</div>
-<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span> </div>
-<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; N; ++i) {</div>
-<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>        std::vector&lt;DBL&gt; L(N * N);</div>
-<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span>        std::vector&lt;DBL&gt; U(N * N);</div>
-<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span>        std::vector&lt;USI&gt; P(N);</div>
-<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span> </div>
-<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span>        <span class="comment">// Construct each column of unit matrix</span></div>
-<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = 0; k &lt; N; ++k) b[k] = 0;</div>
-<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>        b[i] = 1;</div>
-<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span> </div>
-<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span>        <span class="comment">// Need to make a new copy of a every time</span></div>
-<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = 0; k &lt; N * N; ++k) A_mirror[k] = A[k];</div>
-<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span> </div>
-<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span>        LUPDecomp(A_mirror, L, U, P, N);</div>
-<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span> </div>
-<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span>        LUPSolve(L, U, P, b, N, inv_A_each);</div>
-<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span>        <span class="keywordflow">while</span> (count &lt; N) {</div>
-<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>            inv_A[i * N + count] = inv_A_each[count];</div>
-<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span>            ++count;</div>
-<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>        }</div>
-<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>        count = 0;</div>
-<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span>    }</div>
-<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span> </div>
-<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span>    Rtranspose(inv_A, N, N);</div>
-<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>}</div>
-<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span> </div>
-<div class="line"><a id="l01087" name="l01087"></a><span class="lineno"><a class="line" href="classIdentityMatrix.html#af3ed9c3c232078482fb11a18359ca651"> 1087</a></span><a class="code hl_function" href="classIdentityMatrix.html#ab4c496dec7c9b7337ce520f7e22a714e">IdentityMatrix::IdentityMatrix</a>(<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> size)</div>
-<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"> 1088</span>{</div>
-<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>    this-&gt;<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a> = size;</div>
-<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>    this-&gt;nrow = size;</div>
-<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>}</div>
-<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span> </div>
-<div class="line"><a id="l01094" name="l01094"></a><span class="lineno"><a class="line" href="classIdentityMatrix.html#ab449b5bb7949620be8c72480c9eef9a0"> 1094</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classIdentityMatrix.html#ab449b5bb7949620be8c72480c9eef9a0">IdentityMatrix::Apply</a>(<span class="keyword">const</span> <a class="code hl_class" href="classVEC.html">VEC</a>&amp; b, <a class="code hl_class" href="classVEC.html">VEC</a>&amp; x)<span class="keyword"> const </span>{ x = b; }</div>
-<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"> 1095</span> </div>
-<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span><span class="comment">/*  Brief Change History of This File                                         */</span></div>
-<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span><span class="comment">/*  Author              Date             Actions                              */</span></div>
-<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span><span class="comment">/*  Kailei Zhang        Sep/25/2019      Create file                          */</span></div>
-<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span><span class="comment">/*  Chensong Zhang      Sep/16/2021      Restructure file                     */</span></div>
-<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
-<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span> </div>
-<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span><span class="preprocessor">#if 0</span></div>
-<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span> </div>
-<div class="line"><a id="l01108" name="l01108"></a><span class="lineno"> 1108</span><span class="keywordtype">void</span> MAT::YMAX(<span class="keyword">const</span> <a class="code hl_class" href="classVEC.html">VEC</a>&amp; y, <span class="keyword">const</span> <a class="code hl_class" href="classVEC.html">VEC</a>&amp; x, <a class="code hl_class" href="classVEC.html">VEC</a>&amp; r)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> begin, i, k;</div>
-<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>    <span class="keywordflow">if</span> (this-&gt;values.size() &gt; 0) {</div>
-<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>        <span class="keywordflow">for</span> (i = 0; i &lt; this-&gt;<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
-<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>            begin = this-&gt;rowPtr[i];</div>
-<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>            r.values[i] = y.values[i]</div>
-<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span>                          - this-&gt;values[begin] * x.values[this-&gt;colInd[begin]];</div>
-<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>            <span class="keywordflow">for</span> (k = begin + 1; k &lt; this-&gt;rowPtr[i + 1]; ++k)</div>
-<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>                r.values[i] -= this-&gt;values[k] * x.values[this-&gt;colInd[k]];</div>
-<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>        }</div>
-<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>        <span class="keywordflow">for</span> (i = 0; i &lt; this-&gt;<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
-<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>            begin = this-&gt;rowPtr[i];</div>
-<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>            r.values[i] = y.values[i] - x.values[this-&gt;colInd[begin]];</div>
-<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span>            <span class="keywordflow">for</span> (k = begin + 1; k &lt; this-&gt;rowPtr[i + 1]; ++k)</div>
-<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>                r.values[i] -= x.values[this-&gt;colInd[k]];</div>
-<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>        }</div>
-<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span>    }</div>
-<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>}</div>
-<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span> </div>
-<div class="line"><a id="l01129" name="l01129"></a><span class="lineno"> 1129</span><span class="keywordtype">void</span> MAT::GetRow(<span class="keyword">const</span> <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a>&amp; row, std::vector&lt;DBL&gt;&amp; v)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> begin = this-&gt;rowPtr[row], end = this-&gt;rowPtr[row + 1];</div>
-<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>    v.resize(end - begin);</div>
-<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span> </div>
-<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> count = 0;</div>
-<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = begin; j &lt; end; ++j) {</div>
-<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>        v[count] = this-&gt;values[j];</div>
-<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>        ++count;</div>
-<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>    }</div>
-<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>}</div>
-<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span> </div>
-<div class="line"><a id="l01141" name="l01141"></a><span class="lineno"> 1141</span><span class="keywordtype">void</span> MAT::GetCol(<span class="keyword">const</span> <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a>&amp; col, std::vector&lt;DBL&gt;&amp; v)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span>    std::vector&lt;DBL&gt; tmp;</div>
-<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> count = 0;</div>
-<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span>    tmp.resize(this-&gt;nrow);</div>
-<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span> </div>
-<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = 0; j &lt; this-&gt;<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++j) {</div>
-<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>        <span class="keywordflow">if</span> (col &gt;= this-&gt;colInd[this-&gt;rowPtr[j]] ||</div>
-<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span>            col &lt;= this-&gt;colInd[this-&gt;rowPtr[j + 1] - 1]) {</div>
-<div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span>            <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = this-&gt;rowPtr[j]; k &lt; this-&gt;rowPtr[j + 1]; ++k) {</div>
-<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span>                <span class="keywordflow">if</span> (this-&gt;colInd[k] == col) {</div>
-<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span>                    <span class="keywordflow">if</span> (this-&gt;values.size() == 0) {</div>
-<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span>                        tmp[count] = 1.0;</div>
-<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>                    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span>                        tmp[count] = this-&gt;values[k];</div>
-<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>                    }</div>
-<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>                    ++count;</div>
-<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span>                    <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span>                }</div>
-<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span>            }</div>
-<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span>        }</div>
-<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span>    }</div>
-<div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span> </div>
-<div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span>    v = tmp;</div>
-<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span>}</div>
-<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span> </div>
-<div class="line"><a id="l01167" name="l01167"></a><span class="lineno"> 1167</span><span class="keywordtype">void</span> Mult(<span class="keyword">const</span> <a class="code hl_class" href="classMAT.html">MAT</a>&amp; matl, <span class="keyword">const</span> <a class="code hl_class" href="classMAT.html">MAT</a>&amp; matr, <a class="code hl_class" href="classMAT.html">MAT</a>&amp; mat) {</div>
-<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> l, count;</div>
-<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> *tmp = <span class="keyword">new</span> <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a>[matr.<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a>];</div>
-<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span> </div>
-<div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span>    mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a> = matl.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>;</div>
-<div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span>    mat.<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a> = matr.<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a>;</div>
-<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>    mat.rowPtr.resize(mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a> + 1);</div>
-<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span> </div>
-<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; matr.<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a>; ++i) tmp[i] = -1;</div>
-<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span> </div>
-<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
-<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>        count = 0;</div>
-<div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = matl.rowPtr[i]; k &lt; matl.rowPtr[i + 1]; ++k) {</div>
-<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span>            <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = matr.rowPtr[matl.colInd[k]];</div>
-<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>                 j &lt; matr.rowPtr[matl.colInd[k] + 1]; ++j) {</div>
-<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>                <span class="keywordflow">for</span> (l = 0; l &lt; count; ++l) {</div>
-<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>                    <span class="keywordflow">if</span> (tmp[l] == matr.colInd[j]) <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>                }</div>
-<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span>                <span class="keywordflow">if</span> (l == count) {</div>
-<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span>                    tmp[count] = matr.colInd[j];</div>
-<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span>                    ++count;</div>
-<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span>                }</div>
-<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>            }</div>
-<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span>        }</div>
-<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span>        mat.rowPtr[i + 1] = count;</div>
-<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = 0; j &lt; count; ++j) tmp[j] = -1;</div>
-<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span>    }</div>
-<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span> </div>
-<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) mat.rowPtr[i + 1] += mat.rowPtr[i];</div>
-<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span> </div>
-<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> count_tmp;</div>
-<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span> </div>
-<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span>    mat.colInd.resize(mat.rowPtr[mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>]);</div>
-<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span> </div>
-<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
-<div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span>        count_tmp = 0;</div>
-<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span>        count = mat.rowPtr[i];</div>
-<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = matl.rowPtr[i]; k &lt; matl.rowPtr[i + 1]; ++k) {</div>
-<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span>            <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = matr.rowPtr[matl.colInd[k]];</div>
-<div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span>                 j &lt; matr.rowPtr[matl.colInd[k] + 1]; ++j) {</div>
-<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span>                <span class="keywordflow">for</span> (l = 0; l &lt; count_tmp; ++l) {</div>
-<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>                    <span class="keywordflow">if</span> (tmp[l] == matr.colInd[j]) <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span>                }</div>
-<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span>                <span class="keywordflow">if</span> (l == count_tmp) {</div>
-<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span>                    mat.colInd[count] = matr.colInd[j];</div>
-<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>                    tmp[count_tmp] = matr.colInd[j];</div>
-<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>                    ++count;</div>
-<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>                    ++count_tmp;</div>
-<div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span>                }</div>
-<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>            }</div>
-<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>        }</div>
-<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span> </div>
-<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = 0; j &lt; count_tmp; ++j) tmp[j] = -1;</div>
-<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span>    }</div>
-<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span> </div>
-<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span>    <span class="keyword">delete</span>[] tmp;</div>
-<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span>    tmp = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span> </div>
-<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span>    mat.values.resize(mat.rowPtr[mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>]);</div>
-<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span> </div>
-<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
-<div class="line"><a id="l01228" name="l01228"></a><span class="lineno"> 1228</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = mat.rowPtr[i]; j &lt; mat.rowPtr[i + 1]; ++j) {</div>
-<div class="line"><a id="l01229" name="l01229"></a><span class="lineno"> 1229</span>            mat.values[j] = 0;</div>
-<div class="line"><a id="l01230" name="l01230"></a><span class="lineno"> 1230</span>            <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = matl.rowPtr[i]; k &lt; matl.rowPtr[i + 1]; ++k) {</div>
-<div class="line"><a id="l01231" name="l01231"></a><span class="lineno"> 1231</span>                <span class="keywordflow">for</span> (l = matr.rowPtr[matl.colInd[k]];</div>
-<div class="line"><a id="l01232" name="l01232"></a><span class="lineno"> 1232</span>                     l &lt; matr.rowPtr[matl.colInd[k] + 1]; ++l) {</div>
-<div class="line"><a id="l01233" name="l01233"></a><span class="lineno"> 1233</span>                    <span class="keywordflow">if</span> (matr.colInd[l] == mat.colInd[j])</div>
-<div class="line"><a id="l01234" name="l01234"></a><span class="lineno"> 1234</span>                        mat.values[j] += matl.values[k] * matr.values[l];</div>
-<div class="line"><a id="l01235" name="l01235"></a><span class="lineno"> 1235</span>                }</div>
-<div class="line"><a id="l01236" name="l01236"></a><span class="lineno"> 1236</span>            }</div>
-<div class="line"><a id="l01237" name="l01237"></a><span class="lineno"> 1237</span>        }</div>
-<div class="line"><a id="l01238" name="l01238"></a><span class="lineno"> 1238</span>    }</div>
-<div class="line"><a id="l01239" name="l01239"></a><span class="lineno"> 1239</span> </div>
-<div class="line"><a id="l01240" name="l01240"></a><span class="lineno"> 1240</span>    mat.nnz = mat.rowPtr[mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>] - mat.rowPtr[0];</div>
-<div class="line"><a id="l01241" name="l01241"></a><span class="lineno"> 1241</span>}</div>
-<div class="line"><a id="l01242" name="l01242"></a><span class="lineno"> 1242</span> </div>
-<div class="line"><a id="l01243" name="l01243"></a><span class="lineno"> 1243</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l01008" name="l01008"></a><span class="lineno"> 1008</span>        <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> iN = i * N;</div>
+<div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>        y[i]   = b[P[i]];</div>
+<div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = 0; j &lt; i; ++j) y[i] -= L[iN + j] * y[j];</div>
+<div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>    }</div>
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span> </div>
+<div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>    <span class="comment">// backward substitution</span></div>
+<div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a392e62da233ed3e2f7c3fd4f487a3896">INT</a> i = N - 1; i &gt;= 0; --i) { <span class="comment">// To compare with 0. Need signed INT!</span></div>
+<div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>        <a class="code hl_typedef" href="Faspxx_8hxx.html#a392e62da233ed3e2f7c3fd4f487a3896">INT</a> iN = i * N;</div>
+<div class="line"><a id="l01016" name="l01016"></a><span class="lineno"> 1016</span>        x[i]   = y[i];</div>
+<div class="line"><a id="l01017" name="l01017"></a><span class="lineno"> 1017</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a392e62da233ed3e2f7c3fd4f487a3896">INT</a> j = N - 1; j &gt; i; --j) x[i] -= U[iN + j] * x[j];</div>
+<div class="line"><a id="l01018" name="l01018"></a><span class="lineno"> 1018</span>        x[i] /= U[iN + i];</div>
+<div class="line"><a id="l01019" name="l01019"></a><span class="lineno"> 1019</span>    }</div>
+<div class="line"><a id="l01020" name="l01020"></a><span class="lineno"> 1020</span>}</div>
+<div class="line"><a id="l01021" name="l01021"></a><span class="lineno"> 1021</span> </div>
+<div class="line"><a id="l01023" name="l01023"></a><span class="lineno"> 1023</span><a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> MAT::GetNext(<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> m, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> n)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (i % n) * m + i / n; }</div>
+<div class="line"><a id="l01024" name="l01024"></a><span class="lineno"> 1024</span> </div>
+<div class="line"><a id="l01026" name="l01026"></a><span class="lineno"> 1026</span><a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> MAT::GetPre(<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> m, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> n)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> (i % m) * n + i / m; }</div>
+<div class="line"><a id="l01027" name="l01027"></a><span class="lineno"> 1027</span> </div>
+<div class="line"><a id="l01029" name="l01029"></a><span class="lineno"> 1029</span><span class="keywordtype">void</span> MAT::MoveData(std::vector&lt;DBL&gt;&amp; mtx, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> m, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> n)<span class="keyword"> const</span></div>
+<div class="line"><a id="l01030" name="l01030"></a><span class="lineno"> 1030</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l01031" name="l01031"></a><span class="lineno"> 1031</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#afe77621c09892bd17c5fdc9182f5b3ae">DBL</a> temp = mtx[i];</div>
+<div class="line"><a id="l01032" name="l01032"></a><span class="lineno"> 1032</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> cur  = i;</div>
+<div class="line"><a id="l01033" name="l01033"></a><span class="lineno"> 1033</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> pre  = GetPre(cur, m, n);</div>
+<div class="line"><a id="l01034" name="l01034"></a><span class="lineno"> 1034</span>    <span class="keywordflow">while</span> (pre != i) {</div>
+<div class="line"><a id="l01035" name="l01035"></a><span class="lineno"> 1035</span>        mtx[cur] = mtx[pre];</div>
+<div class="line"><a id="l01036" name="l01036"></a><span class="lineno"> 1036</span>        cur      = pre;</div>
+<div class="line"><a id="l01037" name="l01037"></a><span class="lineno"> 1037</span>        pre      = GetPre(cur, m, n);</div>
+<div class="line"><a id="l01038" name="l01038"></a><span class="lineno"> 1038</span>    }</div>
+<div class="line"><a id="l01039" name="l01039"></a><span class="lineno"> 1039</span>    mtx[cur] = temp;</div>
+<div class="line"><a id="l01040" name="l01040"></a><span class="lineno"> 1040</span>}</div>
+<div class="line"><a id="l01041" name="l01041"></a><span class="lineno"> 1041</span> </div>
+<div class="line"><a id="l01043" name="l01043"></a><span class="lineno"> 1043</span><span class="keywordtype">void</span> MAT::Rtranspose(std::vector&lt;DBL&gt;&amp; mtx, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> m, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> n)<span class="keyword"> const</span></div>
+<div class="line"><a id="l01044" name="l01044"></a><span class="lineno"> 1044</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l01045" name="l01045"></a><span class="lineno"> 1045</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; m * n; ++i) {</div>
+<div class="line"><a id="l01046" name="l01046"></a><span class="lineno"> 1046</span>        <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> next = GetNext(i, m, n);</div>
+<div class="line"><a id="l01047" name="l01047"></a><span class="lineno"> 1047</span>        <span class="keywordflow">while</span> (next &gt; i) next = GetNext(next, m, n);</div>
+<div class="line"><a id="l01048" name="l01048"></a><span class="lineno"> 1048</span>        <span class="keywordflow">if</span> (next == i) MoveData(mtx, i, m, n);</div>
+<div class="line"><a id="l01049" name="l01049"></a><span class="lineno"> 1049</span>    }</div>
+<div class="line"><a id="l01050" name="l01050"></a><span class="lineno"> 1050</span>}</div>
+<div class="line"><a id="l01051" name="l01051"></a><span class="lineno"> 1051</span> </div>
+<div class="line"><a id="l01053" name="l01053"></a><span class="lineno"> 1053</span><span class="keywordtype">void</span> MAT::LUPSolveInverse(<span class="keyword">const</span> std::vector&lt;DBL&gt; A, <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> N,</div>
+<div class="line"><a id="l01054" name="l01054"></a><span class="lineno"> 1054</span>                          std::vector&lt;DBL&gt;&amp; inv_A)<span class="keyword"> const</span></div>
+<div class="line"><a id="l01055" name="l01055"></a><span class="lineno"> 1055</span><span class="keyword"></span>{</div>
+<div class="line"><a id="l01056" name="l01056"></a><span class="lineno"> 1056</span>    std::vector&lt;DBL&gt; A_mirror(N * N);</div>
+<div class="line"><a id="l01057" name="l01057"></a><span class="lineno"> 1057</span>    std::vector&lt;DBL&gt; inv_A_each(N);</div>
+<div class="line"><a id="l01058" name="l01058"></a><span class="lineno"> 1058</span>    std::vector&lt;DBL&gt; b(N);</div>
+<div class="line"><a id="l01059" name="l01059"></a><span class="lineno"> 1059</span> </div>
+<div class="line"><a id="l01060" name="l01060"></a><span class="lineno"> 1060</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> count = 0;</div>
+<div class="line"><a id="l01061" name="l01061"></a><span class="lineno"> 1061</span> </div>
+<div class="line"><a id="l01062" name="l01062"></a><span class="lineno"> 1062</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; N; ++i) {</div>
+<div class="line"><a id="l01063" name="l01063"></a><span class="lineno"> 1063</span>        std::vector&lt;DBL&gt; L(N * N);</div>
+<div class="line"><a id="l01064" name="l01064"></a><span class="lineno"> 1064</span>        std::vector&lt;DBL&gt; U(N * N);</div>
+<div class="line"><a id="l01065" name="l01065"></a><span class="lineno"> 1065</span>        std::vector&lt;USI&gt; P(N);</div>
+<div class="line"><a id="l01066" name="l01066"></a><span class="lineno"> 1066</span> </div>
+<div class="line"><a id="l01067" name="l01067"></a><span class="lineno"> 1067</span>        <span class="comment">// Construct each column of unit matrix</span></div>
+<div class="line"><a id="l01068" name="l01068"></a><span class="lineno"> 1068</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = 0; k &lt; N; ++k) b[k] = 0;</div>
+<div class="line"><a id="l01069" name="l01069"></a><span class="lineno"> 1069</span>        b[i] = 1;</div>
+<div class="line"><a id="l01070" name="l01070"></a><span class="lineno"> 1070</span> </div>
+<div class="line"><a id="l01071" name="l01071"></a><span class="lineno"> 1071</span>        <span class="comment">// Need to make a new copy of a every time</span></div>
+<div class="line"><a id="l01072" name="l01072"></a><span class="lineno"> 1072</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = 0; k &lt; N * N; ++k) A_mirror[k] = A[k];</div>
+<div class="line"><a id="l01073" name="l01073"></a><span class="lineno"> 1073</span> </div>
+<div class="line"><a id="l01074" name="l01074"></a><span class="lineno"> 1074</span>        LUPDecomp(A_mirror, L, U, P, N);</div>
+<div class="line"><a id="l01075" name="l01075"></a><span class="lineno"> 1075</span> </div>
+<div class="line"><a id="l01076" name="l01076"></a><span class="lineno"> 1076</span>        LUPSolve(L, U, P, b, N, inv_A_each);</div>
+<div class="line"><a id="l01077" name="l01077"></a><span class="lineno"> 1077</span>        <span class="keywordflow">while</span> (count &lt; N) {</div>
+<div class="line"><a id="l01078" name="l01078"></a><span class="lineno"> 1078</span>            inv_A[i * N + count] = inv_A_each[count];</div>
+<div class="line"><a id="l01079" name="l01079"></a><span class="lineno"> 1079</span>            ++count;</div>
+<div class="line"><a id="l01080" name="l01080"></a><span class="lineno"> 1080</span>        }</div>
+<div class="line"><a id="l01081" name="l01081"></a><span class="lineno"> 1081</span>        count = 0;</div>
+<div class="line"><a id="l01082" name="l01082"></a><span class="lineno"> 1082</span>    }</div>
+<div class="line"><a id="l01083" name="l01083"></a><span class="lineno"> 1083</span> </div>
+<div class="line"><a id="l01084" name="l01084"></a><span class="lineno"> 1084</span>    Rtranspose(inv_A, N, N);</div>
+<div class="line"><a id="l01085" name="l01085"></a><span class="lineno"> 1085</span>}</div>
+<div class="line"><a id="l01086" name="l01086"></a><span class="lineno"> 1086</span> </div>
+<div class="line"><a id="l01088" name="l01088"></a><span class="lineno"><a class="line" href="classIdentityMatrix.html#af3ed9c3c232078482fb11a18359ca651"> 1088</a></span><a class="code hl_function" href="classIdentityMatrix.html#ab4c496dec7c9b7337ce520f7e22a714e">IdentityMatrix::IdentityMatrix</a>(<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> size)</div>
+<div class="line"><a id="l01089" name="l01089"></a><span class="lineno"> 1089</span>{</div>
+<div class="line"><a id="l01090" name="l01090"></a><span class="lineno"> 1090</span>    this-&gt;<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a> = size;</div>
+<div class="line"><a id="l01091" name="l01091"></a><span class="lineno"> 1091</span>    this-&gt;nrow = size;</div>
+<div class="line"><a id="l01092" name="l01092"></a><span class="lineno"> 1092</span>}</div>
+<div class="line"><a id="l01093" name="l01093"></a><span class="lineno"> 1093</span> </div>
+<div class="line"><a id="l01095" name="l01095"></a><span class="lineno"><a class="line" href="classIdentityMatrix.html#ab449b5bb7949620be8c72480c9eef9a0"> 1095</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="classIdentityMatrix.html#ab449b5bb7949620be8c72480c9eef9a0">IdentityMatrix::Apply</a>(<span class="keyword">const</span> <a class="code hl_class" href="classVEC.html">VEC</a>&amp; b, <a class="code hl_class" href="classVEC.html">VEC</a>&amp; x)<span class="keyword"> const </span>{ x = b; }</div>
+<div class="line"><a id="l01096" name="l01096"></a><span class="lineno"> 1096</span> </div>
+<div class="line"><a id="l01097" name="l01097"></a><span class="lineno"> 1097</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l01098" name="l01098"></a><span class="lineno"> 1098</span><span class="comment">/*  Brief Change History of This File                                         */</span></div>
+<div class="line"><a id="l01099" name="l01099"></a><span class="lineno"> 1099</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l01100" name="l01100"></a><span class="lineno"> 1100</span><span class="comment">/*  Author              Date             Actions                              */</span></div>
+<div class="line"><a id="l01101" name="l01101"></a><span class="lineno"> 1101</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l01102" name="l01102"></a><span class="lineno"> 1102</span><span class="comment">/*  Kailei Zhang        Sep/25/2019      Create file                          */</span></div>
+<div class="line"><a id="l01103" name="l01103"></a><span class="lineno"> 1103</span><span class="comment">/*  Chensong Zhang      Sep/16/2021      Restructure file                     */</span></div>
+<div class="line"><a id="l01104" name="l01104"></a><span class="lineno"> 1104</span><span class="comment">/*----------------------------------------------------------------------------*/</span></div>
+<div class="line"><a id="l01105" name="l01105"></a><span class="lineno"> 1105</span> </div>
+<div class="line"><a id="l01106" name="l01106"></a><span class="lineno"> 1106</span><span class="preprocessor">#if 0</span></div>
+<div class="line"><a id="l01107" name="l01107"></a><span class="lineno"> 1107</span> </div>
+<div class="line"><a id="l01109" name="l01109"></a><span class="lineno"> 1109</span><span class="keywordtype">void</span> MAT::YMAX(<span class="keyword">const</span> <a class="code hl_class" href="classVEC.html">VEC</a>&amp; y, <span class="keyword">const</span> <a class="code hl_class" href="classVEC.html">VEC</a>&amp; x, <a class="code hl_class" href="classVEC.html">VEC</a>&amp; r)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l01110" name="l01110"></a><span class="lineno"> 1110</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> begin, i, k;</div>
+<div class="line"><a id="l01111" name="l01111"></a><span class="lineno"> 1111</span>    <span class="keywordflow">if</span> (this-&gt;values.size() &gt; 0) {</div>
+<div class="line"><a id="l01112" name="l01112"></a><span class="lineno"> 1112</span>        <span class="keywordflow">for</span> (i = 0; i &lt; this-&gt;<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
+<div class="line"><a id="l01113" name="l01113"></a><span class="lineno"> 1113</span>            begin = this-&gt;rowPtr[i];</div>
+<div class="line"><a id="l01114" name="l01114"></a><span class="lineno"> 1114</span>            r.values[i] = y.values[i]</div>
+<div class="line"><a id="l01115" name="l01115"></a><span class="lineno"> 1115</span>                          - this-&gt;values[begin] * x.values[this-&gt;colInd[begin]];</div>
+<div class="line"><a id="l01116" name="l01116"></a><span class="lineno"> 1116</span>            <span class="keywordflow">for</span> (k = begin + 1; k &lt; this-&gt;rowPtr[i + 1]; ++k)</div>
+<div class="line"><a id="l01117" name="l01117"></a><span class="lineno"> 1117</span>                r.values[i] -= this-&gt;values[k] * x.values[this-&gt;colInd[k]];</div>
+<div class="line"><a id="l01118" name="l01118"></a><span class="lineno"> 1118</span>        }</div>
+<div class="line"><a id="l01119" name="l01119"></a><span class="lineno"> 1119</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l01120" name="l01120"></a><span class="lineno"> 1120</span>        <span class="keywordflow">for</span> (i = 0; i &lt; this-&gt;<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
+<div class="line"><a id="l01121" name="l01121"></a><span class="lineno"> 1121</span>            begin = this-&gt;rowPtr[i];</div>
+<div class="line"><a id="l01122" name="l01122"></a><span class="lineno"> 1122</span>            r.values[i] = y.values[i] - x.values[this-&gt;colInd[begin]];</div>
+<div class="line"><a id="l01123" name="l01123"></a><span class="lineno"> 1123</span>            <span class="keywordflow">for</span> (k = begin + 1; k &lt; this-&gt;rowPtr[i + 1]; ++k)</div>
+<div class="line"><a id="l01124" name="l01124"></a><span class="lineno"> 1124</span>                r.values[i] -= x.values[this-&gt;colInd[k]];</div>
+<div class="line"><a id="l01125" name="l01125"></a><span class="lineno"> 1125</span>        }</div>
+<div class="line"><a id="l01126" name="l01126"></a><span class="lineno"> 1126</span>    }</div>
+<div class="line"><a id="l01127" name="l01127"></a><span class="lineno"> 1127</span>}</div>
+<div class="line"><a id="l01128" name="l01128"></a><span class="lineno"> 1128</span> </div>
+<div class="line"><a id="l01130" name="l01130"></a><span class="lineno"> 1130</span><span class="keywordtype">void</span> MAT::GetRow(<span class="keyword">const</span> <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a>&amp; row, std::vector&lt;DBL&gt;&amp; v)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l01131" name="l01131"></a><span class="lineno"> 1131</span>    <span class="keyword">const</span> <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> begin = this-&gt;rowPtr[row], end = this-&gt;rowPtr[row + 1];</div>
+<div class="line"><a id="l01132" name="l01132"></a><span class="lineno"> 1132</span>    v.resize(end - begin);</div>
+<div class="line"><a id="l01133" name="l01133"></a><span class="lineno"> 1133</span> </div>
+<div class="line"><a id="l01134" name="l01134"></a><span class="lineno"> 1134</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> count = 0;</div>
+<div class="line"><a id="l01135" name="l01135"></a><span class="lineno"> 1135</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = begin; j &lt; end; ++j) {</div>
+<div class="line"><a id="l01136" name="l01136"></a><span class="lineno"> 1136</span>        v[count] = this-&gt;values[j];</div>
+<div class="line"><a id="l01137" name="l01137"></a><span class="lineno"> 1137</span>        ++count;</div>
+<div class="line"><a id="l01138" name="l01138"></a><span class="lineno"> 1138</span>    }</div>
+<div class="line"><a id="l01139" name="l01139"></a><span class="lineno"> 1139</span>}</div>
+<div class="line"><a id="l01140" name="l01140"></a><span class="lineno"> 1140</span> </div>
+<div class="line"><a id="l01142" name="l01142"></a><span class="lineno"> 1142</span><span class="keywordtype">void</span> MAT::GetCol(<span class="keyword">const</span> <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a>&amp; col, std::vector&lt;DBL&gt;&amp; v)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l01143" name="l01143"></a><span class="lineno"> 1143</span>    std::vector&lt;DBL&gt; tmp;</div>
+<div class="line"><a id="l01144" name="l01144"></a><span class="lineno"> 1144</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> count = 0;</div>
+<div class="line"><a id="l01145" name="l01145"></a><span class="lineno"> 1145</span>    tmp.resize(this-&gt;nrow);</div>
+<div class="line"><a id="l01146" name="l01146"></a><span class="lineno"> 1146</span> </div>
+<div class="line"><a id="l01147" name="l01147"></a><span class="lineno"> 1147</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = 0; j &lt; this-&gt;<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++j) {</div>
+<div class="line"><a id="l01148" name="l01148"></a><span class="lineno"> 1148</span>        <span class="keywordflow">if</span> (col &gt;= this-&gt;colInd[this-&gt;rowPtr[j]] ||</div>
+<div class="line"><a id="l01149" name="l01149"></a><span class="lineno"> 1149</span>            col &lt;= this-&gt;colInd[this-&gt;rowPtr[j + 1] - 1]) {</div>
+<div class="line"><a id="l01150" name="l01150"></a><span class="lineno"> 1150</span>            <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = this-&gt;rowPtr[j]; k &lt; this-&gt;rowPtr[j + 1]; ++k) {</div>
+<div class="line"><a id="l01151" name="l01151"></a><span class="lineno"> 1151</span>                <span class="keywordflow">if</span> (this-&gt;colInd[k] == col) {</div>
+<div class="line"><a id="l01152" name="l01152"></a><span class="lineno"> 1152</span>                    <span class="keywordflow">if</span> (this-&gt;values.size() == 0) {</div>
+<div class="line"><a id="l01153" name="l01153"></a><span class="lineno"> 1153</span>                        tmp[count] = 1.0;</div>
+<div class="line"><a id="l01154" name="l01154"></a><span class="lineno"> 1154</span>                    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l01155" name="l01155"></a><span class="lineno"> 1155</span>                        tmp[count] = this-&gt;values[k];</div>
+<div class="line"><a id="l01156" name="l01156"></a><span class="lineno"> 1156</span>                    }</div>
+<div class="line"><a id="l01157" name="l01157"></a><span class="lineno"> 1157</span>                    ++count;</div>
+<div class="line"><a id="l01158" name="l01158"></a><span class="lineno"> 1158</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01159" name="l01159"></a><span class="lineno"> 1159</span>                }</div>
+<div class="line"><a id="l01160" name="l01160"></a><span class="lineno"> 1160</span>            }</div>
+<div class="line"><a id="l01161" name="l01161"></a><span class="lineno"> 1161</span>        }</div>
+<div class="line"><a id="l01162" name="l01162"></a><span class="lineno"> 1162</span>    }</div>
+<div class="line"><a id="l01163" name="l01163"></a><span class="lineno"> 1163</span> </div>
+<div class="line"><a id="l01164" name="l01164"></a><span class="lineno"> 1164</span>    v = tmp;</div>
+<div class="line"><a id="l01165" name="l01165"></a><span class="lineno"> 1165</span>}</div>
+<div class="line"><a id="l01166" name="l01166"></a><span class="lineno"> 1166</span> </div>
+<div class="line"><a id="l01168" name="l01168"></a><span class="lineno"> 1168</span><span class="keywordtype">void</span> Mult(<span class="keyword">const</span> <a class="code hl_class" href="classMAT.html">MAT</a>&amp; matl, <span class="keyword">const</span> <a class="code hl_class" href="classMAT.html">MAT</a>&amp; matr, <a class="code hl_class" href="classMAT.html">MAT</a>&amp; mat) {</div>
+<div class="line"><a id="l01169" name="l01169"></a><span class="lineno"> 1169</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> l, count;</div>
+<div class="line"><a id="l01170" name="l01170"></a><span class="lineno"> 1170</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> *tmp = <span class="keyword">new</span> <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a>[matr.<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a>];</div>
+<div class="line"><a id="l01171" name="l01171"></a><span class="lineno"> 1171</span> </div>
+<div class="line"><a id="l01172" name="l01172"></a><span class="lineno"> 1172</span>    mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a> = matl.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>;</div>
+<div class="line"><a id="l01173" name="l01173"></a><span class="lineno"> 1173</span>    mat.<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a> = matr.<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a>;</div>
+<div class="line"><a id="l01174" name="l01174"></a><span class="lineno"> 1174</span>    mat.rowPtr.resize(mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a> + 1);</div>
+<div class="line"><a id="l01175" name="l01175"></a><span class="lineno"> 1175</span> </div>
+<div class="line"><a id="l01176" name="l01176"></a><span class="lineno"> 1176</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; matr.<a class="code hl_variable" href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">mcol</a>; ++i) tmp[i] = -1;</div>
+<div class="line"><a id="l01177" name="l01177"></a><span class="lineno"> 1177</span> </div>
+<div class="line"><a id="l01178" name="l01178"></a><span class="lineno"> 1178</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
+<div class="line"><a id="l01179" name="l01179"></a><span class="lineno"> 1179</span>        count = 0;</div>
+<div class="line"><a id="l01180" name="l01180"></a><span class="lineno"> 1180</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = matl.rowPtr[i]; k &lt; matl.rowPtr[i + 1]; ++k) {</div>
+<div class="line"><a id="l01181" name="l01181"></a><span class="lineno"> 1181</span>            <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = matr.rowPtr[matl.colInd[k]];</div>
+<div class="line"><a id="l01182" name="l01182"></a><span class="lineno"> 1182</span>                 j &lt; matr.rowPtr[matl.colInd[k] + 1]; ++j) {</div>
+<div class="line"><a id="l01183" name="l01183"></a><span class="lineno"> 1183</span>                <span class="keywordflow">for</span> (l = 0; l &lt; count; ++l) {</div>
+<div class="line"><a id="l01184" name="l01184"></a><span class="lineno"> 1184</span>                    <span class="keywordflow">if</span> (tmp[l] == matr.colInd[j]) <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01185" name="l01185"></a><span class="lineno"> 1185</span>                }</div>
+<div class="line"><a id="l01186" name="l01186"></a><span class="lineno"> 1186</span>                <span class="keywordflow">if</span> (l == count) {</div>
+<div class="line"><a id="l01187" name="l01187"></a><span class="lineno"> 1187</span>                    tmp[count] = matr.colInd[j];</div>
+<div class="line"><a id="l01188" name="l01188"></a><span class="lineno"> 1188</span>                    ++count;</div>
+<div class="line"><a id="l01189" name="l01189"></a><span class="lineno"> 1189</span>                }</div>
+<div class="line"><a id="l01190" name="l01190"></a><span class="lineno"> 1190</span>            }</div>
+<div class="line"><a id="l01191" name="l01191"></a><span class="lineno"> 1191</span>        }</div>
+<div class="line"><a id="l01192" name="l01192"></a><span class="lineno"> 1192</span>        mat.rowPtr[i + 1] = count;</div>
+<div class="line"><a id="l01193" name="l01193"></a><span class="lineno"> 1193</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = 0; j &lt; count; ++j) tmp[j] = -1;</div>
+<div class="line"><a id="l01194" name="l01194"></a><span class="lineno"> 1194</span>    }</div>
+<div class="line"><a id="l01195" name="l01195"></a><span class="lineno"> 1195</span> </div>
+<div class="line"><a id="l01196" name="l01196"></a><span class="lineno"> 1196</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) mat.rowPtr[i + 1] += mat.rowPtr[i];</div>
+<div class="line"><a id="l01197" name="l01197"></a><span class="lineno"> 1197</span> </div>
+<div class="line"><a id="l01198" name="l01198"></a><span class="lineno"> 1198</span>    <a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> count_tmp;</div>
+<div class="line"><a id="l01199" name="l01199"></a><span class="lineno"> 1199</span> </div>
+<div class="line"><a id="l01200" name="l01200"></a><span class="lineno"> 1200</span>    mat.colInd.resize(mat.rowPtr[mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>]);</div>
+<div class="line"><a id="l01201" name="l01201"></a><span class="lineno"> 1201</span> </div>
+<div class="line"><a id="l01202" name="l01202"></a><span class="lineno"> 1202</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
+<div class="line"><a id="l01203" name="l01203"></a><span class="lineno"> 1203</span>        count_tmp = 0;</div>
+<div class="line"><a id="l01204" name="l01204"></a><span class="lineno"> 1204</span>        count = mat.rowPtr[i];</div>
+<div class="line"><a id="l01205" name="l01205"></a><span class="lineno"> 1205</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = matl.rowPtr[i]; k &lt; matl.rowPtr[i + 1]; ++k) {</div>
+<div class="line"><a id="l01206" name="l01206"></a><span class="lineno"> 1206</span>            <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = matr.rowPtr[matl.colInd[k]];</div>
+<div class="line"><a id="l01207" name="l01207"></a><span class="lineno"> 1207</span>                 j &lt; matr.rowPtr[matl.colInd[k] + 1]; ++j) {</div>
+<div class="line"><a id="l01208" name="l01208"></a><span class="lineno"> 1208</span>                <span class="keywordflow">for</span> (l = 0; l &lt; count_tmp; ++l) {</div>
+<div class="line"><a id="l01209" name="l01209"></a><span class="lineno"> 1209</span>                    <span class="keywordflow">if</span> (tmp[l] == matr.colInd[j]) <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l01210" name="l01210"></a><span class="lineno"> 1210</span>                }</div>
+<div class="line"><a id="l01211" name="l01211"></a><span class="lineno"> 1211</span>                <span class="keywordflow">if</span> (l == count_tmp) {</div>
+<div class="line"><a id="l01212" name="l01212"></a><span class="lineno"> 1212</span>                    mat.colInd[count] = matr.colInd[j];</div>
+<div class="line"><a id="l01213" name="l01213"></a><span class="lineno"> 1213</span>                    tmp[count_tmp] = matr.colInd[j];</div>
+<div class="line"><a id="l01214" name="l01214"></a><span class="lineno"> 1214</span>                    ++count;</div>
+<div class="line"><a id="l01215" name="l01215"></a><span class="lineno"> 1215</span>                    ++count_tmp;</div>
+<div class="line"><a id="l01216" name="l01216"></a><span class="lineno"> 1216</span>                }</div>
+<div class="line"><a id="l01217" name="l01217"></a><span class="lineno"> 1217</span>            }</div>
+<div class="line"><a id="l01218" name="l01218"></a><span class="lineno"> 1218</span>        }</div>
+<div class="line"><a id="l01219" name="l01219"></a><span class="lineno"> 1219</span> </div>
+<div class="line"><a id="l01220" name="l01220"></a><span class="lineno"> 1220</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = 0; j &lt; count_tmp; ++j) tmp[j] = -1;</div>
+<div class="line"><a id="l01221" name="l01221"></a><span class="lineno"> 1221</span>    }</div>
+<div class="line"><a id="l01222" name="l01222"></a><span class="lineno"> 1222</span> </div>
+<div class="line"><a id="l01223" name="l01223"></a><span class="lineno"> 1223</span>    <span class="keyword">delete</span>[] tmp;</div>
+<div class="line"><a id="l01224" name="l01224"></a><span class="lineno"> 1224</span>    tmp = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l01225" name="l01225"></a><span class="lineno"> 1225</span> </div>
+<div class="line"><a id="l01226" name="l01226"></a><span class="lineno"> 1226</span>    mat.values.resize(mat.rowPtr[mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>]);</div>
+<div class="line"><a id="l01227" name="l01227"></a><span class="lineno"> 1227</span> </div>
+<div class="line"><a id="l01228" name="l01228"></a><span class="lineno"> 1228</span>    <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> i = 0; i &lt; mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>; ++i) {</div>
+<div class="line"><a id="l01229" name="l01229"></a><span class="lineno"> 1229</span>        <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> j = mat.rowPtr[i]; j &lt; mat.rowPtr[i + 1]; ++j) {</div>
+<div class="line"><a id="l01230" name="l01230"></a><span class="lineno"> 1230</span>            mat.values[j] = 0;</div>
+<div class="line"><a id="l01231" name="l01231"></a><span class="lineno"> 1231</span>            <span class="keywordflow">for</span> (<a class="code hl_typedef" href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a> k = matl.rowPtr[i]; k &lt; matl.rowPtr[i + 1]; ++k) {</div>
+<div class="line"><a id="l01232" name="l01232"></a><span class="lineno"> 1232</span>                <span class="keywordflow">for</span> (l = matr.rowPtr[matl.colInd[k]];</div>
+<div class="line"><a id="l01233" name="l01233"></a><span class="lineno"> 1233</span>                     l &lt; matr.rowPtr[matl.colInd[k] + 1]; ++l) {</div>
+<div class="line"><a id="l01234" name="l01234"></a><span class="lineno"> 1234</span>                    <span class="keywordflow">if</span> (matr.colInd[l] == mat.colInd[j])</div>
+<div class="line"><a id="l01235" name="l01235"></a><span class="lineno"> 1235</span>                        mat.values[j] += matl.values[k] * matr.values[l];</div>
+<div class="line"><a id="l01236" name="l01236"></a><span class="lineno"> 1236</span>                }</div>
+<div class="line"><a id="l01237" name="l01237"></a><span class="lineno"> 1237</span>            }</div>
+<div class="line"><a id="l01238" name="l01238"></a><span class="lineno"> 1238</span>        }</div>
+<div class="line"><a id="l01239" name="l01239"></a><span class="lineno"> 1239</span>    }</div>
+<div class="line"><a id="l01240" name="l01240"></a><span class="lineno"> 1240</span> </div>
+<div class="line"><a id="l01241" name="l01241"></a><span class="lineno"> 1241</span>    mat.nnz = mat.rowPtr[mat.<a class="code hl_variable" href="classLOP.html#aad69380dea64ddc00626c60b8e81f0df">nrow</a>] - mat.rowPtr[0];</div>
+<div class="line"><a id="l01242" name="l01242"></a><span class="lineno"> 1242</span>}</div>
+<div class="line"><a id="l01243" name="l01243"></a><span class="lineno"> 1243</span> </div>
+<div class="line"><a id="l01244" name="l01244"></a><span class="lineno"> 1244</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aFaspxx_8hxx_html_a24bc11890ea853a38fd9d6b843633b1b"><div class="ttname"><a href="Faspxx_8hxx.html#a24bc11890ea853a38fd9d6b843633b1b">USI</a></div><div class="ttdeci">unsigned int USI</div><div class="ttdoc">Unsigned integer numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00020">Faspxx.hxx:20</a></div></div>
+<div class="ttc" id="aFaspxx_8hxx_html_a392e62da233ed3e2f7c3fd4f487a3896"><div class="ttname"><a href="Faspxx_8hxx.html#a392e62da233ed3e2f7c3fd4f487a3896">INT</a></div><div class="ttdeci">int INT</div><div class="ttdoc">Regular integer numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00019">Faspxx.hxx:19</a></div></div>
 <div class="ttc" id="aFaspxx_8hxx_html_a90933e3ce6651e67e6d62514b37b4211"><div class="ttname"><a href="Faspxx_8hxx.html#a90933e3ce6651e67e6d62514b37b4211">CLOSE_ZERO</a></div><div class="ttdeci">const DBL CLOSE_ZERO</div><div class="ttdoc">Tolerance for almost zero.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00030">Faspxx.hxx:30</a></div></div>
 <div class="ttc" id="aFaspxx_8hxx_html_afe77621c09892bd17c5fdc9182f5b3ae"><div class="ttname"><a href="Faspxx_8hxx.html#afe77621c09892bd17c5fdc9182f5b3ae">DBL</a></div><div class="ttdeci">double DBL</div><div class="ttdoc">Double precision numbers.</div><div class="ttdef"><b>Definition:</b> <a href="Faspxx_8hxx_source.html#l00021">Faspxx.hxx:21</a></div></div>
 <div class="ttc" id="aMATUtil_8cxx_html_a15d95391eeecf54e014c268d0c9ec9d9"><div class="ttname"><a href="MATUtil_8cxx.html#a15d95391eeecf54e014c268d0c9ec9d9">SortCSRRow</a></div><div class="ttdeci">FaspRetCode SortCSRRow(const USI &amp;row, const USI &amp;col, const USI &amp;nnz, const std::vector&lt; USI &gt; &amp;rowPtr, std::vector&lt; USI &gt; &amp;colInd, std::vector&lt; DBL &gt; &amp;values)</div><div class="ttdoc">Sort &quot;colInd&quot; of each row in ascending order and rearrange &quot;values&quot; accordingly.</div><div class="ttdef"><b>Definition:</b> <a href="MATUtil_8cxx_source.html#l00439">MATUtil.cxx:439</a></div></div>
@@ -1264,7 +1266,7 @@ $(function() {
 <div class="ttc" id="aMAT_8cxx_html_acda3057f226d59aa2ad882348b67e4d9"><div class="ttname"><a href="MAT_8cxx.html#acda3057f226d59aa2ad882348b67e4d9">WriteMTX</a></div><div class="ttdeci">void WriteMTX(char *filename, MAT mat)</div><div class="ttdoc">Write data to a disk file in MTX format.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00898">MAT.cxx:898</a></div></div>
 <div class="ttc" id="aMAT_8hxx_html"><div class="ttname"><a href="MAT_8hxx.html">MAT.hxx</a></div><div class="ttdoc">Matrix class declaration.</div></div>
 <div class="ttc" id="aclassFaspBadAlloc_html"><div class="ttname"><a href="classFaspBadAlloc.html">FaspBadAlloc</a></div><div class="ttdoc">Allocation exception capturing class.</div><div class="ttdef"><b>Definition:</b> <a href="RetCode_8hxx_source.html#l00094">RetCode.hxx:95</a></div></div>
-<div class="ttc" id="aclassIdentityMatrix_html_ab449b5bb7949620be8c72480c9eef9a0"><div class="ttname"><a href="classIdentityMatrix.html#ab449b5bb7949620be8c72480c9eef9a0">IdentityMatrix::Apply</a></div><div class="ttdeci">void Apply(const VEC &amp;b, VEC &amp;x) const override</div><div class="ttdoc">Iterator for identity.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l01094">MAT.cxx:1094</a></div></div>
+<div class="ttc" id="aclassIdentityMatrix_html_ab449b5bb7949620be8c72480c9eef9a0"><div class="ttname"><a href="classIdentityMatrix.html#ab449b5bb7949620be8c72480c9eef9a0">IdentityMatrix::Apply</a></div><div class="ttdeci">void Apply(const VEC &amp;b, VEC &amp;x) const override</div><div class="ttdoc">Iterator for identity.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l01095">MAT.cxx:1095</a></div></div>
 <div class="ttc" id="aclassIdentityMatrix_html_ab4c496dec7c9b7337ce520f7e22a714e"><div class="ttname"><a href="classIdentityMatrix.html#ab4c496dec7c9b7337ce520f7e22a714e">IdentityMatrix::IdentityMatrix</a></div><div class="ttdeci">IdentityMatrix()=default</div><div class="ttdoc">Default constructor, all size.</div></div>
 <div class="ttc" id="aclassLOP_html_a38fa05114a9483ea6ac2aaa3f01eb238"><div class="ttname"><a href="classLOP.html#a38fa05114a9483ea6ac2aaa3f01eb238">LOP::GetRowSize</a></div><div class="ttdeci">USI GetRowSize() const</div><div class="ttdoc">Get row space dimension.</div><div class="ttdef"><b>Definition:</b> <a href="LOP_8cxx_source.html#l00046">LOP.cxx:46</a></div></div>
 <div class="ttc" id="aclassLOP_html_a991c665620eab3b47060eceb90fee7f9"><div class="ttname"><a href="classLOP.html#a991c665620eab3b47060eceb90fee7f9">LOP::mcol</a></div><div class="ttdeci">USI mcol</div><div class="ttdoc">dimension of origin space</div><div class="ttdef"><b>Definition:</b> <a href="LOP_8hxx_source.html#l00026">LOP.hxx:26</a></div></div>
@@ -1273,10 +1275,10 @@ $(function() {
 <div class="ttc" id="aclassMAT_html_a1919fafad88b2233beea7f869bc2f869"><div class="ttname"><a href="classMAT.html#a1919fafad88b2233beea7f869bc2f869">MAT::GetLowerTri</a></div><div class="ttdeci">void GetLowerTri(MAT &amp;lTri) const</div><div class="ttdoc">Get the lower triangular matrix.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00290">MAT.cxx:290</a></div></div>
 <div class="ttc" id="aclassMAT_html_a23975f5f91fc6a01056e825c37d5a621"><div class="ttname"><a href="classMAT.html#a23975f5f91fc6a01056e825c37d5a621">MAT::TransInPlace</a></div><div class="ttdeci">void TransInPlace()</div><div class="ttdoc">Form transpose of the matrix in place.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00479">MAT.cxx:479</a></div></div>
 <div class="ttc" id="aclassMAT_html_a23e2de1ea2466e8b84444b9f83e2b1be"><div class="ttname"><a href="classMAT.html#a23e2de1ea2466e8b84444b9f83e2b1be">MAT::MAT</a></div><div class="ttdeci">MAT()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8hxx_source.html#l00057">MAT.hxx:57</a></div></div>
-<div class="ttc" id="aclassMAT_html_a25a86ab04582c1423679c8f8cda94dfd"><div class="ttname"><a href="classMAT.html#a25a86ab04582c1423679c8f8cda94dfd">MAT::MultRight</a></div><div class="ttdeci">void MultRight(const MAT &amp;mat)</div><div class="ttdoc">*this = mat * *this</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00812">MAT.cxx:812</a></div></div>
+<div class="ttc" id="aclassMAT_html_a25a86ab04582c1423679c8f8cda94dfd"><div class="ttname"><a href="classMAT.html#a25a86ab04582c1423679c8f8cda94dfd">MAT::MultRight</a></div><div class="ttdeci">void MultRight(const MAT &amp;mat)</div><div class="ttdoc">Compute *this = mat * *this.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00812">MAT.cxx:812</a></div></div>
 <div class="ttc" id="aclassMAT_html_a3f5c39b83ed4d779bdc0cddf100227c2"><div class="ttname"><a href="classMAT.html#a3f5c39b83ed4d779bdc0cddf100227c2">MAT::MultTransposeAdd</a></div><div class="ttdeci">void MultTransposeAdd(const VEC &amp;v1, const VEC &amp;v2, VEC &amp;v) const</div><div class="ttdoc">Compute transpose of A multiply by v1 plus v2.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00541">MAT.cxx:541</a></div></div>
 <div class="ttc" id="aclassMAT_html_a44785ccfb0479938ee0e44a101db7ea6"><div class="ttname"><a href="classMAT.html#a44785ccfb0479938ee0e44a101db7ea6">MAT::GetDiagInv</a></div><div class="ttdeci">void GetDiagInv(MAT &amp;m) const</div><div class="ttdoc">Get reciprocal diagonal entries and save them in a MAT object.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00270">MAT.cxx:270</a></div></div>
-<div class="ttc" id="aclassMAT_html_a633f22b88287c68c76521892cca5166f"><div class="ttname"><a href="classMAT.html#a633f22b88287c68c76521892cca5166f">MAT::Mult</a></div><div class="ttdeci">void Mult(const MAT &amp;matl, const MAT &amp;matr)</div><div class="ttdoc">*this = matl * matr</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00722">MAT.cxx:722</a></div></div>
+<div class="ttc" id="aclassMAT_html_a633f22b88287c68c76521892cca5166f"><div class="ttname"><a href="classMAT.html#a633f22b88287c68c76521892cca5166f">MAT::Mult</a></div><div class="ttdeci">void Mult(const MAT &amp;matl, const MAT &amp;matr)</div><div class="ttdoc">Compute *this = matl * matr.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00722">MAT.cxx:722</a></div></div>
 <div class="ttc" id="aclassMAT_html_a80b4324553c5e1aee3afffafe2a3d103"><div class="ttname"><a href="classMAT.html#a80b4324553c5e1aee3afffafe2a3d103">MAT::Zero</a></div><div class="ttdeci">void Zero()</div><div class="ttdoc">Set the matrix to a zero matrix.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00367">MAT.cxx:367</a></div></div>
 <div class="ttc" id="aclassMAT_html_a8b65bd8bd3c902f13c2f1a367671d12b"><div class="ttname"><a href="classMAT.html#a8b65bd8bd3c902f13c2f1a367671d12b">MAT::CopyTo</a></div><div class="ttdeci">void CopyTo(MAT &amp;mat) const</div><div class="ttdoc">Copy the matrix to another MAT object.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00348">MAT.cxx:348</a></div></div>
 <div class="ttc" id="aclassMAT_html_a9a69d83b29929f78f9886ed6374b4575"><div class="ttname"><a href="classMAT.html#a9a69d83b29929f78f9886ed6374b4575">MAT::Scale</a></div><div class="ttdeci">void Scale(const DBL a)</div><div class="ttdoc">Scale the matrix with a scalar.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00351">MAT.cxx:351</a></div></div>
@@ -1288,13 +1290,13 @@ $(function() {
 <div class="ttc" id="aclassMAT_html_ab661b216f58b78921751ee4985b68f8d"><div class="ttname"><a href="classMAT.html#ab661b216f58b78921751ee4985b68f8d">MAT::GetUpperTri</a></div><div class="ttdeci">void GetUpperTri(MAT &amp;uTri) const</div><div class="ttdoc">Get the upper triangular matrix.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00319">MAT.cxx:319</a></div></div>
 <div class="ttc" id="aclassMAT_html_abcf9b76e512928d10ed1990f4d2e08f2"><div class="ttname"><a href="classMAT.html#abcf9b76e512928d10ed1990f4d2e08f2">MAT::GetValues</a></div><div class="ttdeci">double * GetValues() const</div><div class="ttdoc">Get the values of the matrix.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00627">MAT.cxx:627</a></div></div>
 <div class="ttc" id="aclassMAT_html_abfd737f68d90b635196ea96ce256f9b5"><div class="ttname"><a href="classMAT.html#abfd737f68d90b635196ea96ce256f9b5">MAT::GetNNZ</a></div><div class="ttdeci">USI GetNNZ() const</div><div class="ttdoc">Get number of nonzeros of the matrix.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00253">MAT.cxx:253</a></div></div>
-<div class="ttc" id="aclassMAT_html_ac63dfa4bc153d37847dd44f64ba69d79"><div class="ttname"><a href="classMAT.html#ac63dfa4bc153d37847dd44f64ba69d79">MAT::Add</a></div><div class="ttdeci">void Add(const DBL a, const MAT &amp;mat1, const DBL b, const MAT &amp;mat2)</div><div class="ttdoc">*this = a * mat1 + b * mat2</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00652">MAT.cxx:652</a></div></div>
+<div class="ttc" id="aclassMAT_html_ac63dfa4bc153d37847dd44f64ba69d79"><div class="ttname"><a href="classMAT.html#ac63dfa4bc153d37847dd44f64ba69d79">MAT::Add</a></div><div class="ttdeci">void Add(const DBL a, const MAT &amp;mat1, const DBL b, const MAT &amp;mat2)</div><div class="ttdoc">Compute *this = a * mat1 + b * mat2.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00652">MAT.cxx:652</a></div></div>
 <div class="ttc" id="aclassMAT_html_adb95378313a8ec24ca30eb3e6145ca63"><div class="ttname"><a href="classMAT.html#adb95378313a8ec24ca30eb3e6145ca63">MAT::Apply</a></div><div class="ttdeci">void Apply(const VEC &amp;v, VEC &amp;w) const</div><div class="ttdoc">Sparse matrix-vector multiplication.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00373">MAT.cxx:373</a></div></div>
 <div class="ttc" id="aclassMAT_html_add546a8c2a4e5673a95867de04626c60"><div class="ttname"><a href="classMAT.html#add546a8c2a4e5673a95867de04626c60">MAT::Residual</a></div><div class="ttdeci">void Residual(const VEC &amp;b, const VEC &amp;x, VEC &amp;r) const</div><div class="ttdoc">Residual b - Ax.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00455">MAT.cxx:455</a></div></div>
 <div class="ttc" id="aclassMAT_html_ae0cb843679cbd2e73146a41c71c9ac3d"><div class="ttname"><a href="classMAT.html#ae0cb843679cbd2e73146a41c71c9ac3d">MAT::operator=</a></div><div class="ttdeci">MAT &amp; operator=(const MAT &amp;mat)</div><div class="ttdoc">Overload = operator.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00201">MAT.cxx:201</a></div></div>
 <div class="ttc" id="aclassMAT_html_af41589b29b19ba659c43af3f0c8e90ae"><div class="ttname"><a href="classMAT.html#af41589b29b19ba659c43af3f0c8e90ae">MAT::SetValues</a></div><div class="ttdeci">void SetValues(const USI &amp;nrow, const USI &amp;mcol, const USI &amp;nnz, const std::vector&lt; DBL &gt; &amp;values, const std::vector&lt; USI &gt; &amp;colInd, const std::vector&lt; USI &gt; &amp;rowPtr, const std::vector&lt; USI &gt; &amp;diagPtr)</div><div class="ttdoc">Set values of the matrix with CSRx format.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00215">MAT.cxx:215</a></div></div>
-<div class="ttc" id="aclassMAT_html_afb27f2c79d5423ed1db6b276be61ecf1"><div class="ttname"><a href="classMAT.html#afb27f2c79d5423ed1db6b276be61ecf1">MAT::Inverse</a></div><div class="ttdeci">void Inverse(MAT &amp;invmat) const</div><div class="ttdoc">invmat = Inverse(*this)</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00821">MAT.cxx:821</a></div></div>
-<div class="ttc" id="aclassMAT_html_afdaa1dec1b6438367c0b9d1fd77539ea"><div class="ttname"><a href="classMAT.html#afdaa1dec1b6438367c0b9d1fd77539ea">MAT::MultLeft</a></div><div class="ttdeci">void MultLeft(const MAT &amp;mat)</div><div class="ttdoc">*this = *this * mat</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00803">MAT.cxx:803</a></div></div>
+<div class="ttc" id="aclassMAT_html_afb27f2c79d5423ed1db6b276be61ecf1"><div class="ttname"><a href="classMAT.html#afb27f2c79d5423ed1db6b276be61ecf1">MAT::Inverse</a></div><div class="ttdeci">void Inverse(MAT &amp;invmat) const</div><div class="ttdoc">Compute invmat = Inverse(*this).</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00821">MAT.cxx:821</a></div></div>
+<div class="ttc" id="aclassMAT_html_afdaa1dec1b6438367c0b9d1fd77539ea"><div class="ttname"><a href="classMAT.html#afdaa1dec1b6438367c0b9d1fd77539ea">MAT::MultLeft</a></div><div class="ttdeci">void MultLeft(const MAT &amp;mat)</div><div class="ttdoc">Compute *this = *this * mat.</div><div class="ttdef"><b>Definition:</b> <a href="MAT_8cxx_source.html#l00803">MAT.cxx:803</a></div></div>
 <div class="ttc" id="aclassVEC_html"><div class="ttname"><a href="classVEC.html">VEC</a></div><div class="ttdoc">General vector class.</div><div class="ttdef"><b>Definition:</b> <a href="VEC_8hxx_source.html#l00025">VEC.hxx:26</a></div></div>
 <div class="ttc" id="aclassVEC_html_a13ebb4823ceada708ed0303cf4daeef7"><div class="ttname"><a href="classVEC.html#a13ebb4823ceada708ed0303cf4daeef7">VEC::GetSize</a></div><div class="ttdeci">USI GetSize() const</div><div class="ttdoc">Get the size of *this.</div><div class="ttdef"><b>Definition:</b> <a href="VEC_8cxx_source.html#l00145">VEC.cxx:145</a></div></div>
 <div class="ttc" id="aclassVEC_html_a2866a7e40d972ff36e78ab412cefbc09"><div class="ttname"><a href="classVEC.html#a2866a7e40d972ff36e78ab412cefbc09">VEC::Norm2</a></div><div class="ttdeci">DBL Norm2() const</div><div class="ttdoc">Compute Euclidean norm.</div><div class="ttdef"><b>Definition:</b> <a href="VEC_8cxx_source.html#l00412">VEC.cxx:412</a></div></div>
