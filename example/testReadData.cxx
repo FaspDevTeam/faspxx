@@ -24,9 +24,9 @@ int main()
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
 
     // Read a MTX matrix from file
-    INT              row, col, nnz;
-    std::vector<INT> rowInd; // row index i
-    std::vector<INT> colInd; // col index j
+    USI              row, col, nnz;
+    std::vector<USI> rowInd; // row index i
+    std::vector<USI> colInd; // col index j
     std::vector<DBL> values; // entry(i,j)
 
     // There are two test matrix nos7.mtx and nos7-.mtx. The difference is nos7-.mtx

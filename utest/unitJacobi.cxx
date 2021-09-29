@@ -9,11 +9,14 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Standard header files
 #include <gtest/gtest.h>
 #include <vector>
-using std::vector;
 
+// FASPXX header files
 #include "Iter.hxx"
+
+using std::vector;
 
 /*---------------------------------*/
 /*--     Beginning of TEST       --*/
@@ -21,7 +24,7 @@ using std::vector;
 
 TEST(WeightedJacobi, JacobiSolve2)
 {
-    const INT row = 2, col = 2, nnz = 4;
+    const USI row = 2, col = 2, nnz = 4;
 
     // true solutions (from octave) : 0.19231 0.11538
     vector<DBL> xstar({0.19231, 0.11538});
@@ -33,18 +36,18 @@ TEST(WeightedJacobi, JacobiSolve2)
     value[2] = 1;
     value[3] = 7;
 
-    vector<INT> colInd(4);
+    vector<USI> colInd(4);
     colInd[0] = 0;
     colInd[1] = 1;
     colInd[2] = 0;
     colInd[3] = 1;
 
-    vector<INT> rowPtr(3);
+    vector<USI> rowPtr(3);
     rowPtr[0] = 0;
     rowPtr[1] = 2;
     rowPtr[2] = 4;
 
-    vector<INT> diagPtr(2);
+    vector<USI> diagPtr(2);
     diagPtr[0] = 0;
     diagPtr[1] = 3;
 
@@ -68,22 +71,22 @@ TEST(WeightedJacobi, JacobiSolve2)
     Jsolve.Solve(f, x);
 
     // check solution
-    for (INT i = 0; i < row; i++) EXPECT_NEAR(x[i], xstar[i], 1e-5);
+    for (USI i = 0; i < row; i++) EXPECT_NEAR(x[i], xstar[i], 1e-5);
 
     // Jacobi iteration 2
-    for (INT i = 0; i < row; i++) x[i] = 0.0; // init to zero again
+    for (USI i = 0; i < row; i++) x[i] = 0.0; // init to zero again
     Jsolve.SetMaxIter(100);
     Jsolve.SetWeight(0.5);
     Jsolve.Setup(mat);
     Jsolve.Solve(f, x);
 
     // check solution
-    for (INT i = 0; i < row; i++) EXPECT_NEAR(x[i], xstar[i], 1e-5);
+    for (USI i = 0; i < row; i++) EXPECT_NEAR(x[i], xstar[i], 1e-5);
 }
 
 TEST(WeightedJacobi, JacobiSolve3)
 {
-    const INT row = 3, col = 3, nnz = 9;
+    const USI row = 3, col = 3, nnz = 9;
 
     // true solutions (from octave) : 0.221719 0.027149 0.058824
     vector<DBL> xstar({0.221719, 0.027149, 0.058824});
@@ -100,7 +103,7 @@ TEST(WeightedJacobi, JacobiSolve3)
     value[7] = 1;
     value[8] = 9;
 
-    vector<INT> colInd(9);
+    vector<USI> colInd(9);
     colInd[0] = 0;
     colInd[1] = 1;
     colInd[2] = 2;
@@ -111,13 +114,13 @@ TEST(WeightedJacobi, JacobiSolve3)
     colInd[7] = 1;
     colInd[8] = 2;
 
-    vector<INT> rowPtr(4);
+    vector<USI> rowPtr(4);
     rowPtr[0] = 0;
     rowPtr[1] = 3;
     rowPtr[2] = 6;
     rowPtr[3] = 9;
 
-    vector<INT> diagPtr(3);
+    vector<USI> diagPtr(3);
     diagPtr[0] = 0;
     diagPtr[1] = 4;
     diagPtr[2] = 8;
@@ -143,16 +146,16 @@ TEST(WeightedJacobi, JacobiSolve3)
     Jsolve.Setup(mat);
     Jsolve.Solve(f, x);
 
-    for (INT i = 0; i < row; i++) EXPECT_NEAR(x[i], xstar[i], 1e-5);
+    for (USI i = 0; i < row; i++) EXPECT_NEAR(x[i], xstar[i], 1e-5);
 
     // Jacobi iteration 2
-    for (INT i = 0; i < row; i++) x[i] = 0.0;
+    for (USI i = 0; i < row; i++) x[i] = 0.0;
     Jsolve.SetMaxIter(100);
     Jsolve.SetWeight(0.5);
     Jsolve.Setup(mat);
     Jsolve.Solve(f, x);
 
-    for (INT i = 0; i < row; i++) EXPECT_NEAR(x[i], xstar[i], 1e-5);
+    for (USI i = 0; i < row; i++) EXPECT_NEAR(x[i], xstar[i], 1e-5);
 }
 
 /*---------------------------------*/

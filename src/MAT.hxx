@@ -40,11 +40,11 @@ class MAT : public LOP
 {
 
 private:
-    INT              nnz;     ///< number of nonzeros of the matrix.
+    USI              nnz;     ///< number of nonzeros of the matrix.
     std::vector<DBL> values;  ///< nonzero entries, compressed row by row.
-    std::vector<INT> colInd;  ///< column indices of the nonzero in values.
-    std::vector<INT> rowPtr;  ///< pointers to the beginning of each row in values.
-    std::vector<INT> diagPtr; ///< pointers to diagonal entries in values.
+    std::vector<USI> colInd;  ///< column indices of the nonzero in values.
+    std::vector<USI> rowPtr;  ///< pointers to the beginning of each row in values.
+    std::vector<USI> diagPtr; ///< pointers to diagonal entries in values.
 
 public:
     //------------------- Default Constructor Behavior -----------------------//
@@ -66,23 +66,23 @@ public:
     };
 
     /// Construct sparse matrix from a CSRx matrix.
-    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
-        const std::vector<DBL>& values, const std::vector<INT>& colInd,
-        const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
+    MAT(const USI& nrow, const USI& mcol, const USI& nnz,
+        const std::vector<DBL>& values, const std::vector<USI>& colInd,
+        const std::vector<USI>& rowPtr, const std::vector<USI>& diagPtr);
 
     /// Construct sparse matrix from a CSR matrix.
-    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
-        const std::vector<DBL>& values, const std::vector<INT>& colInd,
-        const std::vector<INT>& rowPtr);
+    MAT(const USI& nrow, const USI& mcol, const USI& nnz,
+        const std::vector<DBL>& values, const std::vector<USI>& colInd,
+        const std::vector<USI>& rowPtr);
 
     /// Construct sparsity structure from a CSR matrix.
-    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
-        const std::vector<INT>& colInd, const std::vector<INT>& rowPtr);
+    MAT(const USI& nrow, const USI& mcol, const USI& nnz,
+        const std::vector<USI>& colInd, const std::vector<USI>& rowPtr);
 
     /// Construct sparsity structure from a CSRx matrix.
-    MAT(const INT& nrow, const INT& mcol, const INT& nnz,
-        const std::vector<INT>& colInd, const std::vector<INT>& rowPtr,
-        const std::vector<INT>& diagPtr);
+    MAT(const USI& nrow, const USI& mcol, const USI& nnz,
+        const std::vector<USI>& colInd, const std::vector<USI>& rowPtr,
+        const std::vector<USI>& diagPtr);
 
     /// Construct diagonal MAT matrix from a VEC object.
     explicit MAT(const VEC& v);
@@ -100,17 +100,17 @@ public:
     MAT& operator=(const MAT& mat);
 
     /// Set values of the matrix with CSRx format.
-    void SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
-                   const std::vector<DBL>& values, const std::vector<INT>& colInd,
-                   const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
+    void SetValues(const USI& nrow, const USI& mcol, const USI& nnz,
+                   const std::vector<DBL>& values, const std::vector<USI>& colInd,
+                   const std::vector<USI>& rowPtr, const std::vector<USI>& diagPtr);
 
     /// Set values of the matrix with CSR format.
-    void SetValues(const INT& nrow, const INT& mcol, const INT& nnz,
-                   const std::vector<DBL>& values, const std::vector<INT>& colInd,
-                   const std::vector<INT>& rowPtr);
+    void SetValues(const USI& nrow, const USI& mcol, const USI& nnz,
+                   const std::vector<DBL>& values, const std::vector<USI>& colInd,
+                   const std::vector<USI>& rowPtr);
 
     /// Get number of nonzeros of the matrix.
-    INT GetNNZ() const;
+    USI GetNNZ() const;
 
     /// Get the diagonal entries of *this and save them in a VEC object.
     void GetDiag(VEC& v) const;
@@ -149,7 +149,7 @@ public:
     void MultTransposeAdd(const VEC& v1, const VEC& v2, VEC& v) const;
 
     /// Get the value of [i,j]-entry of the matrix
-    DBL GetValue(const INT& row, const INT& col) const;
+    DBL GetValue(const USI& row, const USI& col) const;
 
     /// Get the values of the matrix
     double* GetValues() const;
@@ -190,26 +190,26 @@ private:
 
     /// LUP decomposition
     void LUPDecomp(std::vector<DBL> A, std::vector<DBL>& L, std::vector<DBL>& U,
-                   std::vector<INT>& P, INT N) const;
+                   std::vector<USI>& P, USI N) const;
 
     /// LUP solver
-    void LUPSolve(std::vector<DBL> L, std::vector<DBL> U, std::vector<INT> P,
-                  std::vector<DBL> b, INT N, std::vector<DBL>& x) const;
+    void LUPSolve(std::vector<DBL> L, std::vector<DBL> U, std::vector<USI> P,
+                  std::vector<DBL> b, USI N, std::vector<DBL>& x) const;
 
     /// successor
-    INT GetNext(INT i, INT m, INT n) const;
+    USI GetNext(USI i, USI m, USI n) const;
 
     /// precursor
-    INT GetPre(INT i, INT m, INT n) const;
+    USI GetPre(USI i, USI m, USI n) const;
 
     /// Handle rings starting with i
-    void MoveData(std::vector<DBL>& mtx, INT i, INT m, INT n) const;
+    void MoveData(std::vector<DBL>& mtx, USI i, USI m, USI n) const;
 
     /// Transpose, i.e. cycle all rings
-    void Rtranspose(std::vector<DBL>& mtx, INT m, INT n) const;
+    void Rtranspose(std::vector<DBL>& mtx, USI m, USI n) const;
 
     /// LUP inversion (assemble each column x from each column B)
-    void LUPSolveInverse(std::vector<DBL> A, INT N, std::vector<DBL>& inv_A) const;
+    void LUPSolveInverse(std::vector<DBL> A, USI N, std::vector<DBL>& inv_A) const;
 };
 
 /*! \class IdentityMatrix
@@ -222,7 +222,7 @@ public:
     IdentityMatrix() = default;
 
     /// Constructor with fixed problem size.
-    IdentityMatrix(INT size);
+    IdentityMatrix(USI size);
 
     /// Default destructor.
     ~IdentityMatrix() = default;

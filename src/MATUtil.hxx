@@ -22,40 +22,40 @@ FaspRetCode CheckMATAddSize(const MAT& mat1, const MAT& mat2);
 FaspRetCode CheckMATMultSize(const MAT& mat1, const MAT& mat2);
 
 /// Check whether (row,col) is out of bound
-FaspRetCode CheckMATSize(const MAT& mat, const INT& row, const INT& col);
+FaspRetCode CheckMATSize(const MAT& mat, const USI& row, const USI& col);
 
 /// Check whether (row,:) is out of bound
-FaspRetCode CheckMATRowSize(const MAT& mat, const INT& row);
+FaspRetCode CheckMATRowSize(const MAT& mat, const USI& row);
 
 /// Check whether (:,col) is out of bound
-FaspRetCode CheckMATColSize(const MAT& mat, const INT& col);
+FaspRetCode CheckMATColSize(const MAT& mat, const USI& col);
 
 /// Check MAT-VEC multiplication sizes
 FaspRetCode CheckMATVECSize(const MAT& mat, const VEC& vec);
 
 /// Check whether the data is good for CSR
-FaspRetCode CheckCSR(const INT& row, const INT& col, const INT& nnz,
-                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
-                     const std::vector<INT>& rowPtr);
+FaspRetCode CheckCSR(const USI& row, const USI& col, const USI& nnz,
+                     const std::vector<DBL>& values, const std::vector<USI>& colInd,
+                     const std::vector<USI>& rowPtr);
 
 /// Check whether the data is good for CSRx
-FaspRetCode CheckCSRx(const INT& row, const INT& col, const INT& nnz,
-                      const std::vector<DBL>& values, const std::vector<INT>& colInd,
-                      const std::vector<INT>& rowPtr, const std::vector<INT>& diagPtr);
+FaspRetCode CheckCSRx(const USI& row, const USI& col, const USI& nnz,
+                      const std::vector<DBL>& values, const std::vector<USI>& colInd,
+                      const std::vector<USI>& rowPtr, const std::vector<USI>& diagPtr);
 
 /// Convert a CSR matrix to MAT (private)
-FaspRetCode CSRtoMAT(const INT& row, const INT& col, const INT& nnz,
-                     const std::vector<DBL>& values, const std::vector<INT>& colInd,
-                     const std::vector<INT>& rowPtr, MAT& mat);
+FaspRetCode CSRtoMAT(const USI& row, const USI& col, const USI& nnz,
+                     const std::vector<DBL>& values, const std::vector<USI>& colInd,
+                     const std::vector<USI>& rowPtr, MAT& mat);
 
 /// Convert MTX data to MAT data structure
-FaspRetCode MTXtoMAT(const INT& row, const INT& col, const INT& nnz,
-                     const std::vector<INT>& rowInd, const std::vector<INT>& colInd,
+FaspRetCode MTXtoMAT(const USI& row, const USI& col, const USI& nnz,
+                     const std::vector<USI>& rowInd, const std::vector<USI>& colInd,
                      const std::vector<DBL>& values, MAT& mat);
 
 /// Sort "colInd" of each row in ascending order and rearrange "values" accordingly
-FaspRetCode SortCSRRow(const INT& row, const INT& col, const INT& nnz,
-                       const std::vector<INT>& rowPtr, std::vector<INT>& colInd,
+FaspRetCode SortCSRRow(const USI& row, const USI& col, const USI& nnz,
+                       const std::vector<USI>& rowPtr, std::vector<USI>& colInd,
                        std::vector<DBL>& values);
 
 #endif /* end if for __MATUTIL_HXX__ */

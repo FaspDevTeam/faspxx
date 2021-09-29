@@ -29,7 +29,7 @@ protected:
     SOL*       pcd;     ///< Preconditioner for this solver
     double     norm2;   ///< Euclidean norm
     double     normInf; ///< Infinity norm
-    int        numIter; ///< Number of iterations when exit
+    USI        numIter; ///< Number of iterations when exit
     SOLParams  params;  ///< Solver parameters
 
     /// Warning for actual relative residual
@@ -57,16 +57,16 @@ public:
     void SetOutput(Output verbose);
 
     /// Set max number of iterations.
-    void SetMaxIter(int maxIter);
+    void SetMaxIter(USI maxIter);
 
     /// Set min number of iterations.
-    void SetMinIter(int minIter);
+    void SetMinIter(USI minIter);
 
     /// Set number of safe-guard iterations.
-    void SetSavIter(int savIter);
+    void SetSavIter(USI savIter);
 
     /// Set restart number for Krylov methods.
-    void SetRestart(int restart);
+    void SetRestart(USI restart);
 
     /// Set tolerance for relative residual.
     void SetRelTol(double relTol);
@@ -90,7 +90,7 @@ public:
     double GetInfNorm() const;
 
     /// Get number of iterations.
-    int GetIterations() const;
+    USI GetIterations() const;
 
     /// Print parameters.
     void PrintParam(std::ostream& out = std::cout) const;
@@ -99,15 +99,15 @@ public:
     void PrintHead(std::ostream& out = std::cout) const;
 
     /// Print out iteration information for iterative solvers.
-    void PrintInfo(const int& iter, const double& resRel, const double& resAbs,
-                   const double& factor, std::ostream& out = std::cout) const;
+    void PrintInfo(const USI& iter, const DBL& resRel, const DBL& resAbs,
+                   const DBL& factor, std::ostream& out = std::cout) const;
 
     /// Print out final status of an iterative method.
-    void PrintFinal(const int& iter, const double& resRel, const double& resAbs,
-                    const double& ratio, std::ostream& out = std::cout) const;
+    void PrintFinal(const USI& iter, const DBL& resRel, const DBL& resAbs,
+                    const DBL& ratio, std::ostream& out = std::cout) const;
 
     /// Print out duration of solver.
-    void PrintTime(const double duration, std::ostream& out = std::cout) const;
+    void PrintTime(const DBL duration, std::ostream& out = std::cout) const;
 
     /// Setup preconditioner operator.
     virtual void SetupPCD(SOL& pc);

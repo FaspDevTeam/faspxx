@@ -26,30 +26,30 @@ class VEC
 {
 
 private:
+    USI              size;   ///< Book-keeping size of VEC. NOT values.size!
     std::vector<DBL> values; ///< Actual values of vector in DBL.
-    INT              size;   ///< Book-keeping size of VEC. NOT values.size!
 
 public:
     friend class MAT;
 
     /// Default constructor.
     explicit VEC()
-        : values(0)
-        , size(0)
+        : size(0)
+        , values(0)
     {
     }
 
-    /// Construct a new VEC with the given size and a constant value.
-    explicit VEC(const INT& size, const DBL& value = 0.0);
+    /// Construct a VEC with the given size and a constant value.
+    explicit VEC(const USI& size, const DBL& value = 0.0);
 
-    /// Construct a new VEC by copying values from a vector.
+    /// Construct a VEC by copying values from a vector.
     explicit VEC(const std::vector<DBL>& src);
 
     /// Clone from another VEC.
     VEC(const VEC& src);
 
-    /// Construct a new VEC by copying values from a pointer.
-    explicit VEC(const INT& size, const DBL* src);
+    /// Construct a new VEC by copying values from a poUSIer.
+    explicit VEC(const USI& size, const DBL* src);
 
     /// Default destructor.
     ~VEC() = default;
@@ -58,10 +58,10 @@ public:
     VEC& operator=(const VEC& v);
 
     /// Overload the [] operator.
-    DBL& operator[](const INT& position);
+    DBL& operator[](const USI& position);
 
     /// Overload the [] operator, entries cannot be modified.
-    const DBL& operator[](const INT& position) const;
+    const DBL& operator[](const USI& position) const;
 
     /// Overload += operator.
     VEC& operator+=(const VEC& v);
@@ -70,52 +70,52 @@ public:
     VEC& operator-=(const VEC& v);
 
     /// Set the size of VEC object and reserve memory.
-    void Reserve(const INT& size);
+    void Reserve(const USI& size);
 
     /// Assign the size and the same value to a VEC object.
-    void SetValues(const INT& size, const DBL& value = 0.0);
+    void SetValues(const USI& size, const DBL& value = 0.0);
 
     /// Assign a vector object to a VEC object.
     void SetValues(const std::vector<DBL>& src);
 
     /// Assign values of a DBL array to a VEC object.
-    void SetValues(const INT& size, const DBL* array);
+    void SetValues(const USI& size, const DBL* array);
 
     /// Get the value of (*this)[position].
-    DBL GetValue(const INT& position) const;
+    DBL GetValue(const USI& position) const;
 
     /// Get value of this->values[index[j] and save it in array[j].
     /// \note Users should allocate memory for array before calling this function!
-    void GetValues(const INT& size, const INT* index, DBL* array) const;
+    void GetValues(const USI& size, const USI* index, DBL* array) const;
 
-    /// Get pointer to this->values.
+    /// Get poUSIer to this->values.
     void GetArray(DBL** array);
 
-    /// Get pointer to this->values, entries cannot be modified.
+    /// Get poUSIer to this->values, entries cannot be modified.
     void GetArray(const DBL** array) const;
 
     /// Get the size of *this.
-    INT GetSize() const;
+    USI GetSize() const;
 
     /// Scale by a scalar.
     void Scale(const DBL& a);
 
-    /// Compute reciprocal pointwise.
+    /// Compute reciprocal poUSIwise.
     void Reciprocal();
 
-    /// Scale by a vector pointwise.
+    /// Scale by a vector poUSIwise.
     void PointwiseMult(const VEC& v);
 
-    /// Divide pointwise by a nonzero vector.
+    /// Divide poUSIwise by a nonzero vector.
     void PointwiseDivide(const VEC& v);
 
     /// Copy *this to another VEC.
     void CopyTo(VEC& dst) const;
 
-    /// Shift by a scalar pointwise.
+    /// Shift by a scalar poUSIwise.
     void Shift(const DBL& a);
 
-    /// Compute absolute values pointwise.
+    /// Compute absolute values poUSIwise.
     void Abs();
 
     /// y = a * x + y.

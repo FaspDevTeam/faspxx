@@ -28,7 +28,7 @@ class MatFree : public LOP
 
 public:
     /// Default constructor.
-    MatFree(const INT row, const INT col)
+    MatFree(const USI row, const USI col)
     {
         nrow = row;
         mcol = col;
@@ -45,7 +45,7 @@ static void AssembleRHS(int dim, DBL *ptr)
     const DBL h2   = h * h;     // mesh size squared
     const int dim1 = dim - 1;   // DOF in each direction
 
-    for (INT j = 0; j < dim1 * dim1; ++j) ptr[j] = 0.0;
+    for (USI j = 0; j < dim1 * dim1; ++j) ptr[j] = 0.0;
 
     // interior points
     for (int k = 2; k < dim1; ++k)

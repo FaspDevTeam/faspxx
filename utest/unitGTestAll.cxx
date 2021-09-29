@@ -9,16 +9,14 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Standard header files
 #include <gtest/gtest.h>
 
-/*---------------------------------*/
-/*--       Unit Test Suite       --*/
-/*---------------------------------*/
-
-#include "unitVEC.cxx"
+// FASPXX header files
+#include "unitJacobi.cxx"
 #include "unitMAT.cxx"
 #include "unitParam.cxx"
-#include "unitJacobi.cxx"
+#include "unitVEC.cxx"
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/

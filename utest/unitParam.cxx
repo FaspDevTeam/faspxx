@@ -9,8 +9,11 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Standard header files
 #include <gtest/gtest.h>
 #include <string>
+
+// FASPXX header files
 #include "Param.hxx"
 
 /*---------------------------------*/
@@ -20,27 +23,34 @@
 TEST(Parameters_Class, Parameters)
 {
     // parameters in user program
-    bool bool_param = false;
-    int int_param = 11;
-    double double_param = 3.14159;
-    std::string char_param = "user params";
-    Output output_lvl = static_cast<Output>(4);
+    bool        bool_param   = false;
+    INT         int_param    = 11;
+    DBL         double_param = 3.14159;
+    std::string char_param   = "user params";
+    Output      output_lvl   = static_cast<Output>(4);
 
     // parameters in command line
-    const int _argc = 11;
-    const char *_argv[_argc] = {"program name", "-bool_param", "TruE", "-int_param",
-                                "22", "-double_param", "1.41414", "-char_param",
-                                "commandline_parameters", "-faspxx_opts",
+    const int   _argc        = 11;
+    const char* _argv[_argc] = {"program name",
+                                "-bool_param",
+                                "TruE",
+                                "-int_param",
+                                "22",
+                                "-double_param",
+                                "1.41414",
+                                "-char_param",
+                                "commandline_parameters",
+                                "-faspxx_opts",
                                 "./data_for_test/single_sol.param"};
 
     // parameters in file
-    std::string params_file = "./data_for_test/multiple_sol.param";
-    bool view_param = false; // from file
-    int level_param = 0; // from file
-    double resrel_param = 0.0; // from file
-    std::string vec_param = ""; // from file
+    std::string params_file  = "./data_for_test/multiple_sol.param";
+    bool        view_param   = false; // from file
+    INT         level_param  = 0;     // from file
+    DBL         resrel_param = 0.0;   // from file
+    std::string vec_param    = "";    // from file
 
-    EXPECT_EQ(bool_param,  false);
+    EXPECT_EQ(bool_param, false);
     EXPECT_EQ(int_param, 11);
     EXPECT_EQ(double_param, 3.14159);
     EXPECT_EQ(char_param, "user params");
@@ -53,8 +63,8 @@ TEST(Parameters_Class, Parameters)
 
     Parameters params(_argc, _argv);
     params.AddParam("-bool_param", "bool param help", &bool_param);
-    params.AddParam("-int_param", "INT param help", &int_param);
-    params.AddParam("-double_param", "DBL param help", &double_param);
+    params.AddParam("-int_param", "integer param help", &int_param);
+    params.AddParam("-double_param", "double param help", &double_param);
     params.AddParam("-char_param", "char* param help", &char_param);
     params.AddParam("-faspxx_opts", "additional parameter file", &params_file, 2);
 
@@ -65,17 +75,18 @@ TEST(Parameters_Class, Parameters)
     params.AddParam("-out_put", "output param help", &output_lvl);
     params.Parse();
 
-    EXPECT_EQ(bool_param, true); // modified by command line
-    EXPECT_EQ(int_param, 22); // modified by command line
-    EXPECT_EQ(double_param, 1.41414); // modified by command line
+    EXPECT_EQ(bool_param, true);                     // modified by command line
+    EXPECT_EQ(int_param, 22);                        // modified by command line
+    EXPECT_EQ(double_param, 1.41414);                // modified by command line
     EXPECT_EQ(char_param, "commandline_parameters"); // modified by command line
-    EXPECT_EQ(params_file, "./data_for_test/single_sol.param"); // modified by command line
+    EXPECT_EQ(params_file,
+              "./data_for_test/single_sol.param"); // modified by command line
 
-    EXPECT_EQ(view_param, true); // modified from file
-    EXPECT_EQ(level_param, 4); // modified from file
-    EXPECT_DOUBLE_EQ(resrel_param, 1.234e-6); // modified from file
+    EXPECT_EQ(view_param, true);                  // modified from file
+    EXPECT_EQ(level_param, 4);                    // modified from file
+    EXPECT_DOUBLE_EQ(resrel_param, 1.234e-6);     // modified from file
     EXPECT_EQ(vec_param, "../data/ffffffffffff"); // modified from file
-    EXPECT_EQ(output_lvl, 6); // modified from file
+    EXPECT_EQ(output_lvl, 6);                     // modified from file
 }
 
 /*---------------------------------*/

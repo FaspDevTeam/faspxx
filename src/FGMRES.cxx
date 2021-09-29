@@ -13,7 +13,7 @@
 #include "FGMRES.hxx"
 
 /// Set the maximum and minimum restart
-void FGMRES::SetMaxMinRestart(const int maxRestart, const int minRestart)
+void FGMRES::SetMaxMinRestart(const USI maxRestart, const USI minRestart)
 {
     this->maxRestart = maxRestart;
     this->minRestart = minRestart;
@@ -41,7 +41,7 @@ FaspRetCode FGMRES::Setup(const LOP& A)
         hcos.resize(maxRestart + 1);
         hsin.resize(maxRestart);
         hh.resize(maxRestart + 1);
-        for (int j = 0; j < maxRestart + 1; ++j) hh[j].resize(maxRestart);
+        for (USI j = 0; j < maxRestart + 1; ++j) hh[j].resize(maxRestart);
     } catch (std::bad_alloc& ex) {
         return FaspRetCode::ERROR_ALLOC_MEM;
     }
@@ -49,7 +49,7 @@ FaspRetCode FGMRES::Setup(const LOP& A)
     // Allocate memory for restart vectors
     while (maxRestart >= minRestart) {
         try {
-            for (int j = 0; j < maxRestart + 1; ++j) {
+            for (USI j = 0; j < maxRestart + 1; ++j) {
                 V.push_back(safe);
                 Z.push_back(safe);
             }
@@ -98,7 +98,7 @@ void FGMRES::Clean()
     hcos.assign(maxRestart + 1, 0.0);
     hsin.assign(maxRestart, 0.0);
     hh.resize(maxRestart + 1);
-    for (int j = 0; j < maxRestart + 1; ++j) hh[j].assign(maxRestart, 0.0);
+    for (USI j = 0; j < maxRestart + 1; ++j) hh[j].assign(maxRestart, 0.0);
 
     V.assign(maxRestart + 1, safe);
     Z.assign(maxRestart + 1, safe);
@@ -113,7 +113,7 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
     // local variables
     double gamma, t, ri, rj, cr = 1.0;
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld;
-    int    count, count_1;
+    USI    count, count_1;
 
     PrintHead();
 
@@ -161,7 +161,7 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
             A->Apply(Z[count_1], V[count]);
 
             // Modified Gram-Schmidt orthogonalization
-            for (int j = 0; j < count; ++j) {
+            for (USI j = 0; j < count; ++j) {
                 hh[j][count_1] = V[count].Dot(V[j]);
                 V[count].AXPBY(1.0, -hh[j][count_1], V[j]);
             }
@@ -174,7 +174,7 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
             else
                 break;
 
-            for (int j = 1; j < count; ++j) {
+            for (USI j = 1; j < count; ++j) {
                 t                  = hh[j - 1][count_1];
                 hh[j - 1][count_1] = hsin[j - 1] * hh[j][count_1] + hcos[j - 1] * t;
                 hh[j][count_1]     = -hsin[j - 1] * t + hcos[j - 1] * hh[j][count_1];
@@ -206,9 +206,9 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
 
         // Compute solution, first solve upper triangular system
         var[count_1] = var[count_1] / hh[count_1][count_1];
-        for (int k = count - 2; k >= 0; --k) {
+        for (USI k = count - 2; k >= 0; --k) {
             t = 0.0;
-            for (int j = k + 1; j < count; ++j) t -= hh[k][j] * var[j];
+            for (USI j = k + 1; j < count; ++j) t -= hh[k][j] * var[j];
             t += var[k];
             var[k] = t / hh[k][k];
         }
@@ -216,7 +216,7 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
         wk = Z[count_1];
         wk.Scale(var[count_1]);
 
-        for (int j = count - 2; j >= 0; --j) wk.AXPBY(1.0, var[j], Z[j]);
+        for (USI j = count - 2; j >= 0; --j) wk.AXPBY(1.0, var[j], Z[j]);
 
         x.AXPY(1.0, wk);
 

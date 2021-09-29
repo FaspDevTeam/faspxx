@@ -9,26 +9,23 @@
  *-----------------------------------------------------------------------------------
  */
 
+// Standard header files
 #include <gtest/gtest.h>
+
+// FASPXX header files
 #include "ErrorLog.hxx"
 
 /// Test FASPXX_ABORT error logging.
 TEST(ErrorLog, ABORT)
 {
-    ASSERT_DEATH({FASPXX_ABORT("This is an abort test!");}, "");
+    ASSERT_DEATH({ FASPXX_ABORT("This is an abort test!"); }, "");
 }
 
 /// Test FASPXX_ASSERT error logging.
-TEST(ErrorLog, ASSERT)
-{
-    FASPXX_ASSERT(1==2, "This is an assert test!");
-}
+TEST(ErrorLog, ASSERT) { FASPXX_ASSERT(1 == 2, "This is an assert test!"); }
 
 /// Test FASPXX_WARNING error logging.
-TEST(ErrorLog, WARNING)
-{
-    FASPXX_WARNING("This is a warning test!");
-}
+TEST(ErrorLog, WARNING) { FASPXX_WARNING("This is a warning test!"); }
 
 /*---------------------------------*/
 /*--        End of File          --*/

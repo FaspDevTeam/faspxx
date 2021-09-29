@@ -27,9 +27,9 @@ using std::vector;
 int main()
 {
     // matrix 1
-    INT row1 = 2;
-    INT col1 = 2;
-    INT nnz1 = 4;
+    USI row1 = 2;
+    USI col1 = 2;
+    USI nnz1 = 4;
 
     vector<DBL> value1(4);
     value1[0] = 4;
@@ -37,27 +37,27 @@ int main()
     value1[2] = 1;
     value1[3] = 7;
 
-    vector<INT> colInd1(4);
+    vector<USI> colInd1(4);
     colInd1[0] = 0;
     colInd1[1] = 1;
     colInd1[2] = 0;
     colInd1[3] = 1;
 
-    vector<INT> rowPtr1(3);
+    vector<USI> rowPtr1(3);
     rowPtr1[0] = 0;
     rowPtr1[1] = 2;
     rowPtr1[2] = 4;
 
-    vector<INT> diagPtr1(2);
+    vector<USI> diagPtr1(2);
     diagPtr1[0] = 0;
     diagPtr1[1] = 3;
 
     MAT mat1(row1, col1, nnz1, value1, colInd1, rowPtr1, diagPtr1);
 
     // matrix 2
-    INT row2 = 3;
-    INT col2 = 3;
-    INT nnz2 = 9;
+    USI row2 = 3;
+    USI col2 = 3;
+    USI nnz2 = 9;
 
     vector<DBL> value2(9);
     value2[0] = 4;
@@ -69,7 +69,7 @@ int main()
     value2[6] = 2;
     value2[7] = 1;
     value2[8] = 9;
-    vector<INT> colInd2(9);
+    vector<USI> colInd2(9);
     colInd2[0] = 0;
     colInd2[1] = 1;
     colInd2[2] = 2;
@@ -79,12 +79,12 @@ int main()
     colInd2[6] = 0;
     colInd2[7] = 1;
     colInd2[8] = 2;
-    vector<INT> rowPtr2(4);
+    vector<USI> rowPtr2(4);
     rowPtr2[0] = 0;
     rowPtr2[1] = 3;
     rowPtr2[2] = 6;
     rowPtr2[3] = 9;
-    vector<INT> diagPtr2(3);
+    vector<USI> diagPtr2(3);
     diagPtr2[0] = 0;
     diagPtr2[1] = 4;
     diagPtr2[2] = 8;

@@ -23,7 +23,7 @@ FaspRetCode CheckVECSize(const VEC& v);
 FaspRetCode CheckVECSize(const VEC& v1, const VEC& v2);
 
 /// Check whether vector crossover.
-FaspRetCode CheckVECSize(const VEC& v, const INT& position);
+FaspRetCode CheckVECSize(const VEC& v, const USI& position);
 
 /// Check whether there is a zero entry in VEC object.
 FaspRetCode CheckVECZero(const VEC& v, const DBL tol = SMALL_TOL);

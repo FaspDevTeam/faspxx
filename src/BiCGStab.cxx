@@ -70,10 +70,10 @@ FaspRetCode BiCGStab::Solve(const VEC& b, VEC& x)
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Declaration and definition of local variables
-    const int    maxStag    = MAX_STAG_NUM;         // maximum number of stagnation
+    const USI    maxStag    = MAX_STAG_NUM;         // maximum number of stagnation
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
 
-    int    stagStep = 0, moreStep = 0;
+    USI    stagStep = 0, moreStep = 0;
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
     double alpha, beta, rjr0star, rjr0startmp, omega, tmp12;
 

@@ -21,8 +21,8 @@ using std::vector;
 
 int main()
 {
-    INT         row1 = 4, col1 = 4, nnz1 = 10;
-    vector<INT> colInd1(10), rowPtr1(5), diag1(4);
+    USI         row1 = 4, col1 = 4, nnz1 = 10;
+    vector<USI> colInd1(10), rowPtr1(5), diag1(4);
     vector<DBL> values1(10);
 
     values1[0] = 0;
@@ -75,9 +75,9 @@ int main()
 
     vector<DBL> valuesInv1 = {2.0, 2.0};
 
-    vector<INT> colIndInv  = {0, 1};
-    vector<INT> rowPtrInv  = {0, 1, 2};
-    vector<INT> diagPtrInv = {0, 1, 2};
+    vector<USI> colIndInv  = {0, 1};
+    vector<USI> rowPtrInv  = {0, 1, 2};
+    vector<USI> diagPtrInv = {0, 1, 2};
 
     MAT C(2, 2, 2, valuesInv1, colIndInv, rowPtrInv, diagPtrInv);
     MAT D;

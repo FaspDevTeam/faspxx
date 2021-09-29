@@ -16,17 +16,17 @@ using std::vector;
 
 /// Set number of cycles for each coarse level
 template <class TTT>
-void MG<TTT>::SetNumCycles(unsigned ncycle)
+void MG<TTT>::SetNumCycles(USI ncycle)
 {
     numCycles.resize(numLevelsCoarse);
-    for (unsigned i = 0; i < numLevelsCoarse; ++i) numCycles[i] = ncycle;
+    for (USI i = 0; i < numLevelsCoarse; ++i) numCycles[i] = ncycle;
 }
 
 /// Setup the one-level "MG" method using linear operator A
 template <class TTT>
 FaspRetCode MG<TTT>::SetupSimple(const TTT& A)
 {
-    const INT probSize = A.GetColSize();
+    const USI probSize = A.GetColSize();
     numLevelsCoarse    = 1;    // only one coarse level used
     useSymmOper        = true; // symmetric restriction based on prolongation
 
@@ -63,7 +63,7 @@ FaspRetCode MG<TTT>::SetupSimple(const TTT& A)
 
 /// Setup multilevel solver level by level.
 template <class TTT>
-FaspRetCode MG<TTT>::SetupLevel(const TTT& A, const unsigned level, TTT* tranOpers,
+FaspRetCode MG<TTT>::SetupLevel(const TTT& A, const USI level, TTT* tranOpers,
                                 SOL* smoothers, SOL* coarseSolvers)
 {
     if (level > numLevelsCoarse) FASPXX_ABORT("Too many levels specified!");
@@ -91,9 +91,9 @@ FaspRetCode MG<TTT>::SetupLevel(const TTT& A, const unsigned level, TTT* tranOpe
 
 /// Setup the one-level "MG" method using linear operator A
 template <class TTT>
-FaspRetCode MG<TTT>::SetupALL(const TTT& A, const unsigned numLevels)
+FaspRetCode MG<TTT>::SetupALL(const TTT& A, const USI numLevels)
 {
-    const INT probSize = A.GetColSize();
+    const USI probSize = A.GetColSize();
     useSymmOper        = true;      // symmetric restriction based on prolongation
     numLevelsCoarse    = numLevels; // only one coarse level used
 

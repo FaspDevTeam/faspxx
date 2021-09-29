@@ -48,7 +48,7 @@ FaspRetCode CheckVECSize(const VEC& v1, const VEC& v2)
 }
 
 /// Check whether vector crossover.
-FaspRetCode CheckVECSize(const VEC& v, const INT& position)
+FaspRetCode CheckVECSize(const VEC& v, const USI& position)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
     try {
@@ -67,7 +67,7 @@ FaspRetCode CheckVECSize(const VEC& v, const INT& position)
 FaspRetCode CheckVECZero(const VEC& v, const DBL tol)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS; // Return success if no-throw
-    for (INT j = 0; j < v.GetSize(); ++j) {
+    for (USI j = 0; j < v.GetSize(); ++j) {
         try {
             if (fabs(v[j]) <= tol) {
                 retCode = FaspRetCode::ERROR_DIVIDE_ZERO;

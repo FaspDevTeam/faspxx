@@ -13,14 +13,14 @@
 #include "LOP.hxx"
 
 /// Assign nrow, mcol to *this.
-LOP::LOP(const INT& nrow, const INT& mcol)
+LOP::LOP(const USI& nrow, const USI& mcol)
 {
     this->nrow = nrow;
     this->mcol = mcol;
 }
 
 /// Assign nrow, mcol=nrow to *this.
-LOP::LOP(const INT& nrow)
+LOP::LOP(const USI& nrow)
 {
     this->nrow = nrow;
     this->mcol = nrow;
@@ -43,10 +43,10 @@ LOP& LOP::operator=(const LOP& lop)
 }
 
 /// Dimension of the row space of LOP.
-INT LOP::GetRowSize() const { return this->nrow; }
+USI LOP::GetRowSize() const { return this->nrow; }
 
 /// Dimension of the column space of LOP.
-INT LOP::GetColSize() const { return this->mcol; }
+USI LOP::GetColSize() const { return this->mcol; }
 
 /// Identity operator.
 void IdentityOp::Apply(const VEC& b, VEC& x) const { x = b; }

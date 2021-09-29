@@ -22,8 +22,8 @@
 class LOP
 {
 protected:
-    INT nrow; ///< number of rows
-    INT mcol; ///< number of columns
+    USI nrow; ///< number of rows
+    USI mcol; ///< number of columns
 
 public:
     /// Default constructor.
@@ -32,10 +32,10 @@ public:
         , mcol(0){};
 
     /// Make an LOP from VEC(mcol) to VEC(nrow).
-    LOP(const INT& nrow, const INT& mcol);
+    LOP(const USI& nrow, const USI& mcol);
 
     /// Make an LOP from VEC(nrow) to VEC(nrow).
-    explicit LOP(const INT& nrow);
+    explicit LOP(const USI& nrow);
 
     /// Make an LOP from another LOP.
     LOP(const LOP& lop);
@@ -47,10 +47,10 @@ public:
     ~LOP() = default;
 
     /// Get row space dimension.
-    INT GetRowSize() const;
+    USI GetRowSize() const;
 
     /// Get column space dimension.
-    INT GetColSize() const;
+    USI GetColSize() const;
 
     /// Action of the linear operator to a vector.
     virtual void Apply(const VEC& x, VEC& y) const

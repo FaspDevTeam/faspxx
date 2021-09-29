@@ -190,7 +190,14 @@ void Parameters::AddParam(const std::string& name, const std::string& help, bool
 }
 
 /// Int type parameter.
-void Parameters::AddParam(const std::string& name, const std::string& help, int* ptr,
+void Parameters::AddParam(const std::string& name, const std::string& help, INT* ptr,
+                          int marker)
+{
+    paramsUser.emplace_back(IntType, name, help, ptr, marker);
+}
+
+/// Unsigned int type parameter.
+void Parameters::AddParam(const std::string& name, const std::string& help, USI* ptr,
                           int marker)
 {
     paramsUser.emplace_back(IntType, name, help, ptr, marker);

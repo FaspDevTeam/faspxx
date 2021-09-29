@@ -16,9 +16,9 @@
 /* Definition of data-type length                                             */
 /*----------------------------------------------------------------------------*/
 
-typedef unsigned int INDEX; ///< Index type: Must be non-negative!
-typedef unsigned int INT;   ///< Regular integer numbers
-typedef double       DBL;   ///< Double precision numbers
+typedef int          INT; ///< Regular integer numbers
+typedef unsigned int USI; ///< Unsigned integer numbers
+typedef double       DBL; ///< Double precision numbers
 
 /*----------------------------------------------------------------------------*/
 /* Definition of constants for range, time units, and tolerance               */
@@ -35,11 +35,11 @@ const DBL CLOCK_USE_MIN = 200000; ///< Show clock time in minutes
 /* Definition of constants for solvers and preconditioners                    */
 /*----------------------------------------------------------------------------*/
 
-const INT MAX_ITER_NUM  = 100000; ///< Maximal number of multigrid levels
+const USI MAX_ITER_NUM  = 100000; ///< Maximal number of multigrid levels
 const DBL KSM_CHK_RATIO = 0.95;   ///< Check ratio for Krylov space methods
-const INT MAX_STAG_NUM  = 20;     ///< Maximal number of stagnation checks
-const INT PRT_STEP_NUM  = 20;     ///< Print iteration info every N steps
-const INT MAX_MG_LEVEL  = 20;     ///< Maximal number of multigrid levels
+const USI MAX_STAG_NUM  = 20;     ///< Maximal number of stagnation checks
+const USI PRT_STEP_NUM  = 20;     ///< Print iteration info every N steps
+const USI MAX_MG_LEVEL  = 20;     ///< Maximal number of multigrid levels
 
 #endif /* end if for __FASPXX_HEADER__ */
 
@@ -50,4 +50,5 @@ const INT MAX_MG_LEVEL  = 20;     ///< Maximal number of multigrid levels
 /*----------------------------------------------------------------------------*/
 /*  Chensong Zhang      Sep/01/2019      Create file                          */
 /*  Chensong Zhang      Sep/26/2021      Restructure file                     */
+/*  Chensong Zhang      Sep/29/2021      Add USI and INT types                */
 /*----------------------------------------------------------------------------*/

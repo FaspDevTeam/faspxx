@@ -31,8 +31,8 @@ struct HL {
     SOL* coarseSolver; ///< coarse solver for CGC
     SOL* postSolver;   ///< post-smoother after CGC
 
-    INT fineSpaceSize; ///< fine-space dimension
-    INT coarSpaceSize; ///< coarse-space dimension
+    USI fineSpaceSize; ///< fine-space dimension
+    USI coarSpaceSize; ///< coarse-space dimension
     VEC b;             ///< right-hand side vector b at coarser level
     VEC x;             ///< solution vector x at coarser level
     VEC r;             ///< residual vector r at coarser level
@@ -45,12 +45,12 @@ template <class TTT>
 class MG : public SOL
 {
 private:
-    int              level;           ///< currecnt level number
-    unsigned         numLevelsMax;    ///< max number of levels
-    unsigned         numLevelsCoarse; ///< number of coarse levels in use <= max_levels
-    bool             useSymmOper;     ///< use symmetric operator
-    vector<unsigned> numCycles;       ///< number of cycles for each coarse level
-    VEC              r;               ///< work vector for current residual
+    INT         level;           ///< currecnt level number
+    USI         numLevelsMax;    ///< max number of levels
+    USI         numLevelsCoarse; ///< number of coarse levels in use <= max_levels
+    bool        useSymmOper;     ///< use symmetric operator
+    vector<USI> numCycles;       ///< number of cycles for each coarse level
+    VEC         r;               ///< work vector for current residual
 
 public:
     vector<HL<TTT>> infoHL; ///< hierarichal info at all coarse levels
@@ -83,7 +83,7 @@ public:
     ~MG() = default;
 
     /// Set number of cycles for each coarse level.
-    void SetNumCycles(unsigned ncycle);
+    void SetNumCycles(USI ncycle);
 
     /// Setup the MG method using coefficient matrix A.
     FaspRetCode Setup(const TTT& A);
@@ -92,11 +92,11 @@ public:
     FaspRetCode SetupSimple(const TTT& A);
 
     /// Setup multilevel solver level by level.
-    FaspRetCode SetupLevel(const TTT& A, const unsigned level, TTT* tranOpers,
+    FaspRetCode SetupLevel(const TTT& A, const USI level, TTT* tranOpers,
                            SOL* smoothers, SOL* coarseSolvers);
 
     /// Setup multilevel solver by hand.
-    FaspRetCode SetupALL(const TTT& A, const unsigned numLevels);
+    FaspRetCode SetupALL(const TTT& A, const USI numLevels);
 
     /// Setup classical AMG.
     // TODO: FaspRetCode SetupCAMG(const MAT& A);

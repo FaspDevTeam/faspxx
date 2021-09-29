@@ -65,13 +65,13 @@ const unsigned FILE_MTX = 2; ///< MTX file format
 FaspRetCode ReadVEC(const char* filename, VEC& dst);
 
 /// Read an MTX data file and store it in (rowInd, colInd, values)
-FaspRetCode ReadMTX(const char* filename, INT& row, INT& col, INT& nnz,
-                    std::vector<INT>& rowInd, std::vector<INT>& colInd,
+FaspRetCode ReadMTX(const char* filename, USI& row, USI& col, USI& nnz,
+                    std::vector<USI>& rowInd, std::vector<USI>& colInd,
                     std::vector<DBL>& values);
 
 /// Read a CSR data file and store it in (rowPtr, colInd, values)
-FaspRetCode ReadCSR(const char* filename, INT& row, INT& col, INT& nnz,
-                    std::vector<INT>& rowPtr, std::vector<INT>& colInd,
+FaspRetCode ReadCSR(const char* filename, USI& row, USI& col, USI& nnz,
+                    std::vector<USI>& rowPtr, std::vector<USI>& colInd,
                     std::vector<DBL>& values);
 
 /// Read a MAT data file and store it in MAT

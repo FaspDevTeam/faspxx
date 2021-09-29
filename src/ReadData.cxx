@@ -92,8 +92,8 @@ FaspRetCode ReadVEC(const char* fileName, VEC& dst)
 }
 
 /// Read (rowInd, colInd, values) from the MTX (MatrixMarket) file.
-FaspRetCode ReadMTX(const char* fileName, INT& row, INT& col, INT& nnz,
-                    std::vector<INT>& rowInd, std::vector<INT>& colInd,
+FaspRetCode ReadMTX(const char* fileName, USI& row, USI& col, USI& nnz,
+                    std::vector<USI>& rowInd, std::vector<USI>& colInd,
                     std::vector<DBL>& values)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
@@ -180,7 +180,7 @@ FaspRetCode ReadMTX(const char* fileName, INT& row, INT& col, INT& nnz,
     }
 
     // Put MTX data into rowInd, colInd, and values
-    INT      locate = 0; // mark the position in rowInd, colInd and values
+    USI      locate = 0; // mark the position in rowInd, colInd and values
     long int tmp    = 0;
     while (true) {
         if (buffer[position] != ' ' && buffer[position] != '\n' &&
@@ -218,8 +218,8 @@ FaspRetCode ReadMTX(const char* fileName, INT& row, INT& col, INT& nnz,
 }
 
 /// Read (rowPtr, colInd, values) from the CSR file.
-FaspRetCode ReadCSR(const char* fileName, INT& row, INT& col, INT& nnz,
-                    std::vector<INT>& rowPtr, std::vector<INT>& colInd,
+FaspRetCode ReadCSR(const char* fileName, USI& row, USI& col, USI& nnz,
+                    std::vector<USI>& rowPtr, std::vector<USI>& colInd,
                     std::vector<DBL>& values)
 {
     FaspRetCode retCode = FaspRetCode::SUCCESS;
@@ -253,7 +253,7 @@ FaspRetCode ReadCSR(const char* fileName, INT& row, INT& col, INT& nnz,
     in.close();              // close the file stream
 
     // Read number of rows
-    INT           count    = 0;
+    USI           count    = 0;
     long long int position = 0; // mark the position of file pointer
     while (true) {
         if (buffer[position] != '\n') {
@@ -284,7 +284,7 @@ FaspRetCode ReadCSR(const char* fileName, INT& row, INT& col, INT& nnz,
     }
 
     // Read the rowPtr of CSRx matrix
-    INT locate = 0;
+    USI locate = 0;
     count      = 0;
     while (true) {
         if (buffer[position] != '\n') {
@@ -379,8 +379,8 @@ FaspRetCode ReadMat(const char* fileName, MAT& dst)
     else if (strcmp(fileExt, "mtx") == 0)
         flag = FILE_MTX; // MTX file
 
-    INT              row, col, nnz;
-    std::vector<INT> rowPtr, colInd, rowInd;
+    USI              row, col, nnz;
+    std::vector<USI> rowPtr, colInd, rowInd;
     std::vector<DBL> values;
 
     switch (flag) {

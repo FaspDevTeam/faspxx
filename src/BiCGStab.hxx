@@ -23,7 +23,7 @@
 class BiCGStab : public SOL
 {
 private:
-    int len;
+    USI len;
     VEC r0star; ///< Work vector for r0*
     VEC tmp;
     VEC apj;

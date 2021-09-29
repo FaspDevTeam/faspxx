@@ -43,8 +43,8 @@ void SOL::PrintHead(std::ostream& out) const
 }
 
 /// Print out iteration information for iterative solvers
-void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
-                    const double& ratio, std::ostream& out) const
+void SOL::PrintInfo(const USI& iter, const DBL& resRel, const DBL& resAbs,
+                    const DBL& ratio, std::ostream& out) const
 {
     if (params.verbose > PRINT_SOME ||
         (params.verbose >= PRINT_MIN && iter % PRT_STEP_NUM == 0) ||
@@ -64,8 +64,8 @@ void SOL::PrintInfo(const int& iter, const double& resRel, const double& resAbs,
 }
 
 /// Print out final status of an iterative method.
-void SOL::PrintFinal(const int& iter, const double& resRel, const double& resAbs,
-                     const double& ratio, std::ostream& out) const
+void SOL::PrintFinal(const USI& iter, const DBL& resRel, const DBL& resAbs,
+                     const DBL& ratio, std::ostream& out) const
 {
     if (params.minIter >= params.maxIter) return;
 
@@ -103,16 +103,16 @@ SOL::~SOL() { A = nullptr; }
 void SOL::SetOutput(Output verbose) { params.verbose = verbose; }
 
 /// Set value for maxIter.
-void SOL::SetMaxIter(int maxIter) { params.maxIter = maxIter; }
+void SOL::SetMaxIter(USI maxIter) { params.maxIter = maxIter; }
 
 /// Set value for minIter.
-void SOL::SetMinIter(int minIter) { params.minIter = minIter; }
+void SOL::SetMinIter(USI minIter) { params.minIter = minIter; }
 
 /// Set value for savIter.
-void SOL::SetSavIter(int savIter) { params.savIter = savIter; }
+void SOL::SetSavIter(USI savIter) { params.savIter = savIter; }
 
 /// Set value for restart.
-void SOL::SetRestart(int restart) { params.restart = restart; }
+void SOL::SetRestart(USI restart) { params.restart = restart; }
 
 /// Set value for relTol.
 void SOL::SetRelTol(double relTol) { params.relTol = relTol; }
@@ -202,7 +202,7 @@ double SOL::GetNorm2() const { return this->norm2; }
 double SOL::GetInfNorm() const { return this->normInf; }
 
 /// Get the value of numIter.
-int SOL::GetIterations() const { return this->numIter; }
+USI SOL::GetIterations() const { return this->numIter; }
 
 /// Print parameters.
 void SOL::PrintParam(std::ostream& out) const
@@ -228,7 +228,7 @@ void SOL::PrintParam(std::ostream& out) const
 }
 
 /// Print solver time.
-void SOL::PrintTime(const double duration, std::ostream& out) const
+void SOL::PrintTime(const DBL duration, std::ostream& out) const
 {
     if (duration < CLOCK_USE_SEC) {
         std::cout << "Solving linear system with " << GetSolType(params.type)

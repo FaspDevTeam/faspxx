@@ -52,7 +52,7 @@ int main(int argc, const char* args[])
     if (retCode < 0) FASPXX_ABORT("Failed to read matrix file!");
 
     // Print problem size information
-    const INT nrow = mat.GetRowSize(), mcol = mat.GetColSize();
+    const USI nrow = mat.GetRowSize(), mcol = mat.GetColSize();
     std::cout << "nrow: " << nrow << ", mcol: " << mcol << std::endl;
 
     // Read the right-hand-side b; if not specified, use b = 0.0
@@ -84,11 +84,11 @@ int main(int argc, const char* args[])
 
     // Transfer operators
     IdentityMatrix tranOpers[numLevels];
-    for (INT i = 0; i < numLevels; ++i) tranOpers[i] = IdentityMatrix(mat.GetRowSize());
+    for (USI i = 0; i < numLevels; ++i) tranOpers[i] = IdentityMatrix(mat.GetRowSize());
 
     // Smoothers and coarse solvers
     solver.SetupALL(mat, numLevels);
-    for (INT i = 0; i < numLevels; ++i) {
+    for (USI i = 0; i < numLevels; ++i) {
         smoothers[i].Setup(mat);
         coarseSolvers[i].Setup(mat);
         solver.SetupLevel(mat, i, &tranOpers[i], &smoothers[i], &coarseSolvers[i]);

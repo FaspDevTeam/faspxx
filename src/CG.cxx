@@ -55,11 +55,11 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     FaspRetCode errorCode = FaspRetCode::SUCCESS;
 
     // Local variables
-    const int    maxStag    = MAX_STAG_NUM;         // max number of stagnation checks
+    const USI    maxStag    = MAX_STAG_NUM;         // max number of stagnation checks
     const double solStagTol = 1e-4 * params.relTol; // solution stagnation tolerance
     const double solZeroTol = CLOSE_ZERO;           // solution close to zero tolerance
 
-    int    stagStep = 0, moreStep = 0;
+    USI    stagStep = 0, moreStep = 0;
     double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
     double alpha, beta, tmpa, tmpb;
 

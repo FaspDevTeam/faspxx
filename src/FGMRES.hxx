@@ -38,15 +38,15 @@ private:
     std::vector<VEC> V;
     std::vector<VEC> Z;
 
-    int maxRestart;
-    int minRestart;
-    int restart;
-    int len;
+    USI maxRestart;
+    USI minRestart;
+    USI restart;
+    USI len;
 
     // Constants for variable restarting
     const double max_cr   = 0.99026806874157040;
     const double min_cr   = 0.17364817766693041;
-    const int    decrease = 3;
+    const USI    decrease = 3;
 
 public:
     /// Default constructor.
@@ -65,7 +65,7 @@ public:
     ~FGMRES() = default;
 
     /// Set the maximum and minmum restart numbers for variable FGMRES.
-    void SetMaxMinRestart(const int maxRestart, const int minRestart);
+    void SetMaxMinRestart(const USI maxRestart, const USI minRestart);
 
     /// Setup the FGMRES method.
     FaspRetCode Setup(const LOP& A) override;

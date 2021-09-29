@@ -17,6 +17,9 @@
 #include <stdexcept>
 #include <string>
 
+// FASPXX header files
+#include "Faspxx.hxx"
+
 /// \brief Return code definition
 enum FaspRetCode {
     SUCCESS               = 0,   ///< Everything is fine
@@ -59,9 +62,9 @@ class FaspRunTime : public std::runtime_error
 {
 
 private:
-    const char*        file; ///< Which file throws exception
-    const char*        func; ///< Which function throws exception
-    const unsigned int line; ///< Which line throws exception
+    const char* file; ///< Which file throws exception
+    const char* func; ///< Which function throws exception
+    const USI   line; ///< Which line throws exception
 
 public:
     const FaspRetCode errorCode; ///< Error Code
@@ -69,7 +72,7 @@ public:
 public:
     /// Default constructor
     FaspRunTime(const FaspRetCode code_, const char* file_, const char* func_,
-                const unsigned int line_)
+                const USI line_)
         : std::runtime_error(GetRetCode(code_))
         , file(file_)
         , func(func_)
@@ -79,9 +82,9 @@ public:
     }
 
     // Get exception location
-    const char*  GetFile() const { return file; } ///< return thrown file name
-    const char*  GetFunc() const { return func; } ///< return thrown function name
-    unsigned int GetLine() const { return line; } ///< return thrown line number
+    const char* GetFile() const { return file; } ///< return thrown file name
+    const char* GetFunc() const { return func; } ///< return thrown function name
+    USI         GetLine() const { return line; } ///< return thrown line number
 
     // Standard output
     void LogExcep(std::ostream& stream = std::cout) const;
@@ -92,16 +95,16 @@ class FaspBadAlloc : public std::bad_alloc
 {
 
 private:
-    const char*        file; ///< Which file throws exception
-    const char*        func; ///< Which function throws exception
-    const unsigned int line; ///< Which line throws exception
+    const char* file; ///< Which file throws exception
+    const char* func; ///< Which function throws exception
+    USI         line; ///< Which line throws exception
 
 public:
     const FaspRetCode errorCode = FaspRetCode::SUCCESS; ///< Error Code
 
 public:
     /// Default constructor
-    FaspBadAlloc(const char* file_, const char* func_, const unsigned int line_)
+    FaspBadAlloc(const char* file_, const char* func_, const USI line_)
         : std::bad_alloc()
         , file(file_)
         , func(func_)
@@ -110,9 +113,9 @@ public:
     }
 
     // Get exception location
-    const char*  GetFile() const { return file; } ///< return thrown file name
-    const char*  GetFunc() const { return func; } ///< return thrown function name
-    unsigned int GetLine() const { return line; } ///< return thrown line number
+    const char* GetFile() const { return file; } ///< return thrown file name
+    const char* GetFunc() const { return func; } ///< return thrown function name
+    USI         GetLine() const { return line; } ///< return thrown line number
 
     // Standard output
     void LogExcep(std::ostream& stream = std::cout) const;
