@@ -1,0 +1,17 @@
+
+
+   # 以#开始的为注释内容
+
+-sol_type cg       # 迭代法类型
+  -sol_rtol 1.23E-8
+-sol_atol 4.56e-10
+         -sol_maxiter 789  # 测试空格不读取
+-sol_printlvl 1
+-sol_view
+
+-vec ../data/ffffffffffff
+-level 4
+-resrel 1.234e-6
+-view 1
+
+-out_put 6

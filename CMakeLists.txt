@@ -119,3 +119,7 @@ target_link_libraries(testMatFree faspxx)
 # GoogleTest, default "OFF" (enable by "-DGTEST=ON")
 option(GTEST "Google Test" OFF)
 add_subdirectory(utest)
+
+# added by fan (need to be reviewed)
+enable_testing()
+add_subdirectory(tests)
