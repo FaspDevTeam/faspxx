@@ -1,6 +1,8 @@
 set(UNIT_TESTS_SRCS
     src/test_ErrorLog.cxx
+    src/test_Jacobi.cxx
     src/test_MAT.cxx
+    src/test_Param.cxx
     src/test_VEC.cxx
     )
 

@@ -1,27 +1,14 @@
-/** \file    unitMAT.cxx
- *  \brief   Unit test for reading parameters
- *  \author  Ronghong Fan
- *  \date    Oct/24/2019
- *
- *-----------------------------------------------------------------------------------
- *  Copyright (C) 2019--present by the FASP++ team. All rights reserved.
- *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
- *-----------------------------------------------------------------------------------
- */
-
-// Standard header files
-#include <gtest/gtest.h>
 #include <string>
 
-// FASPXX header files
 #include "Param.hxx"
 
-/*---------------------------------*/
-/*--     Beginning of TEST       --*/
-/*---------------------------------*/
+#include "../catch.hxx"
 
-TEST(Parameters_Class, Parameters)
+
+TEST_CASE("Param")
 {
+    std::cout << "TEST Param" << std::endl;
+
     // parameters in user program
     bool        bool_param   = false;
     INT         int_param    = 11;
@@ -50,16 +37,16 @@ TEST(Parameters_Class, Parameters)
     DBL         resrel_param = 0.0;   // from file
     std::string vec_param    = "";    // from file
 
-    EXPECT_EQ(bool_param, false);
-    EXPECT_EQ(int_param, 11);
-    EXPECT_EQ(double_param, 3.14159);
-    EXPECT_EQ(char_param, "user params");
-    EXPECT_EQ(output_lvl, 4);
-    EXPECT_EQ(params_file, "./data_for_test/multiple_sol.param");
-    EXPECT_EQ(view_param, false);
-    EXPECT_EQ(level_param, 0);
-    EXPECT_EQ(resrel_param, 0.0);
-    EXPECT_EQ(vec_param, "");
+    REQUIRE(bool_param == false);
+    REQUIRE(int_param == 11);
+    REQUIRE(double_param == 3.14159);
+    REQUIRE(char_param == "user params");
+    REQUIRE(output_lvl == 4);
+    REQUIRE(params_file == "./data_for_test/multiple_sol.param");
+    REQUIRE(view_param == false);
+    REQUIRE(level_param == 0);
+    REQUIRE(resrel_param == 0.0);
+    REQUIRE(vec_param == "");
 
     Parameters params(_argc, _argv);
     params.AddParam("-bool_param", "bool param help", &bool_param);
@@ -75,20 +62,18 @@ TEST(Parameters_Class, Parameters)
     params.AddParam("-out_put", "output param help", &output_lvl);
     params.Parse();
 
-    EXPECT_EQ(bool_param, true);                     // modified by command line
-    EXPECT_EQ(int_param, 22);                        // modified by command line
-    EXPECT_EQ(double_param, 1.41414);                // modified by command line
-    EXPECT_EQ(char_param, "commandline_parameters"); // modified by command line
-    EXPECT_EQ(params_file,
+    REQUIRE(bool_param == true);                     // modified by command line
+    REQUIRE(int_param == 22);                        // modified by command line
+    REQUIRE(double_param == 1.41414);                // modified by command line
+    REQUIRE(char_param == "commandline_parameters"); // modified by command line
+    REQUIRE(params_file ==
               "./data_for_test/single_sol.param"); // modified by command line
 
-    EXPECT_EQ(view_param, true);                  // modified from file
-    EXPECT_EQ(level_param, 4);                    // modified from file
-    EXPECT_DOUBLE_EQ(resrel_param, 1.234e-6);     // modified from file
-    EXPECT_EQ(vec_param, "../data/ffffffffffff"); // modified from file
-    EXPECT_EQ(output_lvl, 6);                     // modified from file
+    REQUIRE(view_param == true);                  // modified from file
+    REQUIRE(level_param == 4);                    // modified from file
+    REQUIRE(std::abs(resrel_param - 1.234e-6) < 1E-14);     // modified from file
+    REQUIRE(vec_param == "../data/ffffffffffff"); // modified from file
+    REQUIRE(output_lvl == 6);                     // modified from file
 }
 
-/*---------------------------------*/
-/*--        End of File          --*/
-/*---------------------------------*/
+
