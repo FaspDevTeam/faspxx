@@ -52,12 +52,21 @@ include_directories(${PROJECT_SOURCE_DIR}/include/)
 include_directories(${PROJECT_SOURCE_DIR}/src/)
 include_directories(${PROJECT_SOURCE_DIR}/example/)
 
-# Find source code from src
-file(GLOB_RECURSE SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cxx)
+# CMake modules path
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/modules)
+include(UserCmakeUtilities)
 
 # Build faspxx library
-add_library(faspxx ${SRC_FILES})
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/modules)
+set(SOURCES "")
+set(HEADERS "")
+set(FASPXX_SOURCE_DIRS
+    src
+    )
+foreach(DIR IN LISTS FASPXX_SOURCE_DIRS)
+    add_subdirectory(${DIR})
+endforeach()
+# construct AlgebraicFeatures library
+add_library(faspxx ${SOURCES} ${HEADERS})
 
 # Set install location for faspxx library
 set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
