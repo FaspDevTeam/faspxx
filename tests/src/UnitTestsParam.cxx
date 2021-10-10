@@ -1,9 +1,18 @@
+/*! \file    UnitTestsParam.cxx
+ *  \brief   Unit tests for reading parameters
+ *  \author  Ronghong Fan
+ *  \date    Oct/10/2021
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2021--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
+ */
+
 #include <string>
 
-#include "Param.hxx"
-
 #include "../catch.hxx"
-
+#include "Param.hxx"
 
 TEST_CASE("Param")
 {
@@ -28,10 +37,10 @@ TEST_CASE("Param")
                                 "-char_param",
                                 "commandline_parameters",
                                 "-faspxx_opts",
-                                "./data_for_test/single_sol.param"};
+                                "./data/single_sol.param"};
 
     // parameters in file
-    std::string params_file  = "./data_for_test/multiple_sol.param";
+    std::string params_file  = "./data/multiple_sol.param";
     bool        view_param   = false; // from file
     INT         level_param  = 0;     // from file
     DBL         resrel_param = 0.0;   // from file
@@ -42,7 +51,7 @@ TEST_CASE("Param")
     REQUIRE(double_param == 3.14159);
     REQUIRE(char_param == "user params");
     REQUIRE(output_lvl == 4);
-    REQUIRE(params_file == "./data_for_test/multiple_sol.param");
+    REQUIRE(params_file == "./data/multiple_sol.param");
     REQUIRE(view_param == false);
     REQUIRE(level_param == 0);
     REQUIRE(resrel_param == 0.0);
@@ -62,18 +71,23 @@ TEST_CASE("Param")
     params.AddParam("-out_put", "output param help", &output_lvl);
     params.Parse();
 
-    REQUIRE(bool_param == true);                     // modified by command line
-    REQUIRE(int_param == 22);                        // modified by command line
-    REQUIRE(double_param == 1.41414);                // modified by command line
-    REQUIRE(char_param == "commandline_parameters"); // modified by command line
-    REQUIRE(params_file ==
-              "./data_for_test/single_sol.param"); // modified by command line
+    REQUIRE(bool_param == true);                       // modified by command line
+    REQUIRE(int_param == 22);                          // modified by command line
+    REQUIRE(double_param == 1.41414);                  // modified by command line
+    REQUIRE(char_param == "commandline_parameters");   // modified by command line
+    REQUIRE(params_file == "./data/single_sol.param"); // modified by command line
 
-    REQUIRE(view_param == true);                  // modified from file
-    REQUIRE(level_param == 4);                    // modified from file
-    REQUIRE(std::abs(resrel_param - 1.234e-6) < 1E-14);     // modified from file
-    REQUIRE(vec_param == "../data/ffffffffffff"); // modified from file
-    REQUIRE(output_lvl == 6);                     // modified from file
+    REQUIRE(view_param == true);                        // modified from file
+    REQUIRE(level_param == 4);                          // modified from file
+    REQUIRE(std::abs(resrel_param - 1.234e-6) < 1E-14); // modified from file
+    REQUIRE(vec_param == "../data/ffffffffffff");       // modified from file
+    REQUIRE(output_lvl == 6);                           // modified from file
 }
 
-
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Ronghong Fan        Oct/10/2021      Create file                          */
+/*----------------------------------------------------------------------------*/

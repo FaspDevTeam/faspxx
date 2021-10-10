@@ -1,9 +1,19 @@
+/*! \file    UnitTestsVEC.cxx
+ *  \brief   Unit tests for VEC class
+ *  \author  Ronghong Fan
+ *  \date    Oct/10/2021
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2021--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
+ */
+
 #include <cmath>
 #include <vector>
 
-#include "VEC.hxx"
-
 #include "../catch.hxx"
+#include "VEC.hxx"
 
 TEST_CASE("VEC")
 {
@@ -20,13 +30,14 @@ TEST_CASE("VEC")
     auto* p = new DBL[4]{452, 0.1234, 8964, 0.567};
     VEC   v6(4, p);
 
-    auto* q = new DBL[100]{
-        85, 89,  23, 39, 99, 41, 48, 68, 8,  16, 24, 28, 94, 93, 9,  49, 97, 40, 60, 27,
-        92, 100, 95, 5,  81, 14, 21, 22, 7,  37, 46, 71, 34, 90, 33, 54, 29, 19, 31, 64,
-        74, 12,  58, 59, 83, 88, 15, 52, 10, 18, 66, 38, 53, 57, 73, 1,  70, 67, 72, 78,
-        36, 47,  51, 84, 76, 45, 26, 43, 65, 42, 80, 56, 91, 11, 30, 82, 62, 6,  87, 13,
-        32, 3,   77, 4,  61, 35, 50, 69, 20, 98, 86, 96, 75, 25, 79, 17, 2,  55, 44, 63};
-    VEC v7(100, q);
+    auto* q = new DBL[100]{85, 89, 23, 39, 99, 41, 48,  68, 8,  16, 24, 28, 94, 93, 9,
+                           49, 97, 40, 60, 27, 92, 100, 95, 5,  81, 14, 21, 22, 7,  37,
+                           46, 71, 34, 90, 33, 54, 29,  19, 31, 64, 74, 12, 58, 59, 83,
+                           88, 15, 52, 10, 18, 66, 38,  53, 57, 73, 1,  70, 67, 72, 78,
+                           36, 47, 51, 84, 76, 45, 26,  43, 65, 42, 80, 56, 91, 11, 30,
+                           82, 62, 6,  87, 13, 32, 3,   77, 4,  61, 35, 50, 69, 20, 98,
+                           86, 96, 75, 25, 79, 17, 2,   55, 44, 63};
+    VEC   v7(100, q);
 
     SECTION("VEC: GetSize()")
     {
@@ -88,24 +99,20 @@ TEST_CASE("VEC")
         VEC v10, v11, v12;
 
         v10.SetValues(6, 3.14);
-        for (USI i = 0; i < v10.GetSize(); i++)
-            REQUIRE(v10[i] == 3.14);
+        for (USI i = 0; i < v10.GetSize(); i++) REQUIRE(v10[i] == 3.14);
 
         v11.SetValues(v2);
-        for (USI i = 0; i < v11.GetSize(); i++)
-            REQUIRE(v11[i] == v2[i]);
+        for (USI i = 0; i < v11.GetSize(); i++) REQUIRE(v11[i] == v2[i]);
 
         v12.SetValues(4, p);
-        for (USI i = 0; i < v12.GetSize(); i++)
-            REQUIRE(v12[i] == p[i]);
+        for (USI i = 0; i < v12.GetSize(); i++) REQUIRE(v12[i] == p[i]);
     }
 
     SECTION("VEC: GetValue()")
     {
         std::cout << "TEST VEC::GetValue()" << std::endl;
 
-        for (USI i = 0; i < v6.GetSize(); i++)
-            REQUIRE(v6.GetValue(i) == p[i]);
+        for (USI i = 0; i < v6.GetSize(); i++) REQUIRE(v6.GetValue(i) == p[i]);
     }
 
     SECTION("VEC: Scale()")
@@ -132,8 +139,7 @@ TEST_CASE("VEC")
 
         VEC v;
         v6.CopyTo(v);
-        for (USI i = 0; i < v6.GetSize(); i++)
-            REQUIRE(v[i] == v6[i]);
+        for (USI i = 0; i < v6.GetSize(); i++) REQUIRE(v[i] == v6[i]);
     }
 
     SECTION("VEC: Min()")
@@ -160,8 +166,7 @@ TEST_CASE("VEC")
 
         DBL shift = 3.14159;
         v6.Shift(shift);
-        for (USI i = 0; i < v6.GetSize(); i++)
-            REQUIRE(v6[i] == p[i] + shift);
+        for (USI i = 0; i < v6.GetSize(); i++) REQUIRE(v6[i] == p[i] + shift);
     }
 
     SECTION("VEC: Abs()")
@@ -280,3 +285,11 @@ TEST_CASE("VEC")
         }
     }
 }
+
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Ronghong Fan        Oct/10/2021      Create file                          */
+/*----------------------------------------------------------------------------*/

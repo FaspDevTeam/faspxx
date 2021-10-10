@@ -1,15 +1,25 @@
+/*! \file    UnitTestsMAT.cxx
+ *  \brief   Unit tests for MAT class
+ *  \author  Ronghong Fan
+ *  \date    Oct/10/2021
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2021--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
+ */
+
 #include <cmath>
 #include <vector>
 
+#include "../catch.hxx"
 #include "MAT.hxx"
 #include "VEC.hxx"
-
-#include "../catch.hxx"
 
 TEST_CASE("MAT")
 {
     const double TOL = 1E-14;
-    MAT mat0;
+    MAT          mat0;
 
     /*
      * \[
@@ -49,7 +59,7 @@ TEST_CASE("MAT")
     const std::vector<DBL> values2 = {0,     2.87, 5.74, 8.61, 11.48,
                                       14.35, 5.74, 2.87, 5.74, 2.87};
     const MAT              mat7(4, 4, 10, values2, colInd1, rowPtr1,
-                                diagPtr1); // scale by mat1 with 2.87
+                   diagPtr1); // scale by mat1 with 2.87
 
     const VEC vec2(4, 0.314);
 
@@ -62,10 +72,9 @@ TEST_CASE("MAT")
     const std::vector<USI> colIndInv  = {0, 1};
     const std::vector<USI> rowPtrInv  = {0, 1, 2};
     const std::vector<USI> diagPtrInv = {0, 1, 2};
-    const MAT              invmat1(2, 2, 2, valuesInv1, colIndInv, rowPtrInv, diagPtrInv);
-    const MAT              invmat2(2, 2, 2, valuesInv2, colIndInv, rowPtrInv, diagPtrInv);
+    const MAT invmat1(2, 2, 2, valuesInv1, colIndInv, rowPtrInv, diagPtrInv);
+    const MAT invmat2(2, 2, 2, valuesInv2, colIndInv, rowPtrInv, diagPtrInv);
 
-    
     SECTION("TEST MAT::GetRowSize(), GetColSize(), GetNNZ()")
     {
         std::cout << "TEST MAT::GetRowSize(), GetColSize(), GetNNZ()" << std::endl;
@@ -174,8 +183,7 @@ TEST_CASE("MAT")
         MAT mat(mat1);
         mat.Zero();
         for (USI i = 0; i < mat.GetRowSize(); i++)
-            for (USI j = 0; j < mat.GetColSize(); j++)
-                REQUIRE(mat.GetValue(i, j) == 0);
+            for (USI j = 0; j < mat.GetColSize(); j++) REQUIRE(mat.GetValue(i, j) == 0);
     }
 
     SECTION("TEST MAT::CopyTo()")
@@ -208,7 +216,15 @@ TEST_CASE("MAT")
         invmat1.Inverse(invmat);
         for (USI i = 0; i < invmat.GetRowSize(); i++)
             for (USI j = 0; j < invmat.GetColSize(); j++)
-                REQUIRE(std::abs(invmat.GetValue(i, j) - invmat2.GetValue(i, j)) < 1e-5);
+                REQUIRE(std::abs(invmat.GetValue(i, j) - invmat2.GetValue(i, j)) <
+                        1e-5);
     }
-
 }
+
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Ronghong Fan        Oct/10/2021      Create file                          */
+/*----------------------------------------------------------------------------*/

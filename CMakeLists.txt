@@ -1,11 +1,12 @@
 # Main CMakeLists file for FASP++
 # by Chensong Zhang, modified on Feb/15/2020
+# by Ronghong Fan & Chensong Zhang, modified on Oct/10/2021
 #
 # Some sample usages:
 #   cmake .                                      // build in default configuration
 #   cmake -DCMAKE_BUILD_TYPE=Release .           // build in Release configuration
 #   cmake -DCMAKE_BUILD_TYPE=Debug .             // build in Debug configuration
-#   cmake -DCMAKE_BUILD_TYPE=Debug -DGTEST=ON .  // build with GTEST support
+#   cmake -DCMAKE_BUILD_TYPE=Debug -DUTEST=ON .  // build with unit tests
 #   cmake -DUSE_UMFPACK=ON .                     // build with UMFPACK support
 #   cmake -DCMAKE_VERBOSE_MAKEFILE=ON .          // build with verbose on
 
@@ -59,13 +60,10 @@ include(UserCmakeUtilities)
 # Build faspxx library
 set(SOURCES "")
 set(HEADERS "")
-set(FASPXX_SOURCE_DIRS
-    src
-    )
+set(FASPXX_SOURCE_DIRS src) # list of src directories
 foreach(DIR IN LISTS FASPXX_SOURCE_DIRS)
     add_subdirectory(${DIR})
 endforeach()
-# construct AlgebraicFeatures library
 add_library(faspxx ${SOURCES} ${HEADERS})
 
 # Set install location for faspxx library
@@ -125,6 +123,9 @@ target_link_libraries(testInverse faspxx)
 add_executable(testMatFree example/testMatFree.cxx)
 target_link_libraries(testMatFree faspxx)
 
-# added by fan (need to be reviewed)
-enable_testing()
-add_subdirectory(tests)
+# Unit test using Catch2
+option(UTEST "Unit Test" OFF)
+if(UTEST) 
+    enable_testing()
+    add_subdirectory(tests)
+endif()

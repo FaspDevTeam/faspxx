@@ -1,8 +1,18 @@
+/*! \file    UnitTestsJacobi.cxx
+ *  \brief   Unit tests for Jacobi class
+ *  \author  Ronghong Fan
+ *  \date    Oct/10/2021
+ *
+ *-----------------------------------------------------------------------------------
+ *  Copyright (C) 2021--present by the FASP++ team. All rights reserved.
+ *  Released under the terms of the GNU Lesser General Public License 3.0 or later.
+ *-----------------------------------------------------------------------------------
+ */
+
 #include <vector>
 
-#include "Iter.hxx"
-
 #include "../catch.hxx"
+#include "Iter.hxx"
 
 TEST_CASE("Jacobi")
 {
@@ -59,8 +69,7 @@ TEST_CASE("Jacobi")
         Jsolve.Solve(f, x);
 
         // check solution
-        for (USI i = 0; i < row; i++) 
-            REQUIRE(std::abs(x[i] - xstar[i]) < 1e-5);
+        for (USI i = 0; i < row; i++) REQUIRE(std::abs(x[i] - xstar[i]) < 1e-5);
 
         // Jacobi iteration 2
         for (USI i = 0; i < row; i++) x[i] = 0.0; // init to zero again
@@ -70,8 +79,7 @@ TEST_CASE("Jacobi")
         Jsolve.Solve(f, x);
 
         // check solution
-        for (USI i = 0; i < row; i++)
-            REQUIRE(std::abs(x[i] - xstar[i]) < 1e-5);
+        for (USI i = 0; i < row; i++) REQUIRE(std::abs(x[i] - xstar[i]) < 1e-5);
     }
 
     SECTION("WeightedJacobi, JacobiSolve3")
@@ -136,8 +144,7 @@ TEST_CASE("Jacobi")
         Jsolve.Setup(mat);
         Jsolve.Solve(f, x);
 
-        for (USI i = 0; i < row; i++)
-            REQUIRE(std::abs(x[i] - xstar[i]) < 1e-5);
+        for (USI i = 0; i < row; i++) REQUIRE(std::abs(x[i] - xstar[i]) < 1e-5);
 
         // Jacobi iteration 2
         for (USI i = 0; i < row; i++) x[i] = 0.0;
@@ -146,7 +153,14 @@ TEST_CASE("Jacobi")
         Jsolve.Setup(mat);
         Jsolve.Solve(f, x);
 
-        for (USI i = 0; i < row; i++)
-            REQUIRE(std::abs(x[i] - xstar[i]) < 1e-5);
+        for (USI i = 0; i < row; i++) REQUIRE(std::abs(x[i] - xstar[i]) < 1e-5);
     }
 }
+
+/*----------------------------------------------------------------------------*/
+/*  Brief Change History of This File                                         */
+/*----------------------------------------------------------------------------*/
+/*  Author              Date             Actions                              */
+/*----------------------------------------------------------------------------*/
+/*  Ronghong Fan        Oct/10/2021      Create file                          */
+/*----------------------------------------------------------------------------*/
