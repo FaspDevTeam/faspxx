@@ -75,53 +75,7 @@ install(TARGETS faspxx
 # Look for external libraries (Optional)
 include(external)
 
-# Test vector-operations speed
-add_executable(TestVecSpeed example/TestVecSpeed.cxx)
-target_link_libraries(TestVecSpeed faspxx)
-
-# Test ReadData
-add_executable(TestReadData example/TestReadData.cxx)
-target_link_libraries(TestReadData faspxx)
-
-# Test direct solvers
-add_executable(TestSolver example/TestSolver.cxx)
-target_link_libraries(TestSolver faspxx ${UMFPACK_LIBRARIES})
-
-# Test MG class
-add_executable(TestMG example/TestMG.cxx)
-target_link_libraries(TestMG faspxx)
-
-# Test CG class
-add_executable(TestCG example/TestCG.cxx)
-target_link_libraries(TestCG faspxx)
-
-# Test PCG class
-add_executable(TestPCG example/TestPCG.cxx)
-target_link_libraries(TestPCG faspxx)
-
-# Test GMRES class
-add_executable(TestGMRES example/TestGMRES.cxx)
-target_link_libraries(TestGMRES faspxx)
-
-# Test Krylov methods
-add_executable(TestKrylov example/TestKrylov.cxx)
-target_link_libraries(TestKrylov faspxx)
-
-# Test Jacobi method
-add_executable(TestJacobi example/TestJacobi.cxx)
-target_link_libraries(TestJacobi faspxx)
-
-# Test Weighted Jacobi method
-add_executable(TestWeightedJacobi example/TestWeightedJacobi.cxx)
-target_link_libraries(TestWeightedJacobi faspxx)
-
-# Test MatFree implementation of 2D5P stencil
-add_executable(TestInverse example/TestInverse.cxx)
-target_link_libraries(TestInverse faspxx)
-
-# Test MatFree implementation of 2D5P stencil
-add_executable(TestMatFree example/TestMatFree.cxx)
-target_link_libraries(TestMatFree faspxx)
+add_subdirectory(example)
 
 # Unit test using Catch2
 option(UTEST "Unit Test" OFF)
