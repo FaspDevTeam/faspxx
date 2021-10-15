@@ -10,8 +10,8 @@
  */
 
 // Sample usages:
-//   ./testKrylov -mat ../data/fdm_1023X1023.csr -maxIter 200 -minIter 0 -algName cg
-//   ./testKrylov -mat ../data/fdm_1023X1023.csr -maxIter 200 -algName bicgstab
+//   ./TestKrylov -mat ../../data/fdm_1023X1023.csr -maxIter 200 -minIter 0 -algName cg
+//   ./TestKrylov -mat ../../data/fdm_1023X1023.csr -maxIter 200 -algName bicgstab
 
 // FASPXX header files
 #include "Iter.hxx"
@@ -24,8 +24,8 @@
 int main(int argc, const char *args[])
 {
     // User default parameters
-    std::string parFile = "../data/input.param";
-    std::string matFile = "../data/fdm_10X10.csr";
+    std::string parFile = "../../data/input.param";
+    std::string matFile = "../../data/fdm_10X10.csr";
     std::string rhsFile, xinFile;
 
     // Read general parameters

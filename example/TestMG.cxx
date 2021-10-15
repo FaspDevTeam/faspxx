@@ -10,7 +10,7 @@
  */
 
 // Sample usages:
-//   ./testMG -maxIter 200 -minIter 100
+//   ./TestMG -maxIter 200 -minIter 100
 
 // FASPXX header files
 #include "Iter.hxx"
@@ -23,8 +23,8 @@
 int main(int argc, const char* args[])
 {
     // User default parameters
-    std::string parFile = "../data/input.param";
-    std::string matFile = "../data/fdm_10X10.csr";
+    std::string parFile = "../../data/input.param";
+    std::string matFile = "../../data/fdm_10X10.csr";
     std::string rhsFile, xinFile;
 
     // Read general parameters

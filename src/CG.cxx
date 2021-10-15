@@ -105,8 +105,16 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
         if (fabs(tmpb) > CLOSE_ZERO * CLOSE_ZERO)
             alpha = tmpa / tmpb;
         else {
-            FASPXX_WARNING("Divided by zero!");
-            errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
+            // Update solution and residual
+            x.AXPY(alpha, pk);   // x_k = x_{k-1} + alpha_k*p_{k-1}
+            rk.AXPY(-alpha, ax); // r_k = r_{k-1} - alpha_k*A*p_{k-1}
+            // Check residual for convergence
+            resAbs = rk.Norm2();
+            resRel = resAbs / denAbs;
+            if (resRel > params.relTol && resAbs > params.absTol) {
+                FASPXX_WARNING("Divided by zero!");
+                errorCode = FaspRetCode::ERROR_DIVIDE_ZERO;
+            } // otherwise converged to zero solution
             break;
         }
 
@@ -247,4 +255,5 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        Oct/13/2019      Create file                          */
 /*  Chensong Zhang      Sep/26/2021      Restructure file                     */
+/*  Chensong Zhang      Oct/15/2021      Check convergence to zero            */
 /*----------------------------------------------------------------------------*/

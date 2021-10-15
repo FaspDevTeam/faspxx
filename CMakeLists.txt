@@ -1,6 +1,6 @@
 # Main CMakeLists file for FASP++
 # by Chensong Zhang, modified on Feb/15/2020
-# by Ronghong Fan & Chensong Zhang, modified on Oct/10/2021
+# by Ronghong Fan & Chensong Zhang, modified on Oct/15/2021
 #
 # Some sample usages:
 #   cmake .                                      // build in default configuration
@@ -66,11 +66,29 @@ foreach(DIR IN LISTS FASPXX_SOURCE_DIRS)
 endforeach()
 add_library(faspxx ${SOURCES} ${HEADERS})
 
-# Set install location for faspxx library
-set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
+# Set location for installing faspxx library
+set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}" )
 install(TARGETS faspxx
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
+set(FASPXX_INSTALL TRUE)
+
+# Set faspxx library type
+if(SHARED) 
+    set(FASPXX_LIBRARY_TYPE SHARED)
+else(SHARED)
+    set(FASPXX_LIBRARY_TYPE STATIC)
+endif(SHARED)
+set(FASPXX_LIBRARY_NAME faspxx)
+
+# Uninstall target
+if (NOT TARGET uninstall)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/modules/cmake_uninstall.cmake.in"
+                   "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+                   IMMEDIATE @ONLY)
+    add_custom_target(uninstall COMMAND ${CMAKE_COMMAND} -P 
+                      ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+endif()
 
 # Look for external libraries (Optional)
 include(external)
@@ -81,5 +99,5 @@ add_subdirectory(example)
 option(UTEST "Unit Test" OFF)
 if(UTEST) 
     enable_testing()
-    add_subdirectory(tests)
+    add_subdirectory(utest)
 endif()

@@ -10,8 +10,8 @@
  */
 
 // Sample usages:
-//   ./testPCG -maxIter 200 -minIter 0 -pcdIter 1
-//   ./testPCG -maxIter 200 -minIter 200 -mat ../data/fdm_1023X1023.csr -pcdIter 1
+//   ./TestPCG -maxIter 200 -minIter 0 -pcdIter 1
+//   ./TestPCG -maxIter 200 -minIter 200 -mat ../../data/fdm_1023X1023.csr -pcdIter 1
 
 // FASPXX header files
 #include "CG.hxx"
@@ -24,8 +24,8 @@
 int main(int argc, const char *args[])
 {
     // User default parameters
-    std::string parFile = "../data/input.param";
-    std::string matFile = "../data/fdm_10X10.csr";
+    std::string parFile = "../../data/input.param";
+    std::string matFile = "../../data/fdm_10X10.csr";
     std::string rhsFile, xinFile;
 
     // Read general parameters

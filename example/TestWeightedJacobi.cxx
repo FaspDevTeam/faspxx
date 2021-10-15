@@ -9,9 +9,6 @@
  *-----------------------------------------------------------------------------------
  */
 
-// Sample usages:
-//   ./testWeightedJacobi
-
 // Standard header files
 #include <iostream>
 #include <vector>

@@ -1,4 +1,4 @@
-#  FASP_INSTALL_PREFIX is set here. 
+#  FASPXX_INSTALL_PREFIX is set here. 
 if(DEFINED FASP_INSTALL_PREFIX)
     string(LENGTH "${FASP_INSTALL_PREFIX}" Z)
     if(Z)
