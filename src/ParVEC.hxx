@@ -5,6 +5,9 @@
 
 #include "VEC.hxx"
 
+void GeneratePartitioning(int global_size, int num_procs, int* partitioning);
+void GenerateLocalPartitioning(int global_size, int numprocs, int rank, int* partitioning);
+
 class ParVEC
 {
 
@@ -18,8 +21,11 @@ private:
 
     VEC* local_vec;
 
+    bool owns_vec = false;
+    bool owns_part = false;
+
 public:
-    ParVEC();
+    ParVEC(MPI_Comm _comm, int _global_size, int* _partitioning);
 
     ~ParVEC();
 

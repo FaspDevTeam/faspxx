@@ -57,6 +57,14 @@ include_directories(${PROJECT_SOURCE_DIR}/example/)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/modules)
 include(UserCmakeUtilities)
 
+# Look for external libraries (Optional)
+include(external)
+find_package(MPI REQUIRED)
+if(MPI_FOUND)
+    include_directories(${MPI_CXX_INCLUDE_DIRS})
+    link_libraries(${MPI_LIBRARIES})
+endif()
+
 # Build faspxx library
 set(SOURCES "")
 set(HEADERS "")
@@ -71,14 +79,6 @@ set(CMAKE_INSTALL_LIBDIR "${PROJECT_SOURCE_DIR}/lib/")
 install(TARGETS faspxx
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-
-# Look for external libraries (Optional)
-include(external)
-find_package(MPI REQUIRED)
-if(MPI_FOUND)
-    include_directories(${MPI_CXX_INCLUDE_DIRS})
-    link_libraries(${MPI_LIBRARIES})
-endif()
 
 add_subdirectory(example)
 

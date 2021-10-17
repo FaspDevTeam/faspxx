@@ -3,6 +3,7 @@ set(UNIT_TESTS_SRCS
     src/UnitTestsJacobi.cxx
     src/UnitTestsMAT.cxx
     src/UnitTestsParam.cxx
+    src/UnitTestsParVEC.cxx
     src/UnitTestsVEC.cxx
     )
 

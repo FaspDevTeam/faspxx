@@ -1,6 +1,7 @@
 set(EXAMPLES_SRCS "")
 
 list(APPEND EXAMPLES_SRCS
+    demo.cxx
     TestCG.cxx
     TestGMRES.cxx
     TestInverse.cxx
