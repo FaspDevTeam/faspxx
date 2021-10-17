@@ -74,6 +74,11 @@ install(TARGETS faspxx
 
 # Look for external libraries (Optional)
 include(external)
+find_package(MPI REQUIRED)
+if(MPI_FOUND)
+    include_directories(${MPI_CXX_INCLUDE_DIRS})
+    link_libraries(${MPI_LIBRARIES})
+endif()
 
 add_subdirectory(example)
 

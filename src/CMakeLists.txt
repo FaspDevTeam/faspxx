@@ -10,6 +10,7 @@ set(SRCS
     MATUtil.cxx
     MG.cxx
     Param.cxx
+    ParVEC.cxx
     ReadData.cxx
     RetCode.cxx
     SOL.cxx
@@ -33,6 +34,7 @@ set(HDRS
     MATUtil.hxx
     MG.hxx
     Param.hxx
+    ParVEC.hxx
     ReadData.hxx
     RetCode.hxx
     SOL.hxx
