@@ -13,7 +13,7 @@
 #define __POISSON2D_HXX__ /**< indicate Poisson2D.hxx has been included before */
 
 // Standard header files
-#include <math.h>
+#include <cmath>
 
 //---------------------------------
 // List of test problems:
@@ -25,11 +25,13 @@
 //---------------------------------
 #define TEST_PROBLEM 1
 
+const static double MYPI = 3.14159265358979323846264338327950288; /* pi */
+
 /// The exact solution.
 double ExactSolu(const double x, const double y)
 {
 #if TEST_PROBLEM == 1
-    return sin(M_PI * x) * sin(M_PI * y);
+    return sin(MYPI * x) * sin(MYPI * y);
 #endif
 #if TEST_PROBLEM == 2
     return sin(x * y);
@@ -49,7 +51,7 @@ double ExactSolu(const double x, const double y)
 double Load(const double x, const double y)
 {
 #if TEST_PROBLEM == 1
-    return 2 * M_PI * M_PI * sin(M_PI * x) * sin(M_PI * y);
+    return 2 * MYPI * MYPI * sin(MYPI * x) * sin(MYPI * y);
 #endif
 #if TEST_PROBLEM == 2
     return (x * x + y * y) * sin(x * y);
