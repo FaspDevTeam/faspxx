@@ -13,7 +13,7 @@
 #define __POISSON2D_HXX__ /**< indicate Poisson2D.hxx has been included before */
 
 // Standard header files
-#include <cmath>
+#include <math.h>
 
 //---------------------------------
 // List of test problems:
