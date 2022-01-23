@@ -17,7 +17,7 @@
 #include "VEC.hxx"
 
 const int LENGTH = 10000000;
-const int count  = 100;
+const int count  = 200;
 
 /*---------------------------------*/
 /*--     Beginning of main       --*/

@@ -269,7 +269,8 @@ void VEC::AXPBY(const DBL& a, const DBL& b, const VEC& y)
 {
     USI       i;
     const USI len = this->size - this->size % 4;
-    switch ((a == 1.0) + 2 * (b == 1.0)) {
+    // switch ((a == 1.0) + 2 * (b == 1.0)) {
+    switch (3) {
         case 0:
             for (i = 0; i < len; i += 4) {
                 this->values[i]     = a * this->values[i] + b * y.values[i];
@@ -303,12 +304,13 @@ void VEC::AXPBY(const DBL& a, const DBL& b, const VEC& y)
             break;
 
         case 3:
+#pragma omp parallel for shared(len) private(i)
             for (i = 0; i < len; i += 4) {
                 this->values[i] += y.values[i];
                 this->values[i + 1] += y.values[i + 1];
                 this->values[i + 2] += y.values[i + 2];
                 this->values[i + 3] += y.values[i + 3];
-            }
+            } /*-- End of omp for --*/
             for (i = len; i < this->size; ++i) this->values[i] += y.values[i];
     }
 }
@@ -452,18 +454,22 @@ DBL VEC::NormInf() const
     return (tmpNorm1 > tmpNorm3 ? tmpNorm1 : tmpNorm3);
 }
 
-/// Dot product of with v, unroll long for loops.
+/// Dot product with v, unroll long for loops.
 DBL VEC::Dot(const VEC& v) const
 {
     USI       i;
     DBL       dot1 = 0.0, dot2 = 0.0, dot3 = 0.0, dot4 = 0.0;
     const USI len = this->size - this->size % 4;
+
+#pragma omp parallel shared(len) private(i)
+#pragma omp for reduction(+ : dot1, dot2, dot3, dot4)
     for (i = 0; i < len; i += 4) {
         dot1 += this->values[i] * v.values[i];
         dot2 += this->values[i + 1] * v.values[i + 1];
         dot3 += this->values[i + 2] * v.values[i + 2];
         dot4 += this->values[i + 3] * v.values[i + 3];
-    }
+    } /*-- End of omp for --*/
+
     for (i = len; i < this->size; ++i) dot1 += this->values[i] * v.values[i];
     return (dot1 + dot2 + dot3 + dot4);
 }
@@ -475,4 +481,5 @@ DBL VEC::Dot(const VEC& v) const
 /*----------------------------------------------------------------------------*/
 /*  Chensong Zhang      Oct/13/2019      Create file                          */
 /*  Chensong Zhang      Sep/16/2021      Restructure file                     */
+/*  Chensong Zhang      Jan/22/2022      Test some OMP parallelization        */
 /*----------------------------------------------------------------------------*/
