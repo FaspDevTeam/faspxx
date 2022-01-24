@@ -304,7 +304,7 @@ void VEC::AXPBY(const DBL& a, const DBL& b, const VEC& y)
             break;
 
         case 3:
-#pragma omp parallel for shared(len) private(i)
+#pragma omp parallel for shared(len, y) private(i) 
             for (i = 0; i < len; i += 4) {
                 this->values[i] += y.values[i];
                 this->values[i + 1] += y.values[i + 1];

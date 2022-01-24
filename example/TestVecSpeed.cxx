@@ -36,8 +36,8 @@ int main()
     GetWallTime timer;
 
     srand((unsigned)time(nullptr));
-    auto *test1 = new double[LENGTH];
-    auto *test2 = new double[LENGTH];
+    auto* test1 = new double[LENGTH];
+    auto* test2 = new double[LENGTH];
 
     for (j = 0; j < LENGTH; j++) {
         test1[j] = rand() / (double)RAND_MAX;
@@ -49,8 +49,8 @@ int main()
     /*------------------------------------------------------------*/
     timer.Start();
     cycle.Start();
-    auto *ptr1 = new double[LENGTH];
-    auto *ptr2 = new double[LENGTH];
+    auto* ptr1 = new double[LENGTH];
+    auto* ptr2 = new double[LENGTH];
     std::cout << "pointer cycles : " << cycle.Stop() << std::endl;
     std::cout << "pointer time   : " << timer.Stop() << "ms" << std::endl;
 
@@ -111,6 +111,8 @@ int main()
     timer.Start();
     cycle.Start();
     for (k = 0; k < count; k++) {
+#pragma omp parallel private(j) shared(ptr1, ptr2)
+#pragma omp for nowait
         for (j = 0; j < LENGTH; j++) ptr1[j] += ptr2[j];
     }
     std::cout << "pointer cycles : " << cycle.Stop() / count << std::endl;
@@ -119,6 +121,8 @@ int main()
     timer.Start();
     cycle.Start();
     for (k = 0; k < count; k++) {
+#pragma omp parallel private(j) shared(vec1, vec2)
+#pragma omp for nowait
         for (j = 0; j < LENGTH; j++) vec1[j] += vec2[j];
     }
     std::cout << "vector cycles  : " << cycle.Stop() / count << std::endl;
@@ -137,7 +141,10 @@ int main()
     timer.Start();
     cycle.Start();
     for (k = 0; k < count; k++) {
-        for (sum = 0.0, j = 0; j < LENGTH; j++) sum += ptr1[j] * ptr2[j];
+        sum = 0.0;
+#pragma omp parallel shared(ptr1, ptr2) private(j)
+#pragma omp for reduction(+ : sum)
+        for (j = 0; j < LENGTH; j++) sum += ptr1[j] * ptr2[j];
     }
     std::cout << "pointer dot    : " << sum << std::endl;
     std::cout << "pointer cycles : " << cycle.Stop() / count << std::endl;
@@ -146,7 +153,10 @@ int main()
     timer.Start();
     cycle.Start();
     for (k = 0; k < count; k++) {
-        for (sum = 0.0, j = 0; j < LENGTH; j++) sum += vec1[j] * vec2[j];
+        sum = 0.0;
+#pragma omp parallel shared(vec1, vec2) private(j)
+#pragma omp for simd reduction(+ : sum)
+        for (j = 0; j < LENGTH; j++) sum += vec1[j] * vec2[j];
     }
     std::cout << "vector dot     : " << sum << std::endl;
     std::cout << "vector cycles  : " << cycle.Stop() / count << std::endl;
