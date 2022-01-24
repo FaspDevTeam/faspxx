@@ -197,7 +197,7 @@ FaspRetCode MG<TTT>::Solve(const VEC& b, VEC& x)
     } // End of main loop
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
-    if (not(numIter == params.minIter && numIter == params.maxIter)) {
+    if (!(numIter == params.minIter && numIter == params.maxIter)) {
         A->Residual(b, x, r); // Update final residual
         this->norm2 = resAbs = r.Norm2();
         this->normInf        = r.NormInf();

@@ -35,7 +35,6 @@ public:
     /// Default constructor.
     explicit VEC()
         : size(0)
-        , values(0.0)
     {
     }
 

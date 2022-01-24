@@ -63,24 +63,32 @@ private:
     /// Read Time Stamp Counter (TSC)
     static __inline__ uint64 startRDTSC()
     {
-        unsigned cycleLow, cycleHigh;
+        unsigned cycleLow = 0, cycleHigh = 0;
+
+#ifdef _MSC_VER /*-- TODO: MSVC support needed --*/
+#else
         asm volatile("CPUID\n\t"
                      "RDTSC\n\t"
                      "mov %%edx, %0\n\t"
                      "mov %%eax, %1\n\t"
                      : "=r"(cycleHigh), "=r"(cycleLow)::"%rax", "%rbx", "%rcx", "%rdx");
+#endif
         return (static_cast<uint64>(cycleHigh) << 32) | cycleLow;
     }
 
     /// Read Time Stamp Counter and Processor ID (TSCP)
     static __inline__ uint64 stopRDTSCP()
     {
-        unsigned cycleLow, cycleHigh;
+        unsigned cycleLow = 0, cycleHigh = 0;
+
+#ifdef _MSC_VER /*-- TODO: MSVC support needed --*/
+#else
         asm volatile("RDTSCP\n\t"
                      "mov %%edx, %0\n\t"
                      "mov %%eax, %1\n\t"
                      "CPUID\n\t"
                      : "=r"(cycleHigh), "=r"(cycleLow)::"%rax", "%rbx", "%rcx", "%rdx");
+#endif
         return (static_cast<uint64>(cycleHigh) << 32) | cycleLow;
     }
 

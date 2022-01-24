@@ -99,7 +99,7 @@ FaspRetCode Jacobi::Solve(const VEC& b, VEC& x)
     } // End of main Jacobi loop
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
-    if (not(numIter == params.minIter && numIter == params.maxIter)) {
+    if (!(numIter == params.minIter && numIter == params.maxIter)) {
         A->Residual(b, x, work); // Update final residual
         this->norm2 = resAbs = work.Norm2();
         this->normInf        = work.NormInf();

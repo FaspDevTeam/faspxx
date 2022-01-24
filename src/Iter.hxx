@@ -49,9 +49,7 @@ private:
 public:
     /// Default constructor.
     Jacobi()
-        : weight(1.0)
-        , diagInv(1.0)
-        , work(0.0){};
+        : weight(1.0){};
 
     /// Default constructor with specified weight.
     Jacobi(DBL weight);

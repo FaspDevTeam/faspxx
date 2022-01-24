@@ -19,8 +19,8 @@
 
 /// Print out location at (file, line) and function name
 #define FASPXX_LOCATION                                                                \
-    "\n    --> function: " << __PRETTY_FUNCTION__                                      \
-                           << "\n    --> file:     " << __FILE__ << "::" << __LINE__
+    "\n    --> function: " << __FUNCTION__  << "\n    --> file:     " << __FILE__      \
+                           << "::" << __LINE__
 
 /// Log error messages
 //  msg: user-defined error message

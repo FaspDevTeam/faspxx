@@ -26,7 +26,7 @@ VEC::VEC(const USI& size, const DBL& value)
 VEC::VEC(const std::vector<DBL>& src)
 {
     this->values = src;
-    this->size   = src.size();
+    this->size   = (USI)src.size();
 }
 
 /// Assign a const VEC object to a VEC object.
@@ -106,7 +106,7 @@ void VEC::SetValues(const USI& size, const DBL& value)
 void VEC::SetValues(const std::vector<DBL>& src)
 {
     this->values = src;
-    this->size   = src.size();
+    this->size   = (USI)src.size();
 }
 
 /// Assign a DBL array to a VEC object. If source is nullptr, return an empty VEC.
@@ -267,8 +267,8 @@ void VEC::XPAY(const DBL& a, const VEC& x)
 /// x = a * x + b * y, unroll long for loops.
 void VEC::AXPBY(const DBL& a, const DBL& b, const VEC& y)
 {
-    USI       i;
-    const USI len = this->size - this->size % 4;
+    int       i;
+    const int len = this->size - this->size % 4;
     // switch ((a == 1.0) + 2 * (b == 1.0)) {
     switch (3) {
         case 0:
@@ -457,9 +457,9 @@ DBL VEC::NormInf() const
 /// Dot product with v, unroll long for loops.
 DBL VEC::Dot(const VEC& v) const
 {
-    USI       i;
+    int       i;
+    const int len = this->size - this->size % 4;
     DBL       dot1 = 0.0, dot2 = 0.0, dot3 = 0.0, dot4 = 0.0;
-    const USI len = this->size - this->size % 4;
 
 #pragma omp parallel shared(len) private(i)
 #pragma omp for reduction(+ : dot1, dot2, dot3, dot4)

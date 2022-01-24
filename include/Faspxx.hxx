@@ -12,6 +12,10 @@
 #ifndef __FASPXX_HEADER__ /*-- allow multiple inclusions --*/
 #define __FASPXX_HEADER__ /**< indicate faspxx.hxx has been included before */
 
+#ifdef _MSC_VER /*-- Define inline for MSVC --*/
+#define __inline__ __inline 
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* Definition of data-type length                                             */
 /*----------------------------------------------------------------------------*/

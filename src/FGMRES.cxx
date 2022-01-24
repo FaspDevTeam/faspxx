@@ -112,8 +112,8 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
 
     // local variables
     double gamma, t, ri, rj, cr = 1.0;
-    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld;
-    USI    count, count_1;
+    double resAbs = 1.0, resRel = 1.0, denAbs = 1.0, ratio = 0.0, resAbsOld = 1.0;
+    USI    count = 1, count_1 = 2;
 
     PrintHead();
 
@@ -258,7 +258,7 @@ FaspRetCode FGMRES::Solve(const VEC& b, VEC& x)
     } // end of main while loop
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
-    if (not(numIter == params.minIter && numIter == params.maxIter)) {
+    if (!(numIter == params.minIter && numIter == params.maxIter)) {
         norm2   = V[0].Norm2();
         normInf = V[0].NormInf();
         PrintFinal(numIter, resRel, resAbs, ratio);

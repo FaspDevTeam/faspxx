@@ -59,7 +59,9 @@ public:
         , var(0)
         , useRightPrecond(true)
         , maxRestart(30)
-        , minRestart(10){};
+        , minRestart(10)
+        , restart(20)
+        , len(0){};
 
     /// Default destructor.
     ~GMRES() = default;

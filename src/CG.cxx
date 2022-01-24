@@ -236,7 +236,7 @@ FaspRetCode CG::Solve(const VEC& b, VEC& x)
     } // End of main CG loop
 
     // If minIter == numIter == maxIter (preconditioner only), skip this
-    if (not(numIter == params.minIter && numIter == params.maxIter)) {
+    if (!(numIter == params.minIter && numIter == params.maxIter)) {
         this->norm2   = resAbs;
         this->normInf = rk.NormInf();
         PrintFinal(numIter, resRel, resAbs, ratio);
