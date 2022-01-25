@@ -12,7 +12,7 @@
 #ifndef __FASPXX_HEADER__ /*-- allow multiple inclusions --*/
 #define __FASPXX_HEADER__ /**< indicate faspxx.hxx has been included before */
 
-#ifdef _MSC_VER /*-- Define inline for MSVC --*/
+#ifdef _MSC_VER /*-- Define inline attribute for MSVC --*/
 #define __inline__ __inline 
 #endif
 
@@ -55,4 +55,5 @@ const USI MAX_MG_LEVEL  = 20;     ///< Maximal number of multigrid levels
 /*  Chensong Zhang      Sep/01/2019      Create file                          */
 /*  Chensong Zhang      Sep/26/2021      Restructure file                     */
 /*  Chensong Zhang      Sep/29/2021      Add USI and INT types                */
+/*  Chensong Zhang      Jan/24/2022      Adapt to MSVC compiler               */
 /*----------------------------------------------------------------------------*/

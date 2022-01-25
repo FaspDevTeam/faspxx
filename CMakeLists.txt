@@ -1,7 +1,7 @@
 # Main CMakeLists file for FASP++
 # by Chensong Zhang, modified on Feb/15/2020
 # by Ronghong Fan & Chensong Zhang, modified on Oct/15/2021
-# by Chensong Zhang, modified on Jan/22/2022
+# by Chensong Zhang, modified on Jan/22/2022: Add OMP, remove C
 #
 # Some sample usages:
 #   cmake .                                      // build in default configuration
@@ -28,15 +28,12 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_program(THE_CXX NAMES $ENV{CXX} g++ icpc clang++)
 set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
 
-# Default C compiler look-up order
-find_program(THE_C NAMES $ENV{CC} gcc icc clang)
-set(CMAKE_C_COMPILER ${THE_C} CACHE INTERNAL "the C compiler" FORCE)
-
-# Default configuration types and flags
+# Default compiler flags
 set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Configs" FORCE)
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -march=native")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
 
+# Default configuration 
 set(build_type "Release")
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "${build_type}" CACHE STRING "the build type" FORCE)
@@ -48,7 +45,7 @@ message(STATUS "Set build type to ${CMAKE_BUILD_TYPE} configuration")
 #-----------------------------#
 
 # Name of the project
-project(faspxx CXX C)
+project(faspxx CXX)
 
 # Add include directory
 include_directories(${PROJECT_SOURCE_DIR}/include/)
@@ -71,7 +68,7 @@ if(USE_OPENMP)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
         set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${OpenMP_C_FLAGS}")
     else(OPENMP_FOUND)
-        message("   WARNING: OpenMP was requested but disabled!")
+        message("   WARNING: OpenMP was disabled!")
     endif(OPENMP_FOUND)
 endif(USE_OPENMP)
 

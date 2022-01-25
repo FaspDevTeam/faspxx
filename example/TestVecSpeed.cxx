@@ -155,7 +155,7 @@ int main()
     for (k = 0; k < count; k++) {
         sum = 0.0;
 #pragma omp parallel shared(vec1, vec2) private(j)
-#pragma omp for simd reduction(+ : sum)
+#pragma omp for reduction(+ : sum)
         for (j = 0; j < LENGTH; j++) sum += vec1[j] * vec2[j];
     }
     std::cout << "vector dot     : " << sum << std::endl;
@@ -188,4 +188,5 @@ int main()
 /*----------------------------------------------------------------------------*/
 /*  Kailei Zhang        Oct/12/2019      Create file                          */
 /*  Chensong Zhang      Sep/17/2021      Test performance of new version      */
+/*  Chensong Zhang      Jan/25/2022      Test performance of OpenMP           */
 /*----------------------------------------------------------------------------*/

@@ -117,8 +117,14 @@ void VEC::SetValues(const USI& size, const DBL* array)
         this->size = 0;
         return;
     }
-    this->values.assign(array, array + size);
+
+    INT i; // OpenMP only allows INT, but not unsigned integers 
     this->size = size;
+
+    // Easy way is to use this->values.assign(array, array + size);
+#pragma omp parallel for private(i) shared(array)
+    for (i = 0; i < size; ++i) this->values[i] = array[i];
+    /*-- End of omp for --*/
 }
 
 /// Return the value of (*this)[position].
@@ -138,7 +144,7 @@ void VEC::GetValues(const USI& size, const USI* index, DBL* array) const
 void VEC::GetArray(DBL** array) { *array = this->values.data(); }
 
 /// The pointer array points this->values and it can be used to access data of VEC.
-/// The values cannot be modified.
+//  Note: The values cannot be modified!
 void VEC::GetArray(const DBL** array) const { *array = this->values.data(); }
 
 /// Return the size of VEC.
@@ -267,44 +273,47 @@ void VEC::XPAY(const DBL& a, const VEC& x)
 /// x = a * x + b * y, unroll long for loops.
 void VEC::AXPBY(const DBL& a, const DBL& b, const VEC& y)
 {
-    int       i;
-    const int len = this->size - this->size % 4;
-    // switch ((a == 1.0) + 2 * (b == 1.0)) {
-    switch (3) {
+    INT       i;
+    const INT len = this->size - this->size % 4;
+    
+    switch ((a == 1.0) + 2 * (b == 1.0)) {
         case 0:
+#pragma omp parallel for shared(len, y) private(i)
             for (i = 0; i < len; i += 4) {
                 this->values[i]     = a * this->values[i] + b * y.values[i];
                 this->values[i + 1] = a * this->values[i + 1] + b * y.values[i + 1];
                 this->values[i + 2] = a * this->values[i + 2] + b * y.values[i + 2];
                 this->values[i + 3] = a * this->values[i + 3] + b * y.values[i + 3];
-            }
+            } /*-- End of omp for --*/
             for (i = len; i < this->size; ++i)
                 this->values[i] = a * this->values[i] + b * y.values[i];
             break;
 
         case 1:
+#pragma omp parallel for shared(len, y) private(i)
             for (i = 0; i < len; i += 4) {
                 this->values[i] += b * y.values[i];
                 this->values[i + 1] += b * y.values[i + 1];
                 this->values[i + 2] += b * y.values[i + 2];
                 this->values[i + 3] += b * y.values[i + 3];
-            }
+            } /*-- End of omp for --*/
             for (i = len; i < this->size; ++i) this->values[i] += b * y.values[i];
             break;
 
         case 2:
+#pragma omp parallel for shared(len, y) private(i)
             for (i = 0; i < len; i += 4) {
                 this->values[i]     = a * this->values[i] + y.values[i];
                 this->values[i + 1] = a * this->values[i + 1] + y.values[i + 1];
                 this->values[i + 2] = a * this->values[i + 2] + y.values[i + 2];
                 this->values[i + 3] = a * this->values[i + 3] + y.values[i + 3];
-            }
+            } /*-- End of omp for --*/
             for (i = len; i < this->size; ++i)
                 this->values[i] = a * this->values[i] + y.values[i];
             break;
 
         case 3:
-#pragma omp parallel for shared(len, y) private(i) 
+#pragma omp parallel for shared(len, y) private(i)
             for (i = 0; i < len; i += 4) {
                 this->values[i] += y.values[i];
                 this->values[i + 1] += y.values[i + 1];
@@ -312,6 +321,7 @@ void VEC::AXPBY(const DBL& a, const DBL& b, const VEC& y)
                 this->values[i + 3] += y.values[i + 3];
             } /*-- End of omp for --*/
             for (i = len; i < this->size; ++i) this->values[i] += y.values[i];
+            break;
     }
 }
 
@@ -457,11 +467,11 @@ DBL VEC::NormInf() const
 /// Dot product with v, unroll long for loops.
 DBL VEC::Dot(const VEC& v) const
 {
-    int       i;
-    const int len = this->size - this->size % 4;
+    const INT len = this->size - this->size % 4;
+    INT       i;
     DBL       dot1 = 0.0, dot2 = 0.0, dot3 = 0.0, dot4 = 0.0;
 
-#pragma omp parallel shared(len) private(i)
+#pragma omp parallel private(i)
 #pragma omp for reduction(+ : dot1, dot2, dot3, dot4)
     for (i = 0; i < len; i += 4) {
         dot1 += this->values[i] * v.values[i];
@@ -481,5 +491,5 @@ DBL VEC::Dot(const VEC& v) const
 /*----------------------------------------------------------------------------*/
 /*  Chensong Zhang      Oct/13/2019      Create file                          */
 /*  Chensong Zhang      Sep/16/2021      Restructure file                     */
-/*  Chensong Zhang      Jan/22/2022      Test some OMP parallelization        */
+/*  Chensong Zhang      Jan/24/2022      Test some OMP parallelization        */
 /*----------------------------------------------------------------------------*/
