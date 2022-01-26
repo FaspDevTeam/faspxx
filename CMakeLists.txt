@@ -4,13 +4,12 @@
 # by Chensong Zhang, modified on Jan/22/2022: Add OMP, remove C
 #
 # Some sample usages:
-#   cmake .                                      // build in default configuration
-#   cmake -DCMAKE_BUILD_TYPE=Release .           // build in Release configuration
-#   cmake -DCMAKE_BUILD_TYPE=Debug .             // build in Debug configuration
-#   cmake -DCMAKE_BUILD_TYPE=Debug -DUTEST=ON .  // build with unit tests
-#   cmake -DUSE_OPENMP=ON .                      // build with OpenMP support
-#   cmake -DUSE_UMFPACK=ON .                     // build with UMFPACK support
-#   cmake -DCMAKE_VERBOSE_MAKEFILE=ON .          // build with verbose on
+#   cmake <DIR>                                      // default configuration
+#   cmake <DIR> -DCMAKE_BUILD_TYPE=Debug             // debug configuration
+#   cmake <DIR> -DCMAKE_BUILD_TYPE=Debug -DUTEST=ON  // debug with unit tests
+#   cmake <DIR> -DUSE_OPENMP=ON .                    // with OpenMP support
+#   cmake <DIR> -DUSE_UMFPACK=ON .                   // with UMFPACK solvers
+#   cmake <DIR> -DCMAKE_VERBOSE_MAKEFILE=ON .        // with verbose on
 
 #-----------------------------#
 # General environment setting #
@@ -20,7 +19,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 # Set C++ language standard (ANSI C++ 11)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -58,15 +57,9 @@ include(UserCmakeUtilities)
 
 # OpenMP : defined on command line in the top Makefile
 if(USE_OPENMP)
-    if(CMAKE_VERSION VERSION_GREATER 3)
-        cmake_policy(SET "CMP0054" NEW)
-    endif()
-
     find_package(OpenMP)
     if(OPENMP_FOUND)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")	 
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-        set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} ${OpenMP_C_FLAGS}")
     else(OPENMP_FOUND)
         message("   WARNING: OpenMP was disabled!")
     endif(OPENMP_FOUND)

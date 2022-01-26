@@ -112,7 +112,7 @@ int main()
     cycle.Start();
     for (k = 0; k < count; k++) {
 #pragma omp parallel private(j) shared(ptr1, ptr2)
-#pragma omp for nowait
+#pragma omp for
         for (j = 0; j < LENGTH; j++) ptr1[j] += ptr2[j];
     }
     std::cout << "pointer cycles : " << cycle.Stop() / count << std::endl;
@@ -122,7 +122,7 @@ int main()
     cycle.Start();
     for (k = 0; k < count; k++) {
 #pragma omp parallel private(j) shared(vec1, vec2)
-#pragma omp for nowait
+#pragma omp for
         for (j = 0; j < LENGTH; j++) vec1[j] += vec2[j];
     }
     std::cout << "vector cycles  : " << cycle.Stop() / count << std::endl;
