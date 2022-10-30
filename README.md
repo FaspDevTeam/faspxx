@@ -18,12 +18,12 @@ Config the environment for building with cmake:
 
 After succesfully configing, just make the library as well as examples:
 ```bash
-  > make  # To compile the FASP++ lib only; Do not install
+  > make  # to compile the FASP++ lib only; do not install
 ```
 
 To make the library and install it, run:
 ```bash
-  > make install  # To compile and install the FASP++ lib
+  > make install  # to compile and install the FASP++ lib
 ```
 
 ## License
