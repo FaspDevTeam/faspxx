@@ -13,17 +13,17 @@ system. The typical command for compiling FASP++ is:
 
 Config the environment for building with cmake:
 ```bash
-  $ mkdir Build; cd Build; cmake ..
+  > mkdir Build; cd Build; cmake ..
 ```
 
 After succesfully configing, just make the library as well as examples:
 ```bash
-  $ make
+  > make  # To compile the FASP++ lib only; Do not install
 ```
 
 To make the library and install it, run:
 ```bash
-  $ make install
+  > make install  # To compile and install the FASP++ lib
 ```
 
 ## License
