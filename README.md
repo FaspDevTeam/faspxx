@@ -1,4 +1,4 @@
-# Fast Auxiliary Space Preconditioning (FASP++) in CPP: README
+# Fast Auxiliary Space Preconditioning in C++: README
 
 The FASP++ is a C++ package designed for developing parallel iterative solvers
 and preconditioners for PDEs and systems of PDEs. The main components of the
