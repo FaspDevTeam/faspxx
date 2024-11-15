@@ -2,7 +2,7 @@
 # by Chensong Zhang, modified on Feb/15/2020
 # by Ronghong Fan & Chensong Zhang, modified on Oct/15/2021
 # by Chensong Zhang, modified on Jan/22/2022: Add OMP, remove C
-#
+# by Xiaoxing Cheng, modified on Nov/15/2024: Update CMake file to modern cmake
 # Some sample usages:
 #   cmake <DIR>                                      // default configuration
 #   cmake <DIR> -DCMAKE_BUILD_TYPE=Debug             // debug configuration
@@ -16,7 +16,7 @@
 #-----------------------------#
 
 # Minimum cmake version needed
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.13)
 
 # Set C++ language standard (ANSI C++ 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -27,8 +27,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_program(THE_CXX NAMES $ENV{CXX} g++ icpc icpx clang++)
 set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
 
-# Default compiler flags
-set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Configs" FORCE)
 
 # Default configuration 
 set(build_type "Release")
@@ -41,11 +39,12 @@ message(STATUS "Set build type to ${CMAKE_BUILD_TYPE} configuration")
 # Project specific parameters #
 #-----------------------------#
 
-project(faspxx CXX)
+project(faspxx LANGUAGES CXX VERSION 0.1.0)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/modules)
 include(UserCmakeUtilities)
 
-add_library(faspxx )
+add_library(faspxx)
+add_library(FASP::faspxx  ALIAS faspxx)
 add_subdirectory(src)
 
 set_target_properties(faspxx PROPERTIES
@@ -60,7 +59,7 @@ set_target_properties(faspxx PROPERTIES
 target_include_directories(faspxx
     PUBLIC
         ${PROJECT_SOURCE_DIR}/include/  # If other targets need these headers when linking to faspxx
-    PRIVATE
+    PUBLIC
         ${PROJECT_SOURCE_DIR}/src/
 )
 
@@ -80,11 +79,7 @@ endif(USE_OPENMP)
 
 
 # Set location for installing faspxx library
-set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}" )
-install(TARGETS faspxx
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
-set(FASPXX_INSTALL TRUE)
+
 
 # Set faspxx library type
 if(SHARED) 
@@ -93,6 +88,14 @@ else(SHARED)
     set(FASPXX_LIBRARY_TYPE STATIC)
 endif(SHARED)
 set(FASPXX_LIBRARY_NAME faspxx)
+
+add_subdirectory(example)
+# Unit test using Catch2
+option(UTEST "Unit Test" OFF)
+if(UTEST) 
+    enable_testing()
+    add_subdirectory(utest)
+endif()
 
 # Uninstall target
 if (NOT TARGET uninstall)
@@ -103,14 +106,34 @@ if (NOT TARGET uninstall)
                       ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 endif()
 
-# Look for external libraries (Optional)
-include(external)
+target_include_directories(faspxx PRIVATE
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 
-add_subdirectory(example)
-
-# Unit test using Catch2
-option(UTEST "Unit Test" OFF)
-if(UTEST) 
-    enable_testing()
-    add_subdirectory(utest)
-endif()
+include(GNUInstallDirs)
+set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR} CACHE PATH "the install path" FORCE)
+install(TARGETS faspxx
+        EXPORT faspxxTargets
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        )
+set(FASPXX_INSTALL TRUE)
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    faspxxConfigVersion.cmake
+    VERSION ${PACKAGE_VERSION}
+    COMPATIBILITY AnyNewerVersion
+    )
+install(EXPORT faspxxTargets
+    FILE faspxxTargets.cmake
+    NAMESPACE FASP::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/faspxx
+     )
+# export(TARGETS faspxx NAMESPACE FASP:: FILE ${PROJECT_SOURCE_DIR}/modules/faspxx-targets.cmake)
+configure_file(${PROJECT_SOURCE_DIR}/modules/faspxxConfig.cmake.in faspxxConfig.cmake @ONLY)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/faspxxConfig.cmake"
+              "${CMAKE_CURRENT_BINARY_DIR}/faspxxConfigVersion.cmake"
+        DESTINATION {CMAKE_INSTALL_LIBDIR}/cmake/faspxx
+        )
