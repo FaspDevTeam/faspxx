@@ -16,7 +16,7 @@
 #-----------------------------#
 
 # Minimum cmake version needed
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.15)
 
 # Set C++ language standard (ANSI C++ 11)
 set(CMAKE_CXX_STANDARD 17)
@@ -24,13 +24,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Default C++ compiler look-up order
-find_program(THE_CXX NAMES $ENV{CXX} g++ icpc clang++)
+find_program(THE_CXX NAMES $ENV{CXX} g++ icpc icpx clang++)
 set(CMAKE_CXX_COMPILER ${THE_CXX} CACHE INTERNAL "the CXX compiler" FORCE)
 
 # Default compiler flags
 set(CMAKE_CONFIGURATION_TYPES "Release;Debug" CACHE STRING "Configs" FORCE)
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2 -march=native")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -g")
 
 # Default configuration 
 set(build_type "Release")
@@ -43,36 +41,43 @@ message(STATUS "Set build type to ${CMAKE_BUILD_TYPE} configuration")
 # Project specific parameters #
 #-----------------------------#
 
-# Name of the project
 project(faspxx CXX)
-
-# Add include directory
-include_directories(${PROJECT_SOURCE_DIR}/include/)
-include_directories(${PROJECT_SOURCE_DIR}/src/)
-include_directories(${PROJECT_SOURCE_DIR}/example/)
-
-# CMake modules path
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/modules)
 include(UserCmakeUtilities)
+
+add_library(faspxx )
+add_subdirectory(src)
+
+set_target_properties(faspxx PROPERTIES
+    COMPILE_FLAGS_RELEASE "-O2 -march=native"
+)
+
+# Set debug flags for faspxx library
+set_target_properties(faspxx PROPERTIES
+    COMPILE_FLAGS_DEBUG "-Wall -g"
+)
+
+target_include_directories(faspxx
+    PUBLIC
+        ${PROJECT_SOURCE_DIR}/include/  # If other targets need these headers when linking to faspxx
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/src/
+)
+
+# CMake modules path
 
 # OpenMP : defined on command line in the top Makefile
 if(USE_OPENMP)
     find_package(OpenMP)
     if(OPENMP_FOUND)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+        target_compile_options(faspxx PRIVATE ${OpenMP_CXX_FLAGS})
+        target_link_libraries(faspxx PRIVATE OpenMP::OpenMP_CXX)
     else(OPENMP_FOUND)
         message("   WARNING: OpenMP was disabled!")
     endif(OPENMP_FOUND)
 endif(USE_OPENMP)
 
-# Build faspxx library
-set(SOURCES "")
-set(HEADERS "")
-set(FASPXX_SOURCE_DIRS src) # list of src directories
-foreach(DIR IN LISTS FASPXX_SOURCE_DIRS)
-    add_subdirectory(${DIR})
-endforeach()
-add_library(faspxx ${SOURCES} ${HEADERS})
+
 
 # Set location for installing faspxx library
 set(CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}" )
