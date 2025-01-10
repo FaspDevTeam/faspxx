@@ -1,0 +1,13 @@
+include(CMakeFindDependencyMacro)
+
+# Capturing values from configure (optional)
+# set(my-config-var @my-config-var@)
+
+# Same syntax as find_package
+if(USE_OPENMP)
+find_dependency(OpenMP REQUIRED)
+endif(USE_OPENMP)
+# Any extra setup
+
+# Add the targets file
+include("${CMAKE_CURRENT_LIST_DIR}/faspxxTargets.cmake")
